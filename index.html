@@ -1,12 +1,60 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  
 
-  
-  <title>Sakurastream</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
   <meta name="keywords" content="code">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sakurastream">
@@ -15,67 +63,183 @@
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Sakurastream">
+  <link rel="canonical" href="http://yoursite.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Sakurastream</title>
   
-    <link rel="alternate" href="/atom.xml" title="Sakurastream" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
 </head>
-</html>
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Sakurastream</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
-      </div>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sakurastream</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main">
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
   
-    <article id="post-Windows-10-安装PyTorch" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/09/16/Windows-10-安装PyTorch/" class="article-date">
-  <time datetime="2019-09-16T12:33:06.789Z" itemprop="datePublished">2019-09-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
+  <ul id="menu" class="menu">
       
-        <hr>
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/09/16/Windows-10-安装PyTorch/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-09-16 20:33:06 / Modified: 21:38:57" itemprop="dateCreated datePublished" datetime="2019-09-16T20:33:06+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
 <h1 id="Windows-10-安装PyTorch"><a href="#Windows-10-安装PyTorch" class="headerlink" title="Windows 10 安装PyTorch"></a><em>Windows 10 安装PyTorch</em></h1><h4 id="2019-09-16-20-33-06"><a href="#2019-09-16-20-33-06" class="headerlink" title="2019-09-16 20:33:06"></a>2019-09-16 20:33:06</h4><hr>
 <p>今天比较有时间，正好看完了CVPR-2018年的论文&lt;<strong>Single Image Reﬂection Separation with Perceptual Losses</strong>&gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是Ubuntu下，所以问了一下学长，他说可以在Windows下安装PyTorch来跑。下面就记录一下自己安装PyTorch的过程。</p>
 <p>1.由于之前安装了Anaconda3，所以可以采用conda安装的方式，但是之前安装Tensorflow的时候Python版本的问题就一直有点疑问，所以查了一下发现如果只是想利用Pycharm运行PyTorch的话，其实直接用pip方式安装就可以</p>
@@ -98,32 +262,78 @@ print(x)
 Process finished with exit code 0
 </code></pre><p>证明PyTorch安装成功！</p>
 
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/" data-id="ck0mgfrbc0000i0vdskxr5j4e" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-    <article id="post-软件构造知识点总结第六期" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/24/软件构造知识点总结第六期/" class="article-date">
-  <time datetime="2019-06-24T10:05:49.069Z" itemprop="datePublished">2019-06-24</time>
-</a>
+  
+  </article>
+
     
-  </div>
-  <div class="article-inner">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第六期/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结第六期/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 18:05:49 / Modified: 18:11:30" itemprop="dateCreated datePublished" datetime="2019-06-24T18:05:49+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <hr>
+          <hr>
 <h2 id="软件构造知识点总结第六期"><a href="#软件构造知识点总结第六期" class="headerlink" title="软件构造知识点总结第六期"></a>软件构造知识点总结第六期</h2><h1 id="第十章"><a href="#第十章" class="headerlink" title="第十章"></a>第十章</h1><hr>
 <h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><p><strong>并发（concurrency）</strong></p>
 <ul>
@@ -470,32 +680,78 @@ Process finished with exit code 0
 <li>因此读取和写入文本变量本身不是线程安全的。</li>
 </ul>
 
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第六期/" data-id="ck0mgfrcx0005i0vd0ft6yzzl" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-    <article id="post-软件构造知识点总结第五期" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/24/软件构造知识点总结第五期/" class="article-date">
-  <time datetime="2019-06-24T06:35:16.443Z" itemprop="datePublished">2019-06-24</time>
-</a>
+  
+  </article>
+
     
-  </div>
-  <div class="article-inner">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第五期/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结第五期/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 14:35:16 / Modified: 14:41:39" itemprop="dateCreated datePublished" datetime="2019-06-24T14:35:16+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <hr>
+          <hr>
 <h2 id="软件构造知识点总结第五期"><a href="#软件构造知识点总结第五期" class="headerlink" title="软件构造知识点总结第五期"></a>软件构造知识点总结第五期</h2><h1 id="第八章"><a href="#第八章" class="headerlink" title="第八章"></a>第八章</h1><hr>
 <h2 id="第一节-软件构造性能的度量原理"><a href="#第一节-软件构造性能的度量原理" class="headerlink" title="第一节 软件构造性能的度量原理"></a>第一节 软件构造性能的度量原理</h2><h3 id="性能度量指标"><a href="#性能度量指标" class="headerlink" title="性能度量指标"></a><em>性能度量指标</em></h3><ul>
 <li>时间性能<ul>
@@ -698,32 +954,78 @@ Process finished with exit code 0
 <p><strong><a href="http://c.biancheng.net/view/1343.html" target="_blank" rel="noopener">原型模式</a>（Prototype Pattern）</strong></p>
 <p><strong>对象池模式（Object Pool Pattern）</strong></p>
 <h3 id="Java-I-O"><a href="#Java-I-O" class="headerlink" title="Java I/O"></a><em>Java I/O</em></h3>
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第五期/" data-id="ck0mgfrcb0004i0vdpantbo27" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-    <article id="post-软件构造知识点总结第四期" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/24/软件构造知识点总结第四期/" class="article-date">
-  <time datetime="2019-06-24T06:01:58.336Z" itemprop="datePublished">2019-06-24</time>
-</a>
+  
+  </article>
+
     
-  </div>
-  <div class="article-inner">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第四期/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结第四期/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 14:01:58 / Modified: 14:29:51" itemprop="dateCreated datePublished" datetime="2019-06-24T14:01:58+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <hr>
+          <hr>
 <h2 id="软件构造知识点总结第四期"><a href="#软件构造知识点总结第四期" class="headerlink" title="软件构造知识点总结第四期"></a>软件构造知识点总结第四期</h2><h1 id="第七章"><a href="#第七章" class="headerlink" title="第七章"></a>第七章</h1><h2 id="第一节-健壮性和正确性的区别"><a href="#第一节-健壮性和正确性的区别" class="headerlink" title="第一节  健壮性和正确性的区别"></a>第一节  健壮性和正确性的区别</h2><h3 id="健壮性-Robustness-和正确性-correctness"><a href="#健壮性-Robustness-和正确性-correctness" class="headerlink" title="健壮性(Robustness)和正确性(correctness)"></a><em>健壮性(Robustness)和正确性(correctness)</em></h3><p><strong>健壮性</strong></p>
 <ul>
 <li>定义：系统在不 正常输入或不正常外部环境下仍能够表现正常的程度</li>
@@ -1170,32 +1472,78 @@ Process finished with exit code 0
 <p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180619224136881-874452125.png" alt="img"></p>
 <hr>
 
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第四期/" data-id="ck0mgfrcz0006i0vdz68o1cgb" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-    <article id="post-软件构造知识点总结（3" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/24/软件构造知识点总结（3/" class="article-date">
-  <time datetime="2019-06-24T03:41:29.255Z" itemprop="datePublished">2019-06-24</time>
-</a>
+  
+  </article>
+
     
-  </div>
-  <div class="article-inner">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结（3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结（3/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 11:41:29 / Modified: 11:51:04" itemprop="dateCreated datePublished" datetime="2019-06-24T11:41:29+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <hr>
+          <hr>
 <h1 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h1><hr>
 <h2 id="第一节-可复用性的度量、形态和外部观察"><a href="#第一节-可复用性的度量、形态和外部观察" class="headerlink" title="第一节  可复用性的度量、形态和外部观察"></a>第一节  可复用性的度量、形态和外部观察</h2><h3 id="什么是软件复用"><a href="#什么是软件复用" class="headerlink" title="什么是软件复用"></a><em>什么是软件复用</em></h3><ul>
 <li>软件复用是使用现有软件组件实施或更新软件系统的过程。 </li>
@@ -1914,32 +2262,78 @@ Process finished with exit code 0
 </li>
 </ul>
 
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结（3/" data-id="ck0mgfrd70008i0vdbv2eayks" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-    <article id="post-软件构造知识点总结（2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/24/软件构造知识点总结（2/" class="article-date">
-  <time datetime="2019-06-24T02:14:05.607Z" itemprop="datePublished">2019-06-24</time>
-</a>
+  
+  </article>
+
     
-  </div>
-  <div class="article-inner">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结（2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结（2/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 10:14:05 / Modified: 11:35:52" itemprop="dateCreated datePublished" datetime="2019-06-24T10:14:05+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <hr>
+          <hr>
 <p>title: 软件构造知识点总结（2)</p>
 <h2 id="date-（总结日期）2019-05-20"><a href="#date-（总结日期）2019-05-20" class="headerlink" title="date: （总结日期）2019-05-20 "></a>date: （总结日期）2019-05-20 </h2><h1 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h1><hr>
 <h2 id="第一节-数据类型与类型检查"><a href="#第一节-数据类型与类型检查" class="headerlink" title="第一节 数据类型与类型检查"></a>第一节 数据类型与类型检查</h2><h3 id="数据类型及其表达"><a href="#数据类型及其表达" class="headerlink" title="数据类型及其表达"></a>数据类型及其表达</h3><h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a><em>基本数据类型</em></h3><p><strong>对象数据结构</strong></p>
@@ -2564,61 +2958,153 @@ Process finished with exit code 0
 <p>代码的可读性/可理解性很多时候比效率/性能更重要，不可读、不可理解代码可能蕴含更多的错误。 因此先写出可读易懂的代码，再去逐渐调优。</p>
 <hr>
 
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结（2/" data-id="ck0mgfrd60007i0vd3ccsmqpr" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-    <article id="post-一些说明" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/21/一些说明/" class="article-date">
-  <time datetime="2019-06-21T14:44:45.345Z" itemprop="datePublished">2019-06-21</time>
-</a>
+  
+  </article>
+
     
-  </div>
-  <div class="article-inner">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/21/一些说明/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/21/一些说明/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-21 22:44:45 / Modified: 23:00:54" itemprop="dateCreated datePublished" datetime="2019-06-21T22:44:45+08:00">2019-06-21</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <hr>
+          <hr>
 <p>title: <em>一些说明</em><br>date: 2019-06-21 22:44:45</p>
 <h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p>在学期中期就开始整理了一些知识点，但是由于自己当初用hexo搭建的博客默认地址是另外一个github域名，后来用户名改成学号之后，忘记重新配置ssh了，导致一直想发表博客总是失败（已经把_config.yml中重新调整配置的方法忘了，怪自己对hexo的操作不熟悉），直到最近想起还有博客这件事，问了一下知乎大V才得以解决，现在把自己学习《软件构造》这门课的一些知识点总结发表出来，也算是小小的复习了。</p>
 <h2 id="另外不知道配置哪里错了，一个是博客标题总显示为no-title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来"><a href="#另外不知道配置哪里错了，一个是博客标题总显示为no-title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来" class="headerlink" title="另外不知道配置哪里错了，一个是博客标题总显示为no title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来-_-||"></a>另外不知道配置哪里错了，一个是博客标题总显示为no title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来-_-||</h2>
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/21/一些说明/" data-id="ck0mgfrbu0002i0vd1xn8lr4i" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-    <article id="post-软件构造期末总结（1)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/21/软件构造期末总结（1)/" class="article-date">
-  <time datetime="2019-06-21T03:23:29.475Z" itemprop="datePublished">2019-06-21</time>
-</a>
+  
+  </article>
+
     
-  </div>
-  <div class="article-inner">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/21/软件构造期末总结（1)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/21/软件构造期末总结（1)/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-21 11:23:29 / Modified: 22:23:41" itemprop="dateCreated datePublished" datetime="2019-06-21T11:23:29+08:00">2019-06-21</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <hr>
+          <hr>
 <p><font size="7"> 软件构造知识点总结(1) </font>　　</p>
 <h2 id="date-2019-04-21-03-23-29"><a href="#date-2019-04-21-03-23-29" class="headerlink" title="date: 2019-04-21 03:23:29"></a>date: 2019-04-21 03:23:29</h2><h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><hr>
 <h3 id="第一节-软件构造的多维视图"><a href="#第一节-软件构造的多维视图" class="headerlink" title="第一节 软件构造的多维视图"></a><em>第一节 软件构造的多维视图</em></h3><p>　　<strong>BulidTime概述</strong>  　　</p>
@@ -2659,42 +3145,78 @@ Process finished with exit code 0
 <h4 id="狭义的软件构造过程"><a href="#狭义的软件构造过程" class="headerlink" title="狭义的软件构造过程"></a>狭义的软件构造过程</h4><h5 id="1-主要的知识结构"><a href="#1-主要的知识结构" class="headerlink" title="1.主要的知识结构"></a>1.主要的知识结构</h5><p>Build场景综述：  </p>
 <p>　　　用传统编译语言如C、C++、Java编写软件（complilation）<br>　　　用解释型语言（如Perl、python）编写软件的打包和测试（packing and testing）<br>　　　用基于Web的应用程序进行编译和打包（使用静态HTML页面、使用Java或C#编写的源代码、使用JSP、ASP或PHP语法编写的混合文件以及多种类型额配置文件）<br>　　　执行单元测试代码的其余部分对软件进行隔离验证<br>　　　执行静态分析工具来识别程序源代码中的错误<br>　　　生成PDF或HTML文档</p>
 
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/21/软件构造期末总结（1)/" data-id="ck0mgfrc90003i0vdshgkrfoq" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/15/hello-world/" class="article-date">
-  <time datetime="2019-02-15T09:05:47.222Z" itemprop="datePublished">2019-02-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
         
+      </footer>
+  </div>
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/15/hello-world/">第一篇博客</a>
-    </h1>
   
+  
+  </article>
 
-      </header>
     
-    <div class="article-entry" itemprop="articleBody">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/15/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/02/15/hello-world/" class="post-title-link" itemprop="url">第一篇博客</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-02-15 17:05:47 / Modified: 18:44:23" itemprop="dateCreated datePublished" datetime="2019-02-15T17:05:47+08:00">2019-02-15</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>折腾了两天，终于完成了基本的第一篇博客。以此纪念一下，说实话，整个步骤都是懵着过来的，不过不管怎么样，也算是让自己有了一个可以发泄心情的小窝，优化什么的以后再说吧..</p>
+          <p>折腾了两天，终于完成了基本的第一篇博客。以此纪念一下，说实话，整个步骤都是懵着过来的，不过不管怎么样，也算是让自己有了一个可以发泄心情的小窝，优化什么的以后再说吧..</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
@@ -2704,107 +3226,158 @@ Process finished with exit code 0
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
+        
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/15/hello-world/" data-id="ck0mgfrbq0001i0vdm41oaux9" class="article-share-link">Share</a>
-      
-      
-    </footer>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
   </div>
   
-</article>
-
-
   
-
-
-</section>
-        
-          <aside id="sidebar">
   
+  </article>
+
     
+  </div>
 
   
-    
 
+
+          </div>
+          
+
+        </div>
+          
   
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li></ul>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
 
+  <aside class="sidebar">
+    <div class="sidebar-inner">
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/09/16/Windows-10-安装PyTorch/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/24/软件构造知识点总结第六期/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/24/软件构造知识点总结第五期/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/24/软件构造知识点总结第四期/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/24/软件构造知识点总结（3/">(no title)</a>
-          </li>
-        
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
       </ul>
-    </div>
-  </div>
 
-  
-</aside>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Gift</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gift</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
         
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2019 Gift<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
+    </footer>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  
 
+  
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
-  </div>
 </body>
 </html>
