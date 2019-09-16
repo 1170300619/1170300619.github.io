@@ -63,6 +63,46 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Windows-10-安装PyTorch" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/16/Windows-10-安装PyTorch/" class="article-date">
+  <time datetime="2019-09-16T12:33:06.789Z" itemprop="datePublished">2019-09-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h1 id="Windows-10-安装PyTorch"><a href="#Windows-10-安装PyTorch" class="headerlink" title="Windows 10 安装PyTorch"></a><em>Windows 10 安装PyTorch</em></h1><h4 id="2019-09-16-20-33-06"><a href="#2019-09-16-20-33-06" class="headerlink" title="2019-09-16 20:33:06"></a>2019-09-16 20:33:06</h4><hr>
+<p>今天比较有时间，正好看完了CVPR-2018年的论文&lt;<strong>Single Image Reﬂection Separation with Perceptual Losses</strong>&gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是Ubuntu下，所以问了一下学长，他说可以在Windows下安装PyTorch来跑。下面就记录一下自己安装PyTorch的过程。</p>
+<p>1.由于之前安装了Anaconda3，所以可以采用conda安装的方式，但是之前安装Tensorflow的时候Python版本的问题就一直有点疑问，所以查了一下发现如果只是想利用Pycharm运行PyTorch的话，其实直接用pip方式安装就可以</p>
+<p>2.那么需要到PyTorch官网去查看自己所需的代码 <a href="https://pytorch.org/" target="_blank" rel="noopener">PyTorch官网连接</a>，相应的选择自己电脑的配置，注意如果用pip安装的话，要选择Pip选项。然后下面就会给出你所需的命令。还要注意的一点是我的电脑由于是A卡的，所以在CUDA这个部分我选择的是None，也就是所说的CPU版本的PyTorch。本人的命令如下：</p>
+<pre><code>pip3 install torch==1.2.0+cpu torchvision==0.4.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre><p>3.安装成功后，一定要记得看一下自己所安装的<strong><em>文件夹地址</em></strong></p>
+<p>4.打开Pycharm，按ctrl+alt+s，打开Project Interpreter进行配置，点击右上角的设置符号，选择Add，在下面点选Existing environment，然后在右边的…处找到自己刚才安装的<strong><em>文件夹地址</em></strong>，拉到最下面找到python.exe文件一路点击<strong>ok</strong>。</p>
+<p>5.在pycharm中新建项目，输入以下代码：</p>
+<pre><code>from __future__ import print_function
+import torch
+x=torch.rand(5,3)
+print(x)
+</code></pre><p>查看输出，如果输出为：![输出格式示例]（<a href="https://img2018.cnblogs.com/blog/1748306/201909/1748306-20190906185035783-443553225.png）" target="_blank" rel="noopener">https://img2018.cnblogs.com/blog/1748306/201909/1748306-20190906185035783-443553225.png）</a><br>证明PyTorch安装成功！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/" data-id="ck0mfojvl0000asvdxcan1lft" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-软件构造知识点总结第六期" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/24/软件构造知识点总结第六期/" class="article-date">
@@ -425,7 +465,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第六期/" data-id="cjxa81zi30004msvd5poxvau0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第六期/" data-id="ck0mfokhw0006asvd7ybywv76" class="article-share-link">Share</a>
       
       
     </footer>
@@ -653,7 +693,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第五期/" data-id="cjxa81zhi0002msvdvym7hfv7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第五期/" data-id="ck0mfokh00004asvdrl3txuet" class="article-share-link">Share</a>
       
       
     </footer>
@@ -1125,7 +1165,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第四期/" data-id="cjxa81zi60005msvdep2v7hff" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结第四期/" data-id="ck0mfokhi0005asvdbjcwjd9m" class="article-share-link">Share</a>
       
       
     </footer>
@@ -1869,7 +1909,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结（3/" data-id="cjxa81zjn0007msvd9hi5v5os" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结（3/" data-id="ck0mfokil0008asvdf7r0queh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -2519,7 +2559,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结（2/" data-id="cjxa81zjl0006msvd092sllkr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/24/软件构造知识点总结（2/" data-id="ck0mfokid0007asvd80b4odwf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -2548,7 +2588,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/21/一些说明/" data-id="cjxa81zgs0001msvdihkadmxf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/21/一些说明/" data-id="ck0mfokd70002asvd8srmslxm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -2614,7 +2654,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/21/软件构造期末总结（1)/" data-id="cjxa81zhk0003msvd8y6v7phm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/21/软件构造期末总结（1)/" data-id="ck0mfokgu0003asvdcq5nlqma" class="article-share-link">Share</a>
       
       
     </footer>
@@ -2659,7 +2699,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/02/15/hello-world/" data-id="cjxa81zet0000msvdrzxu703m" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/02/15/hello-world/" data-id="ck0mfokcn0001asvd14de69i2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -2687,7 +2727,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li></ul>
     </div>
   </div>
 
@@ -2698,6 +2738,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/09/16/Windows-10-安装PyTorch/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2019/06/24/软件构造知识点总结第六期/">(no title)</a>
@@ -2713,10 +2757,6 @@
         
           <li>
             <a href="/2019/06/24/软件构造知识点总结（3/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/24/软件构造知识点总结（2/">(no title)</a>
           </li>
         
       </ul>
