@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="Windows 10 安装PyTorch2019-09-16 20:33:06 今天比较有时间，正好看完了CVPR-2018年的论文&amp;lt;Single Image Reﬂection Separation with Perceptual Losses&amp;gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是U">
+  <meta name="description" content="title: Ceres Solvel翻译第一期-说明文档 tags: Ceres Solvel：Tutorial非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j">
 <meta name="keywords" content="code">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sakurastream">
-<meta property="og:url" content="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/12/21/Ceres-Solvel中文翻译文档/index.html">
 <meta property="og:site_name" content="Sakurastream">
-<meta property="og:description" content="Windows 10 安装PyTorch2019-09-16 20:33:06 今天比较有时间，正好看完了CVPR-2018年的论文&amp;lt;Single Image Reﬂection Separation with Perceptual Losses&amp;gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是U">
+<meta property="og:description" content="title: Ceres Solvel翻译第一期-说明文档 tags: Ceres Solvel：Tutorial非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-16T13:38:57.834Z">
+<meta property="og:updated_time" content="2020-12-21T12:09:18.010Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Sakurastream">
-<meta name="twitter:description" content="Windows 10 安装PyTorch2019-09-16 20:33:06 今天比较有时间，正好看完了CVPR-2018年的论文&amp;lt;Single Image Reﬂection Separation with Perceptual Losses&amp;gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是U">
-  <link rel="canonical" href="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/">
+<meta name="twitter:description" content="title: Ceres Solvel翻译第一期-说明文档 tags: Ceres Solvel：Tutorial非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j">
+  <link rel="canonical" href="http://yoursite.com/2020/12/21/Ceres-Solvel中文翻译文档/">
 
 
 <script id="page-configurations">
@@ -196,7 +196,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/21/Ceres-Solvel中文翻译文档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gift">
@@ -224,7 +224,7 @@
                 
               
 
-              <time title="Created: 2019-09-16 20:33:06 / Modified: 21:38:57" itemprop="dateCreated datePublished" datetime="2019-09-16T20:33:06+08:00">2019-09-16</time>
+              <time title="Created: 2020-12-21 14:22:49 / Modified: 20:09:18" itemprop="dateCreated datePublished" datetime="2020-12-21T14:22:49+08:00">2020-12-21</time>
             </span>
           
             
@@ -244,27 +244,60 @@
 
       
         <hr>
-<h1 id="Windows-10-安装PyTorch"><a href="#Windows-10-安装PyTorch" class="headerlink" title="Windows 10 安装PyTorch"></a><em>Windows 10 安装PyTorch</em></h1><h4 id="2019-09-16-20-33-06"><a href="#2019-09-16-20-33-06" class="headerlink" title="2019-09-16 20:33:06"></a>2019-09-16 20:33:06</h4><hr>
-<p>今天比较有时间，正好看完了CVPR-2018年的论文&lt;<strong>Single Image Reﬂection Separation with Perceptual Losses</strong>&gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是Ubuntu下，所以问了一下学长，他说可以在Windows下安装PyTorch来跑。下面就记录一下自己安装PyTorch的过程。</p>
-<p>1.由于之前安装了Anaconda3，所以可以采用conda安装的方式，但是之前安装Tensorflow的时候Python版本的问题就一直有点疑问，所以查了一下发现如果只是想利用Pycharm运行PyTorch的话，其实直接用pip方式安装就可以</p>
-<p>2.那么需要到PyTorch官网去查看自己所需的代码 <a href="https://pytorch.org/" target="_blank" rel="noopener">PyTorch官网连接</a>，相应的选择自己电脑的配置，注意如果用pip安装的话，要选择Pip选项。然后下面就会给出你所需的命令。还要注意的一点是我的电脑由于是A卡的，所以在CUDA这个部分我选择的是None，也就是所说的CPU版本的PyTorch。本人的命令如下：</p>
-<pre><code>pip3 install torch==1.2.0+cpu torchvision==0.4.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
-</code></pre><p>3.安装成功后，一定要记得看一下自己所安装的<strong><em>文件夹地址</em></strong></p>
-<p>4.打开Pycharm，按ctrl+alt+s，打开Project Interpreter进行配置，点击右上角的设置符号，选择Add，在下面点选Existing environment，然后在右边的…处找到自己刚才安装的<strong><em>文件夹地址</em></strong>，拉到最下面找到python.exe文件一路点击<strong>ok</strong>。</p>
-<p>5.在pycharm中新建项目，输入以下代码：</p>
-<pre><code>from __future__ import print_function
-import torch
-x=torch.rand(5,3)
-print(x)
-</code></pre><p>查看输出，如果输出为：</p>
-<pre><code>tensor([[0.9072, 0.3848, 0.9203],
-        [0.1643, 0.7447, 0.1730],
-        [0.4379, 0.2974, 0.1283],
-        [0.4563, 0.5322, 0.9924],
-        [0.4715, 0.9287, 0.7176]])
+<p>title: Ceres Solvel翻译第一期-说明文档</p>
+<h2 id="tags-Ceres-Solvel：Tutorial"><a href="#tags-Ceres-Solvel：Tutorial" class="headerlink" title="tags: Ceres Solvel：Tutorial"></a>tags: Ceres Solvel：Tutorial</h2><h1 id="非线性最小二乘法"><a href="#非线性最小二乘法" class="headerlink" title="非线性最小二乘法"></a>非线性最小二乘法</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下：</p>
+<p>$$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$</p>
+<p>$$s.t. l_i\le x_j\le u_j$$<br>这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行三维模型的构建等等。</p>
+<p>$\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$这一部分被称为残差块（<font color="red" font face="黑体">ResidualBlock</font>)，其中的$f_i(\cdot )$叫做代价函数（<font color="red" font face="黑体">CostFuction</font>)。代价函数依赖于一系列参数$[x_{i_1},\cdots,x_{i_k}]$,这一系列参数（均为标量）称为参数块（<font color="red" font face="黑体">ParameterBlock</font>)。当然参数块中也可以只含有一个变量。$l_j$和$u_j$分别是变量块$x_j$的上下边界。  </p>
+<p>$\rho_i$是损失函数（<font color="red" font face="黑体">LossFuction</font>)。损失函数是一个标量函数，其作用是减少异常值（<font color="red" font face="黑体">Outliers</font>)对优化结果的影响。其效果类似于对函数的过滤。</p>
+<p>一个特殊情况是，$\rho_i(f<br>(x)) = f(x)$,也就是没有对函数进行任何过滤，损失函数的输出等于输入。若同时令$l_j = -\infty$并且$u_j = \infty$，即参数块的取值没有限制，那么此时问题变成了非线性最小二乘问题。表达式如下：  </p>
+<p>$$\frac{1}{2}\sum_i\left | f_i(x_{i_1},\cdots,x_{i_k}) \right |^2$$</p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>每个程序最简单的示例被称为Hello World。本节将简单描述Ceres的Hello World示例，以便让读者对库的使用步骤快速建立认识。<br>在Hello World这个例子中，待优化的函数是$f(x) = 10 - x$，重载操作符如下：</p>
+<pre><code>struct CostFunctor {
+    template &lt;typename T&gt;
+    bool operator()(const T* const x, T* residual) const {
+        residual[0] = T(10.0) - x[0];
+        return true;
+    }
+};
+</code></pre><p>重点要注意这里的<font face="黑体" font color="red">operator()</font>是一个模板方法，这里假设所有的输入和输出都是同一类型<font face="黑体" font color="red">T</font>。在后面的代码中，Ceres通过调用<font face="黑体" font color="red">CostFunctor::operator\<t>()</t></font>来使用这一重载操作符。在这个例子中可以令<font face="黑体" font color="red">T = double</font>，然后仅仅以double类型输出残差值。也可以令<font face="黑体" font color="red">T = Jet</font>然后输出雅可比矩阵。这一部分在后面会有更详细的介绍。</p>
+<blockquote>
+<p>雅可比矩阵实际上就是对一个含有多个参数的函数$f(x)$求一系列一阶偏微分</p>
+</blockquote>
+<p>一旦残差方程建立，我们就可以用Ceres来实现非线性最小二乘法的优化算法。代码如下：<br>    int main(int argc, char** argv) {<br>    google::InitGoogleLogging(argv[0]);</p>
+<pre><code>// The variable to solve for with its initial value.
+double initial_x = 5.0;
+double x = initial_x;
 
-Process finished with exit code 0
-</code></pre><p>证明PyTorch安装成功！</p>
+// Build the problem.
+Problem problem;
+
+// Set up the only cost function (also known as residual). This uses
+// auto-differentiation to obtain the derivative (jacobian).
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;CostFunctor, 1, 1&gt;(new CostFunctor);
+problem.AddResidualBlock(cost_function, nullptr, &amp;x);
+
+// Run the solver!
+Solver::Options options;
+options.linear_solver_type = ceres::DENSE_QR;
+options.minimizer_progress_to_stdout = true;
+Solver::Summary summary;
+Solve(options, &amp;problem, &amp;summary);
+
+std::cout &lt;&lt; summary.BriefReport() &lt;&lt; &quot;\n&quot;;
+std::cout &lt;&lt; &quot;x : &quot; &lt;&lt; initial_x
+            &lt;&lt; &quot; -&gt; &quot; &lt;&lt; x &lt;&lt; &quot;\n&quot;;
+return 0;
+}
+</code></pre><p><font face="黑体" font color="red">AutoDiffCostFuction</font>将刚刚建立的<font face="黑体" font color="red">CostFuctor</font>结构的一个实例作为输入，自动生成其微分并且赋予其一个<font face="黑体" font color="red">CostFuction</font>类型的接口。<br>编译完成，运行结果如下：（原文中$x$初始值输出错误，修正为上面代码中的$5$）</p>
+<pre><code>iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
+0     4.512500e+01    0.00e+00    9.50e+00   0.00e+00   0.00e+00  1.00e+04       0     5.33e-04   3.46e-03
+1     4.511598e-07    4.51e+01    9.50e-04   9.50e+00   1.00e+00  3.00e+04       1     5.00e-04   4.05e-03
+2     5.012552e-16    4.51e-07    3.17e-08   9.50e-04   1.00e+00  9.00e+04       1     1.60e-05   4.09e-03
+Ceres Solver Report: Iterations: 2, Initial cost: 4.512500e+01, Final cost: 5.012552e-16, Termination: CONVERGENCE
+x : 5 -&gt; 10
+</code></pre><p>初始值为$5$，最终通过两次循环之后到达最优解$10$。其实本例是一个线性问题，因为$f(x) = 10 - x$是一个线性函数，但是Ceres仍然可以应用。</p>
 
     </div>
 
@@ -281,7 +314,7 @@ Process finished with exit code 0
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/06/24/软件构造知识点总结第六期/" rel="next" title>
+                <a href="/2020/09/18/SpringBoot学习笔记一/" rel="next" title>
                   <i class="fa fa-chevron-left"></i> 
                 </a>
               
@@ -290,10 +323,6 @@ Process finished with exit code 0
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/11/05/札记/" rel="prev" title>
-                   <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -342,7 +371,7 @@ Process finished with exit code 0
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows-10-安装PyTorch"><span class="nav-number">1.</span> <span class="nav-text">Windows 10 安装PyTorch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2019-09-16-20-33-06"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">2019-09-16 20:33:06</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tags-Ceres-Solvel：Tutorial"><span class="nav-number">1.</span> <span class="nav-text">tags: Ceres Solvel：Tutorial</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#非线性最小二乘法"><span class="nav-number"></span> <span class="nav-text">非线性最小二乘法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-World"><span class="nav-number">2.</span> <span class="nav-text">Hello World</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->

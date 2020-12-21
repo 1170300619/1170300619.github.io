@@ -191,6 +191,206 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/21/Ceres-Solvel中文翻译文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/12/21/Ceres-Solvel中文翻译文档/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-12-21 14:22:49 / Modified: 20:09:18" itemprop="dateCreated datePublished" datetime="2020-12-21T14:22:49+08:00">2020-12-21</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
+<p>title: Ceres Solvel翻译第一期-说明文档</p>
+<h2 id="tags-Ceres-Solvel：Tutorial"><a href="#tags-Ceres-Solvel：Tutorial" class="headerlink" title="tags: Ceres Solvel：Tutorial"></a>tags: Ceres Solvel：Tutorial</h2><h1 id="非线性最小二乘法"><a href="#非线性最小二乘法" class="headerlink" title="非线性最小二乘法"></a>非线性最小二乘法</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下：</p>
+<p>$$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$</p>
+<p>$$s.t. l_i\le x_j\le u_j$$<br>这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行三维模型的构建等等。</p>
+<p>$\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$这一部分被称为残差块（<font color="red" font face="黑体">ResidualBlock</font>)，其中的$f_i(\cdot )$叫做代价函数（<font color="red" font face="黑体">CostFuction</font>)。代价函数依赖于一系列参数$[x_{i_1},\cdots,x_{i_k}]$,这一系列参数（均为标量）称为参数块（<font color="red" font face="黑体">ParameterBlock</font>)。当然参数块中也可以只含有一个变量。$l_j$和$u_j$分别是变量块$x_j$的上下边界。  </p>
+<p>$\rho_i$是损失函数（<font color="red" font face="黑体">LossFuction</font>)。损失函数是一个标量函数，其作用是减少异常值（<font color="red" font face="黑体">Outliers</font>)对优化结果的影响。其效果类似于对函数的过滤。</p>
+<p>一个特殊情况是，$\rho_i(f<br>(x)) = f(x)$,也就是没有对函数进行任何过滤，损失函数的输出等于输入。若同时令$l_j = -\infty$并且$u_j = \infty$，即参数块的取值没有限制，那么此时问题变成了非线性最小二乘问题。表达式如下：  </p>
+<p>$$\frac{1}{2}\sum_i\left | f_i(x_{i_1},\cdots,x_{i_k}) \right |^2$$</p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>每个程序最简单的示例被称为Hello World。本节将简单描述Ceres的Hello World示例，以便让读者对库的使用步骤快速建立认识。<br>在Hello World这个例子中，待优化的函数是$f(x) = 10 - x$，重载操作符如下：</p>
+<pre><code>struct CostFunctor {
+    template &lt;typename T&gt;
+    bool operator()(const T* const x, T* residual) const {
+        residual[0] = T(10.0) - x[0];
+        return true;
+    }
+};
+</code></pre><p>重点要注意这里的<font face="黑体" font color="red">operator()</font>是一个模板方法，这里假设所有的输入和输出都是同一类型<font face="黑体" font color="red">T</font>。在后面的代码中，Ceres通过调用<font face="黑体" font color="red">CostFunctor::operator\<t>()</t></font>来使用这一重载操作符。在这个例子中可以令<font face="黑体" font color="red">T = double</font>，然后仅仅以double类型输出残差值。也可以令<font face="黑体" font color="red">T = Jet</font>然后输出雅可比矩阵。这一部分在后面会有更详细的介绍。</p>
+<blockquote>
+<p>雅可比矩阵实际上就是对一个含有多个参数的函数$f(x)$求一系列一阶偏微分</p>
+</blockquote>
+<p>一旦残差方程建立，我们就可以用Ceres来实现非线性最小二乘法的优化算法。代码如下：<br>    int main(int argc, char** argv) {<br>    google::InitGoogleLogging(argv[0]);</p>
+<pre><code>// The variable to solve for with its initial value.
+double initial_x = 5.0;
+double x = initial_x;
+
+// Build the problem.
+Problem problem;
+
+// Set up the only cost function (also known as residual). This uses
+// auto-differentiation to obtain the derivative (jacobian).
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;CostFunctor, 1, 1&gt;(new CostFunctor);
+problem.AddResidualBlock(cost_function, nullptr, &amp;x);
+
+// Run the solver!
+Solver::Options options;
+options.linear_solver_type = ceres::DENSE_QR;
+options.minimizer_progress_to_stdout = true;
+Solver::Summary summary;
+Solve(options, &amp;problem, &amp;summary);
+
+std::cout &lt;&lt; summary.BriefReport() &lt;&lt; &quot;\n&quot;;
+std::cout &lt;&lt; &quot;x : &quot; &lt;&lt; initial_x
+            &lt;&lt; &quot; -&gt; &quot; &lt;&lt; x &lt;&lt; &quot;\n&quot;;
+return 0;
+}
+</code></pre><p><font face="黑体" font color="red">AutoDiffCostFuction</font>将刚刚建立的<font face="黑体" font color="red">CostFuctor</font>结构的一个实例作为输入，自动生成其微分并且赋予其一个<font face="黑体" font color="red">CostFuction</font>类型的接口。<br>编译完成，运行结果如下：（原文中$x$初始值输出错误，修正为上面代码中的$5$）</p>
+<pre><code>iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
+0     4.512500e+01    0.00e+00    9.50e+00   0.00e+00   0.00e+00  1.00e+04       0     5.33e-04   3.46e-03
+1     4.511598e-07    4.51e+01    9.50e-04   9.50e+00   1.00e+00  3.00e+04       1     5.00e-04   4.05e-03
+2     5.012552e-16    4.51e-07    3.17e-08   9.50e-04   1.00e+00  9.00e+04       1     1.60e-05   4.09e-03
+Ceres Solver Report: Iterations: 2, Initial cost: 4.512500e+01, Final cost: 5.012552e-16, Termination: CONVERGENCE
+x : 5 -&gt; 10
+</code></pre><p>初始值为$5$，最终通过两次循环之后到达最优解$10$。其实本例是一个线性问题，因为$f(x) = 10 - x$是一个线性函数，但是Ceres仍然可以应用。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/18/SpringBoot学习笔记一/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/09/18/SpringBoot学习笔记一/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-09-18 19:21:20 / Modified: 19:28:23" itemprop="dateCreated datePublished" datetime="2020-09-18T19:21:20+08:00">2020-09-18</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="SpringBoot配置"><a href="#SpringBoot配置" class="headerlink" title="SpringBoot配置"></a>SpringBoot配置</h1><p>yaml可以直接给实体类赋值</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/new-future/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3147,193 +3347,6 @@ Process finished with exit code 0
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/21/一些说明/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/21/一些说明/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-21 22:44:45 / Modified: 23:00:54" itemprop="dateCreated datePublished" datetime="2019-06-21T22:44:45+08:00">2019-06-21</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>title: <em>一些说明</em><br>date: 2019-06-21 22:44:45</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p>在学期中期就开始整理了一些知识点，但是由于自己当初用hexo搭建的博客默认地址是另外一个github域名，后来用户名改成学号之后，忘记重新配置ssh了，导致一直想发表博客总是失败（已经把_config.yml中重新调整配置的方法忘了，怪自己对hexo的操作不熟悉），直到最近想起还有博客这件事，问了一下知乎大V才得以解决，现在把自己学习《软件构造》这门课的一些知识点总结发表出来，也算是小小的复习了。</p>
-<h2 id="另外不知道配置哪里错了，一个是博客标题总显示为no-title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来"><a href="#另外不知道配置哪里错了，一个是博客标题总显示为no-title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来" class="headerlink" title="另外不知道配置哪里错了，一个是博客标题总显示为no title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来-_-||"></a>另外不知道配置哪里错了，一个是博客标题总显示为no title，还有一个可能一开始登陆博客看不到全部博文，请点击左上方的Archives才能显示出来-_-||</h2>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/21/软件构造期末总结（1)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/21/软件构造期末总结（1)/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-21 11:23:29 / Modified: 22:23:41" itemprop="dateCreated datePublished" datetime="2019-06-21T11:23:29+08:00">2019-06-21</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p><font size="7"> 软件构造知识点总结(1) </font>　　</p>
-<h2 id="date-2019-04-21-03-23-29"><a href="#date-2019-04-21-03-23-29" class="headerlink" title="date: 2019-04-21 03:23:29"></a>date: 2019-04-21 03:23:29</h2><h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><hr>
-<h3 id="第一节-软件构造的多维视图"><a href="#第一节-软件构造的多维视图" class="headerlink" title="第一节 软件构造的多维视图"></a><em>第一节 软件构造的多维视图</em></h3><p>　　<strong>BulidTime概述</strong>  　　</p>
-<p>　　　　三种相互关联的形式　　</p>
-<p>　　　　　　　　　面向词法　半结构化源代码　  </p>
-<p>　　　　　　　　　面向语法　（AST抽象语法树）半结构化的源代码变成语法树　　</p>
-<p>　　　　　　　　　面向语义UML</p>
-<p>　　<strong>Runtime概述</strong></p>
-<p>　　　　运行时软件的高级概念</p>
-<p>　　　　　　　　　可执行程序：CPU能直接理解执行的指令序列（二进制文件）</p>
-<p>　　　　　　　　　库文件：可复用的代码，库文件本身不能执行</p>
-<p>　　　　可执行程序的四种形式</p>
-<p>　　　　　　　　　本地机器码，自解码，静态链接，动态链接</p>
-<h3 id="第二节-软件开发的质量属性"><a href="#第二节-软件开发的质量属性" class="headerlink" title="第二节　软件开发的质量属性"></a><em>第二节　软件开发的质量属性</em></h3><h4 id="外部质量属性"><a href="#外部质量属性" class="headerlink" title="外部质量属性"></a><em>外部质量属性</em></h4><p>1.正确性： 在规格说明书描述范围之内满足正确性； 保证正确性的技术: １．有限制的正确（只保证自己层面的正确，假设调用的都是正确的<br>2.测试与调试　３.防御性编程　４.形式化编程（采用很多数学技术）　　　　</p>
-<p>　　　　健壮性: 碰到异常情况进行适当的响应；出现规格说明书之外的情况由健壮性处理（响应异常情况、给出错误提示、正常退出或降级）　　<br>　　<br>　　　　可扩展性： 软件模块能否被其他程序很方便的使用（开发备注、封装）  </p>
-<p>　　　　兼容性： 能够与其他人进行交互；跨平台、跨软件，实现方法： 一致性和标准化（一致的方法和标准）： 标准文件格式，标准数据结构，标准用户接口，标准协议。  </p>
-<p>　　　　效率： 程序运行中对CPU、硬盘的占用带宽（好的算法、I/O技术、内存管理)  </p>
-<p>　　　　可移植性： 是否容易由一个环境转移到另一个环境。  </p>
-<p>　　　　应用性： 用户是否容易使用，不影响专业人员的使用情况下，方便初学者（结构清晰的设置、UI设计要理解用户需求）  </p>
-<p>　　　　功能性： 蠕变特征，原则是在保证整体质量不降低的情况下进行更新，策略：增量式模型  </p>
-<p>　　　　及时性： 在规定时间内完成： 时间效率高　　</p>
-<p>　　　　其他质量特性： 可验证性（如管理系统的效果难以验证）、完整性（不会被非法访问干扰修改，防止数据不一致）、可修改性、资金  </p>
-<h4 id="内部质量属性"><a href="#内部质量属性" class="headerlink" title="内部质量属性"></a><em>内部质量属性</em></h4><p>　　</p>
-<p>　　<strong>五个关键的质量属性</strong>　    </p>
-<p>　　　　　easy to understand　　<br>　　　　　ready fot change<br>　　　　　cheap for develop<br>　　　　　safe from bugs<br>　　　　　efficient to run</p>
-<p>　　　　　可理解性： 1.在构建时： 代码层要注意（函数规约）： 变量/子程序/语句的命名与构造标准；代码布局与风格；注释；复杂度  组件层要注意构建和项目的可理解性： 包的组织；文件的组织；命名空间 在时段中，代码层注意重构 2.在运行时，代码层注意跟踪日志<br>　　　　　<br>　　　　　可复用性：　１.构建时　代码层应注意：ADT/OOP;接口与实现分离；继承/重载/重写；<br>组合/代理；多态；自类型与泛型编程；OO设计模式 组件层注意：API接口设计；类库；框架</p>
-<p>　　　　　可维护性与适用性： １．构建时（面对需求的改变，能否做出及时的调整）　代码层可采用：模块化设计；高内聚，低耦合；SOLID原则；OO设计模式；面向图表的编程；面向状态编程；面向语法编程 组件层除注意SOLID原则外，还应考虑GRASP原则 在时段内使用SCM进行版本控制</p>
-<p>　　　　　健壮性：　１．Code level-build time-Moment:错误处理；异常处理；断言；防御性编程；测试优先编程  　2.Component level-build time-period:单元测试；集成测试　3.Build time-period:回归测试  　4.run time-moment:测试转储　5.run time-period：跟踪日志  </p>
-<p>　　　　　性能： 1.构建时，使用指定的设计模式 2.运行时 在代码层次： 通过内存管理考虑空间复杂度；通过算法性能计算时间复杂度；利用代码调优生成更高效的目标代码；在时段内进行性能分析和调整  在组件层次：采用分布式系统；编写多线程的并行程序</p>
-<h2 id><a href="#" class="headerlink" title></a><br></h2><h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><hr>
-<h3 id="第一节-软件声明周期和版本控制（配置管理）"><a href="#第一节-软件声明周期和版本控制（配置管理）" class="headerlink" title="第一节 软件声明周期和版本控制（配置管理）"></a><em>第一节 软件声明周期和版本控制（配置管理）</em></h3><h4 id="软件生命周期"><a href="#软件生命周期" class="headerlink" title="软件生命周期  　　"></a>软件生命周期  　　</h4><p>　　　<strong>声明周期</strong>：两种形态 1.从0到1：SDLC  2.从1到n：运用版本控制技术实现迭代更新<br>　　　<strong>瀑布模型</strong>：Requirements-&gt;Design-&gt;Implementation-&gt;Verification-&gt;Maintenance　　<br>　　　<strong>增量模型</strong>：运用分治的思想，将需求分段，成为一系列增量产品，每个增量颞部仍使用瀑布模型　　<br>　　　<strong>V模型</strong>：对瀑布模型的改变，强调测试与继承，对代码、分析文档进行质量保证<br>　　　<strong>螺旋模型</strong>：采用一种周期性的方法来进行系统开发。优点：设计上的灵活性，可以在项目的各个阶段进行变更，以小的分段来构建大型系统，使成本计算变得简单容易。</p>
-<h4 id="版本控制工具—Git"><a href="#版本控制工具—Git" class="headerlink" title="版本控制工具—Git"></a>版本控制工具—Git</h4><p>　　　<strong>Git的整体架构</strong>——四个仓库（本地由三个）：工作目录；暂存区域（在menmory中，对用户不可见）（隐藏的.git文件夹中的stage）；本地库：源代码；云端软件服务器（远程仓库）<br>　　<br>　　　<strong>利用对象图结构</strong>：每个节点保存：父节点、如提交时间的信息；VCS还原差异、Git保存完整文件；Git对于重复文件，不复制文件，只修改指针；减少冗余；访问速度快<br>　<br>　　　<strong>分支代码</strong>：git(创建） branc（切换） -b（branch） iss53；git merge hitfix（合并）；是用git把文件添加进去，实际上就是把文件修改添加到暂存区；用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。  
-　　</p>
-<h2 id="本地库和远程库：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上"><a href="#本地库和远程库：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上" class="headerlink" title="　　　本地库和远程库：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上　　"></a>　　　<strong>本地库和远程库</strong>：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上　　</h2><h3 id="第二节-软件构造的过程、系统和工具"><a href="#第二节-软件构造的过程、系统和工具" class="headerlink" title="第二节 软件构造的过程、系统和工具 　    　　"></a><em>第二节 软件构造的过程、系统和工具</em> 　    　　</h3><hr>
-<h4 id="广义的软件构造过程"><a href="#广义的软件构造过程" class="headerlink" title="广义的软件构造过程:"></a>广义的软件构造过程:</h4><h5 id="1-编程"><a href="#1-编程" class="headerlink" title="1.编程"></a>1.编程</h5><p>　　　<strong>开发语言</strong>：使用IDE的优势：方便编写代码和管理文件（有代码编辑器，代码重构工具、文件和库管理工具） 能够编译、构建（有编译器、解释器、自动构建工具） 结构清晰（有面向对象的类层次结构图和类浏览器） 有GUI界面 支持第三方扩展工具<br>　　　<strong>建模语言</strong>：UML(统一建模语言）：UML是用来对软件系统进行可视化建模的一种语言； UML的结构由一组一致的规则定义； 建模的目的：有助于按照需求对系统进行可视化分析 能够理解系统的结构或行为 给出了构造系统的模板 对做出的决策进行文档化<br>　　　<strong>配置语言</strong>：键值文件（.ini;.properties;.rc);XML,YAML,JSON：配置语言用于配hi程序的参数和初始化设置 目的：部署环境设置；应用程序功能的变体；组件之间连接的变体  </p>
-<h5 id="2-静态代码分析："><a href="#2-静态代码分析：" class="headerlink" title="2.静态代码分析："></a>2.静态代码分析：</h5><p>　　　是指不运行被测程序本身，仅通过分析或检查源程序的语法、结构、过程、接口等来检查程序的正确性（提供了对代码结构的理解、有助于确保代码符合行业标准）</p>
-<h5 id="3-动态代码分析："><a href="#3-动态代码分析：" class="headerlink" title="3.动态代码分析："></a>3.动态代码分析：</h5><p>　　　是指通过运行被测试程序，检查运行结果与预期结果的差异，并分析运行效率、正确性和健壮性等功能（必须执行足够的测试输入，使用诸如代码覆盖率之类的软件测试措施有助于确保已经观察到程序的一组可能i行为的足够部分）　　<br><br>　　</p>
-<h4 id="狭义的软件构造过程"><a href="#狭义的软件构造过程" class="headerlink" title="狭义的软件构造过程"></a>狭义的软件构造过程</h4><h5 id="1-主要的知识结构"><a href="#1-主要的知识结构" class="headerlink" title="1.主要的知识结构"></a>1.主要的知识结构</h5><p>Build场景综述：  </p>
-<p>　　　用传统编译语言如C、C++、Java编写软件（complilation）<br>　　　用解释型语言（如Perl、python）编写软件的打包和测试（packing and testing）<br>　　　用基于Web的应用程序进行编译和打包（使用静态HTML页面、使用Java或C#编写的源代码、使用JSP、ASP或PHP语法编写的混合文件以及多种类型额配置文件）<br>　　　执行单元测试代码的其余部分对软件进行隔离验证<br>　　　执行静态分析工具来识别程序源代码中的错误<br>　　　生成PDF或HTML文档</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -3383,7 +3396,7 @@ Process finished with exit code 0
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
