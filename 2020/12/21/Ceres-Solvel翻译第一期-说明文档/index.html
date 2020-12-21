@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="title: Ceres Solvel翻译第一期-说明文档 tags: Ceres Solvel：Tutorial非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j">
+  <meta name="description" content="非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j\le u_j$$这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行">
 <meta name="keywords" content="code">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sakurastream">
-<meta property="og:url" content="http://yoursite.com/2020/12/21/Ceres-Solvel中文翻译文档/index.html">
+<meta property="og:title" content="Ceres Solvel翻译第一期-说明文档">
+<meta property="og:url" content="http://yoursite.com/2020/12/21/Ceres-Solvel翻译第一期-说明文档/index.html">
 <meta property="og:site_name" content="Sakurastream">
-<meta property="og:description" content="title: Ceres Solvel翻译第一期-说明文档 tags: Ceres Solvel：Tutorial非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j">
+<meta property="og:description" content="非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j\le u_j$$这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-21T12:09:18.010Z">
+<meta property="og:updated_time" content="2020-12-21T12:58:20.120Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sakurastream">
-<meta name="twitter:description" content="title: Ceres Solvel翻译第一期-说明文档 tags: Ceres Solvel：Tutorial非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j">
-  <link rel="canonical" href="http://yoursite.com/2020/12/21/Ceres-Solvel中文翻译文档/">
+<meta name="twitter:title" content="Ceres Solvel翻译第一期-说明文档">
+<meta name="twitter:description" content="非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： $$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$ $$s.t. l_i\le x_j\le u_j$$这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行">
+  <link rel="canonical" href="http://yoursite.com/2020/12/21/Ceres-Solvel翻译第一期-说明文档/">
 
 
 <script id="page-configurations">
@@ -81,7 +81,7 @@
   };
 </script>
 
-  <title> | Sakurastream</title>
+  <title>Ceres Solvel翻译第一期-说明文档 | Sakurastream</title>
   
 
 
@@ -196,7 +196,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/21/Ceres-Solvel中文翻译文档/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/21/Ceres-Solvel翻译第一期-说明文档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gift">
@@ -208,7 +208,7 @@
       <meta itemprop="name" content="Sakurastream">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
+        <h1 class="post-title" itemprop="name headline">Ceres Solvel翻译第一期-说明文档
 
           
         </h1>
@@ -224,7 +224,7 @@
                 
               
 
-              <time title="Created: 2020-12-21 14:22:49 / Modified: 20:09:18" itemprop="dateCreated datePublished" datetime="2020-12-21T14:22:49+08:00">2020-12-21</time>
+              <time title="Created: 2020-12-21 14:22:49 / Modified: 20:58:20" itemprop="dateCreated datePublished" datetime="2020-12-21T14:22:49+08:00">2020-12-21</time>
             </span>
           
             
@@ -243,9 +243,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<p>title: Ceres Solvel翻译第一期-说明文档</p>
-<h2 id="tags-Ceres-Solvel：Tutorial"><a href="#tags-Ceres-Solvel：Tutorial" class="headerlink" title="tags: Ceres Solvel：Tutorial"></a>tags: Ceres Solvel：Tutorial</h2><h1 id="非线性最小二乘法"><a href="#非线性最小二乘法" class="headerlink" title="非线性最小二乘法"></a>非线性最小二乘法</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下：</p>
+        <h1 id="非线性最小二乘法"><a href="#非线性最小二乘法" class="headerlink" title="非线性最小二乘法"></a>非线性最小二乘法</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下：</p>
 <p>$$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$</p>
 <p>$$s.t. l_i\le x_j\le u_j$$<br>这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行三维模型的构建等等。</p>
 <p>$\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$这一部分被称为残差块（<font color="red" font face="黑体">ResidualBlock</font>)，其中的$f_i(\cdot )$叫做代价函数（<font color="red" font face="黑体">CostFuction</font>)。代价函数依赖于一系列参数$[x_{i_1},\cdots,x_{i_k}]$,这一系列参数（均为标量）称为参数块（<font color="red" font face="黑体">ParameterBlock</font>)。当然参数块中也可以只含有一个变量。$l_j$和$u_j$分别是变量块$x_j$的上下边界。  </p>
@@ -371,7 +369,7 @@ x : 5 -&gt; 10
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tags-Ceres-Solvel：Tutorial"><span class="nav-number">1.</span> <span class="nav-text">tags: Ceres Solvel：Tutorial</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#非线性最小二乘法"><span class="nav-number"></span> <span class="nav-text">非线性最小二乘法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-World"><span class="nav-number">2.</span> <span class="nav-text">Hello World</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#非线性最小二乘法"><span class="nav-number">1.</span> <span class="nav-text">非线性最小二乘法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-World"><span class="nav-number">1.2.</span> <span class="nav-text">Hello World</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
