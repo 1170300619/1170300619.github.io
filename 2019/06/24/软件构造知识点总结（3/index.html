@@ -522,7 +522,7 @@
 <li><code>&lt;? super&gt;</code>实现了泛型的逆变：<code>List&lt;? super Number&gt; list = new ArrayList&lt;Object&gt;()</code>;</li>
 </ul>
 </li>
-<li>由于泛型的协变只能规定类的上界，逆变只能规定下界，使用时需要遵循PECS（producer–extends, consumer-super）：<ul>
+<li>由于泛型的协变只能规定类的上界，逆变只能规定下界，使用时需要遵循PECS（producer—extends, consumer-super）：<ul>
 <li>要从泛型类取数据时，用extends；</li>
 <li>要往泛型类写数据时，用super；</li>
 <li>既要取又要写，就不用通配符（即extends与super都不用）。</li>
@@ -778,6 +778,7 @@
 <li>对于低耦合，粗浅的理解是：一个完整的系统，模块与模块之间，尽可能的使其独立存在。也就是说，让每个模块，尽可能的独立完成某个特定的子功能。模块与模块之间的接口，尽量的少而简单。如果某两个模块间的关系比较复杂的话，最好首先考虑进一步的模块划分。这样有利于修改和组合。</li>
 </ul>
 <h3 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a><em>SOLID原则</em></h3><p>单一职责原则告诉我们实现类要职责单一；里氏替换原则告诉我们不要破坏继承体系；依赖倒置原则告诉我们要面向接口编程；接口隔离原则告诉我们在设计接口的时候要精简单一；迪米特法则告诉我们要降低耦合。而开闭原则是总纲（实现效果），它告诉我们要对扩展开放，对修改关闭。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -809,6 +810,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p><strong>SRP 单一责任原则</strong></p>
 <ul>
 <li>含义：需要修改某个类的时候原因有且只有一个。换句话说就是让一个类只做一种类型责任，当这个类需要承当其他类型的责任的时候，就需要分解这个类。</li>

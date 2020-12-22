@@ -319,7 +319,7 @@
 <p><strong>GC的四种算法</strong></p>
 <ul>
 <li>引用计数<ul>
-<li><strong>基本思想</strong>：为每个object存储一个计数RC，当有其他 reference指向它时，RC++；当其他reference与其断开时，RC–；如 果RC==0，则回收它。</li>
+<li><strong>基本思想</strong>：为每个object存储一个计数RC，当有其他 reference指向它时，RC++；当其他reference与其断开时，RC—；如 果RC==0，则回收它。</li>
 <li><strong>优点</strong>：简单、计算代价分散，“幽灵时间”短 为0</li>
 <li><strong>缺点</strong>：不全面（容易漏掉循环引用的对象）、并发支 持较弱、占用额外内存空间、等</li>
 </ul>
