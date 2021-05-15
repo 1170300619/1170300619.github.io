@@ -191,6 +191,401 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/15/Java泛型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2021/05/15/Java泛型/" class="post-title-link" itemprop="url">Java泛型</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2021-05-15 13:20:14" itemprop="dateCreated datePublished" datetime="2021-05-15T13:20:14+08:00">2021-05-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-16 00:04:16" itemprop="dateModified" datetime="2021-05-16T00:04:16+08:00">2021-05-16</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-为什么要使用泛型设计"><a href="#1-为什么要使用泛型设计" class="headerlink" title="1.为什么要使用泛型设计"></a>1.为什么要使用泛型设计</h1><p><strong>泛型程序设计</strong>意味着编写的代码可以对多种不同类型的对象重用。例如，你不想为收集<strong>String</strong>和<strong>File</strong>对象分别编写不同的类。实际上，也不需要这样做，因为一个<strong>ArrayList</strong>类就可以收集任何类的对象。这就是泛型程序设计的一个例子。</p>
+<pre><code>List arrayList = new ArrayList();
+arrayList.add(&quot;aaaa&quot;);
+arrayList.add(100);
+
+for(int i = 0; i&lt; arrayList.size();i++){
+    String item = (String)arrayList.get(i);
+    Log.d(&quot;泛型测试&quot;,&quot;item = &quot; + item);
+}
+</code></pre><p>毫无疑问，这个程序会在运行时崩溃，为了解决这样的问题（在编译阶段就可以解决），泛型应运而生。我们将第一行声明初始化<strong>list</strong>的代码更改一下，编译器会在编译阶段就能够帮我们发现类似这样的问题。</p>
+<pre><code>List&lt;String&gt; arrayList = new ArrayList&lt;String&gt;();
+...
+//arrayList.add(100); 在编译阶段，编译器就会报错
+</code></pre><h1 id="2-泛型的特性"><a href="#2-泛型的特性" class="headerlink" title="2.泛型的特性"></a>2.泛型的特性</h1><p>泛型只在编译阶段有效，下面是一个经典的泛型的例子。</p>
+<pre><code>List&lt;String&gt; stringArrayList = new ArrayList&lt;String&gt;();
+List&lt;Integer&gt; integerArrayList = new ArrayList&lt;Integer&gt;();
+
+Class classStringArrayList = stringArrayList.getClass();
+Class classIntegerArrayList = integerArrayList.getClass();
+
+if(classStringArrayList.equals(classIntegerArrayList)){
+    Log.d(&quot;泛型测试&quot;,&quot;类型相同&quot;);
+}
+</code></pre><p>输出的结果是<strong>类型相同</strong>。通过上面的例子可以证明，在编译之后程序会采取去泛型化的措施。也就是说<strong>Java</strong>中的泛型，只在编译阶段有效。在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。也就是说，泛型信息不会进入到运行时阶段。</p>
+<h1 id="3-泛型类"><a href="#3-泛型类" class="headerlink" title="3.泛型类"></a>3.泛型类</h1><p>通过泛型可以完成对一组类的操作对外开放相同的接口。最典型的就是各种容器类，如：<strong>List</strong>，<strong>Set</strong>，<strong>Map</strong>。<br>泛型类的基本写法为：</p>
+<pre><code>class 类名称 &lt;泛型标识：可以随便写任意标识号，标识指定的泛型的类型&gt;{
+    private 泛型标识 /*（成员变量类型）*/ var; 
+    .....
+    }
+}
+</code></pre><p>下面我们实现一个简单的泛型类：</p>
+<pre><code>//此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型
+//在实例化泛型类时，必须指定T的具体类型
+public class Generic&lt;T&gt;{ 
+    //key这个成员变量的类型为T,T的类型由外部指定  
+    private T key;
+
+    public Generic(T key) { //泛型构造方法形参key的类型也为T，T的类型由外部指定
+        this.key = key;
+    }
+
+    public T getKey(){ //泛型方法getKey的返回值类型为T，T的类型由外部指定
+        return key;
+    }
+}
+</code></pre><p>传入参数时：如果传入泛型类型实参，会根据传入的泛型实参做相应的限制，此时泛型才会起到本应起到的限制作用。</p>
+<pre><code>//泛型的类型参数只能是类类型（包括自定义类），不能是简单类型
+//传入的实参类型需与泛型的类型参数类型相同，即为Integer.
+Generic&lt;Integer&gt; genericInteger = new Generic&lt;Integer&gt;(123456);
+
+//传入的实参类型需与泛型的类型参数类型相同，即为String.
+Generic&lt;String&gt; genericString = new Generic&lt;String&gt;(&quot;key_vlaue&quot;);
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + genericInteger.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + genericString.getKey());
+</code></pre><p>如果不选择传入泛型类型实参：在泛型类中使用泛型的方法或成员变量定义的类型可以为任何的类型。</p>
+<pre><code>Generic generic = new Generic(&quot;111111&quot;);
+Generic generic1 = new Generic(4444);
+Generic generic2 = new Generic(55.55);
+Generic generic3 = new Generic(false);
+
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic1.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic2.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic3.getKey());
+</code></pre><p><font face="黑体" font color="red">注意：</font></p>
+<ul>
+<li>泛型的类型参数只能是类类型，不能是简单类型。</li>
+<li><p>不能对确切的泛型类型使用<strong>instanceof</strong>操作。如下面的操作是非法的，编译时会出错。</p>
+<p>if(ex_num instanceof Generic<number>){ }</number></p>
+</li>
+</ul>
+<h1 id="4-泛型接口"><a href="#4-泛型接口" class="headerlink" title="4.泛型接口"></a>4.泛型接口</h1><p>泛型接口常被用在各种类的生产器中：</p>
+<pre><code>//定义一个泛型接口
+public interface Generation&lt;T&gt; {
+    public T next();
+}
+</code></pre><p>当实现泛型接口的类，未传入泛型实参时：</p>
+<pre><code>/**
+* 未传入泛型实参时，与泛型类的定义相同，在声明类的时候，需将泛型的声明也一起加到类中
+* 即：class FruitGenerator&lt;T&gt; implements Generator&lt;T&gt;{
+* 如果不声明泛型，如：class FruitGenerator implements Generator&lt;T&gt;，编译器会报错：&quot;Unknown class&quot;
+*/
+class FruitGenerator&lt;T&gt; implements Generator&lt;T&gt;{
+    @Override
+    public T next() {
+        return null;
+    }
+}
+</code></pre><p>当实现泛型接口的类，传入泛型实参时：</p>
+<pre><code>/**
+* 传入泛型实参时：
+* 定义一个生产器实现这个接口,虽然我们只创建了一个泛型接口Generator&lt;T&gt;
+* 但是我们可以为T传入无数个实参，形成无数种类型的Generator接口。
+* 在实现类实现泛型接口时，如已将泛型类型传入实参类型，则所有使用泛型的地方都要替换成传入的实参类型
+* 此时不需要在声明类中的泛型声明T
+* 即：Generator&lt;T&gt;，public T next();中的的T都要替换成传入的String类型。
+*/
+public class FruitGenerator implements Generator&lt;String&gt; {
+
+    private String[] fruits = new String[]{&quot;Apple&quot;, &quot;Banana&quot;, &quot;Pear&quot;};
+
+    @Override
+    public String next() {
+        Random rand = new Random();
+        return fruits[rand.nextInt(3)];
+    }
+}
+</code></pre><h1 id="5-泛型方法"><a href="#5-泛型方法" class="headerlink" title="5.泛型方法"></a>5.泛型方法</h1><p>泛型方法的基本形式：</p>
+<pre><code>/**
+* 泛型方法的基本介绍
+* @param tClass 传入的泛型实参
+* @return T 返回值为T类型
+* 说明：
+*     1）public与返回值中间&lt;T&gt;非常重要，可以理解为声明此方法为泛型方法。
+*     2）只有声明了&lt;T&gt;的方法才是泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。
+*     3）&lt;T&gt;表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T。
+*     4）与泛型类的定义一样，此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型。
+*/
+public &lt;T&gt; T genericMethod(Class&lt;T&gt; tClass)throws InstantiationException ,
+IllegalAccessException{
+        T instance = tClass.newInstance();
+        return instance;
+}
+</code></pre><h2 id="5-1-泛型方法的基本用法"><a href="#5-1-泛型方法的基本用法" class="headerlink" title="5.1 泛型方法的基本用法"></a>5.1 泛型方法的基本用法</h2><pre><code>public class GenericTest {
+    //这个类是个泛型类，在上面已经介绍过
+    public class Generic&lt;T&gt;{     
+        private T key;
+
+        public Generic(T key) {
+            this.key = key;
+        }
+
+        //我想说的其实是这个，虽然在方法中使用了泛型，但是这并不是一个泛型方法。
+        //这只是类中一个普通的成员方法，只不过他的返回值是在声明泛型类已经声明过的泛型。
+        //所以在这个方法中才可以继续使用 T 这个泛型。
+        public T getKey(){
+            return key;
+        }
+
+        /**
+        * 这个方法显然是有问题的，在编译器会给我们提示这样的错误信息&quot;cannot reslove symbol E&quot;
+        * 因为在类的声明中并未声明泛型E，所以在使用E做形参和返回值类型时，编译器会无法识别。
+        public E setKey(E key){
+            this.key = keu
+        }
+        */
+    }
+
+    /** 
+    * 这才是一个真正的泛型方法。
+    * 首先在public与返回值之间的&lt;T&gt;必不可少，这表明这是一个泛型方法，并且声明了一个泛型T
+    * 这个T可以出现在这个泛型方法的任意位置.
+    * 泛型的数量也可以为任意多个 
+    *    如：public &lt;T,K&gt; K showKeyName(Generic&lt;T&gt; container){
+    *        ...
+    *        }
+    */
+    public &lt;T&gt; T showKeyName(Generic&lt;T&gt; container){
+        System.out.println(&quot;container key :&quot; + container.getKey());
+        //当然这个例子举的不太合适，只是为了说明泛型方法的特性。
+        T test = container.getKey();
+        return test;
+    }
+
+    //这也不是一个泛型方法，这就是一个普通的方法，只是使用了Generic&lt;Number&gt;这个泛型类做形参而已。
+    public void showKeyValue1(Generic&lt;Number&gt; obj){
+        Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
+    }
+
+    //这也不是一个泛型方法，这也是一个普通的方法，只不过使用了泛型通配符?
+    //同时这也印证了泛型通配符章节所描述的，?是一种类型实参，可以看做为Number等所有类的父类
+    public void showKeyValue2(Generic&lt;?&gt; obj){
+        Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
+    }
+
+    /**
+    * 这个方法是有问题的，编译器会为我们提示错误信息：&quot;UnKnown class &#39;E&#39; &quot;
+    * 虽然我们声明了&lt;T&gt;,也表明了这是一个可以处理泛型的类型的泛型方法。
+    * 但是只声明了泛型类型T，并未声明泛型类型E，因此编译器并不知道该如何处理E这个类型。
+    public &lt;T&gt; T showKeyName(Generic&lt;E&gt; container){
+        ...
+    }  
+    */
+
+    /**
+    * 这个方法也是有问题的，编译器会为我们提示错误信息：&quot;UnKnown class &#39;T&#39; &quot;
+    * 对于编译器来说T这个类型并未项目中声明过，因此编译也不知道该如何编译这个类。
+    * 所以这也不是一个正确的泛型方法声明。
+    public void showkey(T genericObj){
+
+    }
+    */
+
+    public static void main(String[] args) {
+        ...
+    }
+}
+</code></pre><h2 id="5-2-泛型类中的泛型方法"><a href="#5-2-泛型类中的泛型方法" class="headerlink" title="5.2 泛型类中的泛型方法"></a>5.2 泛型类中的泛型方法</h2><p>有一种情况是非常特殊的，当泛型方法出现在泛型类中时，我们再通过一个例子看一下：</p>
+<pre><code>public class GenericFruit {
+    class Fruit{
+        @Override
+        public String toString() {
+            return &quot;fruit&quot;;
+        }
+    }
+
+    class Apple extends Fruit{
+        @Override
+        public String toString() {
+            return &quot;apple&quot;;
+        }
+    }
+
+    class Person{
+        @Override
+        public String toString() {
+            return &quot;Person&quot;;
+        }
+    }
+
+    class GenerateTest&lt;T&gt;{
+        public void show_1(T t){
+            System.out.println(t.toString());
+        }
+
+        //在泛型类中声明了一个泛型方法，使用泛型E，这种泛型E可以为任意类型。可以类型与T相同，也可以不同。
+        //由于泛型方法在声明的时候会声明泛型&lt;E&gt;，因此即使在泛型类中并未声明泛型，编译器也能够正确识别泛型方法中识别的泛型。
+        public &lt;E&gt; void show_3(E t){
+            System.out.println(t.toString());
+        }
+
+        //在泛型类中声明了一个泛型方法，使用泛型T，注意这个T是一种全新的类型，可以与泛型类中声明的T不是同一种类型。
+        public &lt;T&gt; void show_2(T t){
+            System.out.println(t.toString());
+        }
+    }
+
+    public static void main(String[] args) {
+        Apple apple = new Apple();
+        Person person = new Person();
+
+        GenerateTest&lt;Fruit&gt; generateTest = new GenerateTest&lt;Fruit&gt;();
+        //apple是Fruit的子类，所以这里可以
+        generateTest.show_1(apple);
+        //编译器会报错，因为泛型类型实参指定的是Fruit，而传入的实参类是Person
+        //generateTest.show_1(person);
+
+        //使用这两个方法都可以成功
+        generateTest.show_2(apple);
+        generateTest.show_2(person);
+
+        //使用这两个方法也都可以成功
+        generateTest.show_3(apple);
+        generateTest.show_3(person);
+    }
+}
+</code></pre><h2 id="5-3-静态方法与泛型"><a href="#5-3-静态方法与泛型" class="headerlink" title="5.3 静态方法与泛型"></a>5.3 静态方法与泛型</h2><p>静态方法有一种情况需要注意一下，那就是在类中的静态方法使用泛型：静态方法无法访问类上定义的泛型；如果静态方法操作的引用数据类型不确定的时候，必须要将泛型定义在方法上。即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。</p>
+<pre><code>public class StaticGenerator&lt;T&gt; {
+    ....
+    ....
+    /**
+    * 如果在类中定义使用泛型的静态方法，需要添加额外的泛型声明（将这个方法定义成泛型方法）
+    * 即使静态方法要使用泛型类中已经声明过的泛型也不可以。
+    * 如：public static void show(T t){..},此时编译器会提示错误信息：
+        &quot;StaticGenerator cannot be refrenced from static context&quot;
+    */
+    public static &lt;T&gt; void show(T t){
+
+    }
+}
+</code></pre><h2 id="5-4-泛型方法总结"><a href="#5-4-泛型方法总结" class="headerlink" title="5.4 泛型方法总结"></a>5.4 泛型方法总结</h2><p>一个基本的指导原则：</p>
+<pre><code>无论何时，如果你能做到，你就该尽量使用泛型方法。也就是说，如果使用泛型方法将整个类泛型化，
+
+那么就应该使用泛型方法。另外对于一个static的方法而已，无法访问泛型类型的参数。
+
+所以如果static方法要使用泛型能力，就必须使其成为泛型方法。
+</code></pre><h1 id="6-泛型上下边界"><a href="#6-泛型上下边界" class="headerlink" title="6.泛型上下边界"></a>6.泛型上下边界</h1><p>在使用泛型的时候，我们还可以为传入的泛型类型实参进行上下边界的限制，如：类型实参只准传入某种类型的父类或某种类型的子类。为泛型添加上边界，即传入的类型实参必须是指定类型的子类型。</p>
+<pre><code>public void showKeyValue1(Generic&lt;? extends Number&gt; obj){
+    Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
+}
+</code></pre><p>具体情况：</p>
+<pre><code>Generic&lt;String&gt; generic1 = new Generic&lt;String&gt;(&quot;11111&quot;);
+Generic&lt;Integer&gt; generic2 = new Generic&lt;Integer&gt;(2222);
+Generic&lt;Float&gt; generic3 = new Generic&lt;Float&gt;(2.4f);
+Generic&lt;Double&gt; generic4 = new Generic&lt;Double&gt;(2.56);
+
+//这一行代码编译器会提示错误，因为String类型并不是Number类型的子类
+//showKeyValue1(generic1);
+
+showKeyValue1(generic2);
+showKeyValue1(generic3);
+showKeyValue1(generic4);
+</code></pre><p>如果我们把泛型类的定义也修改一下：</p>
+<pre><code>public class Generic&lt;T extends Number&gt;{
+    private T key;
+
+    public Generic(T key) {
+        this.key = key;
+    }
+
+    public T getKey(){
+        return key;
+    }
+}
+</code></pre><p>这种情况下：</p>
+<pre><code>//这一行代码也会报错，因为String不是Number的子类
+Generic&lt;String&gt; generic1 = new Generic&lt;String&gt;(&quot;11111&quot;);
+</code></pre><p>再来看一个例子：</p>
+<pre><code>//在泛型方法中添加上下边界限制的时候，必须在权限声明与返回值之间的&lt;T&gt;上添加上下边界，即在泛型声明的时候添加
+//public &lt;T&gt; T showKeyName(Generic&lt;T extends Number&gt; container)，编译器会报错：&quot;Unexpected bound&quot;
+public &lt;T extends Number&gt; T showKeyName(Generic&lt;T&gt; container){
+    System.out.println(&quot;container key :&quot; + container.getKey());
+    T test = container.getKey();
+    return test;
+}
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/Ceres-Solvel非线性最小二乘问题的解算/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1825,280 +2220,6 @@ Process finished with exit code 0
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第五期/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/24/软件构造知识点总结第五期/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-24 14:35:16 / Modified: 14:41:39" itemprop="dateCreated datePublished" datetime="2019-06-24T14:35:16+08:00">2019-06-24</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h2 id="软件构造知识点总结第五期"><a href="#软件构造知识点总结第五期" class="headerlink" title="软件构造知识点总结第五期"></a>软件构造知识点总结第五期</h2><h1 id="第八章"><a href="#第八章" class="headerlink" title="第八章"></a>第八章</h1><hr>
-<h2 id="第一节-软件构造性能的度量原理"><a href="#第一节-软件构造性能的度量原理" class="headerlink" title="第一节 软件构造性能的度量原理"></a>第一节 软件构造性能的度量原理</h2><h3 id="性能度量指标"><a href="#性能度量指标" class="headerlink" title="性能度量指标"></a><em>性能度量指标</em></h3><ul>
-<li>时间性能<ul>
-<li>每条指令、每个控制 结构、整个程序的执行时间</li>
-<li>不同语句或控制结构执行时间的分布情况</li>
-<li>时间瓶颈在哪里</li>
-</ul>
-</li>
-<li>空间性能<ul>
-<li>每个变量、每个复杂结构、整个程序的内存消耗</li>
-<li>不同变量/数据结构的相对消耗</li>
-<li>空间瓶颈在哪里</li>
-<li>随时间的变化情况</li>
-</ul>
-</li>
-</ul>
-<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a><em>内存管理</em></h3><p><strong>对象管理模型</strong></p>
-<ul>
-<li>三者的差异在于：如何与何时在程序对象与内存对象之间建立联系</li>
-<li>静态<ul>
-<li><strong>定义</strong>：静态内存是指在程序开始运行时由编译器分配的内存，它的分配是在程序开始编译时完成的，不占用CPU资源。</li>
-<li>程序中的各种变量，在编译时系统已经为其分配了所需的内存空间，当该变量在作用域内使用完毕时，系统会自动释放所占用的内存空间；</li>
-<li>不支持递归，不支持动态创建可变长的复杂数据类型；</li>
-<li>在程序执行期内实体至多关联一个运行时对象</li>
-<li>eg: 基本类型，数组</li>
-</ul>
-</li>
-<li><p>动态-基于栈</p>
-<ul>
-<li>栈定义：方法调用和局部变量的存储位置，保存基本类型<ul>
-<li>如果一个方法被调用，它的栈帧被放到调用栈的顶部</li>
-<li>栈帧保存方法的状态，包括执行哪行代码以及所有局部变量的值</li>
-<li>栈顶始终是当前运行方法</li>
-</ul>
-</li>
-<li>一个实体可以在运行时连续地连接到多个对象，并且运行时机制以堆栈中的<strong>后进先出</strong>顺序分配和释放这些对象</li>
-<li>栈无法支持复杂数据结构</li>
-</ul>
-</li>
-<li><p>动态-基于堆</p>
-<ul>
-<li><strong>堆定义</strong>：在一块内存里分为多个小块，每块包含 一个对象，或者未被占用</li>
-<li>自由模式的内存管理，动态分配，可管理复杂的动态数据结构</li>
-<li>代码中的一个变量可以在不同时间被关联到不同的内存对象上，无法在编译阶段确定。内存对象也可以进一步指向其他对象</li>
-</ul>
-</li>
-</ul>
-<h3 id="Java垃圾回收机制"><a href="#Java垃圾回收机制" class="headerlink" title="Java垃圾回收机制"></a><em>Java垃圾回收机制</em></h3><p><strong>内存回收的三种方式</strong></p>
-<p>​    ①静态模式下的内存回收：在静态内存分配模式下，无需进行内存回收：所有都是已确定的。</p>
-<p>​    ②在栈模式下的内存回收：按block（某个方法）整体进行</p>
-<p>​    ③在堆模式下的内存回收：在heap上进行内存空间回收，最复杂——无法提前预知某个object是否已经变得无用。</p>
-<p> <strong>动态垃圾回收相关概念</strong></p>
-<ul>
-<li>GC（Garbage Collection）：识别垃圾并释放其占用的内存<ul>
-<li>垃圾回收器根据对象的“活性”(从root的可达性)来决定是否回收该对象的内存，”死“的对象是需要回收的垃圾</li>
-</ul>
-</li>
-<li>Root<ul>
-<li>根集合由root对象和局部对象构成</li>
-<li>root对象：<code>Class</code>（不能被回收）、<code>Thread</code>、Java方法/接口的本地变量或参数、全局接口引用等</li>
-</ul>
-</li>
-<li>可达/不可达对象（Reachable/Unreachable）：free模式<ul>
-<li>从根可以直接或间接到达的对象为可达的，否则为不可达的</li>
-<li>从根开始，不断将指向的对象加入活动集，剩下的是垃圾</li>
-</ul>
-</li>
-<li>活动/死亡对象（Live/dead）：<ul>
-<li>在stack和free的结合模式下，对象的引用被视为有向图，可以从根访问的对象为活动对象，否则为死亡对象。</li>
-</ul>
-</li>
-</ul>
-<p><strong>GC的四种算法</strong></p>
-<ul>
-<li>引用计数<ul>
-<li><strong>基本思想</strong>：为每个object存储一个计数RC，当有其他 reference指向它时，RC++；当其他reference与其断开时，RC—；如 果RC==0，则回收它。</li>
-<li><strong>优点</strong>：简单、计算代价分散，“幽灵时间”短 为0</li>
-<li><strong>缺点</strong>：不全面（容易漏掉循环引用的对象）、并发支 持较弱、占用额外内存空间、等</li>
-</ul>
-</li>
-<li><p>Mark-Sweep（标记-清除）算法</p>
-<ul>
-<li><strong>基本思想</strong>：为每个object设定状态位(live/dead)并记录，即mark阶段；将标记为dead的对象进行清理，即sweep可阶段。</li>
-<li><strong>优点：</strong>可以处理循环调用，指针操作无开销，对象不变</li>
-<li><strong>缺点</strong>：复杂度为O(heap),高　堆的占用比高时影响性能，容易造成碎片，需要找到root</li>
-</ul>
-</li>
-<li><p>Copying（复制）算法</p>
-<ul>
-<li><strong>基本思想</strong>：为了解决Mark-Sweep算法的缺陷，Copying算法就被提了出来。它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，就将还存活着的对象复制到另外一块上面，然后再把已使用的内存空间一次清理掉，这样一来就不容易出现内存碎片的问题。</li>
-<li><strong>优势</strong>：运行高效、不易产生内存碎片</li>
-<li><strong>缺点</strong>：复制花费大量的时间，牺牲内存空间</li>
-</ul>
-</li>
-<li>Mark-Compact（标记-整理）算法<ul>
-<li>基本思想：为了解决Copying算法的缺陷，充分利用内存空间，提出了Mark-Compact算法。该算法标记阶段和Mark-Sweep一样，但是在完成标记之后，它不是直接清理可回收对象，而是将存活对象都向一端移动，然后清理掉端边界以外的内存。</li>
-</ul>
-</li>
-</ul>
-<h3 id="JVM中的GC"><a href="#JVM中的GC" class="headerlink" title="JVM中的GC"></a><em>JVM中的GC</em></h3><p>Java GC将堆分为不同的区域，各区域采用不同的GC策略，以提高GC的效率</p>
-<ul>
-<li>Java内存分配和回收的机制概括的说，就是：分代分配，分代回收。</li>
-<li><p>对象将根据存活的时间被分为：年轻代（Young Generation）、年老代（Old Generation）、永久代（Permanent Generation，也就是方法区）</p>
-</li>
-<li><p>年轻代：</p>
-<ul>
-<li>对象被创建时，内存的分配首先发生在年轻代（大对象可以直接 被创建在年老代）</li>
-<li>大部分的对象在创建后很快就不再使用，因此很快变得不可达，于是被年轻代的GC机制清理掉（IBM的研究表明，98%的对象都是很快消 亡的）</li>
-<li>为减少GC代价，<strong>使用copying算法</strong></li>
-<li>具体过程<ol>
-<li>绝大多数刚创建的对象会被分配在Eden区，其中的大多数对象很快就会消亡。Eden区是连续的内存空间，因此在其上分配内存极快；</li>
-<li>当Eden区满的时候，执行Minor GC，将消亡的对象清理掉，并将剩余的对象复制到一个存活区Survivor0（此时，Survivor1是空白的，两个Survivor总有一个是空白的）；</li>
-<li>此后，每次Eden区满了，就执行一次Minor GC，并将剩余的对象都添加到Survivor0；</li>
-<li>当Survivor0也满的时候，将其中仍然活着的对象直接复制到Survivor1，以后Eden区执行Minor GC后，就将剩余的对象添加Survivor1（此时，Survivor0是空白的）。</li>
-<li>当两个存活区切换了几次（HotSpot虚拟机默认15次，用-XX:MaxTenuringThreshold控制，大于该值进入老年代）之后，仍然存活的对象（其实只有一小部分，比如，我们自己定义的对象），将被复制到老年代。</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>年老代：<ul>
-<li>对象如果在年轻代存活了足够长的时间而没有被清理掉，则会被复制到年老代，年老代的空间一般比年轻代大，能存放更多的对象，在年老代上发生的GC次数也比年轻代少。</li>
-<li>使用Mark-Sweep或Mark-Compact算法；</li>
-<li>Minor GC和full GC独立进行，减小代价；</li>
-<li>当perm generation满了之后，无法存储更多的元数据，也启动full GC。</li>
-</ul>
-</li>
-</ul>
-<h3 id="GVM-GC性能调优"><a href="#GVM-GC性能调优" class="headerlink" title="GVM GC性能调优"></a><em>GVM GC性能调优</em></h3><ul>
-<li>尽可能减少GC时间，一般不超过程序执行时间的5%</li>
-<li>一旦初始分配给程序的内存满了，就抛出内存溢出异常，</li>
-<li>在启动程序时，可为其配置内存分配的具体大小</li>
-<li>堆的大小决定着VM将会以何种频度进行GC、每次GC的时间多长。<ul>
-<li>这两个指标具体取值多少为“优”，需要针对特定应用进行分析。</li>
-<li>较大的heap会导致较少发生GC，但每次GC时间很长</li>
-<li>如果根据程序需要来设置heap大小，则需要频繁GC，但每次GC的时间较短</li>
-</ul>
-</li>
-<li>设定堆的大小的具体方法<ul>
-<li><code>Xmx/-Xms</code>：指定年轻代和老年代空间的初始值和最大值；<code>Xms</code>小于<code>Xmx</code>时，年轻代和老年代所消耗的空间量可以根据应用程序的需求增长或收缩；Java堆的增长不会比<code>Xms</code>大，也不会比<code>Xmx</code>小</li>
-<li><code>XX: NewSize=&lt;n&gt;[g|m|k]</code>：年轻代空间的初始和最小尺寸，<code>&lt;n&gt;</code>是大小，<code>[g | m | k]</code>指示大小是否应解释为千兆字节，兆字节或千字节</li>
-<li><code>XX: MaxNewSize=&lt;n&gt;[g|m|k]</code>：年轻代空间的最大值</li>
-<li><code>Xmn&lt;n&gt;[g|m|k]</code>：将年轻代的初始值、最小值、最大值设为同一值</li>
-</ul>
-</li>
-<li><p>GC模式选择</p>
-<ul>
-<li>增长或收缩年轻代或老年代的空间时需要Full GC</li>
-<li>Full GC可能会降低吞吐量并导致超出期望的延迟</li>
-<li>串行收集器（-XX:+UseSerialGC）：使用单个线程执行所有垃圾收集工作</li>
-<li>并行收集器（-XX:+UseParallelGC）：并行执行Minor GC，显著减少垃圾收集开销</li>
-<li>并发低暂停收集器（-XX:+UseConcMarkSweepGC）：收集持久代，与执行应用程序同时执行大部分收集，在收集期间会暂停一小段时间</li>
-<li>增量低暂停收集器（-XX:+UseTrainGC）：收集每个Minor的部分老年代，并尽量减少Major的大停顿</li>
-<li>-verbose:gc：打印GC信息</li>
-</ul>
-</li>
-<li><p>堆设置<br>-Xms：初始堆大小<br>-Xmx：最大堆大小<br>-XX:NewSize=n：设置年轻代大小<br>-XX:NewRatio=n：设置年轻代和年老代的比值。如：为3，表示年轻代与年老代比值为1：3，年轻代占整个年轻代年老代和的1/4<br>-XX:SurvivorRatio=n：年轻代中Eden区与两个Survivor区的比值。注意Survivor区有两个。如：3，表示Eden：Survivor=3:2，一个Survivor区占整个年轻代的1/5<br>-XX:MaxPermSize=n：设置持久代大小</p>
-</li>
-<li><p>收集器设置<br>-XX:+UseSerialGC：设置串行收集器<br>-XX:+UseParallelGC：设置并行收集器<br>-XX:+UseParalledlOldGC：设置并行年老代收集器<br>-XX:+UseConcMarkSweepGC：设置并发收集器</p>
-</li>
-<li><p>垃圾回收统计信息<br>-XX：+PrintGC<br>-XX：+PrintGCDetails<br>-XX：+PrintGCTimeStamps<br>-Xloggc：filename</p>
-</li>
-<li><p>并行收集器设置<br>-XX:ParallelGCThreads=n：设置并行收集器收集时使用的CPU数。并行收集线程数。<br>-XX:MaxGCPauseMillis=n：设置并行收集最大暂停时间<br>-XX:GCTimeRatio=n：设置垃圾回收时间占程序运行时间的百分比。公式为$\frac{1}{1+n}$</p>
-</li>
-<li><p>并发收集器设置<br>-XX:+CMSIncrementalMode：设置为增量模式。适用于单CPU情况。<br>-XX:ParallelGCThreads=n：设置并发收集器年轻代收集方式为并行收集时，使用的CPU数。并行收集线程数。</p>
-</li>
-</ul>
-<h2 id="第二节-动态程序分析方法与工具"><a href="#第二节-动态程序分析方法与工具" class="headerlink" title="第二节 动态程序分析方法与工具"></a>第二节 动态程序分析方法与工具</h2><ul>
-<li>Jstat：获取JVM的Heap使用和GC的性能统计数据，命令如-gcutil</li>
-<li>Jmap：输出内存中的对象分布情况  如：jmap -clstats</li>
-<li>Jhat：导出heap dump，浏览/查询其中的对象分布情况</li>
-<li>jstack：获取Java线程的stack trace 具体用途如下：<ul>
-<li>定位线程出现长时间停顿的原因，如多线程间死锁、死循环、请求外部资源 导致的长时间等待等。</li>
-<li>线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没 有响应的线程到底在后台做什么事情，或者等待什么资源。</li>
-</ul>
-</li>
-<li>Visual VM：提供了一个可视化界面，用于查看Java应用程序在JVM上运行时的详细信息，使用各种技术，包括jvmstat，JMX，Serviceability Agent（SA）和Attach API等</li>
-<li>MAT：内存堆导出文件的分析工具，生成饼状图等，能够对问题发生时刻的系统内存状态获取一个整体印象，找到最有可能导致内存泄露的对象，进一步查看其是否有异常行为。</li>
-</ul>
-<h3 id="Memory-Dump（堆转储文件）"><a href="#Memory-Dump（堆转储文件）" class="headerlink" title="Memory Dump（堆转储文件）"></a><em>Memory Dump（堆转储文件）</em></h3><p>正如Thread Dump文件记录了当时JVM中线程运行的情况一样，Heap Dump记录了JVM中堆内存运行的情况，可使用jmap或JConsole命令生成，jhat分析。</p>
-<p><strong>使用 jmap 命令生成</strong></p>
-<p><strong>使用JConsole生成</strong></p>
-<p><strong>使用jhat分析</strong> </p>
-<h3 id="Stack-Trace"><a href="#Stack-Trace" class="headerlink" title="Stack Trace"></a><em>Stack Trace</em></h3><p>　　可使用jstack查看，定位线程出现长时间停顿的原因。</p>
-<h2 id="第三节-代码调优的设计模式和I-O"><a href="#第三节-代码调优的设计模式和I-O" class="headerlink" title="第三节 代码调优的设计模式和I/O"></a>第三节 代码调优的设计模式和I/O</h2><h2 id="代码调优"><a href="#代码调优" class="headerlink" title="代码调优"></a>代码调优</h2><p><strong>代码调优的概念</strong></p>
-<ul>
-<li>代码调优：代码调优不是为了修复bug，而是对正确的代码进行修改以提高其性能，其常常是小规模的变化<ul>
-<li>调优不会减少代码行数</li>
-<li>不要猜原因，而应有明确的优化目标</li>
-<li>不要边写程序边调优</li>
-<li>不是性能优化的第一选择</li>
-<li>代码行数与性能之间无必然的联系</li>
-<li>代码调优建立在对程序性能的精确度量基础之上（profiling）</li>
-<li>当程序做过某些调整之后，要重新profiling并重新了解需要优化的性能瓶颈，微小的变化能导致优化方向大不相同</li>
-</ul>
-</li>
-<li>性能从不是追求的第一目标，正确性比性能更重要</li>
-</ul>
-<p><strong><a href="http://c.biancheng.net/view/1338.html" target="_blank" rel="noopener">单例模式</a>（Singleton Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1371.html" target="_blank" rel="noopener">享元模式</a>（Flyweight Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1343.html" target="_blank" rel="noopener">原型模式</a>（Prototype Pattern）</strong></p>
-<p><strong>对象池模式（Object Pool Pattern）</strong></p>
-<h3 id="Java-I-O"><a href="#Java-I-O" class="headerlink" title="Java I/O"></a><em>Java I/O</em></h3>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -2148,9 +2269,18 @@ Process finished with exit code 0
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
+        
       </div>
     
   </nav>
@@ -2239,9 +2369,9 @@ Process finished with exit code 0
   
     
       
-        
-      
     
+      
+        
       
     
       
