@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="关于微分计算（On Derivatives)与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：   解析微分算法（Analytic Derivatives）：用户自己手动或者借助Maple或者Math">
+<meta name="keywords" content="code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceres Solvel库函数的解读">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/Ceres-Solvel库函数的解读/index.html">
+<meta property="og:site_name" content="Sakurastream">
+<meta property="og:description" content="关于微分计算（On Derivatives)与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：   解析微分算法（Analytic Derivatives）：用户自己手动或者借助Maple或者Math">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-12-24T10:25:24.318Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ceres Solvel库函数的解读">
+<meta name="twitter:description" content="关于微分计算（On Derivatives)与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：   解析微分算法（Analytic Derivatives）：用户自己手动或者借助Maple或者Math">
+  <link rel="canonical" href="http://yoursite.com/2020/12/24/Ceres-Solvel库函数的解读/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Ceres Solvel库函数的解读 | Sakurastream</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sakurastream</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/Ceres-Solvel库函数的解读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Ceres Solvel库函数的解读
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-12-24 14:04:15 / Modified: 18:25:24" itemprop="dateCreated datePublished" datetime="2020-12-24T14:04:15+08:00">2020-12-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="关于微分计算（On-Derivatives"><a href="#关于微分计算（On-Derivatives" class="headerlink" title="关于微分计算（On Derivatives)"></a>关于微分计算（On Derivatives)</h1><p>与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：</p>
+<blockquote>
+<ul>
+<li>解析微分算法（<font face="黑体">Analytic Derivatives</font>）：用户自己手动或者借助Maple或者Mathematica等工具求解导数，然后写到<font color="red" font face="黑体">CostFunction</font>里面。</li>
+<li>数值微分算法（Numeric Derivatives）：Ceres用有限差分数值计算导数</li>
+<li>自动微分算法（Automatic Dericatives）：Ceres用C++模板和操作符重载自动分析计算微分。</li>
+</ul>
+</blockquote>
+<p>应该使用这三种方法中的哪一种（单独或组合）取决于用户愿意做出的情况和权衡。官方给出了一个简单粗暴的建议：<br>优先选用自动微分算法，某些情况可能需要用到解析微分算法，尽量避免数值微分算法。</p>
+<h2 id="Spivak标记"><a href="#Spivak标记" class="headerlink" title="Spivak标记"></a>Spivak标记</h2><p>为了简化阅读和推理，引入Spivak标记。</p>
+<p>对于单自变量函数$f$,$f(a)$表示它在$a$处的函数值。$Df$表示它的一阶导数，那么$Df(a)$就是函数在$a$处的一阶导数。即，</p>
+<script type="math/tex; mode=display">Df(a) = \frac{d}{dx}f(x)|_{x=a}</script><p>$D^kf$表示$f$的第$k$阶导数。</p>
+<p>对于双自变量函数$g(x,y)$，$D_1g$和$D_2g$分别表示关于$g$的两个偏微分。即，</p>
+<script type="math/tex; mode=display">D_1g = \frac{\partial}{\partial x}g(x,y)andD_2g = \frac{\partial}{\partial y}g(x,y)</script><p>$D_g$表示$g$的雅可比矩阵</p>
+<blockquote>
+<p>雅可比矩阵即</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+  \frac{\partial y_1}{\partial x_1}& \cdots & \frac{\partial y_1}{\partial x_n}\\
+ \vdots & \ddots & \vdots\\ 
+  \frac{\partial y_m}{\partial x_1}& \cdots & \frac{\partial y_m}{\partial x_n}
+\end{bmatrix}</script><p>这里的$y_1$即$g$，其他的行不存在，因为只存在一个因变量$g$。即雅可比矩阵是一个一行两列的矩阵。即，</p>
+<script type="math/tex; mode=display">Dg = \begin{bmatrix}
+  D_1g& D_2g
+\end{bmatrix}</script><p>更一般的，如果$g:\mathbb{R}^{n} \longrightarrow \mathbb{R}^{m}$，那么$Dg$表示的就是一个$m \times n$的雅可比矩阵。</p>
+<h2 id="自动微分法（Automatic-Derivatices）"><a href="#自动微分法（Automatic-Derivatices）" class="headerlink" title="自动微分法（Automatic Derivatices）"></a>自动微分法（Automatic Derivatices）</h2><p>我们来思考一个相对复杂的曲线拟合问题。待确定参数方程如下：</p>
+<script type="math/tex; mode=display">y = \frac{b_1}{(1+e^{b_2 - b_3x})^{1/b_4}}</script><p>现在给定一系列的对应数据点$\left\{x_i,y_i\right \},\forall i=1,\cdots,n$。我们面临的问题就是求解$b_1,b_2,b_3,b_4$使下列表达式的取值最小：</p>
+<script type="math/tex; mode=display">\begin{aligned}
+E\left(b_{1}, b_{2}, b_{3}, b_{4}\right) &=\sum_{i} f^{2}\left(b_{1}, b_{2}, b_{3}, b_{4} ; x_{i}, y_{i}\right) \\
+&=\sum_{i}\left(\frac{b_{1}}{\left(1+e^{b_{2}-b_3x_i}\right)^{1 / b_{4}}}-y_{i}\right)^{2}
+\end{aligned}</script><p>下面我们使用自动微分算法，它是一种可以快速计算精确导数的算法。下面的代码片段实现了上述问题的<font color="red" font face="黑体">CostFunction</font>。</p>
+<pre><code>struct Rat43CostFunctor {
+    Rat43CostFunctor(const double x, const double y) : x_(x), y_(y) {}
+
+template &lt;typename T&gt;  
+bool operator()(const T* parameters, T* residuals) const {
+    const T b1 = parameters[0];
+    const T b2 = parameters[1];
+    const T b3 = parameters[2];
+    const T b4 = parameters[3];
+    residuals[0] = b1 * pow(1.0 + exp(b2 -  b3 * x_), -1.0 / b4) - y_;
+    return true;
+}
+
+private:
+    const double x_;
+    const double y_;
+};
+
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;Rat43CostFunctor, 1, 4&gt;(    
+        new Rat43CostFunctor(x, y));
+</code></pre><p>接下来我们对自动微分算法的原理进行研究。为了研究其工作原理，必须要学习 <strong>二元数（Dual number)</strong> 和 <strong>射流(Jet)</strong>。</p>
+<h3 id="二元数和射流"><a href="#二元数和射流" class="headerlink" title="二元数和射流"></a>二元数和射流</h3><p><strong>二元数(Dual number)</strong> 是实数的一个延伸，类似于复数。复数则通过引入虚数来增加实数，比如$i$，二元数引入了一个极小二元数单位，比如$\epsilon$，且$\epsilon^2 = 0$（平方后太小可以忽略）。一个二元数$a+\upsilon\epsilon$包含两个分量，实分量$a$和极小分量$\upsilon$。令人惊喜的是，这个简单的变化带来了一种方便的计算精确导数的方法，而不需要考虑复杂的符号表达式。</p>
+<p>例如，考虑函数</p>
+<script type="math/tex; mode=display">f(x) = x^2</script><p>然后</p>
+<script type="math/tex; mode=display">\begin{aligned}
+f(10+\epsilon) &=(10+\epsilon)^{2} \\
+&=100+20 \epsilon+\epsilon^{2} \\
+&=100+20 \epsilon
+\end{aligned}</script><p>观察$\epsilon$的系数，我们发现$Df(10) = 20$。事实上，这个规律可以推广到不是多项式的函数。考虑一个任意可微函数$f(x)$，然后我们计算$f(x+ \epsilon)$，通过在$x$附近做泰勒展开，这就得到了无穷级数</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+f(x+\epsilon)=f(x)+D f(x) \epsilon+D^{2} f(x) \frac{\epsilon^{2}}{2}+D^{3} f(x) \frac{\epsilon^{3}}{6}+\cdots \\
+f(x+\epsilon)=f(x)+D f(x) \epsilon
+\end{array}</script><p>记住，$\epsilon^2 = 0$。</p>
+<p><strong>射流(Jet)</strong> 是一个$n$维二元数。我们定义$n$个极小单位$\epsilon_i,i=1,\cdots,n$。并且存在性质$\forall i,j:\epsilon_i\epsilon_j=0$。射流数由实数$a$和$n$维极小分量组成。</p>
+<script type="math/tex; mode=display">x = a + \sum_j \upsilon_j \epsilon_j</script><p>为了简化我们改写为这种形式</p>
+<script type="math/tex; mode=display">x = a + \mathbf{v}</script><p>然后使用泰勒级数展开，我们可以看到：</p>
+<script type="math/tex; mode=display">f(a+\mathbf{v}) = f(a) +Df(a)\mathbf{v}</script><p>对多变量函数$f : \mathbb{R^n} \longrightarrow \mathbb{R^m} $相似。对于自变量$x_i = a_i + \mathbf{v}_i, \forall i = 1,\cdots,n :$</p>
+<script type="math/tex; mode=display">f(x_1,\cdots,x_n) = f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n)\mathbf{v}_i</script><p>如果每个选取的极小量$\mathbf{v}_i = e_i $是$i^{th}$标准基向量，那么上面的表达式就可以简化为</p>
+<script type="math/tex; mode=display">
+f(x_1,\cdots,x_n) = f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n) \epsilon_i</script><p>我们可以查找$\epsilon_i$的系数来提取雅可比矩阵的坐标。</p>
+<h3 id="实现射流（Jet"><a href="#实现射流（Jet" class="headerlink" title="实现射流（Jet)"></a>实现射流（Jet)</h3><p>为了让上面学到的内容在实践中发挥作用，我们需要能够计算函数$f$的值，不仅在自变量是实数的时候，也需要在自变量是二元数的情况下适用。但是通常我们并非通过泰勒展开式来求函数值。这也就是为什么我们需要用到C++模板和操作符重载。下面的代码段实现了<font color="red" font face="黑体">Jet</font>类以及对该类的一些操作和函数。</p>
+<pre><code>template&lt;int N&gt; struct Jet {
+    double a;
+    Eigen::Matrix&lt;double, 1, N&gt; v;
+};
+
+template&lt;int N&gt; Jet&lt;N&gt; operator+(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a + g.a, f.v + g.v);
+}
+
+template&lt;int N&gt; Jet&lt;N&gt; operator-(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a - g.a, f.v - g.v);
+}
+
+template&lt;int N&gt; Jet&lt;N&gt; operator*(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a * g.a, f.a * g.v + f.v * g.a);
+}
+
+template&lt;int N&gt; Jet&lt;N&gt; operator/(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a / g.a, f.v / g.a - f.a * g.v / (g.a * g.a));
+}
+
+template &lt;int N&gt; Jet&lt;N&gt; exp(const Jet&lt;N&gt;&amp; f) {
+    return Jet&lt;T, N&gt;(exp(f.a), exp(f.a) * f.v);
+}
+
+// This is a simple implementation for illustration purposes, the
+// actual implementation of pow requires careful handling of a number
+// of corner cases.
+template &lt;int N&gt;  Jet&lt;N&gt; pow(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(pow(f.a, g.a),
+            g.a * pow(f.a, g.a - 1.0) * f.v +
+            pow(f.a, g.a) * log(f.a); * g.v);
+}
+</code></pre><p>有了这些重载的函数，我们现在可以用一个<font color="red" font face="黑体">Jets</font>数组来调用<font color="red" font face="黑体">Rat43CostFunctor</font>，而不是<font color="red" font face="黑体">double</font>双精度类型。将其与初始化的<font color="red" font face="黑体">Jets</font>结合起来，我们就可以计算雅可比矩阵了：</p>
+<pre><code>class Rat43Automatic : public ceres::SizedCostFunction&lt;1,4&gt; {
+    public:
+      Rat43Automatic(const Rat43CostFunctor* functor) : functor_(functor) {}
+      virtual ~Rat43Automatic() {}
+      virtual bool Evaluate(double const* const* parameters,
+                    double* residuals,
+                    double** jacobians) const {
+    // Just evaluate the residuals if Jacobians are not required.
+    if (!jacobians) return (*functor_)(parameters[0], residuals);
+
+    // 初始化Jets，四个待求参数
+    ceres::Jet&lt;4&gt; jets[4];
+    for (int i = 0; i &lt; 4; ++i) {
+        jets[i].a = parameters[0][i];
+        jets[i].v.setZero();
+        jets[i].v[i] = 1.0;
+    }
+
+    ceres::Jet&lt;4&gt; result;
+    (*functor_)(jets, &amp;result);
+
+    // 把Jet的值（前面提到的，极小单位分量的系数）复制出啦.
+    residuals[0] = result.a;
+    for (int i = 0; i &lt; 4; ++i) {
+        jacobians[0][i] = result.v[i];
+    }
+    return true;
+}
+
+private:
+    std::unique_ptr&lt;const Rat43CostFunctor&gt; functor_;
+};
+</code></pre><p>这就是<font face="黑体" font color="red">AutoDiffCostFunction</font>的核心工作原理。</p>
+<h3 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h3><p>自动微分使用户不必计算和推理Jacobians的符号表达式，但是这个捷径是有代价的。例如，考虑以下简单的函数：</p>
+<pre><code>struct Functor {
+    template &lt;typename T&gt; bool operator()(const T* x, T* residual) const {
+        residual[0] = 1.0 - sqrt(x[0] * x[0] + x[1] * x[1]);
+        return true;
+    }
+};
+</code></pre><p>查看计算残差的代码，没有人预见到任何问题。但是，如果我们看一下雅可比矩阵的解析表达式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+y &=1-\sqrt{x_{0}^{2}+x_{1}^{2}} \\
+D_{1} y &=-\frac{x_{0}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}, D_{2} y=-\frac{x_{1}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}
+\end{aligned}</script><p>我们发现它在$x_0 = 0,x_1 = 0$处是不确定的。</p>
+<p>这个问题没有完美的解决方案。在某些情况下，我们需要明确地指出可能出现的不确定的点，并使用使用<font face="黑体" font color="blue">L’Hopital rule</font>（这里要去Ceres Solvel官网的rotation.h文件中的转换例程），在其他情况下，可能需要对表达式进行正则化，以消除这些点。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/12/21/Ceres-Solvel翻译第一期-说明文档/" rel="next" title="Ceres Solvel翻译第一期-说明文档">
+                  <i class="fa fa-chevron-left"></i> Ceres Solvel翻译第一期-说明文档
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/12/25/Ceres-Solvel-非线性最小二乘法建模/" rel="prev" title="Ceres Solvel非线性最小二乘法建模">
+                  Ceres Solvel非线性最小二乘法建模 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于微分计算（On-Derivatives"><span class="nav-number">1.</span> <span class="nav-text">关于微分计算（On Derivatives)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spivak标记"><span class="nav-number">1.1.</span> <span class="nav-text">Spivak标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动微分法（Automatic-Derivatices）"><span class="nav-number">1.2.</span> <span class="nav-text">自动微分法（Automatic Derivatices）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二元数和射流"><span class="nav-number">1.2.1.</span> <span class="nav-text">二元数和射流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现射流（Jet"><span class="nav-number">1.2.2.</span> <span class="nav-text">实现射流（Jet)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#陷阱"><span class="nav-number">1.2.3.</span> <span class="nav-text">陷阱</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Gift</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gift</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

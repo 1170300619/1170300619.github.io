@@ -66,7 +66,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/12/21/Ceres-Solvel翻译第一期-说明文档/pic/1.png">
 <meta property="og:image" content="http://yoursite.com/2020/12/21/Ceres-Solvel翻译第一期-说明文档/pic/non_robust_least_squares_fit.png">
 <meta property="og:image" content="http://yoursite.com/2020/12/21/Ceres-Solvel翻译第一期-说明文档/pic/robust_least_squares_fit.png">
-<meta property="og:updated_time" content="2020-12-22T07:55:07.270Z">
+<meta property="og:updated_time" content="2020-12-23T01:16:06.913Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ceres Solvel翻译第一期-说明文档">
 <meta name="twitter:description" content="非线性最小二乘法介绍Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下： min_x\frac{1}{2}\sum_i\rho_i(\left \|f_i(x_{i_1},\cdots,x_{i_k})  \right \|^2)s.t. l_i\le x_j\le u_j这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行三维模型的构建">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-22 15:55:07" itemprop="dateModified" datetime="2020-12-22T15:55:07+08:00">2020-12-22</time>
+                <time title="Modified: 2020-12-23 09:16:06" itemprop="dateModified" datetime="2020-12-23T09:16:06+08:00">2020-12-23</time>
               </span>
             
           
@@ -313,12 +313,11 @@ return 0;
 
 初始值为$5$，最终通过两次循环之后到达最优解$10$。其实本例是一个线性问题，因为$f(x) = 10 - x$是一个线性函数，但是Ceres仍然可以应用。
 
-
-## 导数
+## 导数  
 
 像大多数优化软件包一样，Ceres求解器的求解基于其能够在任意参数值下评估目标函数中每个项的值和导数。 正确而高效地做到这一点对于取得优秀的运算结果至关重要。Ceres提供了一系列解决方案，其中一个就是在Hello World中用到的Automatic Differentiation (自动微分算法)。这一部分我们将探讨另外两种可能性，即解析法（Analytic）和数值法（Numeric ）求导。
 
-### 数值法求导（Numeric Derivatives)
+### 数值法求导（Numeric Derivatives)  
 
 在某些情况下，像在Hello World中一样定义一个代价函数是不可能的。比如在求解残差值（residual）的时候调用了一个库函数，而这个库函数的内部算法你根本无法干预。在这种情况下数值微分算法就派上用场了。用户定义一个CostFunctor来计算残差值，并且构建一个<font face="黑体" font color="red">NumericDiffCostFunction</font>数值微分代价函数。比如对于$f(x) = 10 - x$对应函数体如下：
 
@@ -549,7 +548,7 @@ Ceres Solver Report: Iterations: 13, Initial cost: 1.211734e+02, Final cost: 1.0
 Initial m: 0 c: 0
 Final   m: 0.291861 c: 0.131439
 </code></pre><p>最终经过计算，结果是m=0.291861,c=0.131439。这个值和一开始的设定值（m=0.3,c=0.1）略有偏差。因为额外加入了高斯噪声，所以这个偏差的存在是合理的。拟合结果如下图所示，红圈即为拟合出的曲线。</p>
-<p><img src="pic\1.png" alt="avatar"></p>
+<p><img src="pic/1.png" alt="曲线拟合效果"></p>
 <h2 id="鲁棒的曲线拟合（Robust-Curve-Fitting）"><a href="#鲁棒的曲线拟合（Robust-Curve-Fitting）" class="headerlink" title="鲁棒的曲线拟合（Robust Curve Fitting）"></a>鲁棒的曲线拟合（Robust Curve Fitting）</h2><p>如果我们在数据集合中加入几个非常夸张的外围点Outliers，那么拟合结果会受到这几个点的明显影响。在这个时候需要应用损失函数（Loss function）来对异常数据进行过滤。比如在上文的例子中，我们对代码进行以下修改：</p>
 <pre><code>problem.AddResidualBlock(cost_function, NULL , &amp;m, &amp;c);
 </code></pre><p>改为：  </p>
@@ -582,6 +581,10 @@ Final   m: 0.291861 c: 0.131439
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/12/24/Ceres-Solvel库函数的解读/" rel="prev" title="Ceres Solvel库函数的解读">
+                  Ceres Solvel库函数的解读 <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -645,7 +648,7 @@ Final   m: 0.291861 c: 0.131439
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -666,7 +669,7 @@ Final   m: 0.291861 c: 0.131439
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
