@@ -191,159 +191,6 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/04/二叉树入门/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2022/03/04/二叉树入门/" class="post-title-link" itemprop="url">二叉树入门指南</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2022-03-04 21:29:04" itemprop="dateCreated datePublished" datetime="2022-03-04T21:29:04+08:00">2022-03-04</time>
-            </span>
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="二叉树的种类"><a href="#二叉树的种类" class="headerlink" title="二叉树的种类"></a>二叉树的种类</h1><h2 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h2><p>满二叉树的定义是：如果一颗二叉树只有度为0的节点和度为2的节点，且度为0的节点在同一层上，则该二叉树是满二叉树，如下图：</p>
-<img src="/2022/03/04/二叉树入门/满二叉树.png" title="This is an test image">
-<p>满二叉树的深度为k，则节点共有 $ 2^{k} - 1 $个（这里使用等比数列相加即可得出）。</p>
-<h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><p>在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。</p>
-<div align="center">
-    <img src="./pic/完全二叉树的判定.png" width="100%">
-</div> 
-
-<p>优先级队列其实是一个堆，堆就是一个完全二叉树，而且保证了父子节点的顺序关系。</p>
-<h2 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h2><p>二叉搜索树是节点带有数值的一棵树，并且要满足以下关系：<br><strong>若它的左子树不为空，则左子树上所有节点的值都小于根节点的值；</strong><br><strong>若它的右子树不为空，则右子树上所有节点的值都大于根节点的值；</strong><br><strong>它的左、右子树也分别为二叉排序树。</strong></p>
-<div align="center">
-    <img src="./pic/二叉搜索树.png" width="40%">
-</div> 
-
-<h2 id="平衡二叉搜索树"><a href="#平衡二叉搜索树" class="headerlink" title="平衡二叉搜索树"></a>平衡二叉搜索树</h2><p>平衡二叉搜索树又被称为<strong>AVL（Adelson-Velsky and Landis）</strong>，且具有如下性质：它是一棵空树或者它的左右两个子树的高度差的绝对值不超过1，并且左右两颗子树都是平衡二叉树。</p>
-<div align="center">
-    <img src="./pic/平衡二叉搜索树.png" width="60%">
-</div> 
-
-<p>最后一棵树不是平衡二叉搜索树，因为根节点的左右子树的高度差的绝对值超过了1（此时左边为6，右边无子树为0）。</p>
-<p>C++中<strong>map、set、multimap，multiset</strong>的底层实现都是平衡二叉搜索树，所以<strong>map、set</strong>的增删操作时间时间复杂度是<strong>logn</strong>，注意我这里没有说<strong>unordered_map、unordered_set</strong>，这两者的底层实现是哈希表。</p>
-<h1 id="二叉树的定义"><a href="#二叉树的定义" class="headerlink" title="二叉树的定义"></a>二叉树的定义</h1><p>在面试的时候，因为大部分情况是没有IDE和代码提示的，需要自己定义二叉树，下面是常用的定义二叉树的方法：</p>
-<pre><code>struct TreeNode{
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(): val(0), left(NULL), right(NULL) {}
-    TreeNode(int x): val(x), left(NULL), right(NULL) {}
-}
-</code></pre><h1 id="二叉树的遍历方式"><a href="#二叉树的遍历方式" class="headerlink" title="二叉树的遍历方式"></a>二叉树的遍历方式</h1><p>说到二叉树，那么常见的考察方式就是其遍历方式，大体上可以概括为两种：<br><strong>1. 深度优先遍历</strong><br>    $\qquad\bullet$<strong>前序遍历（递归，迭代）</strong><br>    $\qquad\bullet$<strong>中序遍历（递归，迭代）</strong><br>    $\qquad\bullet$<strong>后序遍历（递归，迭代）</strong><br><strong>2. 广度优先遍历</strong><br>    $\qquad\bullet$<strong>层次遍历（迭代）</strong></p>
-<p>在深度优先遍历中，前、中、后指的是根节点所在的位置。</p>
-<h2 id="深度优先遍历（迭代法）"><a href="#深度优先遍历（迭代法）" class="headerlink" title="深度优先遍历（迭代法）"></a>深度优先遍历（迭代法）</h2><p>下面介绍一下使用递归方法进行深度优先遍历，这里假设我们使用<strong>vector</strong>来保存遍历过程中的节点值。这里提供的是递归方法的思路，之后只需要按照这个思路稍微修改代码满足需要即可。</p>
-<h3 id="1-前序遍历"><a href="#1-前序遍历" class="headerlink" title="1. 前序遍历"></a>1. 前序遍历</h3><pre><code>//中-左-右
-class Solution{
-public:
-    void traversal(TreeNode* cur， vector&lt;int&gt;&amp; vec){
-        if(cur == NULL)return;
-        vec.push_back(cr-&gt;val); //中
-        traversal(cur-&gt;left); //左
-        traversal(cur-&gt;right); //右
-    }
-
-    vector&lt;int&gt; preorderTraversal(TreeNode* root){
-        vector&lt;int&gt; result;
-        if(root == NULL)return result;
-        traversal(root, result);
-        return result;
-    }
-}
-</code></pre><p>同理，中序遍历和后序遍历只需要修改递归代码中的顺序即可，思路都是一样的。</p>
-<h3 id="2-中序遍历"><a href="#2-中序遍历" class="headerlink" title="2. 中序遍历"></a>2. 中序遍历</h3><pre><code>//左-中-右
-class Solution{
-public:
-    void traversal(TreeNode* cur， vector&lt;int&gt;&amp; vec){
-        if(cur == NULL)return;
-        traversal(cur-&gt;left); //左
-        vec.push_back(cr-&gt;val); //中
-        traversal(cur-&gt;right); //右
-    }
-
-    vector&lt;int&gt; preorderTraversal(TreeNode* root){
-        vector&lt;int&gt; result;
-        if(root == NULL)return result;
-        traversal(root, result);
-        return result;
-    }
-}
-</code></pre><h3 id="3-后序遍历"><a href="#3-后序遍历" class="headerlink" title="3. 后序遍历"></a>3. 后序遍历</h3><pre><code>//左-右-中
-class Solution{
-public:
-    void traversal(TreeNode* cur， vector&lt;int&gt;&amp; vec){
-        if(cur == NULL)return;
-        traversal(cur-&gt;left); //左
-        traversal(cur-&gt;right); //右
-        vec.push_back(cr-&gt;val); //中
-    }
-
-    vector&lt;int&gt; preorderTraversal(TreeNode* root){
-        vector&lt;int&gt; result;
-        if(root == NULL)return result;
-        traversal(root, result);
-        return result;
-    }
-}
-</code></pre><p>下一篇博客将总结使用迭代方法实现深度优先遍历和广度优先遍历（即层次遍历）。</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/04/二叉树入门-二叉树入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2042,6 +1889,426 @@ Process finished with exit code 0
   </article>
 
     
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第六期/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结第六期/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 18:05:49 / Modified: 18:11:30" itemprop="dateCreated datePublished" datetime="2019-06-24T18:05:49+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
+<h2 id="软件构造知识点总结第六期"><a href="#软件构造知识点总结第六期" class="headerlink" title="软件构造知识点总结第六期"></a>软件构造知识点总结第六期</h2><h1 id="第十章"><a href="#第十章" class="headerlink" title="第十章"></a>第十章</h1><hr>
+<h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><p><strong>并发（concurrency）</strong></p>
+<ul>
+<li>定义：指的是多线程场景下对共享资源的争夺运行</li>
+<li>并发的应用背景：<ul>
+<li>网络上的多台计算机</li>
+<li>一台计算机上的多个应用</li>
+<li>一个CPU上的多核处理器</li>
+</ul>
+</li>
+<li>为什么要有并发：<ul>
+<li>摩尔定律失效、“核”变得越来越多</li>
+<li>为了充分利用多核和多处理器需要将程序转化为并行执行</li>
+</ul>
+</li>
+<li>并发编程的两种模式：<ul>
+<li>共享内存：在内存中读写共享数据</li>
+<li>信息传递（Message Passing）：通过channel交换消息</li>
+</ul>
+</li>
+</ul>
+<p><strong>共享内存</strong></p>
+<ul>
+<li>共享内存这种方式比较常见，我们经常会设置一个共享变量，然后多个线程去操作同一个共享变量。从而达到线程通讯的目的。</li>
+<li>例子：<ul>
+<li>两个处理器，共享内存</li>
+<li>同一台机器上的两个程序，共享文件系统</li>
+<li>同一个Java程序内的两个线程，共享Java对象</li>
+</ul>
+</li>
+</ul>
+<p><strong>信息传递</strong></p>
+<ul>
+<li>消息传递方式采取的是线程之间的直接通信，不同的线程之间通过显式的发送消息来达到交互目的</li>
+<li>接收方将收到的消息形成队列逐一处理，消息发送者继续发送（异步方式）</li>
+<li>消息传递机制也无法解决竞争条件问题</li>
+<li>仍然存在消息传递时间上的交错</li>
+<li>例子：<ul>
+<li>网络上的两台计算机，通过网络连接通讯</li>
+<li>浏览器和Web服务器，A请求页面，B发送页面数据给A</li>
+<li>即时通讯软件的客户端和服务器</li>
+<li>同一台计算机上的两个程序，通过管道连接进行通讯</li>
+</ul>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">并发模型</th>
+<th style="text-align:center">通信机制</th>
+<th style="text-align:center">同步机制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">共享内存</td>
+<td style="text-align:center">线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态来隐式进行通信。</td>
+<td style="text-align:center">同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。</td>
+</tr>
+<tr>
+<td style="text-align:center">消息传递</td>
+<td style="text-align:center">线程之间没有公共状态，线程之间必须通过明确的发送消息来显式进行通信。</td>
+<td style="text-align:center">由于消息的发送必须在消息的接收之前，因此同步是隐式进行的。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a><em>进程和线程</em></h3><ul>
+<li>进程：是执行中一段程序，即一旦程序被载入到内存中并准备执行，它就是一个进程。进程是表示资源分配的的基本概念，又是调度运行的基本单位，是系统中的并发执行的单位。<ul>
+<li>程序运行时在内存中分配自己独立的运行空间</li>
+<li>进程拥有整台计算机的资源</li>
+<li>多进程之间不共享内存</li>
+<li>进程之间通过消息传递进行协作</li>
+<li>一般来说，进程<code>==</code>程序<code>==</code>应用（但一个应用中可能包含多个进程）</li>
+<li>OS支持的IPC机制(pipe/socket)支持进程间通信（IPC不仅是本机的多个进程之间， 也可以是不同机器的多个进程之间）</li>
+<li>JVM通常运行单一进程，但也可以创建新的进程。</li>
+</ul>
+</li>
+<li>线程：它是位于进程中，负责当前进程中的某个具备独立运行资格的空间。<ul>
+<li>线程有自己的堆栈和局部变量，但是多个线程共享内存空间</li>
+<li>进程=虚拟机；线程=虚拟CPU</li>
+<li>程序共享、资源共享，都隶属于进程</li>
+<li>很难获得线程私有的内存空间</li>
+<li>线程需要同步：在改变对象时要保持lock状态</li>
+<li>清理线程是不安全的</li>
+</ul>
+</li>
+<li>进程是负责整个程序的运行，而线程是程序中具体的某个独立功能的运行。</li>
+<li>一个进程中至少应该有一个线程。</li>
+<li>主线程可以创建其他的线程。</li>
+</ul>
+<h3 id="线程的创建和启动"><a href="#线程的创建和启动" class="headerlink" title="线程的创建和启动"></a><em>线程的创建和启动</em></h3><p><strong>方式1：继承<code>Thread</code>类</strong></p>
+<ul>
+<li>方法：用<code>Thread</code>类实现了<code>Runnable</code>接口，但它其中的<code>run</code>方法什么都没做，所以用一个类做<code>Thread</code>的子类，提供它自己实现的<code>run</code>方法。用<code>Thread.start()</code>来开始一个新的线程。</li>
+<li>创建：<code>A a = new A()</code>;</li>
+<li>启动：<code>a.start()</code>;</li>
+<li>步骤:<ul>
+<li>定义一个类A继承于<code>java.lang.Thread</code>类.</li>
+<li>在<code>A</code>类中覆盖<code>Thread</code>类中的<code>run</code>方法.</li>
+<li>我们在<code>run</code>方法中编写需要执行的操作：<code>run</code>方法里的代码,线程执行体.</li>
+<li>在<code>main</code>方法(线程)中,创建线程对象,并启动线程.</li>
+</ul>
+</li>
+<li><strong><em>examples</em></strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1):定义一个类A继承于java.lang.Thread类.  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MusicThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;  </span><br><span class="line">     <span class="comment">//2):在A类中覆盖Thread类中的run方法.  </span></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">          <span class="comment">//3):在run方法中编写需要执行的操作  </span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; i ++)&#123;  </span><br><span class="line">              System.out.println(<span class="string">"播放音乐"</span>+i);  </span><br><span class="line">          &#125;  </span><br><span class="line">      &#125;  </span><br><span class="line"> &#125;  </span><br><span class="line">   </span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExtendsThreadDemo</span> </span>&#123;  </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;             </span><br><span class="line">         <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">50</span>; j ++)&#123;  </span><br><span class="line">             System.out.println(<span class="string">"运行游戏"</span>+j);  </span><br><span class="line">             <span class="keyword">if</span>(j == <span class="number">10</span>)&#123;  </span><br><span class="line">                 <span class="comment">//4):在main方法(线程)中,创建线程对象,并启动线程.  </span></span><br><span class="line">                 MusicThread music = <span class="keyword">new</span> MusicThread();  </span><br><span class="line">                 music.start();  </span><br><span class="line">             &#125;  </span><br><span class="line">         &#125;  </span><br><span class="line">     &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>方式2：实现Runable接口</strong></p>
+<ul>
+<li><strong>创建</strong>：<code>Thread  t = new Thread(new  A())</code>;</li>
+<li><strong>调用</strong>：<code>t.start()</code>;</li>
+<li>步骤<ul>
+<li>定义一个类A实现于<code>java.lang.Runnable</code>接口,注意A类不是线程类.</li>
+<li>在A类中覆盖<code>Runnable</code>接口中的<code>run</code>方法.</li>
+<li>我们在<code>run</code>方法中编写需要执行的操作：<code>run</code>方法里的,线程执行体.</li>
+<li>在<code>main</code>方法(线程)中,创建线程对象,并启动线程.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1):定义一个类A实现于java.lang.Runnable接口,注意A类不是线程类.  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MusicImplements</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;  </span><br><span class="line">    <span class="comment">//2):在A类中覆盖Runnable接口中的run方法.  </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="comment">//3):在run方法中编写需要执行的操作  </span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; i ++)&#123;  </span><br><span class="line">            System.out.println(<span class="string">"播放音乐"</span>+i);  </span><br><span class="line">        &#125;  </span><br><span class="line">          </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImplementsRunnableDemo</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">50</span>; j ++)&#123;  </span><br><span class="line">            System.out.println(<span class="string">"运行游戏"</span>+j);  </span><br><span class="line">            <span class="keyword">if</span>(j == <span class="number">10</span>)&#123;  </span><br><span class="line">                <span class="comment">//4):在main方法(线程)中,创建线程对象,并启动线程  </span></span><br><span class="line">                MusicImplements mi = <span class="keyword">new</span> MusicImplements();  </span><br><span class="line">                Thread t = <span class="keyword">new</span> Thread(mi);  </span><br><span class="line">                t.start();  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>实现<code>Runnable</code>接口相比继承<code>Thread</code>类有如下好处：</p>
+<ul>
+<li>避免点继承的局限，一个类可以继承多个接口。</li>
+<li>适合于资源的共享</li>
+</ul>
+</li>
+<li><p>创建并运行一个线程所犯的常见错误是调用线程的<code>run()</code>方法而非<code>start()</code>方法，如下所示：</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread newThread = <span class="keyword">new</span> Thread(MyRunnable());</span><br><span class="line">newThread.run();  <span class="comment">//should be start();</span></span><br></pre></td></tr></table></figure>
+<p>　　起初并不会感觉到有什么不妥，因为<code>run()</code>方法的确如你所愿的被调用了。但是，事实上，<code>run()</code>方法并非是由刚创建的新线程所执行的，而是被创建新线程的当前线程所执行了。也就是被执行上面两行代码的线程所执行的。想要让创建的新线程执行<code>run()</code>方法，必须调用新线程的<code>start()</code>方法。</p>
+<h3 id="时间分片、交错执行、竞争条件"><a href="#时间分片、交错执行、竞争条件" class="headerlink" title="时间分片、交错执行、竞争条件"></a><em>时间分片、交错执行、竞争条件</em></h3><p> <strong>时间分片</strong></p>
+<ul>
+<li>虽然有多线程，但只有一个核，每个时刻只能执行一个线程。<ul>
+<li>通过时间分片，再多个线程/进程之间共享处理器</li>
+</ul>
+</li>
+<li>即使是多核CPU，进程/线程的数目也往往大于核的数目</li>
+<li>通过时间分片，在多个进程/线程之间共享处理器。（时间分片是由OS自动调度的）</li>
+<li><p>当线程数多于处理器数量时，并发性通过时间片来模拟，处理器切换处理不同的线程</p>
+<p><strong>交错执行</strong></p>
+</li>
+</ul>
+<p>　　顾名思义，就是说在线程运行的过程中，多个线程同时运行相互交错。而且，由于线程运行一般不是连续的，那么就会导致线程间的交错。可以说，所有线程安全问题的本质都是线程交错的问题。</p>
+<p> <strong>竞争条件</strong></p>
+<p>　　竞争是发生在线程交错的基础上的。当多个线程对同一对象进行读写访问时，就可能会导致竞争的问题。程序中可能出现的一种问题就是，读写数据发生了不同步。例如，我要用一个数据，在该数据修改还没写回内存中时就读取出来了，那么就会导致程序出现问题。</p>
+<p>　　程序运行时有一种情况，就是程序如果要正确运行，必须保证A线程在B线程之前完成（正确性意味着程序运行满足其规约）。当发生这种情况时，就可以说A与B发生竞争关系。</p>
+<ul>
+<li>计算机运行过程中，并发、无序、大量的进程在使用有限、独占、不可抢占的资源，由于进程无限，资源有限，产生矛盾，这种矛盾称为竞争（Race）。</li>
+<li>由于两个或者多个进程竞争使用不能被同时访问的资源，使得这些进程有可能因为时间上推进的先后原因而出现问题，这叫做竞争条件（Race Condition）。</li>
+<li>竞争条件分为两类:<br>-Mutex（互斥）：两个或多个进程彼此之间没有内在的制约关系，但是由于要抢占使用某个临界资源（不能被多个进程同时使用的资源，如打印机，变量）而产生制约关系。<br>-Synchronization（同步）：两个或多个进程彼此之间存在内在的制约关系（前一个进程执行完，其他的进程才能执行），如严格轮转法。</li>
+<li>解决互斥方法：<br>Busy Waiting(忙等待)：等着但是不停的检查测试，不睡觉，知道能进行为止<br>Sleep and Wakeup(睡眠与唤醒)：引入Semapgore(信号量，包含整数和等待队列,为进程睡觉而设置)，唤醒由其他进程引发。</li>
+<li>临界区（Critical Region）：<ul>
+<li>一段访问临界资源的代码。</li>
+<li>为了避免出现竞争条件，进入临界区要遵循四条原则： <ul>
+<li>任何两个进程不能同时进入访问同一临界资源的临界区</li>
+<li>进程的个数，CPU个数性能等都是无序的，随机的</li>
+<li>临界区之外的进程不得阻塞其他进程进入临界区</li>
+<li>任何进程都不应被长期阻塞在临界区之外</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>解决互斥的方法:<br>• 禁用中断 Disabling interrupts<br>• 锁变量 Lock variables （no）<br>• 严格轮转 Strict alternation (no)<br>• Peterson’s solution (yes)<br>• The TSL instruction (yes) </li>
+</ul>
+<h3 id="线程的休眠、中断"><a href="#线程的休眠、中断" class="headerlink" title="线程的休眠、中断"></a><em>线程的休眠、中断</em></h3><p> <strong><code>Thread.sleep</code></strong></p>
+<ul>
+<li>在线程中允许一个线程进行暂时的休眠，直接使用<code>Thread.sleep()</code>方法即可。 <ul>
+<li>将某个线程休眠，意味着其他线程得到更多的执行机会</li>
+<li>进入休眠的线程不会失去对现有monitor或锁的所有权</li>
+</ul>
+</li>
+<li>sleep定义格式：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="keyword">long</span> milis,<span class="keyword">int</span> nanos)</span></span></span><br><span class="line"><span class="function">       <span class="keyword">throws</span> InterruptedException</span></span><br></pre></td></tr></table></figure>
+<p>　　首先，<strong><code>static</code>，说明可以由<code>Thread</code>类名称调用</strong>，其次<strong><code>throws</code>表示如果有异常要在调用此方法处处理异常</strong>。</p>
+<p><strong>所以<code>sleep()</code>方法要有<code>InterruptedException</code>异常处理，而且<code>sleep()</code>调用方法通常为<code>Thread.sleep(500);</code>形式。</strong></p>
+<p><strong><code>Thread.interrupt</code></strong> </p>
+<ul>
+<li>一个线程可以被另一个线程中断其操作的状态，使用<code>interrupt()</code>方法完成。<ul>
+<li>通过线程的实例来调用<code>interrupt()</code>函数，向线程发出中断信号</li>
+<li><code>t.interrupt()</code>：在其他线程里向<code>t</code>发出中断信号</li>
+<li><code>t.isInterrupted()</code>：检查<code>t</code>是否已在中断状态中</li>
+</ul>
+</li>
+<li>当某个线程被中断后，一般来说应停止其<code>run()</code>中的执行，取决于程序员在<code>run()</code>中处理<ul>
+<li>一般来说，线程在收到中断信号时应该中断，直接终止</li>
+<li>但是，线程收到其他线程发出来的中断信号，并不意味着一定要“停止”</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>实例：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Thread1;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;    <span class="comment">// 实现Runnable接口</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;    <span class="comment">// 覆写run()方法</span></span><br><span class="line">        System.out.println(<span class="string">"1、进入run()方法"</span>) ;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">                Thread.sleep(<span class="number">10000</span>) ;    <span class="comment">// 线程休眠10秒</span></span><br><span class="line">                System.out.println(<span class="string">"2、已经完成了休眠"</span>) ;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            System.out.println(<span class="string">"3、休眠被终止"</span>) ;</span><br><span class="line">            <span class="keyword">return</span> ; <span class="comment">// 返回调用处</span></span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"4、run()方法正常结束"</span>) ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo1</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        MyThread mt = <span class="keyword">new</span> MyThread() ;    <span class="comment">// 实例化Runnable子类对象</span></span><br><span class="line">        Thread t = <span class="keyword">new</span> Thread(mt,<span class="string">"线程"</span>);        <span class="comment">// 实例化Thread对象</span></span><br><span class="line">        t.start() ;    <span class="comment">// 启动线程</span></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">                Thread.sleep(<span class="number">2000</span>) ;    <span class="comment">// 线程休眠2秒</span></span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            System.out.println(<span class="string">"3、休眠被终止"</span>) ;</span><br><span class="line">        &#125;</span><br><span class="line">        t.interrupt() ;    <span class="comment">// 中断线程执行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、进入run()方法</span><br><span class="line">3、休眠被终止</span><br></pre></td></tr></table></figure>
+<h3 id="线程安全的四个策略"><a href="#线程安全的四个策略" class="headerlink" title="线程安全的四个策略"></a><em>线程安全的四个策略</em></h3><ul>
+<li>线程安全的定义：ADT或方法在多线程中要执行正确，即无论如何执行，不许调度者做额外的协作，都能满足正确性</li>
+<li>四种线程安全的策略：<ul>
+<li>Confinement 限制数据共享</li>
+<li>Immutability 共享不可变数据</li>
+<li>Threadsafe data type 共享线程安全的可变数据</li>
+<li>Synchronization 同步机制共享共享线程不安全的可变数据，对外即为线程安全的ADT.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Confinement限制数据共享</strong></p>
+<ul>
+<li>核心思想：线程之间不共享mutable数据类型<ul>
+<li>将可变数据限制在单一线程内部，避免竞争</li>
+<li>不允许任何县城直接读写该数据</li>
+</ul>
+</li>
+<li>在多线程环境中，取消全局变量，尽量避免使用不安全的静态变量。<ul>
+<li>限制数据共享主要是在线程内部使用局部变量，因为局部变量在每个函数的栈内，每个函数都有自己的栈结构，互不影响，这样局部变量之间也互不影响。</li>
+<li>如果局部变量是一个指向对象的引用，那么就需要检查该对象是否被限制住，如果没有被限制住（即可以被其他线程所访问），那么就没有限制住数据，因此也就不能用这种方法来保证线程安全</li>
+</ul>
+</li>
+<li><strong><em>examples</em></strong> </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Factorial</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Computes n! and prints it on standard output.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> n must be &gt;= 0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">computeFact</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        BigInteger result = <span class="keyword">new</span> BigInteger(<span class="string">"1"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            System.out.println(<span class="string">"working on fact "</span> + n);</span><br><span class="line">            result = result.multiply(<span class="keyword">new</span> BigInteger(String.valueOf(i)));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"fact("</span> + n + <span class="string">") = "</span> + result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123; <span class="comment">// create a thread using an</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;     <span class="comment">// anonymous Runnable</span></span><br><span class="line">                computeFact(<span class="number">99</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        computeFact(<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 解释：主函数开启了两个线程，调用的是相同函数。因为线程共享局部变量的类型，但每个函数调用有不同的栈，因此有不同的<code>i, n, result</code>。由于每个函数都有自己的局部变量，那么每个函数就可以独立运行，更新它们自己的函数值，线程之间不影响结果。</p>
+<p><strong>Immutability共享不可变数据</strong> </p>
+<p>不可变数据类型，指那些在整个程序运行过程中，指向内存的引用是一直不变的，通常使用<code>final</code>来修饰。不可变数据类型通常来讲是线程安全的，但也可能发生意外。</p>
+<p>但是，程序在运行过程中，有时为了优化程序结构，默默地将这个引用更改了。此时，客户端程序员是不知道它被更改了，对于客户端而言，这个引用还是不可变的，但其实已经被悄悄更改了。这时就会发生一些线程安全问题。</p>
+<p>解决方案就是给这些不可变数据类型再增加一些限制：</p>
+<ul>
+<li>所有的方法和属性都是私有的。</li>
+<li>不提供可变的方法，即不对外开放可以更改内部属性的方法。</li>
+<li>没有数据的泄露，即返回值而不是引用。</li>
+<li>不在其中存储可变数据对象。</li>
+</ul>
+<p>这样就可以保证线程的安全了。</p>
+<p><strong>Threadsafe data type（共享线程安全的可变数据）</strong></p>
+<ul>
+<li>方法：如果必须要用mutable的数据类型在多线程之间共享数据，要使用线程安全的数据类型。（在JDK中的类，文档中明确指明了是否threadsafe）</li>
+<li>一般来说，JDK同时提供两个相同功能的类，一个是threadsafe，另一个不是。原因：threadsafe的类一般性能上受影响。</li>
+<li><code>List、Set、Map</code>这些集合类都是线程不安全的，Java API为这些集合类提供了进一步的decorator</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer,Boolean&gt; cache = Collections.synchronizedMap(<span class="keyword">new</span> HashMap&lt;&gt;());</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Collection&lt;T&gt; <span class="title">synchronizedCollection</span><span class="params">(Collection&lt;T&gt; c)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Set&lt;T&gt; <span class="title">synchronizedSet</span><span class="params">(Set&lt;T&gt; s)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">List&lt;T&gt; <span class="title">synchronizedList</span><span class="params">(List&lt;T&gt; list)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K,V&gt; <span class="function">Map&lt;K,V&gt; <span class="title">synchronizedMap</span><span class="params">(Map&lt;K,V&gt; m)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">SortedSet&lt;T&gt; <span class="title">synchronizedSortedSet</span><span class="params">(SortedSet&lt;T&gt; s)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K,V&gt; <span class="function">SortedMap&lt;K,V&gt; <span class="title">synchronizedSortedMap</span><span class="params">(SortedMap&lt;K,V&gt; m)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在使用<code>synchronizedMap(hashMap)</code>之后，不要再把参数<code>hashMap</code>共享给其他线程，不要保留别名，一定要彻底销毁.（可以用<code>private static Map cache = Collections.synchronizedMap(new HashMap&lt;&gt;())</code>;的方式实例化集合类）</li>
+<li>即使在线程安全的集合类上，使用<code>iterator</code>也是不安全的：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Type&gt; c = Collections.synchronizedList(<span class="keyword">new</span></span><br><span class="line">ArrayList&lt;Type&gt;());</span><br><span class="line"><span class="keyword">synchronized</span>(c) &#123; <span class="comment">// to be introduced later (the 4-th threadsafe way)</span></span><br><span class="line">    <span class="keyword">for</span> (Type e : c)</span><br><span class="line">        foo(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>需要注意用java提供的包装类包装集合后，只是将集合的每个操作都看成了原子操作，也就保证了每个操作内部的正确性，但是在两个操作之间不能保证集合类不被修改，因此需要用lock机制，例如</li>
+</ul>
+<p>　　如果在<code>isEmpty</code>和<code>get</code>中间，将元素移除，也就产生了竞争。</p>
+<p><strong>前三种策略的核心思想：避免共享$\to$即使共享，也只能读/不可写(immutable)$\to$即使可写(mutable)，共享的可写数据应自己具备在多线程之间协调的能力，即“使用线程安全的mutable ADT”</strong></p>
+<p> <strong>Synchronization同步与锁</strong></p>
+<ul>
+<li><p>为什么要同步</p>
+<ul>
+<li>java允许多线程并发控制，当多个线程同时操作一个可共享的资源变量时（如数据的增删改查）</li>
+<li>将会导致数据不准确，相互之间产生冲突，因此加入同步锁以避免在该线程没有完成操作之前，被其他线程的调用</li>
+<li>保证了该变量的唯一性和准确性</li>
+</ul>
+</li>
+<li><p>同步方法</p>
+<ul>
+<li><p>即有<code>synchronized</code>关键字修饰的方法。</p>
+</li>
+<li><p>由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，内置锁会保护整个方法。</p>
+</li>
+<li><p>在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</p>
+</li>
+<li><p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注：<code>synchronized</code>关键字也可以修饰静态方法，此时如果调用该静态方法，将会锁住整个类</p>
+</li>
+</ul>
+</li>
+<li><p>同步代码块</p>
+<ul>
+<li><p>在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</p>
+</li>
+<li><p>被该关键字修饰的语句块会自动被加上内置锁，从而实现同步。</p>
+</li>
+<li><p>代码如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(object)&#123;...&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注：同步是一种高开销的操作，因此应该尽量减少同步的内容。</p>
+</li>
+</ul>
+</li>
+<li><p>使用锁机制，获得对数据的独家mutation权，其他线程被阻塞，不得访问</p>
+</li>
+<li><p>Lock是Java语言提供的内嵌机制，每个object都有相关联的lock</p>
+</li>
+<li><p>任何共享的mutable变量/对象必须被lock所保护</p>
+</li>
+<li><p>涉及到多个mutable变量的时候，它们必须被同一个lock所保护 </p>
+</li>
+</ul>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a><em>死锁</em></h3><ul>
+<li><strong>定义</strong>：两个或多个线程相互等待对方释放锁，则会出现死锁现象。</li>
+<li>java虚拟机没有检测，也没有采用措施来处理死锁情况，所以多线程编程是应该采取措施避免死锁的出现。一旦出现死锁，整个程序即不会发生任何异常，也不会给出任何提示，只是所有线程都处于堵塞状态。</li>
+<li><strong>形成死锁的条件：</strong><ul>
+<li>互斥条件：线程使用的资源必须至少有一个是不能共享的（至少有锁）；</li>
+<li>请求与保持条件：至少有一个线程必须持有一个资源并且正在等待获取一个当前被其它线程持有的资源（至少两个线程持有不同锁，又在等待对方持有锁）；</li>
+<li>非剥夺条件：分配资源不能从相应的线程中被强制剥夺（不能强行获取被其他线程持有锁）；</li>
+<li>循环等待条件：第一个线程等待其它线程，后者又在等待第一个线程（线程$A$等线程$B$；线程$B$等线程$C$; $\cdots$ ;线程$N$等线程$A$。如此形成环路）。</li>
+</ul>
+</li>
+<li>防止死锁的方法：<ul>
+<li><strong>加锁顺序：</strong>当多个线程需要相同的一些锁，但是按照不同的顺序加锁，死锁就很容易发生。如果能确保所有的线程都是按照相同的顺序获得锁，那么死锁就不会发生。这种方式是一种有效的死锁预防机制。但是，这种方式需要你事先知道所有可能会用到的锁，但总有些时候是无法预知的</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul>
+<li><p>使用粗粒度的锁，用单个锁来监控多个对象</p>
+<ul>
+<li>对整个社交网 络设置 一个锁 ，并且对其任何组成部分的所有操作都在该锁上进行同步。</li>
+<li>例如：所有的Wizards都属于一个Castle,  可使用 castle 实例的锁</li>
+</ul>
+<p>　　缺点：性能损失大；</p>
+<ul>
+<li>如果用一个锁保护大量的可变数据，那么久放弃了同时访问这些数据的能力；</li>
+<li>在最糟糕的情况下，程序可能基本上是顺序执行的，丧失了并发性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul>
+<li><strong>加锁时限</strong>：在尝试获取锁的时候加一个超时时间，这也就意味着在尝试获取锁的过程中若超过了这个时限该线程则放弃对该锁请求。若一个线程没有在给定的时限内成功获得所有需要的锁，则会进行回退并释放所有已经获得的锁。</li>
+<li>用 jstack 等工具进行死锁检测</li>
+</ul>
+</li>
+</ul>
+<h3 id="以注释的形式撰写线程安全策略"><a href="#以注释的形式撰写线程安全策略" class="headerlink" title="以注释的形式撰写线程安全策略"></a><em>以注释的形式撰写线程安全策略</em></h3><ul>
+<li>在代码中以注释的形式添加说明：该ADT采取了什么设计决策来保证线程安全</li>
+<li>阐述如何使rep线程安全；</li>
+<li>写入表示不变性的说明中，以便代码维护者知道你是如何为类设计线程安全性的。</li>
+<li><p>需要对安全性进行这种仔细的论证，阐述使用了哪种技术，使用threadsafe data types, or synchronization时，需要论证所有对数据的访问都是具有原子性的</p>
+</li>
+<li><p>字符串是不可变的并且是线程安全的; 但是指向该字符串的rep，特别是文本变量，并不是不可变的；</p>
+</li>
+<li>文本不是最终变量，因为我们需要数据类型来支持插入和删除操作；</li>
+<li>因此读取和写入文本变量本身不是线程安全的。</li>
+</ul>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
   </div>
 
   
@@ -2091,7 +2358,7 @@ Process finished with exit code 0
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
