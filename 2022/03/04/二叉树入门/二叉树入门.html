@@ -1,15 +1,15 @@
 <hr>
 <p>title: 二叉树入门指南</p>
 <h2 id="mathjax-true"><a href="#mathjax-true" class="headerlink" title="mathjax: true"></a>mathjax: true</h2><h1 id="二叉树的种类"><a href="#二叉树的种类" class="headerlink" title="二叉树的种类"></a>二叉树的种类</h1><h2 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h2><p>满二叉树的定义是：如果一颗二叉树只有度为0的节点和度为2的节点，且度为0的节点在同一层上，则该二叉树是满二叉树，如下图：</p>
-<p>{% asset_img 满二叉树.png %}</p>
+<p>{% asset_img 满二叉树.png This is an example image %}</p>
 <p>满二叉树的深度为k，则节点共有 $ 2^{k} - 1 $个（这里使用等比数列相加即可得出）。</p>
 <h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><p>在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。</p>
-<p>{% asset_img 完全二叉树的判定.png %}</p>
+<p>{% asset_img 完全二叉树的判定.png This is an example image %}</p>
 <p>优先级队列其实是一个堆，堆就是一个完全二叉树，而且保证了父子节点的顺序关系。</p>
 <h2 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h2><p>二叉搜索树是节点带有数值的一棵树，并且要满足以下关系：<br><strong>若它的左子树不为空，则左子树上所有节点的值都小于根节点的值；</strong><br><strong>若它的右子树不为空，则右子树上所有节点的值都大于根节点的值；</strong><br><strong>它的左、右子树也分别为二叉排序树。</strong></p>
-<p>{% asset_img 二叉搜索树.png %}</p>
+<p>{% asset_img 二叉搜索树.png This is an example image %}</p>
 <h2 id="平衡二叉搜索树"><a href="#平衡二叉搜索树" class="headerlink" title="平衡二叉搜索树"></a>平衡二叉搜索树</h2><p>平衡二叉搜索树又被称为<strong>AVL（Adelson-Velsky and Landis）</strong>，且具有如下性质：它是一棵空树或者它的左右两个子树的高度差的绝对值不超过1，并且左右两颗子树都是平衡二叉树。</p>
-<p>{% asset_img 平衡二叉树搜索树.png %} </p>
+<p>{% asset_img 平衡二叉树搜索树.png This is an example image %} </p>
 <p>最后一棵树不是平衡二叉搜索树，因为根节点的左右子树的高度差的绝对值超过了1（此时左边为6，右边无子树为0）。</p>
 <p>C++中<strong>map、set、multimap，multiset</strong>的底层实现都是平衡二叉搜索树，所以<strong>map、set</strong>的增删操作时间时间复杂度是<strong>logn</strong>，注意我这里没有说<strong>unordered_map、unordered_set</strong>，这两者的底层实现是哈希表。</p>
 <h1 id="二叉树的定义"><a href="#二叉树的定义" class="headerlink" title="二叉树的定义"></a>二叉树的定义</h1><p>在面试的时候，因为大部分情况是没有IDE和代码提示的，需要自己定义二叉树，下面是常用的定义二叉树的方法：</p>
