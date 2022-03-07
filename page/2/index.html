@@ -191,6 +191,100 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/09/16/Windows-10-安装PyTorch/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-09-16 20:33:06 / Modified: 21:38:57" itemprop="dateCreated datePublished" datetime="2019-09-16T20:33:06+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
+<h1 id="Windows-10-安装PyTorch"><a href="#Windows-10-安装PyTorch" class="headerlink" title="Windows 10 安装PyTorch"></a><em>Windows 10 安装PyTorch</em></h1><h4 id="2019-09-16-20-33-06"><a href="#2019-09-16-20-33-06" class="headerlink" title="2019-09-16 20:33:06"></a>2019-09-16 20:33:06</h4><hr>
+<p>今天比较有时间，正好看完了CVPR-2018年的论文&lt;<strong>Single Image Reﬂection Separation with Perceptual Losses</strong>&gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是Ubuntu下，所以问了一下学长，他说可以在Windows下安装PyTorch来跑。下面就记录一下自己安装PyTorch的过程。</p>
+<p>1.由于之前安装了Anaconda3，所以可以采用conda安装的方式，但是之前安装Tensorflow的时候Python版本的问题就一直有点疑问，所以查了一下发现如果只是想利用Pycharm运行PyTorch的话，其实直接用pip方式安装就可以</p>
+<p>2.那么需要到PyTorch官网去查看自己所需的代码 <a href="https://pytorch.org/" target="_blank" rel="noopener">PyTorch官网连接</a>，相应的选择自己电脑的配置，注意如果用pip安装的话，要选择Pip选项。然后下面就会给出你所需的命令。还要注意的一点是我的电脑由于是A卡的，所以在CUDA这个部分我选择的是None，也就是所说的CPU版本的PyTorch。本人的命令如下：</p>
+<pre><code>pip3 install torch==1.2.0+cpu torchvision==0.4.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+</code></pre><p>3.安装成功后，一定要记得看一下自己所安装的<strong><em>文件夹地址</em></strong></p>
+<p>4.打开Pycharm，按ctrl+alt+s，打开Project Interpreter进行配置，点击右上角的设置符号，选择Add，在下面点选Existing environment，然后在右边的…处找到自己刚才安装的<strong><em>文件夹地址</em></strong>，拉到最下面找到python.exe文件一路点击<strong>ok</strong>。</p>
+<p>5.在pycharm中新建项目，输入以下代码：</p>
+<pre><code>from __future__ import print_function
+import torch
+x=torch.rand(5,3)
+print(x)
+</code></pre><p>查看输出，如果输出为：</p>
+<pre><code>tensor([[0.9072, 0.3848, 0.9203],
+        [0.1643, 0.7447, 0.1730],
+        [0.4379, 0.2974, 0.1283],
+        [0.4563, 0.5322, 0.9924],
+        [0.4715, 0.9287, 0.7176]])
+
+Process finished with exit code 0
+</code></pre><p>证明PyTorch安装成功！</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第六期/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3132,7 +3226,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -3141,7 +3235,7 @@
       
       <div class="site-state-item site-state-tags">
         
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span>
         
       </div>
@@ -3230,6 +3324,8 @@
   
 
   
+    
+      
     
       
     

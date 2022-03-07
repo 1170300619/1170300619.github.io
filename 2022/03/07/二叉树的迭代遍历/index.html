@@ -55,22 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="众所周知，hexo插入图像有两种方式，一种是使用 markdown 语法： ![图片替代文本](图片链接 &amp;quot;图片title&amp;quot;) 还有一种是使用 HTML 语法来更精确的控制插入的图像： &amp;lt;div align = &amp;quot;center&amp;quot;&amp;gt;     &amp;lt;img src = ./Fig/Fig27.png width = 90%&amp;gt; //这里使用相对">
-<meta name="keywords" content="code">
+  <meta name="description" content="1. 层次遍历层次遍历是广度优先遍历，即先遍历二叉树的每一层节点，再向下继续遍历每一个节点的子节点。基本思想是，当同层节点都遍历后，此时同层节点的子节点进行下一轮遍历，不难想到，我们应该使用队列来实现这一想法。因为队列先进先出的特性，使得同层的节点必定相邻，我们只需要将同层每个节点放入队列后，在它们按序出列时放入子节点即可。下面是层序遍历的代码模板，事实上，这份模板可以解决很多类似于层序遍历的问题">
+<meta name="keywords" content="二叉树 迭代遍历">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决hexo不显示插入图像的问题">
-<meta property="og:url" content="http://yoursite.com/2022/03/05/解决hexo不显示插入图像的问题/index.html">
+<meta property="og:title" content="二叉树的迭代遍历">
+<meta property="og:url" content="http://yoursite.com/2022/03/07/二叉树的迭代遍历/index.html">
 <meta property="og:site_name" content="Sakurastream">
-<meta property="og:description" content="众所周知，hexo插入图像有两种方式，一种是使用 markdown 语法： ![图片替代文本](图片链接 &amp;quot;图片title&amp;quot;) 还有一种是使用 HTML 语法来更精确的控制插入的图像： &amp;lt;div align = &amp;quot;center&amp;quot;&amp;gt;     &amp;lt;img src = ./Fig/Fig27.png width = 90%&amp;gt; //这里使用相对">
+<meta property="og:description" content="1. 层次遍历层次遍历是广度优先遍历，即先遍历二叉树的每一层节点，再向下继续遍历每一个节点的子节点。基本思想是，当同层节点都遍历后，此时同层节点的子节点进行下一轮遍历，不难想到，我们应该使用队列来实现这一想法。因为队列先进先出的特性，使得同层的节点必定相邻，我们只需要将同层每个节点放入队列后，在它们按序出列时放入子节点即可。下面是层序遍历的代码模板，事实上，这份模板可以解决很多类似于层序遍历的问题">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2022/03/05/解决hexo不显示插入图像的问题/vscode插件.png">
-<meta property="og:image" content="http://yoursite.com/2022/03/05/解决hexo不显示插入图像的问题/预览.png">
-<meta property="og:updated_time" content="2022-03-07T12:13:58.963Z">
+<meta property="og:updated_time" content="2022-03-07T12:12:20.726Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="解决hexo不显示插入图像的问题">
-<meta name="twitter:description" content="众所周知，hexo插入图像有两种方式，一种是使用 markdown 语法： ![图片替代文本](图片链接 &amp;quot;图片title&amp;quot;) 还有一种是使用 HTML 语法来更精确的控制插入的图像： &amp;lt;div align = &amp;quot;center&amp;quot;&amp;gt;     &amp;lt;img src = ./Fig/Fig27.png width = 90%&amp;gt; //这里使用相对">
-<meta name="twitter:image" content="http://yoursite.com/2022/03/05/解决hexo不显示插入图像的问题/vscode插件.png">
-  <link rel="canonical" href="http://yoursite.com/2022/03/05/解决hexo不显示插入图像的问题/">
+<meta name="twitter:title" content="二叉树的迭代遍历">
+<meta name="twitter:description" content="1. 层次遍历层次遍历是广度优先遍历，即先遍历二叉树的每一层节点，再向下继续遍历每一个节点的子节点。基本思想是，当同层节点都遍历后，此时同层节点的子节点进行下一轮遍历，不难想到，我们应该使用队列来实现这一想法。因为队列先进先出的特性，使得同层的节点必定相邻，我们只需要将同层每个节点放入队列后，在它们按序出列时放入子节点即可。下面是层序遍历的代码模板，事实上，这份模板可以解决很多类似于层序遍历的问题">
+  <link rel="canonical" href="http://yoursite.com/2022/03/07/二叉树的迭代遍历/">
 
 
 <script id="page-configurations">
@@ -84,7 +81,7 @@
   };
 </script>
 
-  <title>解决hexo不显示插入图像的问题 | Sakurastream</title>
+  <title>二叉树的迭代遍历 | Sakurastream</title>
   
 
 
@@ -199,7 +196,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/05/解决hexo不显示插入图像的问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/07/二叉树的迭代遍历/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gift">
@@ -211,7 +208,7 @@
       <meta itemprop="name" content="Sakurastream">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">解决hexo不显示插入图像的问题
+        <h1 class="post-title" itemprop="name headline">二叉树的迭代遍历
 
           
         </h1>
@@ -227,19 +224,11 @@
                 
               
 
-              <time title="Created: 2022-03-05 14:12:05" itemprop="dateCreated datePublished" datetime="2022-03-05T14:12:05+08:00">2022-03-05</time>
+              <time title="Created: 2022-03-07 19:14:16 / Modified: 20:12:20" itemprop="dateCreated datePublished" datetime="2022-03-07T19:14:16+08:00">2022-03-07</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-07 20:13:58" itemprop="dateModified" datetime="2022-03-07T20:13:58+08:00">2022-03-07</time>
-              </span>
             
           
 
@@ -254,29 +243,91 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>众所周知，hexo插入图像有两种方式，一种是使用 <strong><em>markdown</em></strong> 语法：</p>
-<pre><code>![图片替代文本](图片链接 &quot;图片title&quot;)
-</code></pre><p>还有一种是使用 <strong><em>HTML</em></strong> 语法来更精确的控制插入的图像：</p>
-<pre><code>&lt;div align = &quot;center&quot;&gt;
-    &lt;img src = ./Fig/Fig27.png width = 90%&gt; //这里使用相对路径来引用图像
-&lt;/div&gt; 
-</code></pre><p>后者能更精确的控制图像的大小和位置，来满足插入图像时的各种需求。</p>
-<p>我使用的markdown编辑器是vscode，一方面vscode的启动速度快，占用资源少，另一方面，vscode众多的强大插件能完美的满足我在编辑markdown时的要求。这里如果你使用markdown文件最终是为了生成pdf文件的话，强烈推荐一款vscode下的插件：</p>
-<img src="/2022/03/05/解决hexo不显示插入图像的问题/vscode插件.png" title="This is an example image">
-<p>每次打开一个.md文件后，在编辑区右键即可打开预览模式，</p>
-<img src="/2022/03/05/解决hexo不显示插入图像的问题/预览.png" title="This is an example image">
-<p>并且上述两种插入图像的方式在这个插件下都可以正确显示。但是每次将.md文件推送到网站上时，插入的图像都不会正确显示，查找一番后，我发现了在Hexo官方网站上有这个问题的解决方案。这里贴一下链接：<a href="https://hexo.io/zh-cn/docs/asset-folders" target="_blank" rel="noopener">Hexo官方中文网站</a></p>
-<p>具体方法是：</p>
-<ol>
-<li>在根目录下配置文件 <strong>_config.yml</strong> 中有 <strong>post_asset_folder:false</strong> 改为<strong>true</strong>。这样在建立文件时，Hexo会自动建立一个与文章同名的文件夹，这样就可以把与该文章相关的所有资源（图片）都放到那个文件夹里方便后面引用。</li>
-<li>git bash安装插件：npm install <a href="https://github.com/7ym0n/hexo-asset-image" target="_blank" rel="noopener">https://github.com/7ym0n/hexo-asset-image</a> —save（这是个修改过的插件，经测试无问题），使用这个插件来引入图片（这里如果遇到了安装时没有写入权限的问题，则在命令最后加入 <strong>-g</strong> 来获取权限。</li>
-<li>插入图片时用这种方式：<strong></strong>，其中<strong>test.jpg就是你要引用的图片</strong>，后面的<strong>This is an test image是图片描述</strong>，可以自己修改。注意这里的图片描述<strong>不能删除</strong>，因为这个插件将其定义为不可省略。</li>
-</ol>
-<p>上面这个方法的缺点是在vscode预览中并不能看到插入的图像，这里可以使用hexo发布至本地来查看是否成功。输入如下命令：</p>
-<pre><code>hexo s
-</code></pre><p>然后在浏览器地址栏访问如下网页查看效果：</p>
-<pre><code>http://localhost:4000/
-</code></pre>
+        <h1 id="1-层次遍历"><a href="#1-层次遍历" class="headerlink" title="1. 层次遍历"></a>1. 层次遍历</h1><p>层次遍历是广度优先遍历，即先遍历二叉树的每一层节点，再向下继续遍历每一个节点的子节点。基本思想是，当同层节点都遍历后，此时同层节点的子节点进行下一轮遍历，不难想到，我们应该使用队列来实现这一想法。因为队列先进先出的特性，使得同层的节点必定相邻，我们只需要将同层每个节点放入队列后，在它们按序出列时放入子节点即可。<br>下面是层序遍历的代码模板，事实上，这份模板可以解决很多类似于层序遍历的问题，只需要修改很少的部分即可：</p>
+<pre><code>class Sulution{
+    public:
+        vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode* root){
+            queue&lt;TreeNode*&gt; que;
+            vector&lt;vector&lt;int&gt;&gt; result;
+            if(root == NULL)return result;
+            que.push(root);
+            while(!que.empty()){
+                int size = que.size();
+                vector&lt;int&gt; vec;
+                for(int i = 0; i &lt; size; i++){
+                    TreeNode* cur = que.front();
+                    que.pop();
+                    vec.push_back(cur-&gt;val);
+                    if(cur-&gt;left)que.push(cur-&gt;left);
+                    if(cur-&gt;right)que.push(cur-&gt;right);
+                }
+                result.push_back(vec);
+            }
+            return result;
+        }
+}
+</code></pre><p>这样每一层的节点都保存至一个vector内，每一层迭代结束后，将相应的vector保存到result中。</p>
+<h1 id="2-前序遍历"><a href="#2-前序遍历" class="headerlink" title="2. 前序遍历"></a>2. 前序遍历</h1><p>在上一期实现递归深度优先遍历时，其实关键就是将每一次递归调用的函数局部变量、参数值和返回地址压入调用栈中，然后调用返回后，从栈顶弹出上一次递归的各项参数，这就是递归能返回最终结果的原理。那么我们当然可以手动使用stack来实现模拟这一过程。</p>
+<p>栈（stack）空间先入后出，对于前序遍历中左右的结果，首先将根节点放入栈中，然后弹出栈顶元素，再放入右孩子，最后放入左孩子，这样出栈的顺序才正确。代码如下：</p>
+<pre><code>class Solution{
+    public:
+        vector&lt;int&gt; preOrder(TreeNode* root){
+            stack&lt;TreeNode*&gt; stk;
+            vector&lt;int&gt; result;
+            if(root == NULL)return result;
+            stk.push(root);
+            while(!stk.empty()){
+                TreeNode* cur = stk.top();
+                stk.pop();
+                result.push_back(cur-&gt;val);
+                if(cur-&gt;right)stk.push(cur-&gt;right);
+                if(cur-&gt;left)stk.push(cur-&gt;left);
+            }
+            return result;
+        }
+}
+</code></pre><h1 id="3-后序遍历"><a href="#3-后序遍历" class="headerlink" title="3. 后序遍历"></a>3. 后序遍历</h1><p>前序遍历是中左右的顺序，后序遍历是左右中的顺序。而恰恰我们可以调整前序遍历放入子节点的左右顺序来产生中右左的序列（此时先放入左子节点，后放入右子节点），然后将这个序列逆序即可得到左右中的顺序。代码只需要在前序的基础上修改少部分即可：</p>
+<pre><code>class Solution{
+    public:
+        vector&lt;int&gt; preOrder(TreeNode* root){
+            stack&lt;TreeNode*&gt; stk;
+            vector&lt;int&gt; result;
+            if(root == NULL)return result;
+            stk.push(root);
+            while(!stk.empty()){
+                TreeNode* cur = stk.top();//中
+                stk.pop();
+                result.push_back(cur-&gt;val);
+                if(cur-&gt;left)stk.push(cur-&gt;left);//先放入左
+                if(cur-&gt;right)stk.push(cur-&gt;right);//后放入右
+            }
+            reverse(result.begin(), result.end());//逆序
+            return result;
+        }
+}
+</code></pre><h1 id="4-中序遍历"><a href="#4-中序遍历" class="headerlink" title="4. 中序遍历"></a>4. 中序遍历</h1><p>中序遍历的顺序是左中右，此时如果我们还按照上述的方法进行中序遍历就会发现，当访问到左节点时，紧跟的“中”是其父节点，这就造成了不便性。这里我们使用一个指针来控制访问元素，栈则用来处理节点上的元素。</p>
+<pre><code>class Solution {
+public:
+    vector&lt;int&gt; inorderTraversal(TreeNode* root) {
+        vector&lt;int&gt; result;
+        stack&lt;TreeNode*&gt; stk;
+        TreeNode* cur = root;
+        while(cur != NULL || !stk.empty()){
+            if(cur != NULL){//指针访问节点，访问到最左下的起始元素
+                stk.push(cur);
+                cur = cur-&gt;left;//左
+            }else{//当前节点为空时，将栈顶元素拿出来
+                cur = stk.top();
+                stk.pop();
+                result.push_back(cur-&gt;val);//中节点
+                cur = cur-&gt;right;//访问右子节点
+            }
+        }
+        return result;
+    }
+};
+</code></pre><p>中序遍历需要仔细思考一下其原理，最好是在纸上测试一遍，这里蕴含的其实是“回溯”的知识，在之后的题解中，也会涉及到二叉树+回溯的题目，即在当前元素遍历后，如何再回到父节点再向另一个方向遍历。需要仔细体会。</p>
+
     </div>
 
     
@@ -286,14 +337,23 @@
       
 
       <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/二叉树-迭代遍历/" rel="tag"># 二叉树 迭代遍历</a>
+            
+          </div>
+        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2022/03/04/二叉树入门指南/" rel="next" title="二叉树入门指南">
-                  <i class="fa fa-chevron-left"></i> 二叉树入门指南
+                <a href="/2022/03/05/解决hexo不显示插入图像的问题/" rel="next" title="解决hexo不显示插入图像的问题">
+                  <i class="fa fa-chevron-left"></i> 解决hexo不显示插入图像的问题
                 </a>
               
             </div>
@@ -301,10 +361,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2022/03/07/二叉树的迭代遍历/" rel="prev" title="二叉树的迭代遍历">
-                  二叉树的迭代遍历 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -353,6 +409,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-层次遍历"><span class="nav-number">1.</span> <span class="nav-text">1. 层次遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-前序遍历"><span class="nav-number">2.</span> <span class="nav-text">2. 前序遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-后序遍历"><span class="nav-number">3.</span> <span class="nav-text">3. 后序遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-中序遍历"><span class="nav-number">4.</span> <span class="nav-text">4. 中序遍历</span></a></li></ol></div>
+        
       </div>
       <!--/noindex-->
 
