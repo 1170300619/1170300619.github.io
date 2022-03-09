@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="折腾了两天，终于完成了基本的第一篇博客。以此纪念一下，说实话，整个步骤都是懵着过来的，不过不管怎么样，也算是让自己有了一个可以发泄心情的小窝，优化什么的以后再说吧.. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot; More info: Writing Run server1$ hexo server More info: Server">
-<meta name="keywords" content="code">
+  <meta name="description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
+<meta name="keywords" content="常量函数 隐式参数this">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第一篇博客">
-<meta property="og:url" content="http://yoursite.com/2019/02/15/hello-world/index.html">
+<meta property="og:title" content="何为常量函数">
+<meta property="og:url" content="http://yoursite.com/2022/03/09/何为常量函数/index.html">
 <meta property="og:site_name" content="Sakurastream">
-<meta property="og:description" content="折腾了两天，终于完成了基本的第一篇博客。以此纪念一下，说实话，整个步骤都是懵着过来的，不过不管怎么样，也算是让自己有了一个可以发泄心情的小窝，优化什么的以后再说吧.. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot; More info: Writing Run server1$ hexo server More info: Server">
+<meta property="og:description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-02-15T10:44:23.590Z">
+<meta property="og:updated_time" content="2022-03-09T13:20:54.044Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="第一篇博客">
-<meta name="twitter:description" content="折腾了两天，终于完成了基本的第一篇博客。以此纪念一下，说实话，整个步骤都是懵着过来的，不过不管怎么样，也算是让自己有了一个可以发泄心情的小窝，优化什么的以后再说吧.. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot; More info: Writing Run server1$ hexo server More info: Server">
-  <link rel="canonical" href="http://yoursite.com/2019/02/15/hello-world/">
+<meta name="twitter:title" content="何为常量函数">
+<meta name="twitter:description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
+  <link rel="canonical" href="http://yoursite.com/2022/03/09/何为常量函数/">
 
 
 <script id="page-configurations">
@@ -81,7 +81,7 @@
   };
 </script>
 
-  <title>第一篇博客 | Sakurastream</title>
+  <title>何为常量函数 | Sakurastream</title>
   
 
 
@@ -196,7 +196,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/15/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/09/何为常量函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gift">
@@ -208,7 +208,7 @@
       <meta itemprop="name" content="Sakurastream">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">第一篇博客
+        <h1 class="post-title" itemprop="name headline">何为常量函数
 
           
         </h1>
@@ -224,7 +224,7 @@
                 
               
 
-              <time title="Created: 2019-02-15 17:05:47 / Modified: 18:44:23" itemprop="dateCreated datePublished" datetime="2019-02-15T17:05:47+08:00">2019-02-15</time>
+              <time title="Created: 2022-03-09 20:54:45 / Modified: 21:20:54" itemprop="dateCreated datePublished" datetime="2022-03-09T20:54:45+08:00">2022-03-09</time>
             </span>
           
             
@@ -243,16 +243,67 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>折腾了两天，终于完成了基本的第一篇博客。以此纪念一下，说实话，整个步骤都是懵着过来的，不过不管怎么样，也算是让自己有了一个可以发泄心情的小窝，优化什么的以后再说吧..</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h1 id="1-this指针"><a href="#1-this指针" class="headerlink" title="1.this指针"></a>1.this指针</h1><p>当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为<strong>this</strong>指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用<strong>this</strong>来访问类内成员。那么由于<strong>this</strong>始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是<strong>this</strong>对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：</p>
+<pre><code>class people{
+    public:
+        people(){}
+        people(int x):score(x){}
+        ~people(){}
+        int getScore(){return score;}
+    private:
+        int score;
+};
 
+int main(){
+    const people p1(22);//常量
+    cout &lt;&lt; p1.getScore() &lt;&lt; endl; //error，不能用常量绑定非常量指针
+    return 0;
+}
+</code></pre><p>这段代码在编译器中是无法编译通过的。我们知道用<strong>指向常量的指针</strong>来绑定<strong>常量和非常量</strong>都是可以的，那么为了提高成员函数的灵活性，我们就可以将这个<strong>this</strong>指针定义为指向常量的指针（同时其本身就是常量指针）。方法就是在成员函数的参数列表后面加入关键字const，则上述getScore函数修改为：</p>
+<pre><code>int getScore() const {return score;}
+</code></pre><p>这样上述代码的main函数就可以正常运行了。</p>
+<h1 id="2-补充"><a href="#2-补充" class="headerlink" title="2.补充"></a>2.补充</h1><p>对于成员函数，其有一个隐式参数，来表示对象的地址，例如：</p>
+<pre><code>class Foo{
+    public:
+        void hello(int a){
+            cout &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        }
+        //等价于
+        //void hello(Foo* const this, int a){
+            //out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        //}
+};
+
+int main(){
+    Foo foo;
+    int a = 2;
+    foo.hello(a);
+    //等价于
+    foo.hello(&amp;foo, a);
+}
+</code></pre><p>上面的代码展示了对象地址的隐式参数传递，当我们将hello设置为常量函数后，就可以理解为其等价版本变为：</p>
+<pre><code>void hello(const Foo* const this, int a){
+    out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+}
+</code></pre><h1 id="3-常量成员函数的重载"><a href="#3-常量成员函数的重载" class="headerlink" title="3.常量成员函数的重载"></a>3.常量成员函数的重载</h1><p>两个成员函数，名字和参数列表都一样，但是一个是常量函数一个不是，则也算重载。</p>
+<pre><code>class people{
+    public:
+        people(){}
+        people(int x):score(x){}
+        ~people(){}
+        int getScore() {return score;}
+        int getScore() const {return score};
+    private:
+        int score;
+};
+
+int main(){
+    const people p1(22);//常量对象
+    people p2(23); //非常量对象
+    cout &lt;&lt; p1.getScore() &lt;&lt; p2.getScore() &lt;&lt; endl; //重载
+    return 0;
+}
+</code></pre>
     </div>
 
     
@@ -262,21 +313,30 @@
       
 
       <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/常量函数-隐式参数this/" rel="tag"># 常量函数 隐式参数this</a>
+            
+          </div>
+        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/2022/03/07/二叉树的迭代遍历/" rel="next" title="二叉树的迭代遍历">
+                  <i class="fa fa-chevron-left"></i> 二叉树的迭代遍历
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/06/21/软件构造期末总结（1)/" rel="prev" title>
-                   <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -325,7 +385,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-this指针"><span class="nav-number">1.</span> <span class="nav-text">1.this指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-补充"><span class="nav-number">2.</span> <span class="nav-text">2.补充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-常量成员函数的重载"><span class="nav-number">3.</span> <span class="nav-text">3.常量成员函数的重载</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -437,6 +497,56 @@
 
   
 
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
   
 
   

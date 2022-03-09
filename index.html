@@ -191,6 +191,138 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/09/何为常量函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/03/09/何为常量函数/" class="post-title-link" itemprop="url">何为常量函数</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-03-09 20:54:45 / Modified: 21:20:54" itemprop="dateCreated datePublished" datetime="2022-03-09T20:54:45+08:00">2022-03-09</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-this指针"><a href="#1-this指针" class="headerlink" title="1.this指针"></a>1.this指针</h1><p>当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为<strong>this</strong>指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用<strong>this</strong>来访问类内成员。那么由于<strong>this</strong>始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是<strong>this</strong>对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：</p>
+<pre><code>class people{
+    public:
+        people(){}
+        people(int x):score(x){}
+        ~people(){}
+        int getScore(){return score;}
+    private:
+        int score;
+};
+
+int main(){
+    const people p1(22);//常量
+    cout &lt;&lt; p1.getScore() &lt;&lt; endl; //error，不能用常量绑定非常量指针
+    return 0;
+}
+</code></pre><p>这段代码在编译器中是无法编译通过的。我们知道用<strong>指向常量的指针</strong>来绑定<strong>常量和非常量</strong>都是可以的，那么为了提高成员函数的灵活性，我们就可以将这个<strong>this</strong>指针定义为指向常量的指针（同时其本身就是常量指针）。方法就是在成员函数的参数列表后面加入关键字const，则上述getScore函数修改为：</p>
+<pre><code>int getScore() const {return score;}
+</code></pre><p>这样上述代码的main函数就可以正常运行了。</p>
+<h1 id="2-补充"><a href="#2-补充" class="headerlink" title="2.补充"></a>2.补充</h1><p>对于成员函数，其有一个隐式参数，来表示对象的地址，例如：</p>
+<pre><code>class Foo{
+    public:
+        void hello(int a){
+            cout &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        }
+        //等价于
+        //void hello(Foo* const this, int a){
+            //out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        //}
+};
+
+int main(){
+    Foo foo;
+    int a = 2;
+    foo.hello(a);
+    //等价于
+    foo.hello(&amp;foo, a);
+}
+</code></pre><p>上面的代码展示了对象地址的隐式参数传递，当我们将hello设置为常量函数后，就可以理解为其等价版本变为：</p>
+<pre><code>void hello(const Foo* const this, int a){
+    out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+}
+</code></pre><h1 id="3-常量成员函数的重载"><a href="#3-常量成员函数的重载" class="headerlink" title="3.常量成员函数的重载"></a>3.常量成员函数的重载</h1><p>两个成员函数，名字和参数列表都一样，但是一个是常量函数一个不是，则也算重载。</p>
+<pre><code>class people{
+    public:
+        people(){}
+        people(int x):score(x){}
+        ~people(){}
+        int getScore() {return score;}
+        int getScore() const {return score};
+    private:
+        int score;
+};
+
+int main(){
+    const people p1(22);//常量对象
+    people p2(23); //非常量对象
+    cout &lt;&lt; p1.getScore() &lt;&lt; p2.getScore() &lt;&lt; endl; //重载
+    return 0;
+}
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/07/二叉树的迭代遍历/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1966,93 +2098,6 @@ Final   m: 0.291861 c: 0.131439
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/05/札记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/11/05/札记/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-11-05 21:57:53" itemprop="dateCreated datePublished" datetime="2019-11-05T21:57:53+08:00">2019-11-05</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-17 09:51:28" itemprop="dateModified" datetime="2021-05-17T09:51:28+08:00">2021-05-17</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>title: 札记<br>date: 2019-11-05 21:57:53</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p>状态不佳，似乎又回到了失语症的状态，和现实有些不交融，有时候能明显的感觉自己在故意的压抑情绪。</p>
-<p>最近在看村上的《1Q84》，自己像极了里面的深绘里，经历了一些事情以后丧失了说话的能力，只能向外界以短暂而无意义的华语表达自己的困境</p>
-<p>这种状态我心知肚明是怎样逐渐发生的，又是逐渐加重的，但是暂时并没有自愈的能力，只能无助的看着这一层迷雾逐渐笼罩自身</p>
-<p>也许下了雪就会好一点吧，能找回片刻的宁静</p>
-<p>“青豆用手捂住下半边脸，继续凝望着那两只月亮，确实，有什么事情正在发生。她想。心脏的跳动加速。不是世界出了毛病，就是我自己出了毛病。是瓶子有问题呢，还是盖子又问题？”</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -2102,7 +2147,7 @@ Final   m: 0.291861 c: 0.131439
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2111,7 +2156,7 @@ Final   m: 0.291861 c: 0.131439
       
       <div class="site-state-item site-state-tags">
         
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span>
         
       </div>
