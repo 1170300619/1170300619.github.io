@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
-<meta name="keywords" content="常量函数 隐式参数this">
+  <meta name="description" content="1. 何为前后指针在二叉树的一些题目中，需要我们记录前后两个相邻节点各自的信息（尤其是在二叉搜索树中经常出现，比如501和530，那么常用的技巧就是在遍历过程中设置两个指针，分别指向这两个相邻节点，在处理之后，将前一个指针指向当前节点，当前指针指向下一个节点。 2. 递归中构造前后指针class Solution{     private:         TreeNode* pre;">
+<meta name="keywords" content="二叉树 指针">
 <meta property="og:type" content="article">
-<meta property="og:title" content="何为常量函数">
-<meta property="og:url" content="http://yoursite.com/2022/03/09/何为常量函数/index.html">
+<meta property="og:title" content="二叉树遍历中构造前后指针">
+<meta property="og:url" content="http://yoursite.com/2022/03/11/二叉树遍历中构造前后指针/index.html">
 <meta property="og:site_name" content="Sakurastream">
-<meta property="og:description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
+<meta property="og:description" content="1. 何为前后指针在二叉树的一些题目中，需要我们记录前后两个相邻节点各自的信息（尤其是在二叉搜索树中经常出现，比如501和530，那么常用的技巧就是在遍历过程中设置两个指针，分别指向这两个相邻节点，在处理之后，将前一个指针指向当前节点，当前指针指向下一个节点。 2. 递归中构造前后指针class Solution{     private:         TreeNode* pre;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2022-03-09T13:20:54.044Z">
+<meta property="og:updated_time" content="2022-03-11T12:14:11.354Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="何为常量函数">
-<meta name="twitter:description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
-  <link rel="canonical" href="http://yoursite.com/2022/03/09/何为常量函数/">
+<meta name="twitter:title" content="二叉树遍历中构造前后指针">
+<meta name="twitter:description" content="1. 何为前后指针在二叉树的一些题目中，需要我们记录前后两个相邻节点各自的信息（尤其是在二叉搜索树中经常出现，比如501和530，那么常用的技巧就是在遍历过程中设置两个指针，分别指向这两个相邻节点，在处理之后，将前一个指针指向当前节点，当前指针指向下一个节点。 2. 递归中构造前后指针class Solution{     private:         TreeNode* pre;">
+  <link rel="canonical" href="http://yoursite.com/2022/03/11/二叉树遍历中构造前后指针/">
 
 
 <script id="page-configurations">
@@ -81,7 +81,7 @@
   };
 </script>
 
-  <title>何为常量函数 | Sakurastream</title>
+  <title>二叉树遍历中构造前后指针 | Sakurastream</title>
   
 
 
@@ -196,7 +196,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/09/何为常量函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/11/二叉树遍历中构造前后指针/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gift">
@@ -208,7 +208,7 @@
       <meta itemprop="name" content="Sakurastream">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">何为常量函数
+        <h1 class="post-title" itemprop="name headline">二叉树遍历中构造前后指针
 
           
         </h1>
@@ -224,7 +224,7 @@
                 
               
 
-              <time title="Created: 2022-03-09 20:54:45 / Modified: 21:20:54" itemprop="dateCreated datePublished" datetime="2022-03-09T20:54:45+08:00">2022-03-09</time>
+              <time title="Created: 2022-03-11 19:41:47 / Modified: 20:14:11" itemprop="dateCreated datePublished" datetime="2022-03-11T19:41:47+08:00">2022-03-11</time>
             </span>
           
             
@@ -243,67 +243,55 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1-this指针"><a href="#1-this指针" class="headerlink" title="1.this指针"></a>1.this指针</h1><p>当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为<strong>this</strong>指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用<strong>this</strong>来访问类内成员。那么由于<strong>this</strong>始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是<strong>this</strong>对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：</p>
-<pre><code>class people{
-    public:
-        people(){}
-        people(int x):score(x){}
-        ~people(){}
-        int getScore(){return score;}
+        <h1 id="1-何为前后指针"><a href="#1-何为前后指针" class="headerlink" title="1. 何为前后指针"></a>1. 何为前后指针</h1><p>在二叉树的一些题目中，需要我们记录前后两个相邻节点各自的信息（尤其是在二叉搜索树中经常出现，比如501和530，那么常用的技巧就是在遍历过程中设置两个指针，分别指向这两个相邻节点，在处理之后，将前一个指针指向当前节点，当前指针指向下一个节点。</p>
+<h1 id="2-递归中构造前后指针"><a href="#2-递归中构造前后指针" class="headerlink" title="2. 递归中构造前后指针"></a>2. 递归中构造前后指针</h1><pre><code>class Solution{
     private:
-        int score;
-};
-
-int main(){
-    const people p1(22);//常量
-    cout &lt;&lt; p1.getScore() &lt;&lt; endl; //error，不能用常量绑定非常量指针
-    return 0;
-}
-</code></pre><p>这段代码在编译器中是无法编译通过的。我们知道用<strong>指向常量的指针</strong>来绑定<strong>常量和非常量</strong>都是可以的，那么为了提高成员函数的灵活性，我们就可以将这个<strong>this</strong>指针定义为指向常量的指针（同时其本身就是常量指针）。方法就是在成员函数的参数列表后面加入关键字const，则上述getScore函数修改为：</p>
-<pre><code>int getScore() const {return score;}
-</code></pre><p>这样上述代码的main函数就可以正常运行了。</p>
-<h1 id="2-补充"><a href="#2-补充" class="headerlink" title="2.补充"></a>2.补充</h1><p>对于成员函数，其有一个隐式参数，来表示对象的地址，例如：</p>
-<pre><code>class Foo{
-    public:
-        void hello(int a){
-            cout &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        TreeNode* pre;
+        void traversal(TreeNode* cur){
+            if(cur == NULL)return;
+            traversal(cur-&gt;left); //左
+            if(pre != NULL){ //中
+                //处理cur和pre
+            }
+            pre = cur; //将前一个指针指向当前节点
+            traversal(cur-&gt;right); //右
         }
-        //等价于
-        //void hello(Foo* const this, int a){
-            //out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
-        //}
-};
-
-int main(){
-    Foo foo;
-    int a = 2;
-    foo.hello(a);
-    //等价于
-    foo.hello(&amp;foo, a);
-}
-</code></pre><p>上面的代码展示了对象地址的隐式参数传递，当我们将hello设置为常量函数后，就可以理解为其等价版本变为：</p>
-<pre><code>void hello(const Foo* const this, int a){
-    out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
-}
-</code></pre><h1 id="3-常量成员函数的重载"><a href="#3-常量成员函数的重载" class="headerlink" title="3.常量成员函数的重载"></a>3.常量成员函数的重载</h1><p>两个成员函数，名字和参数列表都一样，但是一个是常量函数一个不是，则也算重载。</p>
-<pre><code>class people{
     public:
-        people(){}
-        people(int x):score(x){}
-        ~people(){}
-        int getScore() {return score;}
-        int getScore() const {return score};
-    private:
-        int score;
-};
-
-int main(){
-    const people p1(22);//常量对象
-    people p2(23); //非常量对象
-    cout &lt;&lt; p1.getScore() &lt;&lt; p2.getScore() &lt;&lt; endl; //重载
-    return 0;
+        TreeNode* getMinimumDifference(TreeNode* root){
+            traversal(root);
+            return root;
+        }
 }
-</code></pre>
+</code></pre><p>这里使用的是前序遍历，实际中根据需要自行修改即可。</p>
+<h1 id="3-迭代中构造前后指针"><a href="#3-迭代中构造前后指针" class="headerlink" title="3. 迭代中构造前后指针"></a>3. 迭代中构造前后指针</h1><pre><code>class Solution{
+    public:
+        TreeNode* getMinimumDifference(TreeNode* root){
+            stack&lt;TreeNode*&gt; stk;
+            if(root == NULL)return root;
+            TreeNode* pre = NULL;
+            TreeNode* cur = root;
+            while(!stk.empty() || cur != NULL){
+                if(cur != NULL){
+                    stk.push(cur);
+                    cur = cur-&gt;left; //左
+                }else{
+                    cur = stk.top();
+                    stk.pop();
+                    if(pre == NULL){
+                        //此时cur指向初始节点（最左下或者最右下）
+                    }
+                    if(pre != NULL){
+                        //处理pre和cur
+                    }
+                    pre = cur; //前一个指针指向当前节点
+                    cur = cur-&gt;right; //这里和上面对应，上面始终遍历左侧，则这里等于右子节点
+                }
+            }
+            return root;
+        }
+}
+</code></pre><p>相比较递归中的前后指针构造，我个人更熟悉迭代法中构造前后指针。在二叉搜索树中这样的处理方式很常见，需要慢慢体会这样的写法。</p>
+
     </div>
 
     
@@ -318,7 +306,7 @@ int main(){
           
           <div class="post-tags">
             
-              <a href="/tags/常量函数-隐式参数this/" rel="tag"># 常量函数 隐式参数this</a>
+              <a href="/tags/二叉树-指针/" rel="tag"># 二叉树 指针</a>
             
           </div>
         
@@ -328,8 +316,8 @@ int main(){
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2022/03/07/二叉树的迭代遍历/" rel="next" title="二叉树的迭代遍历">
-                  <i class="fa fa-chevron-left"></i> 二叉树的迭代遍历
+                <a href="/2022/03/09/何为常量函数/" rel="next" title="何为常量函数">
+                  <i class="fa fa-chevron-left"></i> 何为常量函数
                 </a>
               
             </div>
@@ -337,10 +325,6 @@ int main(){
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2022/03/11/二叉树遍历中构造前后指针/" rel="prev" title="二叉树遍历中构造前后指针">
-                  二叉树遍历中构造前后指针 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -389,7 +373,7 @@ int main(){
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-this指针"><span class="nav-number">1.</span> <span class="nav-text">1.this指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-补充"><span class="nav-number">2.</span> <span class="nav-text">2.补充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-常量成员函数的重载"><span class="nav-number">3.</span> <span class="nav-text">3.常量成员函数的重载</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-何为前后指针"><span class="nav-number">1.</span> <span class="nav-text">1. 何为前后指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-递归中构造前后指针"><span class="nav-number">2.</span> <span class="nav-text">2. 递归中构造前后指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-迭代中构造前后指针"><span class="nav-number">3.</span> <span class="nav-text">3. 迭代中构造前后指针</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -501,56 +485,6 @@ int main(){
 
   
 
-  
-    
-      
-<script type="text/x-mathjax-config">
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') {
-          next = next.nextSibling;
-        }
-        if (next && next.nodeName.toLowerCase() === 'br') {
-          next.parentNode.removeChild(next);
-        }
-      }
-    });
-  });
-
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
-      if (element.nodeName.toLowerCase() == 'li') {
-        element = element.parentNode;
-      }
-      element.classList.add('has-jax');
-    }
-  });
-</script>
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
-    MathJax.Hub.Typeset();
-  }, window.MathJax);
-</script>
-
-    
   
 
   
