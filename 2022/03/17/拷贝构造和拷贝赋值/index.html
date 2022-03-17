@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Sakurastream">
 <meta property="og:description" content="1. 拷贝构造函数如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。例如我们有如下类框架： class HasPtr{ public:     HasPtr(const std::string &amp;amp;s = std::string()):         ps(new std::string(s)), i(0) { }      //拷贝构造">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2022-03-17T09:27:14.013Z">
+<meta property="og:updated_time" content="2022-03-17T10:13:17.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="拷贝构造和拷贝赋值">
 <meta name="twitter:description" content="1. 拷贝构造函数如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。例如我们有如下类框架： class HasPtr{ public:     HasPtr(const std::string &amp;amp;s = std::string()):         ps(new std::string(s)), i(0) { }      //拷贝构造">
@@ -224,7 +224,7 @@
                 
               
 
-              <time title="Created: 2022-03-17 16:08:26 / Modified: 17:27:14" itemprop="dateCreated datePublished" datetime="2022-03-17T16:08:26+08:00">2022-03-17</time>
+              <time title="Created: 2022-03-17 16:08:26 / Modified: 18:13:17" itemprop="dateCreated datePublished" datetime="2022-03-17T16:08:26+08:00">2022-03-17</time>
             </span>
           
             
@@ -250,8 +250,7 @@ public:
         ps(new std::string(s)), i(0) { }
 
     //拷贝构造函数，其中动态分配了一个新的string，并将对象拷贝到ps指向的位置
-    //这里涉及到string的new构造方法，即动态创建一个堆内存，该内存保存hp.ps保存的地址
-    //此时将该string拷贝给当前对象的ps，并返回string* 类型的指针，故ps是一个指针。
+    //这里涉及到string的new构造方法，即动态创建一个堆内存，该内存保存hp.ps保存的值，并将ps设置为指向当前新开辟内存，这样就不会出现当前对象的ps和传入的参数同时指向一个内存地址的情况
     HasPtr(const HasPtr&amp; hp):
         ps(new std::string(*hp.ps)), i(hp.i) {}
 private:
@@ -284,9 +283,10 @@ public:
     //重载赋值运算符实现拷贝赋值运算符，返回引用
     HasPtr&amp; operator=(const HasPtr &amp;rhs_hp) {
         if(this != &amp;rhs_hp){
+            //在堆上新开辟内存，保存hp.ps的内容，并返回一个指向当前位置的指针
             std::string *temp_ps = new std::string(*rhs_hp.ps);
             delete ps; //这里销毁了ps指向的内存，而ps指针还存在
-            ps = temp_ps; //使ps指向右侧对象保存的地址
+            ps = temp_ps; //将当前对象的ps设置为temp_ps
             i = rhs_hp.i;
         }
         return *this; //返回自身类类型的引用
