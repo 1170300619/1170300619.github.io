@@ -191,6 +191,234 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/Ceres Solvel库函数的解读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/12/24/Ceres Solvel库函数的解读/" class="post-title-link" itemprop="url">Ceres Solvel库函数的解读</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-12-24 14:04:15 / Modified: 18:25:24" itemprop="dateCreated datePublished" datetime="2020-12-24T14:04:15+08:00">2020-12-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="关于微分计算（On-Derivatives"><a href="#关于微分计算（On-Derivatives" class="headerlink" title="关于微分计算（On Derivatives)"></a>关于微分计算（On Derivatives)</h1><p>与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：</p>
+<blockquote>
+<ul>
+<li>解析微分算法（<font face="黑体">Analytic Derivatives</font>）：用户自己手动或者借助Maple或者Mathematica等工具求解导数，然后写到<font color="red" font face="黑体">CostFunction</font>里面。</li>
+<li>数值微分算法（Numeric Derivatives）：Ceres用有限差分数值计算导数</li>
+<li>自动微分算法（Automatic Dericatives）：Ceres用C++模板和操作符重载自动分析计算微分。</li>
+</ul>
+</blockquote>
+<p>应该使用这三种方法中的哪一种（单独或组合）取决于用户愿意做出的情况和权衡。官方给出了一个简单粗暴的建议：<br>优先选用自动微分算法，某些情况可能需要用到解析微分算法，尽量避免数值微分算法。</p>
+<h2 id="Spivak标记"><a href="#Spivak标记" class="headerlink" title="Spivak标记"></a>Spivak标记</h2><p>为了简化阅读和推理，引入Spivak标记。</p>
+<p>对于单自变量函数$f$,$f(a)$表示它在$a$处的函数值。$Df$表示它的一阶导数，那么$Df(a)$就是函数在$a$处的一阶导数。即，</p>
+<script type="math/tex; mode=display">Df(a) = \frac{d}{dx}f(x)|_{x=a}</script><p>$D^kf$表示$f$的第$k$阶导数。</p>
+<p>对于双自变量函数$g(x,y)$，$D_1g$和$D_2g$分别表示关于$g$的两个偏微分。即，</p>
+<script type="math/tex; mode=display">D_1g = \frac{\partial}{\partial x}g(x,y)andD_2g = \frac{\partial}{\partial y}g(x,y)</script><p>$D_g$表示$g$的雅可比矩阵</p>
+<blockquote>
+<p>雅可比矩阵即</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+  \frac{\partial y_1}{\partial x_1}& \cdots & \frac{\partial y_1}{\partial x_n}\\
+ \vdots & \ddots & \vdots\\ 
+  \frac{\partial y_m}{\partial x_1}& \cdots & \frac{\partial y_m}{\partial x_n}
+\end{bmatrix}</script><p>这里的$y_1$即$g$，其他的行不存在，因为只存在一个因变量$g$。即雅可比矩阵是一个一行两列的矩阵。即，</p>
+<script type="math/tex; mode=display">Dg = \begin{bmatrix}
+  D_1g& D_2g
+\end{bmatrix}</script><p>更一般的，如果$g:\mathbb{R}^{n} \longrightarrow \mathbb{R}^{m}$，那么$Dg$表示的就是一个$m \times n$的雅可比矩阵。</p>
+<h2 id="自动微分法（Automatic-Derivatices）"><a href="#自动微分法（Automatic-Derivatices）" class="headerlink" title="自动微分法（Automatic Derivatices）"></a>自动微分法（Automatic Derivatices）</h2><p>我们来思考一个相对复杂的曲线拟合问题。待确定参数方程如下：</p>
+<script type="math/tex; mode=display">y = \frac{b_1}{(1+e^{b_2 - b_3x})^{1/b_4}}</script><p>现在给定一系列的对应数据点$\left\{x_i,y_i\right \},\forall i=1,\cdots,n$。我们面临的问题就是求解$b_1,b_2,b_3,b_4$使下列表达式的取值最小：</p>
+<script type="math/tex; mode=display">\begin{aligned}
+E\left(b_{1}, b_{2}, b_{3}, b_{4}\right) &=\sum_{i} f^{2}\left(b_{1}, b_{2}, b_{3}, b_{4} ; x_{i}, y_{i}\right) \\
+&=\sum_{i}\left(\frac{b_{1}}{\left(1+e^{b_{2}-b_3x_i}\right)^{1 / b_{4}}}-y_{i}\right)^{2}
+\end{aligned}</script><p>下面我们使用自动微分算法，它是一种可以快速计算精确导数的算法。下面的代码片段实现了上述问题的<font color="red" font face="黑体">CostFunction</font>。</p>
+<pre><code>struct Rat43CostFunctor {
+    Rat43CostFunctor(const double x, const double y) : x_(x), y_(y) {}
+
+template &lt;typename T&gt;  
+bool operator()(const T* parameters, T* residuals) const {
+    const T b1 = parameters[0];
+    const T b2 = parameters[1];
+    const T b3 = parameters[2];
+    const T b4 = parameters[3];
+    residuals[0] = b1 * pow(1.0 + exp(b2 -  b3 * x_), -1.0 / b4) - y_;
+    return true;
+}
+
+private:
+    const double x_;
+    const double y_;
+};
+
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;Rat43CostFunctor, 1, 4&gt;(    
+        new Rat43CostFunctor(x, y));
+</code></pre><p>接下来我们对自动微分算法的原理进行研究。为了研究其工作原理，必须要学习 <strong>二元数（Dual number)</strong> 和 <strong>射流(Jet)</strong>。</p>
+<h3 id="二元数和射流"><a href="#二元数和射流" class="headerlink" title="二元数和射流"></a>二元数和射流</h3><p><strong>二元数(Dual number)</strong> 是实数的一个延伸，类似于复数。复数则通过引入虚数来增加实数，比如$i$，二元数引入了一个极小二元数单位，比如$\epsilon$，且$\epsilon^2 = 0$（平方后太小可以忽略）。一个二元数$a+\upsilon\epsilon$包含两个分量，实分量$a$和极小分量$\upsilon$。令人惊喜的是，这个简单的变化带来了一种方便的计算精确导数的方法，而不需要考虑复杂的符号表达式。</p>
+<p>例如，考虑函数</p>
+<script type="math/tex; mode=display">f(x) = x^2</script><p>然后</p>
+<script type="math/tex; mode=display">\begin{aligned}
+f(10+\epsilon) &=(10+\epsilon)^{2} \\
+&=100+20 \epsilon+\epsilon^{2} \\
+&=100+20 \epsilon
+\end{aligned}</script><p>观察$\epsilon$的系数，我们发现$Df(10) = 20$。事实上，这个规律可以推广到不是多项式的函数。考虑一个任意可微函数$f(x)$，然后我们计算$f(x+ \epsilon)$，通过在$x$附近做泰勒展开，这就得到了无穷级数</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+f(x+\epsilon)=f(x)+D f(x) \epsilon+D^{2} f(x) \frac{\epsilon^{2}}{2}+D^{3} f(x) \frac{\epsilon^{3}}{6}+\cdots \\
+f(x+\epsilon)=f(x)+D f(x) \epsilon
+\end{array}</script><p>记住，$\epsilon^2 = 0$。</p>
+<p><strong>射流(Jet)</strong> 是一个$n$维二元数。我们定义$n$个极小单位$\epsilon_i,i=1,\cdots,n$。并且存在性质$\forall i,j:\epsilon_i\epsilon_j=0$。射流数由实数$a$和$n$维极小分量组成。</p>
+<script type="math/tex; mode=display">x = a + \sum_j \upsilon_j \epsilon_j</script><p>为了简化我们改写为这种形式</p>
+<script type="math/tex; mode=display">x = a + \mathbf{v}</script><p>然后使用泰勒级数展开，我们可以看到：</p>
+<script type="math/tex; mode=display">f(a+\mathbf{v}) = f(a) +Df(a)\mathbf{v}</script><p>对多变量函数$f : \mathbb{R^n} \longrightarrow \mathbb{R^m} $相似。对于自变量$x_i = a_i + \mathbf{v}_i, \forall i = 1,\cdots,n :$</p>
+<script type="math/tex; mode=display">f(x_1,\cdots,x_n) = f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n)\mathbf{v}_i</script><p>如果每个选取的极小量$\mathbf{v}_i = e_i $是$i^{th}$标准基向量，那么上面的表达式就可以简化为</p>
+<script type="math/tex; mode=display">
+f(x_1,\cdots,x_n) = f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n) \epsilon_i</script><p>我们可以查找$\epsilon_i$的系数来提取雅可比矩阵的坐标。</p>
+<h3 id="实现射流（Jet"><a href="#实现射流（Jet" class="headerlink" title="实现射流（Jet)"></a>实现射流（Jet)</h3><p>为了让上面学到的内容在实践中发挥作用，我们需要能够计算函数$f$的值，不仅在自变量是实数的时候，也需要在自变量是二元数的情况下适用。但是通常我们并非通过泰勒展开式来求函数值。这也就是为什么我们需要用到C++模板和操作符重载。下面的代码段实现了<font color="red" font face="黑体">Jet</font>类以及对该类的一些操作和函数。</p>
+<pre><code>template&lt;int N&gt; struct Jet {
+    double a;
+    Eigen::Matrix&lt;double, 1, N&gt; v;
+};
+
+template&lt;int N&gt; Jet&lt;N&gt; operator+(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a + g.a, f.v + g.v);
+}
+
+template&lt;int N&gt; Jet&lt;N&gt; operator-(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a - g.a, f.v - g.v);
+}
+
+template&lt;int N&gt; Jet&lt;N&gt; operator*(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a * g.a, f.a * g.v + f.v * g.a);
+}
+
+template&lt;int N&gt; Jet&lt;N&gt; operator/(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(f.a / g.a, f.v / g.a - f.a * g.v / (g.a * g.a));
+}
+
+template &lt;int N&gt; Jet&lt;N&gt; exp(const Jet&lt;N&gt;&amp; f) {
+    return Jet&lt;T, N&gt;(exp(f.a), exp(f.a) * f.v);
+}
+
+// This is a simple implementation for illustration purposes, the
+// actual implementation of pow requires careful handling of a number
+// of corner cases.
+template &lt;int N&gt;  Jet&lt;N&gt; pow(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
+    return Jet&lt;N&gt;(pow(f.a, g.a),
+            g.a * pow(f.a, g.a - 1.0) * f.v +
+            pow(f.a, g.a) * log(f.a); * g.v);
+}
+</code></pre><p>有了这些重载的函数，我们现在可以用一个<font color="red" font face="黑体">Jets</font>数组来调用<font color="red" font face="黑体">Rat43CostFunctor</font>，而不是<font color="red" font face="黑体">double</font>双精度类型。将其与初始化的<font color="red" font face="黑体">Jets</font>结合起来，我们就可以计算雅可比矩阵了：</p>
+<pre><code>class Rat43Automatic : public ceres::SizedCostFunction&lt;1,4&gt; {
+    public:
+      Rat43Automatic(const Rat43CostFunctor* functor) : functor_(functor) {}
+      virtual ~Rat43Automatic() {}
+      virtual bool Evaluate(double const* const* parameters,
+                    double* residuals,
+                    double** jacobians) const {
+    // Just evaluate the residuals if Jacobians are not required.
+    if (!jacobians) return (*functor_)(parameters[0], residuals);
+
+    // 初始化Jets，四个待求参数
+    ceres::Jet&lt;4&gt; jets[4];
+    for (int i = 0; i &lt; 4; ++i) {
+        jets[i].a = parameters[0][i];
+        jets[i].v.setZero();
+        jets[i].v[i] = 1.0;
+    }
+
+    ceres::Jet&lt;4&gt; result;
+    (*functor_)(jets, &amp;result);
+
+    // 把Jet的值（前面提到的，极小单位分量的系数）复制出啦.
+    residuals[0] = result.a;
+    for (int i = 0; i &lt; 4; ++i) {
+        jacobians[0][i] = result.v[i];
+    }
+    return true;
+}
+
+private:
+    std::unique_ptr&lt;const Rat43CostFunctor&gt; functor_;
+};
+</code></pre><p>这就是<font face="黑体" font color="red">AutoDiffCostFunction</font>的核心工作原理。</p>
+<h3 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h3><p>自动微分使用户不必计算和推理Jacobians的符号表达式，但是这个捷径是有代价的。例如，考虑以下简单的函数：</p>
+<pre><code>struct Functor {
+    template &lt;typename T&gt; bool operator()(const T* x, T* residual) const {
+        residual[0] = 1.0 - sqrt(x[0] * x[0] + x[1] * x[1]);
+        return true;
+    }
+};
+</code></pre><p>查看计算残差的代码，没有人预见到任何问题。但是，如果我们看一下雅可比矩阵的解析表达式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+y &=1-\sqrt{x_{0}^{2}+x_{1}^{2}} \\
+D_{1} y &=-\frac{x_{0}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}, D_{2} y=-\frac{x_{1}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}
+\end{aligned}</script><p>我们发现它在$x_0 = 0,x_1 = 0$处是不确定的。</p>
+<p>这个问题没有完美的解决方案。在某些情况下，我们需要明确地指出可能出现的不确定的点，并使用使用<font face="黑体" font color="blue">L’Hopital rule</font>（这里要去Ceres Solvel官网的rotation.h文件中的转换例程），在其他情况下，可能需要对表达式进行正则化，以消除这些点。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/21/Ceres Solvel翻译第一期-说明文档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3550,118 +3778,6 @@ Process finished with exit code 0
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/21/软件构造期末总结（1)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/21/软件构造期末总结（1)/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-21 11:23:29 / Modified: 22:23:41" itemprop="dateCreated datePublished" datetime="2019-06-21T11:23:29+08:00">2019-06-21</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p><font size="7"> 软件构造知识点总结(1) </font>　　</p>
-<h2 id="date-2019-04-21-03-23-29"><a href="#date-2019-04-21-03-23-29" class="headerlink" title="date: 2019-04-21 03:23:29"></a>date: 2019-04-21 03:23:29</h2><h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><hr>
-<h3 id="第一节-软件构造的多维视图"><a href="#第一节-软件构造的多维视图" class="headerlink" title="第一节 软件构造的多维视图"></a><em>第一节 软件构造的多维视图</em></h3><p>　　<strong>BulidTime概述</strong>  　　</p>
-<p>　　　　三种相互关联的形式　　</p>
-<p>　　　　　　　　　面向词法　半结构化源代码　  </p>
-<p>　　　　　　　　　面向语法　（AST抽象语法树）半结构化的源代码变成语法树　　</p>
-<p>　　　　　　　　　面向语义UML</p>
-<p>　　<strong>Runtime概述</strong></p>
-<p>　　　　运行时软件的高级概念</p>
-<p>　　　　　　　　　可执行程序：CPU能直接理解执行的指令序列（二进制文件）</p>
-<p>　　　　　　　　　库文件：可复用的代码，库文件本身不能执行</p>
-<p>　　　　可执行程序的四种形式</p>
-<p>　　　　　　　　　本地机器码，自解码，静态链接，动态链接</p>
-<h3 id="第二节-软件开发的质量属性"><a href="#第二节-软件开发的质量属性" class="headerlink" title="第二节　软件开发的质量属性"></a><em>第二节　软件开发的质量属性</em></h3><h4 id="外部质量属性"><a href="#外部质量属性" class="headerlink" title="外部质量属性"></a><em>外部质量属性</em></h4><p>1.正确性： 在规格说明书描述范围之内满足正确性； 保证正确性的技术: １．有限制的正确（只保证自己层面的正确，假设调用的都是正确的<br>2.测试与调试　３.防御性编程　４.形式化编程（采用很多数学技术）　　　　</p>
-<p>　　　　健壮性: 碰到异常情况进行适当的响应；出现规格说明书之外的情况由健壮性处理（响应异常情况、给出错误提示、正常退出或降级）　　<br>　　<br>　　　　可扩展性： 软件模块能否被其他程序很方便的使用（开发备注、封装）  </p>
-<p>　　　　兼容性： 能够与其他人进行交互；跨平台、跨软件，实现方法： 一致性和标准化（一致的方法和标准）： 标准文件格式，标准数据结构，标准用户接口，标准协议。  </p>
-<p>　　　　效率： 程序运行中对CPU、硬盘的占用带宽（好的算法、I/O技术、内存管理)  </p>
-<p>　　　　可移植性： 是否容易由一个环境转移到另一个环境。  </p>
-<p>　　　　应用性： 用户是否容易使用，不影响专业人员的使用情况下，方便初学者（结构清晰的设置、UI设计要理解用户需求）  </p>
-<p>　　　　功能性： 蠕变特征，原则是在保证整体质量不降低的情况下进行更新，策略：增量式模型  </p>
-<p>　　　　及时性： 在规定时间内完成： 时间效率高　　</p>
-<p>　　　　其他质量特性： 可验证性（如管理系统的效果难以验证）、完整性（不会被非法访问干扰修改，防止数据不一致）、可修改性、资金  </p>
-<h4 id="内部质量属性"><a href="#内部质量属性" class="headerlink" title="内部质量属性"></a><em>内部质量属性</em></h4><p>　　</p>
-<p>　　<strong>五个关键的质量属性</strong>　    </p>
-<p>　　　　　easy to understand　　<br>　　　　　ready fot change<br>　　　　　cheap for develop<br>　　　　　safe from bugs<br>　　　　　efficient to run</p>
-<p>　　　　　可理解性： 1.在构建时： 代码层要注意（函数规约）： 变量/子程序/语句的命名与构造标准；代码布局与风格；注释；复杂度  组件层要注意构建和项目的可理解性： 包的组织；文件的组织；命名空间 在时段中，代码层注意重构 2.在运行时，代码层注意跟踪日志<br>　　　　　<br>　　　　　可复用性：　１.构建时　代码层应注意：ADT/OOP;接口与实现分离；继承/重载/重写；<br>组合/代理；多态；自类型与泛型编程；OO设计模式 组件层注意：API接口设计；类库；框架</p>
-<p>　　　　　可维护性与适用性： １．构建时（面对需求的改变，能否做出及时的调整）　代码层可采用：模块化设计；高内聚，低耦合；SOLID原则；OO设计模式；面向图表的编程；面向状态编程；面向语法编程 组件层除注意SOLID原则外，还应考虑GRASP原则 在时段内使用SCM进行版本控制</p>
-<p>　　　　　健壮性：　１．Code level-build time-Moment:错误处理；异常处理；断言；防御性编程；测试优先编程  　2.Component level-build time-period:单元测试；集成测试　3.Build time-period:回归测试  　4.run time-moment:测试转储　5.run time-period：跟踪日志  </p>
-<p>　　　　　性能： 1.构建时，使用指定的设计模式 2.运行时 在代码层次： 通过内存管理考虑空间复杂度；通过算法性能计算时间复杂度；利用代码调优生成更高效的目标代码；在时段内进行性能分析和调整  在组件层次：采用分布式系统；编写多线程的并行程序</p>
-<h2 id><a href="#" class="headerlink" title></a><br></h2><h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><hr>
-<h3 id="第一节-软件声明周期和版本控制（配置管理）"><a href="#第一节-软件声明周期和版本控制（配置管理）" class="headerlink" title="第一节 软件声明周期和版本控制（配置管理）"></a><em>第一节 软件声明周期和版本控制（配置管理）</em></h3><h4 id="软件生命周期"><a href="#软件生命周期" class="headerlink" title="软件生命周期  　　"></a>软件生命周期  　　</h4><p>　　　<strong>声明周期</strong>：两种形态 1.从0到1：SDLC  2.从1到n：运用版本控制技术实现迭代更新<br>　　　<strong>瀑布模型</strong>：Requirements-&gt;Design-&gt;Implementation-&gt;Verification-&gt;Maintenance　　<br>　　　<strong>增量模型</strong>：运用分治的思想，将需求分段，成为一系列增量产品，每个增量颞部仍使用瀑布模型　　<br>　　　<strong>V模型</strong>：对瀑布模型的改变，强调测试与继承，对代码、分析文档进行质量保证<br>　　　<strong>螺旋模型</strong>：采用一种周期性的方法来进行系统开发。优点：设计上的灵活性，可以在项目的各个阶段进行变更，以小的分段来构建大型系统，使成本计算变得简单容易。</p>
-<h4 id="版本控制工具—Git"><a href="#版本控制工具—Git" class="headerlink" title="版本控制工具—Git"></a>版本控制工具—Git</h4><p>　　　<strong>Git的整体架构</strong>——四个仓库（本地由三个）：工作目录；暂存区域（在menmory中，对用户不可见）（隐藏的.git文件夹中的stage）；本地库：源代码；云端软件服务器（远程仓库）<br>　　<br>　　　<strong>利用对象图结构</strong>：每个节点保存：父节点、如提交时间的信息；VCS还原差异、Git保存完整文件；Git对于重复文件，不复制文件，只修改指针；减少冗余；访问速度快<br>　<br>　　　<strong>分支代码</strong>：git(创建） branc（切换） -b（branch） iss53；git merge hitfix（合并）；是用git把文件添加进去，实际上就是把文件修改添加到暂存区；用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。  
-　　</p>
-<h2 id="本地库和远程库：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上"><a href="#本地库和远程库：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上" class="headerlink" title="　　　本地库和远程库：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上　　"></a>　　　<strong>本地库和远程库</strong>：clone：将整个库完整的复制；fetch：将某一分支复制下来；push：将粉直推送到服务器上；pull：将某一分支复制下来合并在当前分支上　　</h2><h3 id="第二节-软件构造的过程、系统和工具"><a href="#第二节-软件构造的过程、系统和工具" class="headerlink" title="第二节 软件构造的过程、系统和工具 　    　　"></a><em>第二节 软件构造的过程、系统和工具</em> 　    　　</h3><hr>
-<h4 id="广义的软件构造过程"><a href="#广义的软件构造过程" class="headerlink" title="广义的软件构造过程:"></a>广义的软件构造过程:</h4><h5 id="1-编程"><a href="#1-编程" class="headerlink" title="1.编程"></a>1.编程</h5><p>　　　<strong>开发语言</strong>：使用IDE的优势：方便编写代码和管理文件（有代码编辑器，代码重构工具、文件和库管理工具） 能够编译、构建（有编译器、解释器、自动构建工具） 结构清晰（有面向对象的类层次结构图和类浏览器） 有GUI界面 支持第三方扩展工具<br>　　　<strong>建模语言</strong>：UML(统一建模语言）：UML是用来对软件系统进行可视化建模的一种语言； UML的结构由一组一致的规则定义； 建模的目的：有助于按照需求对系统进行可视化分析 能够理解系统的结构或行为 给出了构造系统的模板 对做出的决策进行文档化<br>　　　<strong>配置语言</strong>：键值文件（.ini;.properties;.rc);XML,YAML,JSON：配置语言用于配hi程序的参数和初始化设置 目的：部署环境设置；应用程序功能的变体；组件之间连接的变体  </p>
-<h5 id="2-静态代码分析："><a href="#2-静态代码分析：" class="headerlink" title="2.静态代码分析："></a>2.静态代码分析：</h5><p>　　　是指不运行被测程序本身，仅通过分析或检查源程序的语法、结构、过程、接口等来检查程序的正确性（提供了对代码结构的理解、有助于确保代码符合行业标准）</p>
-<h5 id="3-动态代码分析："><a href="#3-动态代码分析：" class="headerlink" title="3.动态代码分析："></a>3.动态代码分析：</h5><p>　　　是指通过运行被测试程序，检查运行结果与预期结果的差异，并分析运行效率、正确性和健壮性等功能（必须执行足够的测试输入，使用诸如代码覆盖率之类的软件测试措施有助于确保已经观察到程序的一组可能i行为的足够部分）　　<br><br>　　</p>
-<h4 id="狭义的软件构造过程"><a href="#狭义的软件构造过程" class="headerlink" title="狭义的软件构造过程"></a>狭义的软件构造过程</h4><h5 id="1-主要的知识结构"><a href="#1-主要的知识结构" class="headerlink" title="1.主要的知识结构"></a>1.主要的知识结构</h5><p>Build场景综述：  </p>
-<p>　　　用传统编译语言如C、C++、Java编写软件（complilation）<br>　　　用解释型语言（如Perl、python）编写软件的打包和测试（packing and testing）<br>　　　用基于Web的应用程序进行编译和打包（使用静态HTML页面、使用Java或C#编写的源代码、使用JSP、ASP或PHP语法编写的混合文件以及多种类型额配置文件）<br>　　　执行单元测试代码的其余部分对软件进行隔离验证<br>　　　执行静态分析工具来识别程序源代码中的错误<br>　　　生成PDF或HTML文档</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -3711,7 +3827,7 @@ Process finished with exit code 0
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
