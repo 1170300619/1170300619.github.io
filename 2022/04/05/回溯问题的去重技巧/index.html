@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 回溯问题在leetcode中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树">
+<meta name="keywords" content="code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回溯问题的去重技巧">
+<meta property="og:url" content="http://yoursite.com/2022/04/05/回溯问题的去重技巧/index.html">
+<meta property="og:site_name" content="Sakurastream">
+<meta property="og:description" content="1. 回溯问题在leetcode中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2022/04/05/回溯问题的去重技巧/1.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/05/回溯问题的去重技巧/2.png">
+<meta property="og:updated_time" content="2022-04-06T06:47:28.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="回溯问题的去重技巧">
+<meta name="twitter:description" content="1. 回溯问题在leetcode中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树">
+<meta name="twitter:image" content="http://yoursite.com/2022/04/05/回溯问题的去重技巧/1.png">
+  <link rel="canonical" href="http://yoursite.com/2022/04/05/回溯问题的去重技巧/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>回溯问题的去重技巧 | Sakurastream</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sakurastream</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/05/回溯问题的去重技巧/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">回溯问题的去重技巧
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-04-05 23:04:56" itemprop="dateCreated datePublished" datetime="2022-04-05T23:04:56+08:00">2022-04-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-06 14:47:28" itemprop="dateModified" datetime="2022-04-06T14:47:28+08:00">2022-04-06</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-回溯问题"><a href="#1-回溯问题" class="headerlink" title="1. 回溯问题"></a>1. 回溯问题</h1><p>在<code>leetcode</code>中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树性结构，其中，所遍历的集合的大小构成了树的宽度，递归的深度构成了树的深度。下面我们给出回溯函数的模板，包括返回值、参数以及写法：</p>
+<ul>
+<li><p><strong>回溯方法的函数伪代码</strong></p>
+<pre><code>  void backtarcking(参数)
+</code></pre></li>
+</ul>
+<p>这里我们使用<code>void</code>作为回溯函数的返回值，因为我们需要做的是在集合中寻找符合题意的解，那么就可以设置一个<code>result</code>数组来保存符合题意的解，在递归调用的过程中，不断将解加入<code>result</code>即可，函数遇到终止条件就可以<code>return</code>。</p>
+<ul>
+<li><p><strong>回溯函数的终止条件</strong></p>
+<p>  终止条件视情况而定，有可能是遍历到叶子节点，有可能是需要满足一些条件，在<code>backtracking</code>函数中，首先要做的就是判断是否触发了终止条件，如果触发了，那么就处理当前的结果，需要的话还要<code>return</code>，这里的关键是，如果需要遍历所有情况，则不需要<code>return</code>，因为其会导致后面的通往叶子节点的路径不会被遍历到。如果需要剪枝的话，则需要<code>return</code>。终止条件的伪代码为：</p>
+<pre><code>  if(终止条件){
+      处理结果；
+      (return, 视情况而定)
+  }
+</code></pre><p>  还需要注意的是，有些寻找子集的问题或者排列组合的问题中，并不需要终止条件，此时只需要处理结果就可以。</p>
+</li>
+<li><p><strong>回溯函数的递归部分</strong></p>
+<p>  递归部分是回溯函数的核心，只有把递归部分写的明白，才算真正懂得了何为“回溯”，所谓回溯就是指在遍历过程中保存的中间结果，在之后的遍历时仍然需要，那么就需要保存起来，常用的方法是使用<code>path</code>数组保存起来，遍历到当前节点时，将节点信息保存至<code>path</code>中，遍历后，在将最后一个保存的信息弹出，这样<code>path</code>中最后保存的就是前一个节点的信息。递归部分的伪代码：</p>
+<pre><code>  for(int i = startIndex; i &lt; size; i++){
+      处理节点
+      path.push_back(当前节点)
+      backtracking(i + 1, 其他参数)；
+      path.pop_back(); // 回溯
+  }
+</code></pre></li>
+</ul>
+<h1 id="2-回溯问题中的去重技巧"><a href="#2-回溯问题中的去重技巧" class="headerlink" title="2. 回溯问题中的去重技巧"></a>2. 回溯问题中的去重技巧</h1><p>在回溯问题中有这样几道题，比如<a href="https://leetcode-cn.com/problems/combination-sum-ii/" target="_blank" rel="noopener">leetcode-&gt;40</a>。这里的要求是解中不能包含重复的组合。我们一下就能想到，把符合题意的解放入<code>unordered_map</code>或者<code>unordered_set</code>中，每次有新的解，就去容器中<code>find</code>一下，如果<code>find</code>的结果等于容器的<code>end()</code>，那么就说明没有重复解，再次加入容器即可。然后理想很丰满，现实很骨感，这样的判断很容易导致超时。那么有什么更好的方法呢？既然在遍历过程中已经对所有情况进行了搜索，何不在搜索过程中就进行重复判断，比如这道题的示例<code>1</code>中，<code>[1,7]</code>和<code>[7,1]</code>都是会被搜索到的，那么怎么判断这两者重复了呢？答案就是排序，排完序后都是<code>[1,7]</code>。排序也分为两种情况，第一种是找到答案后再排序，这样无疑复杂度会很高，并且还是需要对结果进行判重，需要用到<code>unordered_map</code>或者<code>unordered_set</code>。第二种则是对初始数组进行排序，这样原数组就变成了<code>[1,1,2,5,6,7,10]</code>，在搜索过程中会遇到两次<code>[1,7]</code>,那么只需要判断：如果当前节点是否和前一个节点相同，并且在前一个节点使用过，那么当前节点就不能使用。此时可以利用一个<code>vector&lt;bool&gt; used</code>来保存每个节点的使用状态，要注意的是，判重是在同一层进行的，不同层之间<code>used</code>是不影响的。我们用一个例子来画一下树状图，比如<code>nums = [1,1,2]，target = 3</code></p>
+<img src="/2022/04/05/回溯问题的去重技巧/1.png" title="This is an example image">
+<p>总体代码如下：</p>
+<pre><code>class Solution {
+private:
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+
+    void backtracking(int target, const vector&lt;int&gt;&amp; candidates, int startIndex, vector&lt;bool&gt; used){
+        int sum = 0;
+        for(int j = 0; j &lt; path.size(); j++){
+            sum += path[j];
+        }   
+        if(sum == target){
+            result.push_back(path);
+            return;
+        }else if(sum &gt; target)return ; // 剪枝
+
+        for(int i = startIndex; i &lt; candidates.size(); i++){
+            if(i &gt; 0 &amp;&amp; candidates[i] == candidates[i - 1] &amp;&amp; used[i - 1] == false){ // 判重
+                continue;
+            }
+            path.push_back(candidates[i]);
+            used[i] = true;
+            backtracking(target, candidates, i + 1, used);
+            used[i] = false; // 回溯
+            path.pop_back(); // 回溯
+        }
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; combinationSum2(vector&lt;int&gt;&amp; candidates, int target) {
+        result.clear();
+        path.clear();
+        vector&lt;bool&gt; used(candidates.size(), false);
+        sort(candidates.begin(), candidates.end()); // 记住要排序
+        backtracking(target, candidates, 0, used);
+        return result;
+    }
+};
+</code></pre><p>当然，这里还有优化的空间，比如在递归调用中，每次进入下一层之后才会计算<code>path</code>的和，我们可以将<code>sum</code>放入<code>backtracking</code>的参数中，在进入下一层之前计算当前<code>sum + candidates[i]</code>的和是否大于<code>target</code>，如果大于的话就<code>break</code>，可以减少递归调用。</p>
+<h1 id="3-去重问题的特殊情况"><a href="#3-去重问题的特殊情况" class="headerlink" title="3. 去重问题的特殊情况"></a>3. 去重问题的特殊情况</h1><p>下面我们来看一下<a href="https://leetcode-cn.com/problems/increasing-subsequences/" target="_blank" rel="noopener">leetcode-&gt;491</a>，这道题需要找到数组中不同的递增子序列。这就说明我们不能对原数组进行排序。那么就会给判重增加一定的难度，但是想到使用<code>map</code>和<code>set</code>增加的复杂度，我们依然使用在搜索过程中进行判重的方法。在示例1的搜索过程中，会依次遍历到<code>[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[4,7]</code>，这里就产生了重复，我们画一下抽象树性图：</p>
+<img src="/2022/04/05/回溯问题的去重技巧/2.png" title="This is an example image">
+<p>此时可以看到，导致重复的原因是同一层内出现了重复的元素，那么判重方法就是在同一层内判断当前节点的值是否和之前的<strong>所有值</strong>有相同情况出现。简单的增加一个判重函数即可。</p>
+<pre><code>//判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
+        for(int i = start;i &lt; end; i++){
+            if(nums[i] == nums[end])return false;
+        }
+        return true;
+    }
+</code></pre><p>其中start是递归for循环中startIndex的位置，end为递归for循环中i的位置。这样判重就可以方便的降低复杂度，避免了map和set的使用。</p>
+<p>总体代码如下：</p>
+<pre><code>class Solution {
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+    void backtracking(const vector&lt;int&gt;&amp; nums, int startIndex){
+        if(path.size() &gt;= 2){ // path中至少存了2两个数就可以放入result中了
+            result.push_back(path); // 并且由于需要遍历所以不需要return
+        }
+        for(int i = startIndex; i &lt; nums.size(); i++){
+            //如果 i 不等于 startIndex 并且重复，那么就跳过当前值
+            if(i != startIndex &amp;&amp; !isRepeat(nums, startIndex, i))continue;
+            if(startIndex == 0 || nums[i] &gt;= path.back()){ // 第一个数和满足条件的数要放入
+                path.push_back(nums[i]);
+                backtracking(nums, i + 1);
+                path.pop_back();
+        }
+        }   
+    }
+    //判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
+        for(int i = start;i &lt; end; i++){
+            if(nums[i] == nums[end])return false;
+        }
+        return true;
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; findSubsequences(vector&lt;int&gt;&amp; nums) {
+        result.clear();
+        path.clear();
+        backtracking(nums, 0);
+        return result;
+    }
+};
+</code></pre>
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2022/03/17/拷贝构造和拷贝赋值/" rel="next" title="拷贝构造和拷贝赋值">
+                  <i class="fa fa-chevron-left"></i> 拷贝构造和拷贝赋值
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-回溯问题"><span class="nav-number">1.</span> <span class="nav-text">1. 回溯问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-回溯问题中的去重技巧"><span class="nav-number">2.</span> <span class="nav-text">2. 回溯问题中的去重技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-去重问题的特殊情况"><span class="nav-number">3.</span> <span class="nav-text">3. 去重问题的特殊情况</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Gift</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gift</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

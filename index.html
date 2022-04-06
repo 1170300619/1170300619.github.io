@@ -191,6 +191,196 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/05/回溯问题的去重技巧/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/04/05/回溯问题的去重技巧/" class="post-title-link" itemprop="url">回溯问题的去重技巧</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-04-05 23:04:56" itemprop="dateCreated datePublished" datetime="2022-04-05T23:04:56+08:00">2022-04-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-06 14:47:28" itemprop="dateModified" datetime="2022-04-06T14:47:28+08:00">2022-04-06</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-回溯问题"><a href="#1-回溯问题" class="headerlink" title="1. 回溯问题"></a>1. 回溯问题</h1><p>在<code>leetcode</code>中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树性结构，其中，所遍历的集合的大小构成了树的宽度，递归的深度构成了树的深度。下面我们给出回溯函数的模板，包括返回值、参数以及写法：</p>
+<ul>
+<li><p><strong>回溯方法的函数伪代码</strong></p>
+<pre><code>  void backtarcking(参数)
+</code></pre></li>
+</ul>
+<p>这里我们使用<code>void</code>作为回溯函数的返回值，因为我们需要做的是在集合中寻找符合题意的解，那么就可以设置一个<code>result</code>数组来保存符合题意的解，在递归调用的过程中，不断将解加入<code>result</code>即可，函数遇到终止条件就可以<code>return</code>。</p>
+<ul>
+<li><p><strong>回溯函数的终止条件</strong></p>
+<p>  终止条件视情况而定，有可能是遍历到叶子节点，有可能是需要满足一些条件，在<code>backtracking</code>函数中，首先要做的就是判断是否触发了终止条件，如果触发了，那么就处理当前的结果，需要的话还要<code>return</code>，这里的关键是，如果需要遍历所有情况，则不需要<code>return</code>，因为其会导致后面的通往叶子节点的路径不会被遍历到。如果需要剪枝的话，则需要<code>return</code>。终止条件的伪代码为：</p>
+<pre><code>  if(终止条件){
+      处理结果；
+      (return, 视情况而定)
+  }
+</code></pre><p>  还需要注意的是，有些寻找子集的问题或者排列组合的问题中，并不需要终止条件，此时只需要处理结果就可以。</p>
+</li>
+<li><p><strong>回溯函数的递归部分</strong></p>
+<p>  递归部分是回溯函数的核心，只有把递归部分写的明白，才算真正懂得了何为“回溯”，所谓回溯就是指在遍历过程中保存的中间结果，在之后的遍历时仍然需要，那么就需要保存起来，常用的方法是使用<code>path</code>数组保存起来，遍历到当前节点时，将节点信息保存至<code>path</code>中，遍历后，在将最后一个保存的信息弹出，这样<code>path</code>中最后保存的就是前一个节点的信息。递归部分的伪代码：</p>
+<pre><code>  for(int i = startIndex; i &lt; size; i++){
+      处理节点
+      path.push_back(当前节点)
+      backtracking(i + 1, 其他参数)；
+      path.pop_back(); // 回溯
+  }
+</code></pre></li>
+</ul>
+<h1 id="2-回溯问题中的去重技巧"><a href="#2-回溯问题中的去重技巧" class="headerlink" title="2. 回溯问题中的去重技巧"></a>2. 回溯问题中的去重技巧</h1><p>在回溯问题中有这样几道题，比如<a href="https://leetcode-cn.com/problems/combination-sum-ii/" target="_blank" rel="noopener">leetcode-&gt;40</a>。这里的要求是解中不能包含重复的组合。我们一下就能想到，把符合题意的解放入<code>unordered_map</code>或者<code>unordered_set</code>中，每次有新的解，就去容器中<code>find</code>一下，如果<code>find</code>的结果等于容器的<code>end()</code>，那么就说明没有重复解，再次加入容器即可。然后理想很丰满，现实很骨感，这样的判断很容易导致超时。那么有什么更好的方法呢？既然在遍历过程中已经对所有情况进行了搜索，何不在搜索过程中就进行重复判断，比如这道题的示例<code>1</code>中，<code>[1,7]</code>和<code>[7,1]</code>都是会被搜索到的，那么怎么判断这两者重复了呢？答案就是排序，排完序后都是<code>[1,7]</code>。排序也分为两种情况，第一种是找到答案后再排序，这样无疑复杂度会很高，并且还是需要对结果进行判重，需要用到<code>unordered_map</code>或者<code>unordered_set</code>。第二种则是对初始数组进行排序，这样原数组就变成了<code>[1,1,2,5,6,7,10]</code>，在搜索过程中会遇到两次<code>[1,7]</code>,那么只需要判断：如果当前节点是否和前一个节点相同，并且在前一个节点使用过，那么当前节点就不能使用。此时可以利用一个<code>vector&lt;bool&gt; used</code>来保存每个节点的使用状态，要注意的是，判重是在同一层进行的，不同层之间<code>used</code>是不影响的。我们用一个例子来画一下树状图，比如<code>nums = [1,1,2]，target = 3</code></p>
+<img src="/2022/04/05/回溯问题的去重技巧/1.png" title="This is an example image">
+<p>总体代码如下：</p>
+<pre><code>class Solution {
+private:
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+
+    void backtracking(int target, const vector&lt;int&gt;&amp; candidates, int startIndex, vector&lt;bool&gt; used){
+        int sum = 0;
+        for(int j = 0; j &lt; path.size(); j++){
+            sum += path[j];
+        }   
+        if(sum == target){
+            result.push_back(path);
+            return;
+        }else if(sum &gt; target)return ; // 剪枝
+
+        for(int i = startIndex; i &lt; candidates.size(); i++){
+            if(i &gt; 0 &amp;&amp; candidates[i] == candidates[i - 1] &amp;&amp; used[i - 1] == false){ // 判重
+                continue;
+            }
+            path.push_back(candidates[i]);
+            used[i] = true;
+            backtracking(target, candidates, i + 1, used);
+            used[i] = false; // 回溯
+            path.pop_back(); // 回溯
+        }
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; combinationSum2(vector&lt;int&gt;&amp; candidates, int target) {
+        result.clear();
+        path.clear();
+        vector&lt;bool&gt; used(candidates.size(), false);
+        sort(candidates.begin(), candidates.end()); // 记住要排序
+        backtracking(target, candidates, 0, used);
+        return result;
+    }
+};
+</code></pre><p>当然，这里还有优化的空间，比如在递归调用中，每次进入下一层之后才会计算<code>path</code>的和，我们可以将<code>sum</code>放入<code>backtracking</code>的参数中，在进入下一层之前计算当前<code>sum + candidates[i]</code>的和是否大于<code>target</code>，如果大于的话就<code>break</code>，可以减少递归调用。</p>
+<h1 id="3-去重问题的特殊情况"><a href="#3-去重问题的特殊情况" class="headerlink" title="3. 去重问题的特殊情况"></a>3. 去重问题的特殊情况</h1><p>下面我们来看一下<a href="https://leetcode-cn.com/problems/increasing-subsequences/" target="_blank" rel="noopener">leetcode-&gt;491</a>，这道题需要找到数组中不同的递增子序列。这就说明我们不能对原数组进行排序。那么就会给判重增加一定的难度，但是想到使用<code>map</code>和<code>set</code>增加的复杂度，我们依然使用在搜索过程中进行判重的方法。在示例1的搜索过程中，会依次遍历到<code>[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[4,7]</code>，这里就产生了重复，我们画一下抽象树性图：</p>
+<img src="/2022/04/05/回溯问题的去重技巧/2.png" title="This is an example image">
+<p>此时可以看到，导致重复的原因是同一层内出现了重复的元素，那么判重方法就是在同一层内判断当前节点的值是否和之前的<strong>所有值</strong>有相同情况出现。简单的增加一个判重函数即可。</p>
+<pre><code>//判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
+        for(int i = start;i &lt; end; i++){
+            if(nums[i] == nums[end])return false;
+        }
+        return true;
+    }
+</code></pre><p>其中start是递归for循环中startIndex的位置，end为递归for循环中i的位置。这样判重就可以方便的降低复杂度，避免了map和set的使用。</p>
+<p>总体代码如下：</p>
+<pre><code>class Solution {
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+    void backtracking(const vector&lt;int&gt;&amp; nums, int startIndex){
+        if(path.size() &gt;= 2){ // path中至少存了2两个数就可以放入result中了
+            result.push_back(path); // 并且由于需要遍历所以不需要return
+        }
+        for(int i = startIndex; i &lt; nums.size(); i++){
+            //如果 i 不等于 startIndex 并且重复，那么就跳过当前值
+            if(i != startIndex &amp;&amp; !isRepeat(nums, startIndex, i))continue;
+            if(startIndex == 0 || nums[i] &gt;= path.back()){ // 第一个数和满足条件的数要放入
+                path.push_back(nums[i]);
+                backtracking(nums, i + 1);
+                path.pop_back();
+        }
+        }   
+    }
+    //判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
+        for(int i = start;i &lt; end; i++){
+            if(nums[i] == nums[end])return false;
+        }
+        return true;
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; findSubsequences(vector&lt;int&gt;&amp; nums) {
+        result.clear();
+        path.clear();
+        backtracking(nums, 0);
+        return result;
+    }
+};
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/17/拷贝构造和拷贝赋值/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1651,150 +1841,6 @@ A_{i i} & \text { if } i=j \\
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/Ceres Solvel 非线性最小二乘法建模/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/25/Ceres Solvel 非线性最小二乘法建模/" class="post-title-link" itemprop="url">Ceres Solvel非线性最小二乘法建模</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2020-12-25 13:15:21 / Modified: 15:08:50" itemprop="dateCreated datePublished" datetime="2020-12-25T13:15:21+08:00">2020-12-25</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Ceres由两个部分组成，一个是建模API，它提供了非常丰富的工具，可以迅速构建一个优化问题模型。另一个是解算器API，用于管控最小化算法。这一章将围绕如何用Ceres进行优化问题建模展开。</p>
-<h1 id="自动微分AutoDiffCostFunction"><a href="#自动微分AutoDiffCostFunction" class="headerlink" title="自动微分AutoDiffCostFunction"></a>自动微分AutoDiffCostFunction</h1><p>定义一个<font face="黑体" font color="red">CostFunction</font>（例如使用数值微分法或者解析微分法）可能是一个繁琐且容易出错的过程，尤其是在计算导数的时候。为此，Ceres提供了<font face="黑体" font color="red">AutoDiffCostFunction</font>。</p>
-<pre><code>template &lt;typename CostFunctor,
-        int kNumResiduals,  // Number of residuals, or ceres::DYNAMIC.
-        int N0,       // Number of parameters in block 0.
-        int N1 = 0,   // Number of parameters in block 1.
-        int N2 = 0,   // Number of parameters in block 2.
-        int N3 = 0,   // Number of parameters in block 3.
-        int N4 = 0,   // Number of parameters in block 4.
-        int N5 = 0,   // Number of parameters in block 5.
-        int N6 = 0,   // Number of parameters in block 6.
-        int N7 = 0,   // Number of parameters in block 7.
-        int N8 = 0,   // Number of parameters in block 8.
-        int N9 = 0&gt;   // Number of parameters in block 9.
-class AutoDiffCostFunction : public
-SizedCostFunction&lt;kNumResiduals, N0, N1, N2, N3, N4, N5, N6, N7, N8, N9&gt; {
-    public:
-        explicit AutoDiffCostFunction(CostFunctor* functor);
-        // Ignore the template parameter kNumResiduals and use
-        // num_residuals instead.
-        AutoDiffCostFunction(CostFunctor* functor, int num_residuals);
-};
-</code></pre><p>为了获得一个可以自动微分的代价函数，必须定义一个类。这个类中带有模板函数：<font face="黑体" font color="red">operator()</font>，它使用模板T类型进行代价函数运算。自动微分将根据需要用<font face="黑体" font color="red">Jet</font>类型替代替代模板T。但这个是隐藏的，编程的时候要把这个T看作一个双精度浮点数。这个函数必须把计算结果以最后一个参数（唯一一个非常量参数）传递出来，并且返回<font face="黑体" font color="red">True</font>，告诉计算机运算成功完成。例如，现在有一个标量的偏差函数$e = k - x^Ty$。这里$x$和$y$都是二维向量参数，$k$是个常量 。这种类型的偏差，即一个常量和一个表达式的差值，在最小二乘法问题中很常见。例如，$x ^ T y$可能是一系列测量结果的期望值，那么每一次测量$K$都对应了一个代价函数类的实例。被加到<font face="黑体" font color="red">Problem</font>中的是$e ^ 2$或者$(k - x^Ty) ^ 2$。平方处理由Ceres优化框架完成。这个例子的具体代码如下：</p>
-<blockquote>
-<p>这里有个疑问，之前自动微分算法的代码中没有使用类，而是使用的struct，不知道为什么这里是class，个人认为应该都可以，因为我们的代码中都使用的struct。</p>
-</blockquote>
-<pre><code>class MyScalarCostFunctor {
-    MyScalarCostFunctor(double k): k_(k) {}
-
-template &lt;typename T&gt;
-bool operator()(const T* const x , const T* const y, T* e) const {
-    e[0] = k_ - x[0] * y[0] - x[1] * y[1];
-    return true;
-}
-
-private:
-    double k_;
-};
-</code></pre><p>注意，在<font face="黑体" font color="red">operator()</font>的声明中，首先是输入参数，他们都是指向T类型数组的常指针。如果由更多的输入参数就跟在<font face="黑体" font color="red">y</font>后面。而输出值永远是最后一个参数，并且也是一个指向数组的指针。在上述例子中，<font face="黑体" font color="red">e</font>是标量，所以只赋值<font face="黑体" font color="red">e[0]</font>。</p>
-<p>然后给出这个类的定义，它的自动微分代价函数可以如下构造：</p>
-<pre><code>CostFunction* cost_function
-    = new AutoDiffCostFunction&lt;MyScalarCostFunctor, 1, 2, 2&gt;(
-        new MyScalarCostFunctor(1.0));              ^  ^  ^
-                                                    |  |  |
-                        Dimension of residual ------+  |  |
-                        Dimension of x ----------------+  |
-                        Dimension of y -------------------+
-</code></pre><p>在这个例子中，对每次测量<font face="黑体" font color="red">k</font>都有一个实例。模板参数1,2,2将<font face="黑体" font color="red">Functor</font>描述为一个一维输出参数和两个二维输入参数。<font face="黑体" font color="red">AutoDiffCostFunction</font>也支持在运行时动态确定参数个数。例如下面的代码：</p>
-<pre><code>CostFunction* cost_function
-    = new AutoDiffCostFunction&lt;MyScalarCostFunctor, DYNAMIC,  2,  2&gt;(
-        new CostFunctorWithDynamicNumResiduals(1.0),    ^     ^  ^
-        runtime_number_of_residuals);  &lt;----+           |     |  |
-                                            |           |     |  |
-                                            |           |     |  |
-           Actual number of residuals ------+           |     |  |
-           Indicate dynamic number of residuals --------+     |  |
-           Dimension of x ------------------------------------+  |
-           Dimension of y ---------------------------------------+
-</code></pre><p>Ceres目前支持代价函数最多有10个相互独立的变量，但是对每个变量有多少维度没有限制。</p>
-<p>注意，新用户常常犯的一个错误就是把模板参数中的数字理解成参数的个数。但事实上，模板参数中数字的含义是每个参数的维度。这两个概念不能混淆。比如在这个例子中<font face="黑体" font color="red">x,y</font>都是二维变量，所以模板参数中有两个2。</p>
-<h1 id="Problem的构建"><a href="#Problem的构建" class="headerlink" title="Problem的构建"></a>Problem的构建</h1><p><font face="黑体" font color="red">Problem</font>保持了非线性最小二乘问题的强化的边界。要创建最小二乘问题，可以使用<font face="黑体" font color="red">Problem::AddResidualBlock()</font>和<font face="黑体" font color="red">Problem::AddParameterBlock()</font>。例如，下面这个Problem包含了三个参数块，维度分别为3，4，5。同时有两个残差块，维度分别是2和6。</p>
-<pre><code>double x1[] = { 1.0, 2.0, 3.0 };
-double x2[] = { 1.0, 2.0, 3.0, 5.0 };
-double x3[] = { 1.0, 2.0, 3.0, 6.0, 7.0 };
-
-Problem problem;
-problem.AddResidualBlock(new MyUnaryCostFunction(...), x1);
-problem.AddResidualBlock(new MyBinaryCostFunction(...), x2, x3);
-</code></pre><p><font face="黑体" font color="red">Problem::AddResidualBlock()</font>，顾名思义，就是把残差块加入到Problem中。它添加了一个<font face="黑体" font color="red">CostFunction</font>，一个<font face="黑体" font color="red">LossFunction</font>（非必要）并且把<font face="黑体" font color="red">CostFunction</font>链接到一系列的参数块上。代价函数包含了关于期望的参数块大小的信息。该函数检查他们是否与<font face="黑体" font color="red">parameter_blocks</font>一致。如果不匹配，程序将终止。<font face="黑体" font color="red">LossFunction</font>可以是<font face="黑体" font color="red">Null</font>，这种情况下这一项的代价就是残差的平方。</p>
-<blockquote>
-<p>另外官网中给出了很多Problem的方法，可以查看一下。这里只对添加残差块的方法给出了实例。</p>
-</blockquote>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1844,7 +1890,7 @@ problem.AddResidualBlock(new MyBinaryCostFunction(...), x2, x3);
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1944,13 +1990,13 @@ problem.AddResidualBlock(new MyBinaryCostFunction(...), x2, x3);
   
     
       
-    
-      
-    
-      
-    
-      
         
+      
+    
+      
+    
+      
+    
       
     
       
