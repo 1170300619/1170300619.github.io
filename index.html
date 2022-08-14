@@ -191,6 +191,152 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/14/手动实现c字符串的基本函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/08/14/手动实现c字符串的基本函数/" class="post-title-link" itemprop="url">手动实现c字符串的基本函数</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-08-14 14:47:31 / Modified: 20:30:18" itemprop="dateCreated datePublished" datetime="2022-08-14T14:47:31+08:00">2022-08-14</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-strlen函数"><a href="#1-strlen函数" class="headerlink" title="1.strlen函数"></a>1.strlen函数</h2><p>原型：size_t strlen(const char *str)，计算字符串的长度</p>
+<pre><code>int my_strlen(const char *str){
+    int count = 0;
+    assert(str != nullptr);
+    while(*str != &#39;\0&#39;){
+        count++;
+        str++;
+    }
+    return count;
+}
+</code></pre><h2 id="2-strcpy函数"><a href="#2-strcpy函数" class="headerlink" title="2.strcpy函数"></a>2.strcpy函数</h2><p>原型：char <em>strcpy(char </em>dest, const char *src)，将src指向的字符串复制到dest中</p>
+<pre><code>char *my_strcpy(char *str_des, const char *str_source){
+    assert(str_des != nullptr);
+    assert(str_source != nullptr);
+    char *ret = str_des;
+    while((*str++ = *str_source++) != &#39;\0&#39;){
+        ;
+    }
+    return ret;
+}
+</code></pre><h2 id="3-strcat函数"><a href="#3-strcat函数" class="headerlink" title="3.strcat函数"></a>3.strcat函数</h2><p>原型：char <em>strcat(char </em>dest, const char *src)，将src指向的字符串追加到dest指向的字符串结尾。</p>
+<pre><code>char *my_strcat(char *str_des, const char *str_source){
+    assert(str_des != nullptr);
+    assert(str_source != nullptr);
+    char *ret = str_des;
+    while(*str_des){
+        str_des++;
+    }
+    while((*str_des++ = *str_source++) != &#39;\0&#39;){
+        ;
+    } 
+
+    return ret;
+
+}
+</code></pre><h2 id="4-strcmp函数"><a href="#4-strcmp函数" class="headerlink" title="4.strcmp函数"></a>4.strcmp函数</h2><p>原型：int strcmp(const char <em>str1, const char </em>str2)，把str1指向的字符串和str2指向的字符串进行比较，小于返回一个小于零的值，大于返回一个大于零的值，相等返回0</p>
+<pre><code>int my_strcmp(const char *str1, const char *str2){
+    while(*str1 &amp;&amp; *str2){
+        if(*str1 == *str2){
+            str1++;
+            str2++;
+        }
+        else if(*str1 &gt; *str2)return -1;
+        else return 1;
+    }
+    if(*str1)return 1;
+    if(*str2)return -1;
+    return 0;
+}
+</code></pre><h2 id="5-strchr函数"><a href="#5-strchr函数" class="headerlink" title="5.strchr函数"></a>5.strchr函数</h2><p>原型：char <em>strchr(const char </em>str, int c)，在参数str所指向的字符串中搜索第一次出现字符c的位置，如果未找到返回NULL</p>
+<pre><code>char *my_strchr(const char *str, char c){
+    while(*str++ != &#39;\0&#39;){
+        if(*str == c)return str;
+    }
+    return NULL;
+}
+</code></pre><h2 id="6-strstr函数"><a href="#6-strstr函数" class="headerlink" title="6.strstr函数"></a>6.strstr函数</h2><p>原型：char <em>strstr(const char </em>haystack, const char *needle)，在字符串haystack中查找第一次出现字符串needle的位置，不包括终止符’\0’</p>
+<pre><code>char *my_strstr(char *str1, char *str2){
+    const char *index1;
+    const char *index2;
+    if(!str1 || !str2)return str1;
+
+    //遍历str1字符串
+    while(*str1){
+        index1 = str1;
+        index2 = str2;
+        do{
+            if(!*index2)return str1;
+        }while(*index1++ == *index2++);
+        str1++;
+    }
+    return NULL;
+
+}
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/13/从零实现shared-ptr/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1361,158 +1507,11 @@ string nines = string(100, &#39;9&#39;);  //拷贝初始化
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/15/背包问题入门/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2022/03/15/背包问题入门/" class="post-title-link" itemprop="url">背包问题入门</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2022-03-15 20:15:38 / Modified: 21:22:14" itemprop="dateCreated datePublished" datetime="2022-03-15T20:15:38+08:00">2022-03-15</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-什么是背包"><a href="#1-什么是背包" class="headerlink" title="1.什么是背包"></a>1.什么是背包</h1><p>背包问题是动态规划部分的经典题型。问题可以描述为：给定一组物品，每种物品都有自己的重量和价格，在限定的总重量内，我们如何选择，才能使得物品的总价格最高。 一般来讲，背包问题有以下几种分类：</p>
-<p><strong>1. 01背包问题</strong><br><strong>2. 完全背包问题</strong><br><strong>3. 多重背包问题</strong></p>
-<p>在leetcode刷题过程中，我们需要掌握这几种背包问题的写法。要注意的是，有些题目并不会直接告诉你这是一道背包问题，而是需要我们利用发散思维将问题转换为背包问题，以此来找到解题方法。</p>
-<h1 id="01背包问题"><a href="#01背包问题" class="headerlink" title="01背包问题"></a>01背包问题</h1><h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1.题目"></a>1.题目</h2><p>最基本的背包问题就是01背包问题（<strong>01 knapsack problem</strong>）：一共有<code>N</code>件物品，第<code>i</code>（<code>i</code>从1开始）件物品的重量为<code>w[i]</code>，价值为<code>v[i]</code>。在总重量不超过背包承载上限<code>W</code>的情况下，能够装入背包的最大价值是多少？</p>
-<p>我们的目标是书包内物品的总价值，而变量是物品和书包的限重，所以我们可定义状态<code>dp</code>，首先使用二维数组来表示<code>dp</code>过程：</p>
-<pre><code>dp[i][j]表示将前i件物品装进最大容量为j的背包所获得的最大价值，0 &lt;= i &lt;= N, 0 &lt;= j &lt;= W
-</code></pre><p>此时根据<code>dp</code>表示的含义，自然而然<code>dp[0][j]</code>为0，因为此时并未装进物品。此时当<code>i &gt; 0</code>时，有两种情况：</p>
-<ol>
-<li>不装第<code>i</code>件物品，即<code>dp[i][j] = dp[i - 1][j]</code></li>
-<li>装入第<code>i</code>件物品（前提是剩余容量能装下），即<code>dp[i][j] = dp[i - 1][j - w[i]] + v[i]</code></li>
-</ol>
-<p>那么由此得到状态转移方程：</p>
-<pre><code>dp[i][j] = max(dp[i − 1][j], dp[i − 1][j − w[i]] + v[i]) // j &gt;= w[i]
-</code></pre><p>完整代码如下：</p>
-<pre><code>for(int i = 1; i &lt; w.size(); i++) { // 遍历物品
-    for(int j = 0; j &lt;= bagweight; j++) { // 遍历背包容量
-        if (j &lt; w[i]) dp[i][j] = dp[i - 1][j]; 
-        else dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - w[i]] + v[i]);
-    }
-}
-</code></pre><p>此时先遍历的是物品，再遍历背包容量，反之也是可以的，这里注意到<code>j</code>的遍历是正向的，因为下一层使用的是上一层的状态，具体而言，需要的是左上角的信息。</p>
-<p>上述状态转移方程可知，<code>dp[i][j]</code>的值只与<code>dp[i - 1][j]</code>有关，所以我们使用动态规划常用的方法（滚动数组）来对空间复杂度进行优化，需要满足的条件是上一层可以重复利用，直接拷贝到当前层。此时<code>dp[j]</code>表示容量为<code>j</code>的背包，所装的物品最大价值。同理可得到状态转移方程：</p>
-<pre><code>dp[j] = max(dp[j], dp[j - w[i]] + v[i])
-</code></pre><p>初始化时，将<code>dp[i]</code>全部初始化为<code>0</code>.完整代码如下：</p>
-<pre><code>for(int i = 0; i &lt; weight.size(); i++) { // 遍历物品
-    for(int j = bagWeight; j &gt;= weight[i]; j--) { // 遍历背包容量
-        dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
-    }
-}
-</code></pre><p>这里我们发现，j的遍历顺序是逆序的。原因是：如果是正向计算，那么会出现状态重合的情况，例如下面的例子：背包容量为4，物品属性如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>物品重量</th>
-<th>物品价值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>15</td>
-</tr>
-<tr>
-<td>3</td>
-<td>20</td>
-</tr>
-<tr>
-<td>4</td>
-<td>30</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>此时<code>dp[1] = 15, dp[2] = dp[2 - w[0]] + v[0] = d[1] + 15 = 30</code>。可以注意到这里<code>dp[2]</code>恰巧用到了<code>dp[1]</code>的数据，也就是说此时第一个物品被装了两次。那么为了避免这种情况，我们就需要对<code>j</code>进行逆序遍历，这样用到前面的数据时，前面的数据还没有被遍历到，其状态是0，模拟的就是一件物品只能被装进去一次。同时，<code>i</code>和<code>j</code>的遍历顺序也不能交换，如果<code>j</code>放在外层，那么遍历的结果是背包只放了一件物品。</p>
-<p>完整的代码如下：</p>
-<pre><code>void test_1_wei_bag_problem() {
-    vector&lt;int&gt; weight = {1, 3, 4};
-    vector&lt;int&gt; value = {15, 20, 30};
-    int bagWeight = 4;
-
-    // 初始化
-    vector&lt;int&gt; dp(bagWeight + 1, 0);
-    for(int i = 0; i &lt; weight.size(); i++) { // 遍历物品
-        for(int j = bagWeight; j &gt;= weight[i]; j--) { // 遍历背包容量
-            dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
-        }
-    }
-    cout &lt;&lt; dp[bagWeight] &lt;&lt; endl;
-}
-
-int main() {
-    test_1_wei_bag_problem();
-}
-</code></pre><p>学习完以上的知识，就可以试着做一做leetcode的416和1049题，这两道题是经典的可以转化为背包问题的题目。下一篇博客将总结多重背包问题。</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1557,7 +1556,7 @@ int main() {
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1671,9 +1670,9 @@ int main() {
       
     
       
-        
-      
     
+      
+        
       
     
       
