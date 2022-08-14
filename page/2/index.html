@@ -191,6 +191,1187 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/11/二叉树遍历中构造前后指针/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/03/11/二叉树遍历中构造前后指针/" class="post-title-link" itemprop="url">二叉树遍历中构造前后指针</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-03-11 19:41:47 / Modified: 20:14:11" itemprop="dateCreated datePublished" datetime="2022-03-11T19:41:47+08:00">2022-03-11</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-何为前后指针"><a href="#1-何为前后指针" class="headerlink" title="1. 何为前后指针"></a>1. 何为前后指针</h1><p>在二叉树的一些题目中，需要我们记录前后两个相邻节点各自的信息（尤其是在二叉搜索树中经常出现，比如501和530，那么常用的技巧就是在遍历过程中设置两个指针，分别指向这两个相邻节点，在处理之后，将前一个指针指向当前节点，当前指针指向下一个节点。</p>
+<h1 id="2-递归中构造前后指针"><a href="#2-递归中构造前后指针" class="headerlink" title="2. 递归中构造前后指针"></a>2. 递归中构造前后指针</h1><pre><code>class Solution{
+    private:
+        TreeNode* pre;
+        void traversal(TreeNode* cur){
+            if(cur == NULL)return;
+            traversal(cur-&gt;left); //左
+            if(pre != NULL){ //中
+                //处理cur和pre
+            }
+            pre = cur; //将前一个指针指向当前节点
+            traversal(cur-&gt;right); //右
+        }
+    public:
+        TreeNode* getMinimumDifference(TreeNode* root){
+            traversal(root);
+            return root;
+        }
+}
+</code></pre><p>这里使用的是前序遍历，实际中根据需要自行修改即可。</p>
+<h1 id="3-迭代中构造前后指针"><a href="#3-迭代中构造前后指针" class="headerlink" title="3. 迭代中构造前后指针"></a>3. 迭代中构造前后指针</h1><pre><code>class Solution{
+    public:
+        TreeNode* getMinimumDifference(TreeNode* root){
+            stack&lt;TreeNode*&gt; stk;
+            if(root == NULL)return root;
+            TreeNode* pre = NULL;
+            TreeNode* cur = root;
+            while(!stk.empty() || cur != NULL){
+                if(cur != NULL){
+                    stk.push(cur);
+                    cur = cur-&gt;left; //左
+                }else{
+                    cur = stk.top();
+                    stk.pop();
+                    if(pre == NULL){
+                        //此时cur指向初始节点（最左下或者最右下）
+                    }
+                    if(pre != NULL){
+                        //处理pre和cur
+                    }
+                    pre = cur; //前一个指针指向当前节点
+                    cur = cur-&gt;right; //这里和上面对应，上面始终遍历左侧，则这里等于右子节点
+                }
+            }
+            return root;
+        }
+}
+</code></pre><p>相比较递归中的前后指针构造，我个人更熟悉迭代法中构造前后指针。在二叉搜索树中这样的处理方式很常见，需要慢慢体会这样的写法。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/09/何为常量函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/03/09/何为常量函数/" class="post-title-link" itemprop="url">何为常量函数</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-03-09 20:54:45 / Modified: 21:20:54" itemprop="dateCreated datePublished" datetime="2022-03-09T20:54:45+08:00">2022-03-09</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-this指针"><a href="#1-this指针" class="headerlink" title="1.this指针"></a>1.this指针</h1><p>当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为<strong>this</strong>指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用<strong>this</strong>来访问类内成员。那么由于<strong>this</strong>始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是<strong>this</strong>对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：</p>
+<pre><code>class people{
+    public:
+        people(){}
+        people(int x):score(x){}
+        ~people(){}
+        int getScore(){return score;}
+    private:
+        int score;
+};
+
+int main(){
+    const people p1(22);//常量
+    cout &lt;&lt; p1.getScore() &lt;&lt; endl; //error，不能用常量绑定非常量指针
+    return 0;
+}
+</code></pre><p>这段代码在编译器中是无法编译通过的。我们知道用<strong>指向常量的指针</strong>来绑定<strong>常量和非常量</strong>都是可以的，那么为了提高成员函数的灵活性，我们就可以将这个<strong>this</strong>指针定义为指向常量的指针（同时其本身就是常量指针）。方法就是在成员函数的参数列表后面加入关键字const，则上述getScore函数修改为：</p>
+<pre><code>int getScore() const {return score;}
+</code></pre><p>这样上述代码的main函数就可以正常运行了。</p>
+<h1 id="2-补充"><a href="#2-补充" class="headerlink" title="2.补充"></a>2.补充</h1><p>对于成员函数，其有一个隐式参数，来表示对象的地址，例如：</p>
+<pre><code>class Foo{
+    public:
+        void hello(int a){
+            cout &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        }
+        //等价于
+        //void hello(Foo* const this, int a){
+            //out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        //}
+};
+
+int main(){
+    Foo foo;
+    int a = 2;
+    foo.hello(a);
+    //等价于
+    foo.hello(&amp;foo, a);
+}
+</code></pre><p>上面的代码展示了对象地址的隐式参数传递，当我们将hello设置为常量函数后，就可以理解为其等价版本变为：</p>
+<pre><code>void hello(const Foo* const this, int a){
+    out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+}
+</code></pre><h1 id="3-常量成员函数的重载"><a href="#3-常量成员函数的重载" class="headerlink" title="3.常量成员函数的重载"></a>3.常量成员函数的重载</h1><p>两个成员函数，名字和参数列表都一样，但是一个是常量函数一个不是，则也算重载。</p>
+<pre><code>class people{
+    public:
+        people(){}
+        people(int x):score(x){}
+        ~people(){}
+        int getScore() {return score;}
+        int getScore() const {return score};
+    private:
+        int score;
+};
+
+int main(){
+    const people p1(22);//常量对象
+    people p2(23); //非常量对象
+    cout &lt;&lt; p1.getScore() &lt;&lt; p2.getScore() &lt;&lt; endl; //重载
+    return 0;
+}
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/07/二叉树的迭代遍历/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/03/07/二叉树的迭代遍历/" class="post-title-link" itemprop="url">二叉树的迭代遍历</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-03-07 19:14:16 / Modified: 20:12:20" itemprop="dateCreated datePublished" datetime="2022-03-07T19:14:16+08:00">2022-03-07</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-层次遍历"><a href="#1-层次遍历" class="headerlink" title="1. 层次遍历"></a>1. 层次遍历</h1><p>层次遍历是广度优先遍历，即先遍历二叉树的每一层节点，再向下继续遍历每一个节点的子节点。基本思想是，当同层节点都遍历后，此时同层节点的子节点进行下一轮遍历，不难想到，我们应该使用队列来实现这一想法。因为队列先进先出的特性，使得同层的节点必定相邻，我们只需要将同层每个节点放入队列后，在它们按序出列时放入子节点即可。<br>下面是层序遍历的代码模板，事实上，这份模板可以解决很多类似于层序遍历的问题，只需要修改很少的部分即可：</p>
+<pre><code>class Sulution{
+    public:
+        vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode* root){
+            queue&lt;TreeNode*&gt; que;
+            vector&lt;vector&lt;int&gt;&gt; result;
+            if(root == NULL)return result;
+            que.push(root);
+            while(!que.empty()){
+                int size = que.size();
+                vector&lt;int&gt; vec;
+                for(int i = 0; i &lt; size; i++){
+                    TreeNode* cur = que.front();
+                    que.pop();
+                    vec.push_back(cur-&gt;val);
+                    if(cur-&gt;left)que.push(cur-&gt;left);
+                    if(cur-&gt;right)que.push(cur-&gt;right);
+                }
+                result.push_back(vec);
+            }
+            return result;
+        }
+}
+</code></pre><p>这样每一层的节点都保存至一个vector内，每一层迭代结束后，将相应的vector保存到result中。</p>
+<h1 id="2-前序遍历"><a href="#2-前序遍历" class="headerlink" title="2. 前序遍历"></a>2. 前序遍历</h1><p>在上一期实现递归深度优先遍历时，其实关键就是将每一次递归调用的函数局部变量、参数值和返回地址压入调用栈中，然后调用返回后，从栈顶弹出上一次递归的各项参数，这就是递归能返回最终结果的原理。那么我们当然可以手动使用stack来实现模拟这一过程。</p>
+<p>栈（stack）空间先入后出，对于前序遍历中左右的结果，首先将根节点放入栈中，然后弹出栈顶元素，再放入右孩子，最后放入左孩子，这样出栈的顺序才正确。代码如下：</p>
+<pre><code>class Solution{
+    public:
+        vector&lt;int&gt; preOrder(TreeNode* root){
+            stack&lt;TreeNode*&gt; stk;
+            vector&lt;int&gt; result;
+            if(root == NULL)return result;
+            stk.push(root);
+            while(!stk.empty()){
+                TreeNode* cur = stk.top();
+                stk.pop();
+                result.push_back(cur-&gt;val);
+                if(cur-&gt;right)stk.push(cur-&gt;right);
+                if(cur-&gt;left)stk.push(cur-&gt;left);
+            }
+            return result;
+        }
+}
+</code></pre><h1 id="3-后序遍历"><a href="#3-后序遍历" class="headerlink" title="3. 后序遍历"></a>3. 后序遍历</h1><p>前序遍历是中左右的顺序，后序遍历是左右中的顺序。而恰恰我们可以调整前序遍历放入子节点的左右顺序来产生中右左的序列（此时先放入左子节点，后放入右子节点），然后将这个序列逆序即可得到左右中的顺序。代码只需要在前序的基础上修改少部分即可：</p>
+<pre><code>class Solution{
+    public:
+        vector&lt;int&gt; preOrder(TreeNode* root){
+            stack&lt;TreeNode*&gt; stk;
+            vector&lt;int&gt; result;
+            if(root == NULL)return result;
+            stk.push(root);
+            while(!stk.empty()){
+                TreeNode* cur = stk.top();//中
+                stk.pop();
+                result.push_back(cur-&gt;val);
+                if(cur-&gt;left)stk.push(cur-&gt;left);//先放入左
+                if(cur-&gt;right)stk.push(cur-&gt;right);//后放入右
+            }
+            reverse(result.begin(), result.end());//逆序
+            return result;
+        }
+}
+</code></pre><h1 id="4-中序遍历"><a href="#4-中序遍历" class="headerlink" title="4. 中序遍历"></a>4. 中序遍历</h1><p>中序遍历的顺序是左中右，此时如果我们还按照上述的方法进行中序遍历就会发现，当访问到左节点时，紧跟的“中”是其父节点，这就造成了不便性。这里我们使用一个指针来控制访问元素，栈则用来处理节点上的元素。</p>
+<pre><code>class Solution {
+public:
+    vector&lt;int&gt; inorderTraversal(TreeNode* root) {
+        vector&lt;int&gt; result;
+        stack&lt;TreeNode*&gt; stk;
+        TreeNode* cur = root;
+        while(cur != NULL || !stk.empty()){
+            if(cur != NULL){//指针访问节点，访问到最左下的起始元素
+                stk.push(cur);
+                cur = cur-&gt;left;//左
+            }else{//当前节点为空时，将栈顶元素拿出来
+                cur = stk.top();
+                stk.pop();
+                result.push_back(cur-&gt;val);//中节点
+                cur = cur-&gt;right;//访问右子节点
+            }
+        }
+        return result;
+    }
+};
+</code></pre><p>中序遍历需要仔细思考一下其原理，最好是在纸上测试一遍，这里蕴含的其实是“回溯”的知识，在之后的题解中，也会涉及到二叉树+回溯的题目，即在当前元素遍历后，如何再回到父节点再向另一个方向遍历。需要仔细体会。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/05/解决hexo不显示插入图像的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/03/05/解决hexo不显示插入图像的问题/" class="post-title-link" itemprop="url">解决hexo不显示插入图像的问题</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-03-05 14:12:05" itemprop="dateCreated datePublished" datetime="2022-03-05T14:12:05+08:00">2022-03-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-07 20:13:58" itemprop="dateModified" datetime="2022-03-07T20:13:58+08:00">2022-03-07</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>众所周知，hexo插入图像有两种方式，一种是使用 <strong><em>markdown</em></strong> 语法：</p>
+<pre><code>![图片替代文本](图片链接 &quot;图片title&quot;)
+</code></pre><p>还有一种是使用 <strong><em>HTML</em></strong> 语法来更精确的控制插入的图像：</p>
+<pre><code>&lt;div align = &quot;center&quot;&gt;
+    &lt;img src = ./Fig/Fig27.png width = 90%&gt; //这里使用相对路径来引用图像
+&lt;/div&gt; 
+</code></pre><p>后者能更精确的控制图像的大小和位置，来满足插入图像时的各种需求。</p>
+<p>我使用的markdown编辑器是vscode，一方面vscode的启动速度快，占用资源少，另一方面，vscode众多的强大插件能完美的满足我在编辑markdown时的要求。这里如果你使用markdown文件最终是为了生成pdf文件的话，强烈推荐一款vscode下的插件：</p>
+<img src="/2022/03/05/解决hexo不显示插入图像的问题/vscode插件.png" title="This is an example image">
+<p>每次打开一个.md文件后，在编辑区右键即可打开预览模式，</p>
+<img src="/2022/03/05/解决hexo不显示插入图像的问题/预览.png" title="This is an example image">
+<p>并且上述两种插入图像的方式在这个插件下都可以正确显示。但是每次将.md文件推送到网站上时，插入的图像都不会正确显示，查找一番后，我发现了在Hexo官方网站上有这个问题的解决方案。这里贴一下链接：<a href="https://hexo.io/zh-cn/docs/asset-folders" target="_blank" rel="noopener">Hexo官方中文网站</a></p>
+<p>具体方法是：</p>
+<ol>
+<li>在根目录下配置文件 <strong>_config.yml</strong> 中有 <strong>post_asset_folder:false</strong> 改为<strong>true</strong>。这样在建立文件时，Hexo会自动建立一个与文章同名的文件夹，这样就可以把与该文章相关的所有资源（图片）都放到那个文件夹里方便后面引用。</li>
+<li>git bash安装插件：npm install <a href="https://github.com/7ym0n/hexo-asset-image" target="_blank" rel="noopener">https://github.com/7ym0n/hexo-asset-image</a> —save（这是个修改过的插件，经测试无问题），使用这个插件来引入图片（这里如果遇到了安装时没有写入权限的问题，则在命令最后加入 <strong>-g</strong> 来获取权限。</li>
+<li>插入图片时用这种方式：<strong></strong>，其中<strong>test.jpg就是你要引用的图片</strong>，后面的<strong>This is an test image是图片描述</strong>，可以自己修改。注意这里的图片描述<strong>不能删除</strong>，因为这个插件将其定义为不可省略。</li>
+</ol>
+<p>上面这个方法的缺点是在vscode预览中并不能看到插入的图像，这里可以使用hexo发布至本地来查看是否成功。输入如下命令：</p>
+<pre><code>hexo s
+</code></pre><p>然后在浏览器地址栏访问如下网页查看效果：</p>
+<pre><code>http://localhost:4000/
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/04/二叉树入门指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/03/04/二叉树入门指南/" class="post-title-link" itemprop="url">二叉树入门指南</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-03-04 21:50:06 / Modified: 21:56:13" itemprop="dateCreated datePublished" datetime="2022-03-04T21:50:06+08:00">2022-03-04</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="二叉树的种类"><a href="#二叉树的种类" class="headerlink" title="二叉树的种类"></a>二叉树的种类</h1><h2 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h2><p>满二叉树的定义是：如果一颗二叉树只有度为0的节点和度为2的节点，且度为0的节点在同一层上，则该二叉树是满二叉树，如下图：</p>
+<img src="/2022/03/04/二叉树入门指南/满二叉树.png" title="This is an example image">
+<p>满二叉树的深度为k，则节点共有 $ 2^{k} - 1 $个（这里使用等比数列相加即可得出）。</p>
+<h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><p>在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。</p>
+<img src="/2022/03/04/二叉树入门指南/完全二叉树的判定.png" title="This is an example image">
+<p>优先级队列其实是一个堆，堆就是一个完全二叉树，而且保证了父子节点的顺序关系。</p>
+<h2 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h2><p>二叉搜索树是节点带有数值的一棵树，并且要满足以下关系：<br><strong>若它的左子树不为空，则左子树上所有节点的值都小于根节点的值；</strong><br><strong>若它的右子树不为空，则右子树上所有节点的值都大于根节点的值；</strong><br><strong>它的左、右子树也分别为二叉排序树。</strong></p>
+<img src="/2022/03/04/二叉树入门指南/二叉搜索树.png" title="This is an example image">
+<h2 id="平衡二叉搜索树"><a href="#平衡二叉搜索树" class="headerlink" title="平衡二叉搜索树"></a>平衡二叉搜索树</h2><p>平衡二叉搜索树又被称为<strong>AVL（Adelson-Velsky and Landis）</strong>，且具有如下性质：它是一棵空树或者它的左右两个子树的高度差的绝对值不超过1，并且左右两颗子树都是平衡二叉树。</p>
+<img src="/2022/03/04/二叉树入门指南/平衡二叉搜索树.png" title="This is an example image"> 
+<p>最后一棵树不是平衡二叉搜索树，因为根节点的左右子树的高度差的绝对值超过了1（此时左边为6，右边无子树为0）。</p>
+<p>C++中<strong>map、set、multimap，multiset</strong>的底层实现都是平衡二叉搜索树，所以<strong>map、set</strong>的增删操作时间时间复杂度是<strong>logn</strong>，注意我这里没有说<strong>unordered_map、unordered_set</strong>，这两者的底层实现是哈希表。</p>
+<h1 id="二叉树的定义"><a href="#二叉树的定义" class="headerlink" title="二叉树的定义"></a>二叉树的定义</h1><p>在面试的时候，因为大部分情况是没有IDE和代码提示的，需要自己定义二叉树，下面是常用的定义二叉树的方法：</p>
+<pre><code>struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(): val(0), left(NULL), right(NULL) {}
+    TreeNode(int x): val(x), left(NULL), right(NULL) {}
+}
+</code></pre><h1 id="二叉树的遍历方式"><a href="#二叉树的遍历方式" class="headerlink" title="二叉树的遍历方式"></a>二叉树的遍历方式</h1><p>说到二叉树，那么常见的考察方式就是其遍历方式，大体上可以概括为两种：<br><strong>1. 深度优先遍历</strong><br>    $\qquad\bullet$<strong>前序遍历（递归，迭代）</strong><br>    $\qquad\bullet$<strong>中序遍历（递归，迭代）</strong><br>    $\qquad\bullet$<strong>后序遍历（递归，迭代）</strong><br><strong>2. 广度优先遍历</strong><br>    $\qquad\bullet$<strong>层次遍历（迭代）</strong></p>
+<p>在深度优先遍历中，前、中、后指的是根节点所在的位置。</p>
+<h2 id="深度优先遍历（迭代法）"><a href="#深度优先遍历（迭代法）" class="headerlink" title="深度优先遍历（迭代法）"></a>深度优先遍历（迭代法）</h2><p>下面介绍一下使用递归方法进行深度优先遍历，这里假设我们使用<strong>vector</strong>来保存遍历过程中的节点值。这里提供的是递归方法的思路，之后只需要按照这个思路稍微修改代码满足需要即可。</p>
+<h3 id="1-前序遍历"><a href="#1-前序遍历" class="headerlink" title="1. 前序遍历"></a>1. 前序遍历</h3><pre><code>//中-左-右
+class Solution{
+public:
+    void traversal(TreeNode* cur， vector&lt;int&gt;&amp; vec){
+        if(cur == NULL)return;
+        vec.push_back(cr-&gt;val); //中
+        traversal(cur-&gt;left); //左
+        traversal(cur-&gt;right); //右
+    }
+
+    vector&lt;int&gt; preorderTraversal(TreeNode* root){
+        vector&lt;int&gt; result;
+        if(root == NULL)return result;
+        traversal(root, result);
+        return result;
+    }
+}
+</code></pre><p>同理，中序遍历和后序遍历只需要修改递归代码中的顺序即可，思路都是一样的。</p>
+<h3 id="2-中序遍历"><a href="#2-中序遍历" class="headerlink" title="2. 中序遍历"></a>2. 中序遍历</h3><pre><code>//左-中-右
+class Solution{
+public:
+    void traversal(TreeNode* cur， vector&lt;int&gt;&amp; vec){
+        if(cur == NULL)return;
+        traversal(cur-&gt;left); //左
+        vec.push_back(cr-&gt;val); //中
+        traversal(cur-&gt;right); //右
+    }
+
+    vector&lt;int&gt; preorderTraversal(TreeNode* root){
+        vector&lt;int&gt; result;
+        if(root == NULL)return result;
+        traversal(root, result);
+        return result;
+    }
+}
+</code></pre><h3 id="3-后序遍历"><a href="#3-后序遍历" class="headerlink" title="3. 后序遍历"></a>3. 后序遍历</h3><pre><code>//左-右-中
+class Solution{
+public:
+    void traversal(TreeNode* cur， vector&lt;int&gt;&amp; vec){
+        if(cur == NULL)return;
+        traversal(cur-&gt;left); //左
+        traversal(cur-&gt;right); //右
+        vec.push_back(cr-&gt;val); //中
+    }
+
+    vector&lt;int&gt; preorderTraversal(TreeNode* root){
+        vector&lt;int&gt; result;
+        if(root == NULL)return result;
+        traversal(root, result);
+        return result;
+    }
+}
+</code></pre><p>下一篇博客将总结使用迭代方法实现深度优先遍历和广度优先遍历（即层次遍历）。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/15/Java泛型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2021/05/15/Java泛型/" class="post-title-link" itemprop="url">Java泛型</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2021-05-15 13:20:14" itemprop="dateCreated datePublished" datetime="2021-05-15T13:20:14+08:00">2021-05-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-16 00:08:17" itemprop="dateModified" datetime="2021-05-16T00:08:17+08:00">2021-05-16</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-为什么要使用泛型设计"><a href="#1-为什么要使用泛型设计" class="headerlink" title="1.为什么要使用泛型设计"></a>1.为什么要使用泛型设计</h1><p><strong>泛型程序设计</strong>意味着编写的代码可以对多种不同类型的对象重用。例如，你不想为收集<strong>String</strong>和<strong>File</strong>对象分别编写不同的类。实际上，也不需要这样做，因为一个<strong>ArrayList</strong>类就可以收集任何类的对象。这就是泛型程序设计的一个例子。</p>
+<pre><code>List arrayList = new ArrayList();
+arrayList.add(&quot;aaaa&quot;);
+arrayList.add(100);
+
+for(int i = 0; i&lt; arrayList.size();i++){
+    String item = (String)arrayList.get(i);
+    Log.d(&quot;泛型测试&quot;,&quot;item = &quot; + item);
+}
+</code></pre><p>毫无疑问，这个程序会在运行时崩溃，为了解决这样的问题（在编译阶段就可以解决），泛型应运而生。我们将第一行声明初始化<strong>list</strong>的代码更改一下，编译器会在编译阶段就能够帮我们发现类似这样的问题。</p>
+<pre><code>List&lt;String&gt; arrayList = new ArrayList&lt;String&gt;();
+...
+//arrayList.add(100); 在编译阶段，编译器就会报错
+</code></pre><h1 id="2-泛型的特性"><a href="#2-泛型的特性" class="headerlink" title="2.泛型的特性"></a>2.泛型的特性</h1><p>泛型只在编译阶段有效，下面是一个经典的泛型的例子。</p>
+<pre><code>List&lt;String&gt; stringArrayList = new ArrayList&lt;String&gt;();
+List&lt;Integer&gt; integerArrayList = new ArrayList&lt;Integer&gt;();
+
+Class classStringArrayList = stringArrayList.getClass();
+Class classIntegerArrayList = integerArrayList.getClass();
+
+if(classStringArrayList.equals(classIntegerArrayList)){
+    Log.d(&quot;泛型测试&quot;,&quot;类型相同&quot;);
+}
+</code></pre><p>输出的结果是<strong>类型相同</strong>。通过上面的例子可以证明，在编译之后程序会采取去泛型化的措施。也就是说<strong>Java</strong>中的泛型，只在编译阶段有效。在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。也就是说，泛型信息不会进入到运行时阶段。</p>
+<h1 id="3-泛型类"><a href="#3-泛型类" class="headerlink" title="3.泛型类"></a>3.泛型类</h1><p>通过泛型可以完成对一组类的操作对外开放相同的接口。最典型的就是各种容器类，如：<strong>List</strong>，<strong>Set</strong>，<strong>Map</strong>。<br>泛型类的基本写法为：</p>
+<pre><code>class 类名称 &lt;泛型标识：可以随便写任意标识号，标识指定的泛型的类型&gt;{
+    private 泛型标识 /*（成员变量类型）*/ var; 
+    .....
+    }
+}
+</code></pre><p>下面我们实现一个简单的泛型类：</p>
+<pre><code>//此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型
+//在实例化泛型类时，必须指定T的具体类型
+public class Generic&lt;T&gt;{ 
+    //key这个成员变量的类型为T,T的类型由外部指定  
+    private T key;
+
+    public Generic(T key) { //泛型构造方法形参key的类型也为T，T的类型由外部指定
+        this.key = key;
+    }
+
+    public T getKey(){ //泛型方法getKey的返回值类型为T，T的类型由外部指定
+        return key;
+    }
+}
+</code></pre><p>传入参数时：如果传入泛型类型实参，会根据传入的泛型实参做相应的限制，此时泛型才会起到本应起到的限制作用。</p>
+<pre><code>//泛型的类型参数只能是类类型（包括自定义类），不能是简单类型
+//传入的实参类型需与泛型的类型参数类型相同，即为Integer.
+Generic&lt;Integer&gt; genericInteger = new Generic&lt;Integer&gt;(123456);
+
+//传入的实参类型需与泛型的类型参数类型相同，即为String.
+Generic&lt;String&gt; genericString = new Generic&lt;String&gt;(&quot;key_vlaue&quot;);
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + genericInteger.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + genericString.getKey());
+</code></pre><p>如果不选择传入泛型类型实参：在泛型类中使用泛型的方法或成员变量定义的类型可以为任何的类型。</p>
+<pre><code>Generic generic = new Generic(&quot;111111&quot;);
+Generic generic1 = new Generic(4444);
+Generic generic2 = new Generic(55.55);
+Generic generic3 = new Generic(false);
+
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic1.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic2.getKey());
+Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic3.getKey());
+</code></pre><p><font face="黑体" font color="red">注意：</font></p>
+<ul>
+<li>泛型的类型参数只能是类类型，不能是简单类型。</li>
+<li><p>不能对确切的泛型类型使用<strong>instanceof</strong>操作。如下面的操作是非法的，编译时会出错。</p>
+<p>if(ex_num instanceof Generic<number>){ }</number></p>
+</li>
+</ul>
+<h1 id="4-泛型接口"><a href="#4-泛型接口" class="headerlink" title="4.泛型接口"></a>4.泛型接口</h1><p>泛型接口常被用在各种类的生产器中：</p>
+<pre><code>//定义一个泛型接口
+public interface Generation&lt;T&gt; {
+    public T next();
+}
+</code></pre><p>当实现泛型接口的类，未传入泛型实参时：</p>
+<pre><code>/**
+* 未传入泛型实参时，与泛型类的定义相同，在声明类的时候，需将泛型的声明也一起加到类中
+* 即：class FruitGenerator&lt;T&gt; implements Generator&lt;T&gt;{
+* 如果不声明泛型，如：class FruitGenerator implements Generator&lt;T&gt;，编译器会报错：&quot;Unknown class&quot;
+*/
+class FruitGenerator&lt;T&gt; implements Generator&lt;T&gt;{
+    @Override
+    public T next() {
+        return null;
+    }
+}
+</code></pre><p>当实现泛型接口的类，传入泛型实参时：</p>
+<pre><code>/**
+* 传入泛型实参时：
+* 定义一个生产器实现这个接口,虽然我们只创建了一个泛型接口Generator&lt;T&gt;
+* 但是我们可以为T传入无数个实参，形成无数种类型的Generator接口。
+* 在实现类实现泛型接口时，如已将泛型类型传入实参类型，则所有使用泛型的地方都要替换成传入的实参类型
+* 此时不需要在声明类中的泛型声明T
+* 即：Generator&lt;T&gt;，public T next();中的的T都要替换成传入的String类型。
+*/
+public class FruitGenerator implements Generator&lt;String&gt; {
+
+    private String[] fruits = new String[]{&quot;Apple&quot;, &quot;Banana&quot;, &quot;Pear&quot;};
+
+    @Override
+    public String next() {
+        Random rand = new Random();
+        return fruits[rand.nextInt(3)];
+    }
+}
+</code></pre><h1 id="5-泛型方法"><a href="#5-泛型方法" class="headerlink" title="5.泛型方法"></a>5.泛型方法</h1><p>泛型方法的基本形式：</p>
+<pre><code>/**
+* 泛型方法的基本介绍
+* @param tClass 传入的泛型实参
+* @return T 返回值为T类型
+* 说明：
+*     1）public与返回值中间&lt;T&gt;非常重要，可以理解为声明此方法为泛型方法。
+*     2）只有声明了&lt;T&gt;的方法才是泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。
+*     3）&lt;T&gt;表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T。
+*     4）与泛型类的定义一样，此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型。
+*/
+public &lt;T&gt; T genericMethod(Class&lt;T&gt; tClass)throws InstantiationException ,
+IllegalAccessException{
+        T instance = tClass.newInstance();
+        return instance;
+}
+</code></pre><h2 id="5-1-泛型方法的基本用法"><a href="#5-1-泛型方法的基本用法" class="headerlink" title="5.1 泛型方法的基本用法"></a>5.1 泛型方法的基本用法</h2><pre><code>public class GenericTest {
+    //这个类是个泛型类，在上面已经介绍过
+    public class Generic&lt;T&gt;{     
+        private T key;
+
+        public Generic(T key) {
+            this.key = key;
+        }
+
+        //我想说的其实是这个，虽然在方法中使用了泛型，但是这并不是一个泛型方法。
+        //这只是类中一个普通的成员方法，只不过他的返回值是在声明泛型类已经声明过的泛型。
+        //所以在这个方法中才可以继续使用 T 这个泛型。
+        public T getKey(){
+            return key;
+        }
+
+        /**
+        * 这个方法显然是有问题的，在编译器会给我们提示这样的错误信息&quot;cannot reslove symbol E&quot;
+        * 因为在类的声明中并未声明泛型E，所以在使用E做形参和返回值类型时，编译器会无法识别。
+        public E setKey(E key){
+            this.key = keu
+        }
+        */
+    }
+
+    /** 
+    * 这才是一个真正的泛型方法。
+    * 首先在public与返回值之间的&lt;T&gt;必不可少，这表明这是一个泛型方法，并且声明了一个泛型T
+    * 这个T可以出现在这个泛型方法的任意位置.
+    * 泛型的数量也可以为任意多个 
+    *    如：public &lt;T,K&gt; K showKeyName(Generic&lt;T&gt; container){
+    *        ...
+    *        }
+    */
+    public &lt;T&gt; T showKeyName(Generic&lt;T&gt; container){
+        System.out.println(&quot;container key :&quot; + container.getKey());
+        //当然这个例子举的不太合适，只是为了说明泛型方法的特性。
+        T test = container.getKey();
+        return test;
+    }
+
+    //这也不是一个泛型方法，这就是一个普通的方法，只是使用了Generic&lt;Number&gt;这个泛型类做形参而已。
+    public void showKeyValue1(Generic&lt;Number&gt; obj){
+        Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
+    }
+
+    //这也不是一个泛型方法，这也是一个普通的方法，只不过使用了泛型通配符?
+    //同时这也印证了泛型通配符章节所描述的，?是一种类型实参，可以看做为Number等所有类的父类
+    public void showKeyValue2(Generic&lt;?&gt; obj){
+        Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
+    }
+
+    /**
+    * 这个方法是有问题的，编译器会为我们提示错误信息：&quot;UnKnown class &#39;E&#39; &quot;
+    * 虽然我们声明了&lt;T&gt;,也表明了这是一个可以处理泛型的类型的泛型方法。
+    * 但是只声明了泛型类型T，并未声明泛型类型E，因此编译器并不知道该如何处理E这个类型。
+    public &lt;T&gt; T showKeyName(Generic&lt;E&gt; container){
+        ...
+    }  
+    */
+
+    /**
+    * 这个方法也是有问题的，编译器会为我们提示错误信息：&quot;UnKnown class &#39;T&#39; &quot;
+    * 对于编译器来说T这个类型并未项目中声明过，因此编译也不知道该如何编译这个类。
+    * 所以这也不是一个正确的泛型方法声明。
+    public void showkey(T genericObj){
+
+    }
+    */
+
+    public static void main(String[] args) {
+        ...
+    }
+}
+</code></pre><h2 id="5-2-泛型类中的泛型方法"><a href="#5-2-泛型类中的泛型方法" class="headerlink" title="5.2 泛型类中的泛型方法"></a>5.2 泛型类中的泛型方法</h2><p>有一种情况是非常特殊的，当泛型方法出现在泛型类中时，我们再通过一个例子看一下：</p>
+<pre><code>public class GenericFruit {
+    class Fruit{
+        @Override
+        public String toString() {
+            return &quot;fruit&quot;;
+        }
+    }
+
+    class Apple extends Fruit{
+        @Override
+        public String toString() {
+            return &quot;apple&quot;;
+        }
+    }
+
+    class Person{
+        @Override
+        public String toString() {
+            return &quot;Person&quot;;
+        }
+    }
+
+    class GenerateTest&lt;T&gt;{
+        public void show_1(T t){
+            System.out.println(t.toString());
+        }
+
+        //在泛型类中声明了一个泛型方法，使用泛型E，这种泛型E可以为任意类型。可以类型与T相同，也可以不同。
+        //由于泛型方法在声明的时候会声明泛型&lt;E&gt;，因此即使在泛型类中并未声明泛型，编译器也能够正确识别泛型方法中识别的泛型。
+        public &lt;E&gt; void show_3(E t){
+            System.out.println(t.toString());
+        }
+
+        //在泛型类中声明了一个泛型方法，使用泛型T，注意这个T是一种全新的类型，可以与泛型类中声明的T不是同一种类型。
+        public &lt;T&gt; void show_2(T t){
+            System.out.println(t.toString());
+        }
+    }
+
+    public static void main(String[] args) {
+        Apple apple = new Apple();
+        Person person = new Person();
+
+        GenerateTest&lt;Fruit&gt; generateTest = new GenerateTest&lt;Fruit&gt;();
+        //apple是Fruit的子类，所以这里可以
+        generateTest.show_1(apple);
+        //编译器会报错，因为泛型类型实参指定的是Fruit，而传入的实参类是Person
+        //generateTest.show_1(person);
+
+        //使用这两个方法都可以成功
+        generateTest.show_2(apple);
+        generateTest.show_2(person);
+
+        //使用这两个方法也都可以成功
+        generateTest.show_3(apple);
+        generateTest.show_3(person);
+    }
+}
+</code></pre><h2 id="5-3-静态方法与泛型"><a href="#5-3-静态方法与泛型" class="headerlink" title="5.3 静态方法与泛型"></a>5.3 静态方法与泛型</h2><p>静态方法有一种情况需要注意一下，那就是在类中的静态方法使用泛型：静态方法无法访问类上定义的泛型；如果静态方法操作的引用数据类型不确定的时候，必须要将泛型定义在方法上。即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。</p>
+<pre><code>public class StaticGenerator&lt;T&gt; {
+    ....
+    ....
+    /**
+    * 如果在类中定义使用泛型的静态方法，需要添加额外的泛型声明（将这个方法定义成泛型方法）
+    * 即使静态方法要使用泛型类中已经声明过的泛型也不可以。
+    * 如：public static void show(T t){..},此时编译器会提示错误信息：
+        &quot;StaticGenerator cannot be refrenced from static context&quot;
+    */
+    public static &lt;T&gt; void show(T t){
+
+    }
+}
+</code></pre><h2 id="5-4-泛型方法总结"><a href="#5-4-泛型方法总结" class="headerlink" title="5.4 泛型方法总结"></a>5.4 泛型方法总结</h2><p>一个基本的指导原则：</p>
+<pre><code>无论何时，如果你能做到，你就该尽量使用泛型方法。也就是说，如果使用泛型方法将整个类泛型化，
+
+那么就应该使用泛型方法。另外对于一个static的方法而已，无法访问泛型类型的参数。
+
+所以如果static方法要使用泛型能力，就必须使其成为泛型方法。
+</code></pre><h1 id="6-泛型上下边界"><a href="#6-泛型上下边界" class="headerlink" title="6.泛型上下边界"></a>6.泛型上下边界</h1><p>在使用泛型的时候，我们还可以为传入的泛型类型实参进行上下边界的限制，如：类型实参只准传入某种类型的父类或某种类型的子类。为泛型添加上边界，即传入的类型实参必须是指定类型的子类型。</p>
+<pre><code>public void showKeyValue1(Generic&lt;? extends Number&gt; obj){
+    Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
+}
+</code></pre><p>具体情况：</p>
+<pre><code>Generic&lt;String&gt; generic1 = new Generic&lt;String&gt;(&quot;11111&quot;);
+Generic&lt;Integer&gt; generic2 = new Generic&lt;Integer&gt;(2222);
+Generic&lt;Float&gt; generic3 = new Generic&lt;Float&gt;(2.4f);
+Generic&lt;Double&gt; generic4 = new Generic&lt;Double&gt;(2.56);
+
+//这一行代码编译器会提示错误，因为String类型并不是Number类型的子类
+//showKeyValue1(generic1);
+
+showKeyValue1(generic2);
+showKeyValue1(generic3);
+showKeyValue1(generic4);
+</code></pre><p>如果我们把泛型类的定义也修改一下：</p>
+<pre><code>public class Generic&lt;T extends Number&gt;{
+    private T key;
+
+    public Generic(T key) {
+        this.key = key;
+    }
+
+    public T getKey(){
+        return key;
+    }
+}
+</code></pre><p>这种情况下：</p>
+<pre><code>//这一行代码也会报错，因为String不是Number的子类
+Generic&lt;String&gt; generic1 = new Generic&lt;String&gt;(&quot;11111&quot;);
+</code></pre><p>再来看一个例子：</p>
+<pre><code>//在泛型方法中添加上下边界限制的时候，必须在权限声明与返回值之间的&lt;T&gt;上添加上下边界，即在泛型声明的时候添加
+//public &lt;T&gt; T showKeyName(Generic&lt;T extends Number&gt; container)，编译器会报错：&quot;Unexpected bound&quot;
+public &lt;T extends Number&gt; T showKeyName(Generic&lt;T&gt; container){
+    System.out.println(&quot;container key :&quot; + container.getKey());
+    T test = container.getKey();
+    return test;
+}
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/Ceres Solvel非线性最小二乘问题的解算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/12/25/Ceres Solvel非线性最小二乘问题的解算/" class="post-title-link" itemprop="url">Ceres Solvel非线性最小二乘问题的解算</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-12-25 15:12:49" itemprop="dateCreated datePublished" datetime="2020-12-25T15:12:49+08:00">2020-12-25</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-28 10:01:22" itemprop="dateModified" datetime="2020-12-28T10:01:22+08:00">2020-12-28</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>如果想要高效地使用Ceres Solver，需要掌握一定的非线性最小二乘解算基础知识。所以在这一部分将将要介绍Ceres中核心优化算法的工作原理。</p>
+<p>设$x \in \mathbb{R}^n$是一个$n$维向量，并且$F(x) = [f_1(x),\cdots,f_m(x)] ^ T$是关于$x$的$n$维方程。那么我们关注下列优化问题</p>
+<script type="math/tex; mode=display">
+argmin_x \frac{1}{2} \left \| F(x) \right \| ^ 2 \\
+L \le x \le U</script><p>其中$L$和$U$分别是参数向量$x$的下限和上限。</p>
+<p>因为对于一个一般的函数，求解全局最小值常常非常棘手，我们不得不关注局部最小值。$F(x)$的雅可比矩阵$J(x)$是一个$m \times n$的矩阵，其中$J_{ij}(x) = \partial _j f_i(x)$，函数的梯度向量$g(x) = \nabla \frac{1}{2} \left | F(x) \right | ^ 2 = J(x)^T F(x)$。</p>
+<p>在计算非线性优化问题的一个通用的策略是，求解原问题的近似简化问题。在每一次循环中，根据近似问题的解可以确定向量$x$的修正值$\triangle x$。对于非线性最小二问题，我们可以通过线性化来建立近似问题，即$F(x + \triangle x) \approx F(x) + J(x) \triangle x$。那么上述问题就变成下列问题：</p>
+<script type="math/tex; mode=display">
+min_{\triangle x} \frac{1}{2} \left \|F(x) + J(x) \triangle x \right \|^2</script><blockquote>
+<p>这里官方教程跳了几步。要求全局最小值非常棘手，所以转而求局部最小值。而求局部最小值就是，从一个任意的起始点，观测四周的“更小值”。如果观测四周都比当前点大，那么当前点就是局部最小值点，算法达到收敛。否则，设这个新找到的最小值点为“当前点”，重复这一步骤。这也就是下文中”<strong>用$x \longleftarrow x + \triangle x$来更新</strong>“的含义。所以现在问题变成了，如何求解四周的点的值。即，给$x$赋予一个步长$\triangle x$，观察周围的$F(x + \triangle x)$，并且寻找最小值。</p>
+</blockquote>
+<p>根据步长的控制方法，非线性优化可以分成两大类。</p>
+<blockquote>
+<ul>
+<li><strong>置信域法Trust Region</strong> （也有文献成为<strong>信任域法</strong>）置信域方法在搜索空间的子集内应用<strong>模型函数</strong>（通常是二次方程）来近似<strong>目标函数</strong>，这个空间被称为<strong>置信域</strong>。如果模型函数成功地使真正的目标函数最小化，则扩大置信域。否则收缩置信域并且再次尝试求解模型函数的优化问题。</li>
+<li><strong>线搜索法Line Search</strong> 线搜索方法首先找到一个下降的方向，目标函数将沿其下降。然后再确定步长，从而决定沿该方向到底移动多远。 下降方向可以通过各种方法计算，如梯度下降法、牛顿法和拟牛顿法。步长可以精确或不精确地确定。</li>
+</ul>
+<p><strong>这里我们只对共轭梯度法进行介绍（因为我们用的库函数所采用的方法就是共轭梯度法）</strong></p>
+</blockquote>
+<p>对以下形式的线性最小二乘问题：</p>
+<script type="math/tex; mode=display">
+min_{\triangle x} \frac{1}{2} \left \|F(x) + J(x) \triangle x \right \|^2</script><p>令$H(x) = J(x) ^ TJ(x)$且$g(x) = - J(x) ^ {T}f(x)$。为了标记方便，我们舍弃对$x$的依赖，那么很容易看出求解上式等价于求解<font face="黑体" font color="red">Normal Equation</font>方程</p>
+<script type="math/tex; mode=display">
+H\triangle x = g</script><p>我们在程序中使用的计算上式的线性解算器是<font face="黑体"><strong>CGNR</strong></font>，该解算器在法向方程上使用共轭梯度求解器，但没有明确地构建<font face="黑体">Normal Equation</font>方程。 它利用下列关系：</p>
+<script type="math/tex; mode=display">
+Hx = J ^ TJx = J^T(Jx)</script><p>共轭梯度的收敛取决于调节器数量$\kappa(H)$，通常$H$的条件比较弱，并且必须使用预调节器才能获得合理的性能。 目前只有<font face="黑体" font color="red">JACOBI</font>预处理器可以用于<font face="黑体" font color="red">CGNR</font>。它使用$H$的块对角线来预处理<font face="黑体">Normal Equation</font>方程。</p>
+<p>当用户选择<font face="黑体">CGNR</font>作为线性求解器时，Ceres会自动从精确的步长算法切换到不精确的步长算法。</p>
+<h1 id="JACOBI预处理器"><a href="#JACOBI预处理器" class="headerlink" title="JACOBI预处理器"></a>JACOBI预处理器</h1><p>求解<font face="黑体" font color="red">Normal Equation</font>方程的收敛速度取决于$H$的特征值的分布。一个有用的上界是$\sqrt {\kappa H}$，$\sqrt {\kappa H}$是矩阵$H$的条件值。对于大多数$BA$问题来说，$\sqrt {\kappa H}$很大，直接应用共轭梯度法对该方程进行求解会导致糟糕的性能。</p>
+<p>这个问题的解决方法是用一个预条件系统来替换$H\triangle x = g$方程。给定一个线性系统，$Ax = b$，预条件器$M$，预条件系统$M^{-1} Ax = M^{-1}b$。这个算法被称作预处理共轭梯度法（PCG），它最坏的情况现在取决于预条件矩阵$\sqrt{M^{-1}A}$的条件数。</p>
+<p>使用预条件器$M$的计算成本是计算$M$以及任意向量$y$的乘积$M^{-1}y$，因此，要考虑两个相互竞争的因素：$H$的结构中有多少是由$M$占据的，以至于条件值$\kappa(HM^{-1})$，以及构造和使用$M$的计算成本。理想的预调节器是条件值$\kappa(M^{-1}A) = 1$。使用$M = A$可以实现这一效果，但是不是一个实际的选择，因为应用这个预调函数需要一个线性方程组，等价于无预先条件的问题。通常情况下，$M$的信息越多，使用的成本就越高。例如，基于不完全$Cholesky$分解的预条件器比$Jacobi$预条件器具有更好的收敛性能，但代价也更高。</p>
+<p>所有的预调节器中最简单的是对角或雅可比的预调机。例如，$M = diag(A)$。对于像$H$这样的块状结构矩阵，可以将其推广到$Jacobi$的预调节器。Ceres实现的块$Jacobi$预调节器叫做<font face="黑体" font color="red">JACOBI</font>，当使用<font face="黑体" font color="red">CGNR</font>时，它指的是$H$的块对角线，即</p>
+<script type="math/tex; mode=display">
+C_{i j}=\left\{\begin{array}{cc}
+A_{i i} & \text { if } i=j \\
+0 & \text { 其他 }
+\end{array}\right.</script><p><font face="黑体">PCG</font>算法的过程如下：假设$x_0 \in \mathbb{R}^n$是初始向量，</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&r_{0}=b-A x_{0}\\
+&z_{0}=C^{-1} r_{0}\\
+&d_{0}=z_{0}\\
+&\text { For } k=0,1,2, \ldots\\
+&\alpha_{k}=\frac{z_{k}^{\top} r_{k}}{d_{k}^{\top} A d_{k}}\\
+&x_{k+1}=x_{k}+\alpha_{k} d_{k}\\
+&r_{k+1}=r_{k}-\alpha_{k} A d_{k}\\
+&z_{k+1}=C^{-1} r_{k+1}\\
+&\beta_{k+1}=\frac{z_{k+1}^{\top} r_{k+1}}{z_{k}^{\top} r_{k}}\\
+&d_{k+1}=x_{k+1}+\beta_{k+1} d_{k}
+\end{aligned}</script>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/Ceres Solvel 非线性最小二乘法建模/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -939,2291 +2120,6 @@ Final   m: 0.291861 c: 0.131439
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/new-future/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/01/02/new-future/" class="post-title-link" itemprop="url">new future</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2020-01-02 14:18:06" itemprop="dateCreated datePublished" datetime="2020-01-02T14:18:06+08:00">2020-01-02</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-17 09:55:24" itemprop="dateModified" datetime="2021-05-17T09:55:24+08:00">2021-05-17</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>While we were so young</p>
-<p>我梦到当时 我们翻过墙</p>
-<p>曼陀罗花 沿途绽放</p>
-<p>我们光脚越过人间荒唐</p>
-<p>We’re stupid but strong</p>
-<p>放学的屋顶 像万人广场</p>
-<p>从不多想 只是信仰</p>
-<p>少年回头望 笑我还不快跟上</p>
-<p>那路的起点谁能忘</p>
-<p>那路的尽头谁在唱</p>
-<p>谁成名在望 谁曾失望</p>
-<p>却更多 的谁在盼望</p>
-<p>那黑的终点可有光</p>
-<p>那夜的尽头天将亮</p>
-<p>那成名在望 无关真相</p>
-<p>如果你 心始终信仰 谁又能怎样</p>
-<p>谁又能怎样 你就能飞翔</p>
-<p>你就能飞翔 你就能飞翔</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/05/札记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/11/05/札记/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-11-05 21:57:53" itemprop="dateCreated datePublished" datetime="2019-11-05T21:57:53+08:00">2019-11-05</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-17 09:51:28" itemprop="dateModified" datetime="2021-05-17T09:51:28+08:00">2021-05-17</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<p>title: 札记<br>date: 2019-11-05 21:57:53</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p>状态不佳，似乎又回到了失语症的状态，和现实有些不交融，有时候能明显的感觉自己在故意的压抑情绪。</p>
-<p>最近在看村上的《1Q84》，自己像极了里面的深绘里，经历了一些事情以后丧失了说话的能力，只能向外界以短暂而无意义的华语表达自己的困境</p>
-<p>这种状态我心知肚明是怎样逐渐发生的，又是逐渐加重的，但是暂时并没有自愈的能力，只能无助的看着这一层迷雾逐渐笼罩自身</p>
-<p>也许下了雪就会好一点吧，能找回片刻的宁静</p>
-<p>“青豆用手捂住下半边脸，继续凝望着那两只月亮，确实，有什么事情正在发生。她想。心脏的跳动加速。不是世界出了毛病，就是我自己出了毛病。是瓶子有问题呢，还是盖子又问题？”</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/Windows-10-安装PyTorch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/16/Windows-10-安装PyTorch/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-09-16 20:33:06 / Modified: 21:38:57" itemprop="dateCreated datePublished" datetime="2019-09-16T20:33:06+08:00">2019-09-16</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h1 id="Windows-10-安装PyTorch"><a href="#Windows-10-安装PyTorch" class="headerlink" title="Windows 10 安装PyTorch"></a><em>Windows 10 安装PyTorch</em></h1><h4 id="2019-09-16-20-33-06"><a href="#2019-09-16-20-33-06" class="headerlink" title="2019-09-16 20:33:06"></a>2019-09-16 20:33:06</h4><hr>
-<p>今天比较有时间，正好看完了CVPR-2018年的论文&lt;<strong>Single Image Reﬂection Separation with Perceptual Losses</strong>&gt;，这里不多介绍这篇论文相关的东西了。因为跑这个数据的话，自己的电脑当时在Windows下装的Tensorflow，但是作者给的运行策略是Ubuntu下，所以问了一下学长，他说可以在Windows下安装PyTorch来跑。下面就记录一下自己安装PyTorch的过程。</p>
-<p>1.由于之前安装了Anaconda3，所以可以采用conda安装的方式，但是之前安装Tensorflow的时候Python版本的问题就一直有点疑问，所以查了一下发现如果只是想利用Pycharm运行PyTorch的话，其实直接用pip方式安装就可以</p>
-<p>2.那么需要到PyTorch官网去查看自己所需的代码 <a href="https://pytorch.org/" target="_blank" rel="noopener">PyTorch官网连接</a>，相应的选择自己电脑的配置，注意如果用pip安装的话，要选择Pip选项。然后下面就会给出你所需的命令。还要注意的一点是我的电脑由于是A卡的，所以在CUDA这个部分我选择的是None，也就是所说的CPU版本的PyTorch。本人的命令如下：</p>
-<pre><code>pip3 install torch==1.2.0+cpu torchvision==0.4.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
-</code></pre><p>3.安装成功后，一定要记得看一下自己所安装的<strong><em>文件夹地址</em></strong></p>
-<p>4.打开Pycharm，按ctrl+alt+s，打开Project Interpreter进行配置，点击右上角的设置符号，选择Add，在下面点选Existing environment，然后在右边的…处找到自己刚才安装的<strong><em>文件夹地址</em></strong>，拉到最下面找到python.exe文件一路点击<strong>ok</strong>。</p>
-<p>5.在pycharm中新建项目，输入以下代码：</p>
-<pre><code>from __future__ import print_function
-import torch
-x=torch.rand(5,3)
-print(x)
-</code></pre><p>查看输出，如果输出为：</p>
-<pre><code>tensor([[0.9072, 0.3848, 0.9203],
-        [0.1643, 0.7447, 0.1730],
-        [0.4379, 0.2974, 0.1283],
-        [0.4563, 0.5322, 0.9924],
-        [0.4715, 0.9287, 0.7176]])
-
-Process finished with exit code 0
-</code></pre><p>证明PyTorch安装成功！</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第六期/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/24/软件构造知识点总结第六期/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-24 18:05:49 / Modified: 18:11:30" itemprop="dateCreated datePublished" datetime="2019-06-24T18:05:49+08:00">2019-06-24</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h2 id="软件构造知识点总结第六期"><a href="#软件构造知识点总结第六期" class="headerlink" title="软件构造知识点总结第六期"></a>软件构造知识点总结第六期</h2><h1 id="第十章"><a href="#第十章" class="headerlink" title="第十章"></a>第十章</h1><hr>
-<h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><p><strong>并发（concurrency）</strong></p>
-<ul>
-<li>定义：指的是多线程场景下对共享资源的争夺运行</li>
-<li>并发的应用背景：<ul>
-<li>网络上的多台计算机</li>
-<li>一台计算机上的多个应用</li>
-<li>一个CPU上的多核处理器</li>
-</ul>
-</li>
-<li>为什么要有并发：<ul>
-<li>摩尔定律失效、“核”变得越来越多</li>
-<li>为了充分利用多核和多处理器需要将程序转化为并行执行</li>
-</ul>
-</li>
-<li>并发编程的两种模式：<ul>
-<li>共享内存：在内存中读写共享数据</li>
-<li>信息传递（Message Passing）：通过channel交换消息</li>
-</ul>
-</li>
-</ul>
-<p><strong>共享内存</strong></p>
-<ul>
-<li>共享内存这种方式比较常见，我们经常会设置一个共享变量，然后多个线程去操作同一个共享变量。从而达到线程通讯的目的。</li>
-<li>例子：<ul>
-<li>两个处理器，共享内存</li>
-<li>同一台机器上的两个程序，共享文件系统</li>
-<li>同一个Java程序内的两个线程，共享Java对象</li>
-</ul>
-</li>
-</ul>
-<p><strong>信息传递</strong></p>
-<ul>
-<li>消息传递方式采取的是线程之间的直接通信，不同的线程之间通过显式的发送消息来达到交互目的</li>
-<li>接收方将收到的消息形成队列逐一处理，消息发送者继续发送（异步方式）</li>
-<li>消息传递机制也无法解决竞争条件问题</li>
-<li>仍然存在消息传递时间上的交错</li>
-<li>例子：<ul>
-<li>网络上的两台计算机，通过网络连接通讯</li>
-<li>浏览器和Web服务器，A请求页面，B发送页面数据给A</li>
-<li>即时通讯软件的客户端和服务器</li>
-<li>同一台计算机上的两个程序，通过管道连接进行通讯</li>
-</ul>
-</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">并发模型</th>
-<th style="text-align:center">通信机制</th>
-<th style="text-align:center">同步机制</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">共享内存</td>
-<td style="text-align:center">线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态来隐式进行通信。</td>
-<td style="text-align:center">同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。</td>
-</tr>
-<tr>
-<td style="text-align:center">消息传递</td>
-<td style="text-align:center">线程之间没有公共状态，线程之间必须通过明确的发送消息来显式进行通信。</td>
-<td style="text-align:center">由于消息的发送必须在消息的接收之前，因此同步是隐式进行的。</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a><em>进程和线程</em></h3><ul>
-<li>进程：是执行中一段程序，即一旦程序被载入到内存中并准备执行，它就是一个进程。进程是表示资源分配的的基本概念，又是调度运行的基本单位，是系统中的并发执行的单位。<ul>
-<li>程序运行时在内存中分配自己独立的运行空间</li>
-<li>进程拥有整台计算机的资源</li>
-<li>多进程之间不共享内存</li>
-<li>进程之间通过消息传递进行协作</li>
-<li>一般来说，进程<code>==</code>程序<code>==</code>应用（但一个应用中可能包含多个进程）</li>
-<li>OS支持的IPC机制(pipe/socket)支持进程间通信（IPC不仅是本机的多个进程之间， 也可以是不同机器的多个进程之间）</li>
-<li>JVM通常运行单一进程，但也可以创建新的进程。</li>
-</ul>
-</li>
-<li>线程：它是位于进程中，负责当前进程中的某个具备独立运行资格的空间。<ul>
-<li>线程有自己的堆栈和局部变量，但是多个线程共享内存空间</li>
-<li>进程=虚拟机；线程=虚拟CPU</li>
-<li>程序共享、资源共享，都隶属于进程</li>
-<li>很难获得线程私有的内存空间</li>
-<li>线程需要同步：在改变对象时要保持lock状态</li>
-<li>清理线程是不安全的</li>
-</ul>
-</li>
-<li>进程是负责整个程序的运行，而线程是程序中具体的某个独立功能的运行。</li>
-<li>一个进程中至少应该有一个线程。</li>
-<li>主线程可以创建其他的线程。</li>
-</ul>
-<h3 id="线程的创建和启动"><a href="#线程的创建和启动" class="headerlink" title="线程的创建和启动"></a><em>线程的创建和启动</em></h3><p><strong>方式1：继承<code>Thread</code>类</strong></p>
-<ul>
-<li>方法：用<code>Thread</code>类实现了<code>Runnable</code>接口，但它其中的<code>run</code>方法什么都没做，所以用一个类做<code>Thread</code>的子类，提供它自己实现的<code>run</code>方法。用<code>Thread.start()</code>来开始一个新的线程。</li>
-<li>创建：<code>A a = new A()</code>;</li>
-<li>启动：<code>a.start()</code>;</li>
-<li>步骤:<ul>
-<li>定义一个类A继承于<code>java.lang.Thread</code>类.</li>
-<li>在<code>A</code>类中覆盖<code>Thread</code>类中的<code>run</code>方法.</li>
-<li>我们在<code>run</code>方法中编写需要执行的操作：<code>run</code>方法里的代码,线程执行体.</li>
-<li>在<code>main</code>方法(线程)中,创建线程对象,并启动线程.</li>
-</ul>
-</li>
-<li><strong><em>examples</em></strong></li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1):定义一个类A继承于java.lang.Thread类.  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MusicThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;  </span><br><span class="line">     <span class="comment">//2):在A类中覆盖Thread类中的run方法.  </span></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">          <span class="comment">//3):在run方法中编写需要执行的操作  </span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; i ++)&#123;  </span><br><span class="line">              System.out.println(<span class="string">"播放音乐"</span>+i);  </span><br><span class="line">          &#125;  </span><br><span class="line">      &#125;  </span><br><span class="line"> &#125;  </span><br><span class="line">   </span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExtendsThreadDemo</span> </span>&#123;  </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;             </span><br><span class="line">         <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">50</span>; j ++)&#123;  </span><br><span class="line">             System.out.println(<span class="string">"运行游戏"</span>+j);  </span><br><span class="line">             <span class="keyword">if</span>(j == <span class="number">10</span>)&#123;  </span><br><span class="line">                 <span class="comment">//4):在main方法(线程)中,创建线程对象,并启动线程.  </span></span><br><span class="line">                 MusicThread music = <span class="keyword">new</span> MusicThread();  </span><br><span class="line">                 music.start();  </span><br><span class="line">             &#125;  </span><br><span class="line">         &#125;  </span><br><span class="line">     &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>方式2：实现Runable接口</strong></p>
-<ul>
-<li><strong>创建</strong>：<code>Thread  t = new Thread(new  A())</code>;</li>
-<li><strong>调用</strong>：<code>t.start()</code>;</li>
-<li>步骤<ul>
-<li>定义一个类A实现于<code>java.lang.Runnable</code>接口,注意A类不是线程类.</li>
-<li>在A类中覆盖<code>Runnable</code>接口中的<code>run</code>方法.</li>
-<li>我们在<code>run</code>方法中编写需要执行的操作：<code>run</code>方法里的,线程执行体.</li>
-<li>在<code>main</code>方法(线程)中,创建线程对象,并启动线程.</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1):定义一个类A实现于java.lang.Runnable接口,注意A类不是线程类.  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MusicImplements</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;  </span><br><span class="line">    <span class="comment">//2):在A类中覆盖Runnable接口中的run方法.  </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="comment">//3):在run方法中编写需要执行的操作  </span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; i ++)&#123;  </span><br><span class="line">            System.out.println(<span class="string">"播放音乐"</span>+i);  </span><br><span class="line">        &#125;  </span><br><span class="line">          </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImplementsRunnableDemo</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">50</span>; j ++)&#123;  </span><br><span class="line">            System.out.println(<span class="string">"运行游戏"</span>+j);  </span><br><span class="line">            <span class="keyword">if</span>(j == <span class="number">10</span>)&#123;  </span><br><span class="line">                <span class="comment">//4):在main方法(线程)中,创建线程对象,并启动线程  </span></span><br><span class="line">                MusicImplements mi = <span class="keyword">new</span> MusicImplements();  </span><br><span class="line">                Thread t = <span class="keyword">new</span> Thread(mi);  </span><br><span class="line">                t.start();  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>实现<code>Runnable</code>接口相比继承<code>Thread</code>类有如下好处：</p>
-<ul>
-<li>避免点继承的局限，一个类可以继承多个接口。</li>
-<li>适合于资源的共享</li>
-</ul>
-</li>
-<li><p>创建并运行一个线程所犯的常见错误是调用线程的<code>run()</code>方法而非<code>start()</code>方法，如下所示：</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread newThread = <span class="keyword">new</span> Thread(MyRunnable());</span><br><span class="line">newThread.run();  <span class="comment">//should be start();</span></span><br></pre></td></tr></table></figure>
-<p>　　起初并不会感觉到有什么不妥，因为<code>run()</code>方法的确如你所愿的被调用了。但是，事实上，<code>run()</code>方法并非是由刚创建的新线程所执行的，而是被创建新线程的当前线程所执行了。也就是被执行上面两行代码的线程所执行的。想要让创建的新线程执行<code>run()</code>方法，必须调用新线程的<code>start()</code>方法。</p>
-<h3 id="时间分片、交错执行、竞争条件"><a href="#时间分片、交错执行、竞争条件" class="headerlink" title="时间分片、交错执行、竞争条件"></a><em>时间分片、交错执行、竞争条件</em></h3><p> <strong>时间分片</strong></p>
-<ul>
-<li>虽然有多线程，但只有一个核，每个时刻只能执行一个线程。<ul>
-<li>通过时间分片，再多个线程/进程之间共享处理器</li>
-</ul>
-</li>
-<li>即使是多核CPU，进程/线程的数目也往往大于核的数目</li>
-<li>通过时间分片，在多个进程/线程之间共享处理器。（时间分片是由OS自动调度的）</li>
-<li><p>当线程数多于处理器数量时，并发性通过时间片来模拟，处理器切换处理不同的线程</p>
-<p><strong>交错执行</strong></p>
-</li>
-</ul>
-<p>　　顾名思义，就是说在线程运行的过程中，多个线程同时运行相互交错。而且，由于线程运行一般不是连续的，那么就会导致线程间的交错。可以说，所有线程安全问题的本质都是线程交错的问题。</p>
-<p> <strong>竞争条件</strong></p>
-<p>　　竞争是发生在线程交错的基础上的。当多个线程对同一对象进行读写访问时，就可能会导致竞争的问题。程序中可能出现的一种问题就是，读写数据发生了不同步。例如，我要用一个数据，在该数据修改还没写回内存中时就读取出来了，那么就会导致程序出现问题。</p>
-<p>　　程序运行时有一种情况，就是程序如果要正确运行，必须保证A线程在B线程之前完成（正确性意味着程序运行满足其规约）。当发生这种情况时，就可以说A与B发生竞争关系。</p>
-<ul>
-<li>计算机运行过程中，并发、无序、大量的进程在使用有限、独占、不可抢占的资源，由于进程无限，资源有限，产生矛盾，这种矛盾称为竞争（Race）。</li>
-<li>由于两个或者多个进程竞争使用不能被同时访问的资源，使得这些进程有可能因为时间上推进的先后原因而出现问题，这叫做竞争条件（Race Condition）。</li>
-<li>竞争条件分为两类:<br>-Mutex（互斥）：两个或多个进程彼此之间没有内在的制约关系，但是由于要抢占使用某个临界资源（不能被多个进程同时使用的资源，如打印机，变量）而产生制约关系。<br>-Synchronization（同步）：两个或多个进程彼此之间存在内在的制约关系（前一个进程执行完，其他的进程才能执行），如严格轮转法。</li>
-<li>解决互斥方法：<br>Busy Waiting(忙等待)：等着但是不停的检查测试，不睡觉，知道能进行为止<br>Sleep and Wakeup(睡眠与唤醒)：引入Semapgore(信号量，包含整数和等待队列,为进程睡觉而设置)，唤醒由其他进程引发。</li>
-<li>临界区（Critical Region）：<ul>
-<li>一段访问临界资源的代码。</li>
-<li>为了避免出现竞争条件，进入临界区要遵循四条原则： <ul>
-<li>任何两个进程不能同时进入访问同一临界资源的临界区</li>
-<li>进程的个数，CPU个数性能等都是无序的，随机的</li>
-<li>临界区之外的进程不得阻塞其他进程进入临界区</li>
-<li>任何进程都不应被长期阻塞在临界区之外</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>解决互斥的方法:<br>• 禁用中断 Disabling interrupts<br>• 锁变量 Lock variables （no）<br>• 严格轮转 Strict alternation (no)<br>• Peterson’s solution (yes)<br>• The TSL instruction (yes) </li>
-</ul>
-<h3 id="线程的休眠、中断"><a href="#线程的休眠、中断" class="headerlink" title="线程的休眠、中断"></a><em>线程的休眠、中断</em></h3><p> <strong><code>Thread.sleep</code></strong></p>
-<ul>
-<li>在线程中允许一个线程进行暂时的休眠，直接使用<code>Thread.sleep()</code>方法即可。 <ul>
-<li>将某个线程休眠，意味着其他线程得到更多的执行机会</li>
-<li>进入休眠的线程不会失去对现有monitor或锁的所有权</li>
-</ul>
-</li>
-<li>sleep定义格式：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="keyword">long</span> milis,<span class="keyword">int</span> nanos)</span></span></span><br><span class="line"><span class="function">       <span class="keyword">throws</span> InterruptedException</span></span><br></pre></td></tr></table></figure>
-<p>　　首先，<strong><code>static</code>，说明可以由<code>Thread</code>类名称调用</strong>，其次<strong><code>throws</code>表示如果有异常要在调用此方法处处理异常</strong>。</p>
-<p><strong>所以<code>sleep()</code>方法要有<code>InterruptedException</code>异常处理，而且<code>sleep()</code>调用方法通常为<code>Thread.sleep(500);</code>形式。</strong></p>
-<p><strong><code>Thread.interrupt</code></strong> </p>
-<ul>
-<li>一个线程可以被另一个线程中断其操作的状态，使用<code>interrupt()</code>方法完成。<ul>
-<li>通过线程的实例来调用<code>interrupt()</code>函数，向线程发出中断信号</li>
-<li><code>t.interrupt()</code>：在其他线程里向<code>t</code>发出中断信号</li>
-<li><code>t.isInterrupted()</code>：检查<code>t</code>是否已在中断状态中</li>
-</ul>
-</li>
-<li>当某个线程被中断后，一般来说应停止其<code>run()</code>中的执行，取决于程序员在<code>run()</code>中处理<ul>
-<li>一般来说，线程在收到中断信号时应该中断，直接终止</li>
-<li>但是，线程收到其他线程发出来的中断信号，并不意味着一定要“停止”</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>实例：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Thread1;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;    <span class="comment">// 实现Runnable接口</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;    <span class="comment">// 覆写run()方法</span></span><br><span class="line">        System.out.println(<span class="string">"1、进入run()方法"</span>) ;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">                Thread.sleep(<span class="number">10000</span>) ;    <span class="comment">// 线程休眠10秒</span></span><br><span class="line">                System.out.println(<span class="string">"2、已经完成了休眠"</span>) ;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            System.out.println(<span class="string">"3、休眠被终止"</span>) ;</span><br><span class="line">            <span class="keyword">return</span> ; <span class="comment">// 返回调用处</span></span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"4、run()方法正常结束"</span>) ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">demo1</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        MyThread mt = <span class="keyword">new</span> MyThread() ;    <span class="comment">// 实例化Runnable子类对象</span></span><br><span class="line">        Thread t = <span class="keyword">new</span> Thread(mt,<span class="string">"线程"</span>);        <span class="comment">// 实例化Thread对象</span></span><br><span class="line">        t.start() ;    <span class="comment">// 启动线程</span></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">                Thread.sleep(<span class="number">2000</span>) ;    <span class="comment">// 线程休眠2秒</span></span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            System.out.println(<span class="string">"3、休眠被终止"</span>) ;</span><br><span class="line">        &#125;</span><br><span class="line">        t.interrupt() ;    <span class="comment">// 中断线程执行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、进入run()方法</span><br><span class="line">3、休眠被终止</span><br></pre></td></tr></table></figure>
-<h3 id="线程安全的四个策略"><a href="#线程安全的四个策略" class="headerlink" title="线程安全的四个策略"></a><em>线程安全的四个策略</em></h3><ul>
-<li>线程安全的定义：ADT或方法在多线程中要执行正确，即无论如何执行，不许调度者做额外的协作，都能满足正确性</li>
-<li>四种线程安全的策略：<ul>
-<li>Confinement 限制数据共享</li>
-<li>Immutability 共享不可变数据</li>
-<li>Threadsafe data type 共享线程安全的可变数据</li>
-<li>Synchronization 同步机制共享共享线程不安全的可变数据，对外即为线程安全的ADT.</li>
-</ul>
-</li>
-</ul>
-<p><strong>Confinement限制数据共享</strong></p>
-<ul>
-<li>核心思想：线程之间不共享mutable数据类型<ul>
-<li>将可变数据限制在单一线程内部，避免竞争</li>
-<li>不允许任何县城直接读写该数据</li>
-</ul>
-</li>
-<li>在多线程环境中，取消全局变量，尽量避免使用不安全的静态变量。<ul>
-<li>限制数据共享主要是在线程内部使用局部变量，因为局部变量在每个函数的栈内，每个函数都有自己的栈结构，互不影响，这样局部变量之间也互不影响。</li>
-<li>如果局部变量是一个指向对象的引用，那么就需要检查该对象是否被限制住，如果没有被限制住（即可以被其他线程所访问），那么就没有限制住数据，因此也就不能用这种方法来保证线程安全</li>
-</ul>
-</li>
-<li><strong><em>examples</em></strong> </li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Factorial</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Computes n! and prints it on standard output.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> n must be &gt;= 0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">computeFact</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        BigInteger result = <span class="keyword">new</span> BigInteger(<span class="string">"1"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            System.out.println(<span class="string">"working on fact "</span> + n);</span><br><span class="line">            result = result.multiply(<span class="keyword">new</span> BigInteger(String.valueOf(i)));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"fact("</span> + n + <span class="string">") = "</span> + result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123; <span class="comment">// create a thread using an</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;     <span class="comment">// anonymous Runnable</span></span><br><span class="line">                computeFact(<span class="number">99</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        computeFact(<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 解释：主函数开启了两个线程，调用的是相同函数。因为线程共享局部变量的类型，但每个函数调用有不同的栈，因此有不同的<code>i, n, result</code>。由于每个函数都有自己的局部变量，那么每个函数就可以独立运行，更新它们自己的函数值，线程之间不影响结果。</p>
-<p><strong>Immutability共享不可变数据</strong> </p>
-<p>不可变数据类型，指那些在整个程序运行过程中，指向内存的引用是一直不变的，通常使用<code>final</code>来修饰。不可变数据类型通常来讲是线程安全的，但也可能发生意外。</p>
-<p>但是，程序在运行过程中，有时为了优化程序结构，默默地将这个引用更改了。此时，客户端程序员是不知道它被更改了，对于客户端而言，这个引用还是不可变的，但其实已经被悄悄更改了。这时就会发生一些线程安全问题。</p>
-<p>解决方案就是给这些不可变数据类型再增加一些限制：</p>
-<ul>
-<li>所有的方法和属性都是私有的。</li>
-<li>不提供可变的方法，即不对外开放可以更改内部属性的方法。</li>
-<li>没有数据的泄露，即返回值而不是引用。</li>
-<li>不在其中存储可变数据对象。</li>
-</ul>
-<p>这样就可以保证线程的安全了。</p>
-<p><strong>Threadsafe data type（共享线程安全的可变数据）</strong></p>
-<ul>
-<li>方法：如果必须要用mutable的数据类型在多线程之间共享数据，要使用线程安全的数据类型。（在JDK中的类，文档中明确指明了是否threadsafe）</li>
-<li>一般来说，JDK同时提供两个相同功能的类，一个是threadsafe，另一个不是。原因：threadsafe的类一般性能上受影响。</li>
-<li><code>List、Set、Map</code>这些集合类都是线程不安全的，Java API为这些集合类提供了进一步的decorator</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer,Boolean&gt; cache = Collections.synchronizedMap(<span class="keyword">new</span> HashMap&lt;&gt;());</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Collection&lt;T&gt; <span class="title">synchronizedCollection</span><span class="params">(Collection&lt;T&gt; c)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Set&lt;T&gt; <span class="title">synchronizedSet</span><span class="params">(Set&lt;T&gt; s)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">List&lt;T&gt; <span class="title">synchronizedList</span><span class="params">(List&lt;T&gt; list)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K,V&gt; <span class="function">Map&lt;K,V&gt; <span class="title">synchronizedMap</span><span class="params">(Map&lt;K,V&gt; m)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">SortedSet&lt;T&gt; <span class="title">synchronizedSortedSet</span><span class="params">(SortedSet&lt;T&gt; s)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K,V&gt; <span class="function">SortedMap&lt;K,V&gt; <span class="title">synchronizedSortedMap</span><span class="params">(SortedMap&lt;K,V&gt; m)</span></span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在使用<code>synchronizedMap(hashMap)</code>之后，不要再把参数<code>hashMap</code>共享给其他线程，不要保留别名，一定要彻底销毁.（可以用<code>private static Map cache = Collections.synchronizedMap(new HashMap&lt;&gt;())</code>;的方式实例化集合类）</li>
-<li>即使在线程安全的集合类上，使用<code>iterator</code>也是不安全的：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Type&gt; c = Collections.synchronizedList(<span class="keyword">new</span></span><br><span class="line">ArrayList&lt;Type&gt;());</span><br><span class="line"><span class="keyword">synchronized</span>(c) &#123; <span class="comment">// to be introduced later (the 4-th threadsafe way)</span></span><br><span class="line">    <span class="keyword">for</span> (Type e : c)</span><br><span class="line">        foo(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>需要注意用java提供的包装类包装集合后，只是将集合的每个操作都看成了原子操作，也就保证了每个操作内部的正确性，但是在两个操作之间不能保证集合类不被修改，因此需要用lock机制，例如</li>
-</ul>
-<p>　　如果在<code>isEmpty</code>和<code>get</code>中间，将元素移除，也就产生了竞争。</p>
-<p><strong>前三种策略的核心思想：避免共享$\to$即使共享，也只能读/不可写(immutable)$\to$即使可写(mutable)，共享的可写数据应自己具备在多线程之间协调的能力，即“使用线程安全的mutable ADT”</strong></p>
-<p> <strong>Synchronization同步与锁</strong></p>
-<ul>
-<li><p>为什么要同步</p>
-<ul>
-<li>java允许多线程并发控制，当多个线程同时操作一个可共享的资源变量时（如数据的增删改查）</li>
-<li>将会导致数据不准确，相互之间产生冲突，因此加入同步锁以避免在该线程没有完成操作之前，被其他线程的调用</li>
-<li>保证了该变量的唯一性和准确性</li>
-</ul>
-</li>
-<li><p>同步方法</p>
-<ul>
-<li><p>即有<code>synchronized</code>关键字修饰的方法。</p>
-</li>
-<li><p>由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，内置锁会保护整个方法。</p>
-</li>
-<li><p>在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</p>
-</li>
-<li><p>代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>注：<code>synchronized</code>关键字也可以修饰静态方法，此时如果调用该静态方法，将会锁住整个类</p>
-</li>
-</ul>
-</li>
-<li><p>同步代码块</p>
-<ul>
-<li><p>在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</p>
-</li>
-<li><p>被该关键字修饰的语句块会自动被加上内置锁，从而实现同步。</p>
-</li>
-<li><p>代码如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(object)&#123;...&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>注：同步是一种高开销的操作，因此应该尽量减少同步的内容。</p>
-</li>
-</ul>
-</li>
-<li><p>使用锁机制，获得对数据的独家mutation权，其他线程被阻塞，不得访问</p>
-</li>
-<li><p>Lock是Java语言提供的内嵌机制，每个object都有相关联的lock</p>
-</li>
-<li><p>任何共享的mutable变量/对象必须被lock所保护</p>
-</li>
-<li><p>涉及到多个mutable变量的时候，它们必须被同一个lock所保护 </p>
-</li>
-</ul>
-<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a><em>死锁</em></h3><ul>
-<li><strong>定义</strong>：两个或多个线程相互等待对方释放锁，则会出现死锁现象。</li>
-<li>java虚拟机没有检测，也没有采用措施来处理死锁情况，所以多线程编程是应该采取措施避免死锁的出现。一旦出现死锁，整个程序即不会发生任何异常，也不会给出任何提示，只是所有线程都处于堵塞状态。</li>
-<li><strong>形成死锁的条件：</strong><ul>
-<li>互斥条件：线程使用的资源必须至少有一个是不能共享的（至少有锁）；</li>
-<li>请求与保持条件：至少有一个线程必须持有一个资源并且正在等待获取一个当前被其它线程持有的资源（至少两个线程持有不同锁，又在等待对方持有锁）；</li>
-<li>非剥夺条件：分配资源不能从相应的线程中被强制剥夺（不能强行获取被其他线程持有锁）；</li>
-<li>循环等待条件：第一个线程等待其它线程，后者又在等待第一个线程（线程$A$等线程$B$；线程$B$等线程$C$; $\cdots$ ;线程$N$等线程$A$。如此形成环路）。</li>
-</ul>
-</li>
-<li>防止死锁的方法：<ul>
-<li><strong>加锁顺序：</strong>当多个线程需要相同的一些锁，但是按照不同的顺序加锁，死锁就很容易发生。如果能确保所有的线程都是按照相同的顺序获得锁，那么死锁就不会发生。这种方式是一种有效的死锁预防机制。但是，这种方式需要你事先知道所有可能会用到的锁，但总有些时候是无法预知的</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><ul>
-<li><p>使用粗粒度的锁，用单个锁来监控多个对象</p>
-<ul>
-<li>对整个社交网 络设置 一个锁 ，并且对其任何组成部分的所有操作都在该锁上进行同步。</li>
-<li>例如：所有的Wizards都属于一个Castle,  可使用 castle 实例的锁</li>
-</ul>
-<p>　　缺点：性能损失大；</p>
-<ul>
-<li>如果用一个锁保护大量的可变数据，那么久放弃了同时访问这些数据的能力；</li>
-<li>在最糟糕的情况下，程序可能基本上是顺序执行的，丧失了并发性</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><ul>
-<li><strong>加锁时限</strong>：在尝试获取锁的时候加一个超时时间，这也就意味着在尝试获取锁的过程中若超过了这个时限该线程则放弃对该锁请求。若一个线程没有在给定的时限内成功获得所有需要的锁，则会进行回退并释放所有已经获得的锁。</li>
-<li>用 jstack 等工具进行死锁检测</li>
-</ul>
-</li>
-</ul>
-<h3 id="以注释的形式撰写线程安全策略"><a href="#以注释的形式撰写线程安全策略" class="headerlink" title="以注释的形式撰写线程安全策略"></a><em>以注释的形式撰写线程安全策略</em></h3><ul>
-<li>在代码中以注释的形式添加说明：该ADT采取了什么设计决策来保证线程安全</li>
-<li>阐述如何使rep线程安全；</li>
-<li>写入表示不变性的说明中，以便代码维护者知道你是如何为类设计线程安全性的。</li>
-<li><p>需要对安全性进行这种仔细的论证，阐述使用了哪种技术，使用threadsafe data types, or synchronization时，需要论证所有对数据的访问都是具有原子性的</p>
-</li>
-<li><p>字符串是不可变的并且是线程安全的; 但是指向该字符串的rep，特别是文本变量，并不是不可变的；</p>
-</li>
-<li>文本不是最终变量，因为我们需要数据类型来支持插入和删除操作；</li>
-<li>因此读取和写入文本变量本身不是线程安全的。</li>
-</ul>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第五期/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/24/软件构造知识点总结第五期/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-24 14:35:16 / Modified: 14:41:39" itemprop="dateCreated datePublished" datetime="2019-06-24T14:35:16+08:00">2019-06-24</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h2 id="软件构造知识点总结第五期"><a href="#软件构造知识点总结第五期" class="headerlink" title="软件构造知识点总结第五期"></a>软件构造知识点总结第五期</h2><h1 id="第八章"><a href="#第八章" class="headerlink" title="第八章"></a>第八章</h1><hr>
-<h2 id="第一节-软件构造性能的度量原理"><a href="#第一节-软件构造性能的度量原理" class="headerlink" title="第一节 软件构造性能的度量原理"></a>第一节 软件构造性能的度量原理</h2><h3 id="性能度量指标"><a href="#性能度量指标" class="headerlink" title="性能度量指标"></a><em>性能度量指标</em></h3><ul>
-<li>时间性能<ul>
-<li>每条指令、每个控制 结构、整个程序的执行时间</li>
-<li>不同语句或控制结构执行时间的分布情况</li>
-<li>时间瓶颈在哪里</li>
-</ul>
-</li>
-<li>空间性能<ul>
-<li>每个变量、每个复杂结构、整个程序的内存消耗</li>
-<li>不同变量/数据结构的相对消耗</li>
-<li>空间瓶颈在哪里</li>
-<li>随时间的变化情况</li>
-</ul>
-</li>
-</ul>
-<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a><em>内存管理</em></h3><p><strong>对象管理模型</strong></p>
-<ul>
-<li>三者的差异在于：如何与何时在程序对象与内存对象之间建立联系</li>
-<li>静态<ul>
-<li><strong>定义</strong>：静态内存是指在程序开始运行时由编译器分配的内存，它的分配是在程序开始编译时完成的，不占用CPU资源。</li>
-<li>程序中的各种变量，在编译时系统已经为其分配了所需的内存空间，当该变量在作用域内使用完毕时，系统会自动释放所占用的内存空间；</li>
-<li>不支持递归，不支持动态创建可变长的复杂数据类型；</li>
-<li>在程序执行期内实体至多关联一个运行时对象</li>
-<li>eg: 基本类型，数组</li>
-</ul>
-</li>
-<li><p>动态-基于栈</p>
-<ul>
-<li>栈定义：方法调用和局部变量的存储位置，保存基本类型<ul>
-<li>如果一个方法被调用，它的栈帧被放到调用栈的顶部</li>
-<li>栈帧保存方法的状态，包括执行哪行代码以及所有局部变量的值</li>
-<li>栈顶始终是当前运行方法</li>
-</ul>
-</li>
-<li>一个实体可以在运行时连续地连接到多个对象，并且运行时机制以堆栈中的<strong>后进先出</strong>顺序分配和释放这些对象</li>
-<li>栈无法支持复杂数据结构</li>
-</ul>
-</li>
-<li><p>动态-基于堆</p>
-<ul>
-<li><strong>堆定义</strong>：在一块内存里分为多个小块，每块包含 一个对象，或者未被占用</li>
-<li>自由模式的内存管理，动态分配，可管理复杂的动态数据结构</li>
-<li>代码中的一个变量可以在不同时间被关联到不同的内存对象上，无法在编译阶段确定。内存对象也可以进一步指向其他对象</li>
-</ul>
-</li>
-</ul>
-<h3 id="Java垃圾回收机制"><a href="#Java垃圾回收机制" class="headerlink" title="Java垃圾回收机制"></a><em>Java垃圾回收机制</em></h3><p><strong>内存回收的三种方式</strong></p>
-<p>​    ①静态模式下的内存回收：在静态内存分配模式下，无需进行内存回收：所有都是已确定的。</p>
-<p>​    ②在栈模式下的内存回收：按block（某个方法）整体进行</p>
-<p>​    ③在堆模式下的内存回收：在heap上进行内存空间回收，最复杂——无法提前预知某个object是否已经变得无用。</p>
-<p> <strong>动态垃圾回收相关概念</strong></p>
-<ul>
-<li>GC（Garbage Collection）：识别垃圾并释放其占用的内存<ul>
-<li>垃圾回收器根据对象的“活性”(从root的可达性)来决定是否回收该对象的内存，”死“的对象是需要回收的垃圾</li>
-</ul>
-</li>
-<li>Root<ul>
-<li>根集合由root对象和局部对象构成</li>
-<li>root对象：<code>Class</code>（不能被回收）、<code>Thread</code>、Java方法/接口的本地变量或参数、全局接口引用等</li>
-</ul>
-</li>
-<li>可达/不可达对象（Reachable/Unreachable）：free模式<ul>
-<li>从根可以直接或间接到达的对象为可达的，否则为不可达的</li>
-<li>从根开始，不断将指向的对象加入活动集，剩下的是垃圾</li>
-</ul>
-</li>
-<li>活动/死亡对象（Live/dead）：<ul>
-<li>在stack和free的结合模式下，对象的引用被视为有向图，可以从根访问的对象为活动对象，否则为死亡对象。</li>
-</ul>
-</li>
-</ul>
-<p><strong>GC的四种算法</strong></p>
-<ul>
-<li>引用计数<ul>
-<li><strong>基本思想</strong>：为每个object存储一个计数RC，当有其他 reference指向它时，RC++；当其他reference与其断开时，RC—；如 果RC==0，则回收它。</li>
-<li><strong>优点</strong>：简单、计算代价分散，“幽灵时间”短 为0</li>
-<li><strong>缺点</strong>：不全面（容易漏掉循环引用的对象）、并发支 持较弱、占用额外内存空间、等</li>
-</ul>
-</li>
-<li><p>Mark-Sweep（标记-清除）算法</p>
-<ul>
-<li><strong>基本思想</strong>：为每个object设定状态位(live/dead)并记录，即mark阶段；将标记为dead的对象进行清理，即sweep可阶段。</li>
-<li><strong>优点：</strong>可以处理循环调用，指针操作无开销，对象不变</li>
-<li><strong>缺点</strong>：复杂度为O(heap),高　堆的占用比高时影响性能，容易造成碎片，需要找到root</li>
-</ul>
-</li>
-<li><p>Copying（复制）算法</p>
-<ul>
-<li><strong>基本思想</strong>：为了解决Mark-Sweep算法的缺陷，Copying算法就被提了出来。它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，就将还存活着的对象复制到另外一块上面，然后再把已使用的内存空间一次清理掉，这样一来就不容易出现内存碎片的问题。</li>
-<li><strong>优势</strong>：运行高效、不易产生内存碎片</li>
-<li><strong>缺点</strong>：复制花费大量的时间，牺牲内存空间</li>
-</ul>
-</li>
-<li>Mark-Compact（标记-整理）算法<ul>
-<li>基本思想：为了解决Copying算法的缺陷，充分利用内存空间，提出了Mark-Compact算法。该算法标记阶段和Mark-Sweep一样，但是在完成标记之后，它不是直接清理可回收对象，而是将存活对象都向一端移动，然后清理掉端边界以外的内存。</li>
-</ul>
-</li>
-</ul>
-<h3 id="JVM中的GC"><a href="#JVM中的GC" class="headerlink" title="JVM中的GC"></a><em>JVM中的GC</em></h3><p>Java GC将堆分为不同的区域，各区域采用不同的GC策略，以提高GC的效率</p>
-<ul>
-<li>Java内存分配和回收的机制概括的说，就是：分代分配，分代回收。</li>
-<li><p>对象将根据存活的时间被分为：年轻代（Young Generation）、年老代（Old Generation）、永久代（Permanent Generation，也就是方法区）</p>
-</li>
-<li><p>年轻代：</p>
-<ul>
-<li>对象被创建时，内存的分配首先发生在年轻代（大对象可以直接 被创建在年老代）</li>
-<li>大部分的对象在创建后很快就不再使用，因此很快变得不可达，于是被年轻代的GC机制清理掉（IBM的研究表明，98%的对象都是很快消 亡的）</li>
-<li>为减少GC代价，<strong>使用copying算法</strong></li>
-<li>具体过程<ol>
-<li>绝大多数刚创建的对象会被分配在Eden区，其中的大多数对象很快就会消亡。Eden区是连续的内存空间，因此在其上分配内存极快；</li>
-<li>当Eden区满的时候，执行Minor GC，将消亡的对象清理掉，并将剩余的对象复制到一个存活区Survivor0（此时，Survivor1是空白的，两个Survivor总有一个是空白的）；</li>
-<li>此后，每次Eden区满了，就执行一次Minor GC，并将剩余的对象都添加到Survivor0；</li>
-<li>当Survivor0也满的时候，将其中仍然活着的对象直接复制到Survivor1，以后Eden区执行Minor GC后，就将剩余的对象添加Survivor1（此时，Survivor0是空白的）。</li>
-<li>当两个存活区切换了几次（HotSpot虚拟机默认15次，用-XX:MaxTenuringThreshold控制，大于该值进入老年代）之后，仍然存活的对象（其实只有一小部分，比如，我们自己定义的对象），将被复制到老年代。</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>年老代：<ul>
-<li>对象如果在年轻代存活了足够长的时间而没有被清理掉，则会被复制到年老代，年老代的空间一般比年轻代大，能存放更多的对象，在年老代上发生的GC次数也比年轻代少。</li>
-<li>使用Mark-Sweep或Mark-Compact算法；</li>
-<li>Minor GC和full GC独立进行，减小代价；</li>
-<li>当perm generation满了之后，无法存储更多的元数据，也启动full GC。</li>
-</ul>
-</li>
-</ul>
-<h3 id="GVM-GC性能调优"><a href="#GVM-GC性能调优" class="headerlink" title="GVM GC性能调优"></a><em>GVM GC性能调优</em></h3><ul>
-<li>尽可能减少GC时间，一般不超过程序执行时间的5%</li>
-<li>一旦初始分配给程序的内存满了，就抛出内存溢出异常，</li>
-<li>在启动程序时，可为其配置内存分配的具体大小</li>
-<li>堆的大小决定着VM将会以何种频度进行GC、每次GC的时间多长。<ul>
-<li>这两个指标具体取值多少为“优”，需要针对特定应用进行分析。</li>
-<li>较大的heap会导致较少发生GC，但每次GC时间很长</li>
-<li>如果根据程序需要来设置heap大小，则需要频繁GC，但每次GC的时间较短</li>
-</ul>
-</li>
-<li>设定堆的大小的具体方法<ul>
-<li><code>Xmx/-Xms</code>：指定年轻代和老年代空间的初始值和最大值；<code>Xms</code>小于<code>Xmx</code>时，年轻代和老年代所消耗的空间量可以根据应用程序的需求增长或收缩；Java堆的增长不会比<code>Xms</code>大，也不会比<code>Xmx</code>小</li>
-<li><code>XX: NewSize=&lt;n&gt;[g|m|k]</code>：年轻代空间的初始和最小尺寸，<code>&lt;n&gt;</code>是大小，<code>[g | m | k]</code>指示大小是否应解释为千兆字节，兆字节或千字节</li>
-<li><code>XX: MaxNewSize=&lt;n&gt;[g|m|k]</code>：年轻代空间的最大值</li>
-<li><code>Xmn&lt;n&gt;[g|m|k]</code>：将年轻代的初始值、最小值、最大值设为同一值</li>
-</ul>
-</li>
-<li><p>GC模式选择</p>
-<ul>
-<li>增长或收缩年轻代或老年代的空间时需要Full GC</li>
-<li>Full GC可能会降低吞吐量并导致超出期望的延迟</li>
-<li>串行收集器（-XX:+UseSerialGC）：使用单个线程执行所有垃圾收集工作</li>
-<li>并行收集器（-XX:+UseParallelGC）：并行执行Minor GC，显著减少垃圾收集开销</li>
-<li>并发低暂停收集器（-XX:+UseConcMarkSweepGC）：收集持久代，与执行应用程序同时执行大部分收集，在收集期间会暂停一小段时间</li>
-<li>增量低暂停收集器（-XX:+UseTrainGC）：收集每个Minor的部分老年代，并尽量减少Major的大停顿</li>
-<li>-verbose:gc：打印GC信息</li>
-</ul>
-</li>
-<li><p>堆设置<br>-Xms：初始堆大小<br>-Xmx：最大堆大小<br>-XX:NewSize=n：设置年轻代大小<br>-XX:NewRatio=n：设置年轻代和年老代的比值。如：为3，表示年轻代与年老代比值为1：3，年轻代占整个年轻代年老代和的1/4<br>-XX:SurvivorRatio=n：年轻代中Eden区与两个Survivor区的比值。注意Survivor区有两个。如：3，表示Eden：Survivor=3:2，一个Survivor区占整个年轻代的1/5<br>-XX:MaxPermSize=n：设置持久代大小</p>
-</li>
-<li><p>收集器设置<br>-XX:+UseSerialGC：设置串行收集器<br>-XX:+UseParallelGC：设置并行收集器<br>-XX:+UseParalledlOldGC：设置并行年老代收集器<br>-XX:+UseConcMarkSweepGC：设置并发收集器</p>
-</li>
-<li><p>垃圾回收统计信息<br>-XX：+PrintGC<br>-XX：+PrintGCDetails<br>-XX：+PrintGCTimeStamps<br>-Xloggc：filename</p>
-</li>
-<li><p>并行收集器设置<br>-XX:ParallelGCThreads=n：设置并行收集器收集时使用的CPU数。并行收集线程数。<br>-XX:MaxGCPauseMillis=n：设置并行收集最大暂停时间<br>-XX:GCTimeRatio=n：设置垃圾回收时间占程序运行时间的百分比。公式为$\frac{1}{1+n}$</p>
-</li>
-<li><p>并发收集器设置<br>-XX:+CMSIncrementalMode：设置为增量模式。适用于单CPU情况。<br>-XX:ParallelGCThreads=n：设置并发收集器年轻代收集方式为并行收集时，使用的CPU数。并行收集线程数。</p>
-</li>
-</ul>
-<h2 id="第二节-动态程序分析方法与工具"><a href="#第二节-动态程序分析方法与工具" class="headerlink" title="第二节 动态程序分析方法与工具"></a>第二节 动态程序分析方法与工具</h2><ul>
-<li>Jstat：获取JVM的Heap使用和GC的性能统计数据，命令如-gcutil</li>
-<li>Jmap：输出内存中的对象分布情况  如：jmap -clstats</li>
-<li>Jhat：导出heap dump，浏览/查询其中的对象分布情况</li>
-<li>jstack：获取Java线程的stack trace 具体用途如下：<ul>
-<li>定位线程出现长时间停顿的原因，如多线程间死锁、死循环、请求外部资源 导致的长时间等待等。</li>
-<li>线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没 有响应的线程到底在后台做什么事情，或者等待什么资源。</li>
-</ul>
-</li>
-<li>Visual VM：提供了一个可视化界面，用于查看Java应用程序在JVM上运行时的详细信息，使用各种技术，包括jvmstat，JMX，Serviceability Agent（SA）和Attach API等</li>
-<li>MAT：内存堆导出文件的分析工具，生成饼状图等，能够对问题发生时刻的系统内存状态获取一个整体印象，找到最有可能导致内存泄露的对象，进一步查看其是否有异常行为。</li>
-</ul>
-<h3 id="Memory-Dump（堆转储文件）"><a href="#Memory-Dump（堆转储文件）" class="headerlink" title="Memory Dump（堆转储文件）"></a><em>Memory Dump（堆转储文件）</em></h3><p>正如Thread Dump文件记录了当时JVM中线程运行的情况一样，Heap Dump记录了JVM中堆内存运行的情况，可使用jmap或JConsole命令生成，jhat分析。</p>
-<p><strong>使用 jmap 命令生成</strong></p>
-<p><strong>使用JConsole生成</strong></p>
-<p><strong>使用jhat分析</strong> </p>
-<h3 id="Stack-Trace"><a href="#Stack-Trace" class="headerlink" title="Stack Trace"></a><em>Stack Trace</em></h3><p>　　可使用jstack查看，定位线程出现长时间停顿的原因。</p>
-<h2 id="第三节-代码调优的设计模式和I-O"><a href="#第三节-代码调优的设计模式和I-O" class="headerlink" title="第三节 代码调优的设计模式和I/O"></a>第三节 代码调优的设计模式和I/O</h2><h2 id="代码调优"><a href="#代码调优" class="headerlink" title="代码调优"></a>代码调优</h2><p><strong>代码调优的概念</strong></p>
-<ul>
-<li>代码调优：代码调优不是为了修复bug，而是对正确的代码进行修改以提高其性能，其常常是小规模的变化<ul>
-<li>调优不会减少代码行数</li>
-<li>不要猜原因，而应有明确的优化目标</li>
-<li>不要边写程序边调优</li>
-<li>不是性能优化的第一选择</li>
-<li>代码行数与性能之间无必然的联系</li>
-<li>代码调优建立在对程序性能的精确度量基础之上（profiling）</li>
-<li>当程序做过某些调整之后，要重新profiling并重新了解需要优化的性能瓶颈，微小的变化能导致优化方向大不相同</li>
-</ul>
-</li>
-<li>性能从不是追求的第一目标，正确性比性能更重要</li>
-</ul>
-<p><strong><a href="http://c.biancheng.net/view/1338.html" target="_blank" rel="noopener">单例模式</a>（Singleton Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1371.html" target="_blank" rel="noopener">享元模式</a>（Flyweight Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1343.html" target="_blank" rel="noopener">原型模式</a>（Prototype Pattern）</strong></p>
-<p><strong>对象池模式（Object Pool Pattern）</strong></p>
-<h3 id="Java-I-O"><a href="#Java-I-O" class="headerlink" title="Java I/O"></a><em>Java I/O</em></h3>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第四期/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/24/软件构造知识点总结第四期/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-24 14:01:58 / Modified: 14:29:51" itemprop="dateCreated datePublished" datetime="2019-06-24T14:01:58+08:00">2019-06-24</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h2 id="软件构造知识点总结第四期"><a href="#软件构造知识点总结第四期" class="headerlink" title="软件构造知识点总结第四期"></a>软件构造知识点总结第四期</h2><h1 id="第七章"><a href="#第七章" class="headerlink" title="第七章"></a>第七章</h1><h2 id="第一节-健壮性和正确性的区别"><a href="#第一节-健壮性和正确性的区别" class="headerlink" title="第一节  健壮性和正确性的区别"></a>第一节  健壮性和正确性的区别</h2><h3 id="健壮性-Robustness-和正确性-correctness"><a href="#健壮性-Robustness-和正确性-correctness" class="headerlink" title="健壮性(Robustness)和正确性(correctness)"></a><em>健壮性(Robustness)和正确性(correctness)</em></h3><p><strong>健壮性</strong></p>
-<ul>
-<li>定义：系统在不 正常输入或不正常外部环境下仍能够表现正常的程度</li>
-<li>面向健壮性编程：<ul>
-<li>处理未期望的行为和错误终止</li>
-<li>即使终止执行，也要准确/无歧义的向用户展示全面的错误信息</li>
-<li>错误信息有助于进行debug</li>
-</ul>
-</li>
-<li>健壮性原则：<ul>
-<li>Paranoia (偏执狂)：总是假定用户恶意、假定自己的代码可能失败</li>
-<li>把用户想象成白痴，可能输入任何东西（返回给用户的错误提示信息要详细、准确、无歧义）</li>
-<li>对别人宽容点，对自己狠一点（对自己的代码要保守，对用户的行为要开放）</li>
-</ul>
-</li>
-<li>面向健壮性编程的原则：<ul>
-<li>封闭实现细节，限定用户的恶意行为</li>
-<li>考虑极端情况，没有“不可能”</li>
-</ul>
-</li>
-</ul>
-<p><strong>正确性</strong></p>
-<ul>
-<li>含义：程序按照spec加以执行的能力，是最重要的质量指标。</li>
-<li>对比健壮性和正确性：<ul>
-<li>正确性：永不给用户错误的结果； 让开发者变得更容易：用户输入错误，直接结束（不满足precondition调用）。</li>
-<li>健壮性：尽可能保持软件运行而不是总是退出； 让用户变得更容易：出错也可以容忍，程序内部已有容错机制。</li>
-<li>正确性倾向于直接报错(error)，健壮性则倾向于容错(fault-tolerance)；</li>
-<li>对外的接口，倾向于健壮性；对内的实现，倾向于正确性。</li>
-<li>Reliability（可靠性） = Robustness + correctness</li>
-</ul>
-</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Problem</th>
-<th style="text-align:center">健壮性</th>
-<th style="text-align:center">正确性</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">浏览器发出包含空格的URL</td>
-<td style="text-align:center">剥离空白，正常处理请求。</td>
-<td style="text-align:center">将HTTP 400错误请求错误状态返回给客户端。</td>
-</tr>
-<tr>
-<td style="text-align:center">视频文件有坏帧</td>
-<td style="text-align:center">跳过腐败区域到下一个可播放部分。</td>
-<td style="text-align:center">停止播放，引发“损坏的视频文件”错误</td>
-</tr>
-<tr>
-<td style="text-align:center">配置文件使用了非法字符</td>
-<td style="text-align:center">在内部识别最常见的评论前缀，忽略它们。</td>
-<td style="text-align:center">终止启动时出现“配置错误”错误</td>
-</tr>
-<tr>
-<td style="text-align:center">奇怪格式的日期输入</td>
-<td style="text-align:center">尝试针对多种不同的日期格式解析字符串。将正确的格式呈现给用户。</td>
-<td style="text-align:center">日期错误无效</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="如何测量健壮性和正确性"><a href="#如何测量健壮性和正确性" class="headerlink" title="如何测量健壮性和正确性"></a><em>如何测量健壮性和正确性</em></h3><ul>
-<li>外部观察角度：<ul>
-<li>Mean time between failures (MTBF，平均失效间隔时间)：描述了可修复系统的两次故障之间的预期时间，而平均故障时间（MTTF）表示不可修复系统的预期故障时间。</li>
-</ul>
-</li>
-<li>内部观察角度：<ul>
-<li>残余缺陷率：每千行代码中遗留的bug的数量</li>
-</ul>
-</li>
-</ul>
-<h2 id="第二节-错误与异常处理"><a href="#第二节-错误与异常处理" class="headerlink" title="第二节 错误与异常处理"></a>第二节 错误与异常处理</h2><h3 id="Java中的错误和异常"><a href="#Java中的错误和异常" class="headerlink" title="Java中的错误和异常"></a><em>Java中的错误和异常</em></h3><p><strong>Throwable</strong></p>
-<ul>
-<li>Java.lang.throwable <ul>
-<li>Throwable 类是 Java 语言中所有错误或异常的超类。</li>
-<li>继承的类：extends Object。</li>
-<li>实现的接口：implements Serializable。</li>
-<li>直接已知子类：Error, Exception（直接已知子类：IOException、RuntimeException）。</li>
-</ul>
-</li>
-</ul>
-<p><strong>Error</strong></p>
-<ul>
-<li>Error类描述很少发生的Java运行时系统内部的系统错误和资源耗尽情况（例如，VirtualMachineError，LinkageError）。</li>
-<li>对于内部错误：程序员通常无能为力，一旦发生，想办法让程序优雅的结束</li>
-<li>Error的类型：<ul>
-<li>用户输入错误<ul>
-<li>例如：用户要求连接到语法错误的URL，网络层会投诉。</li>
-</ul>
-</li>
-<li>设备错误<ul>
-<li>硬件并不总是做你想做的。</li>
-<li>输出器被关闭</li>
-</ul>
-</li>
-<li>物理限制<ul>
-<li>磁盘可以填满</li>
-<li>可能耗尽了可用内存</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="异常（Exception）"><a href="#异常（Exception）" class="headerlink" title="异常（Exception）"></a><em>异常（Exception）</em></h3><ul>
-<li>异常：程序执行中的非正常事件，程序无法再按预想的流程执行。</li>
-<li>异常处理：<ul>
-<li>将错误信息传递给上层调用者，并报告“案发现场”的信息。</li>
-<li><code>return</code>之外的第二种退出途径：若找不到异常处理程序，整个系统完全退出</li>
-</ul>
-</li>
-</ul>
-<p><strong>【异常按结构层次的分类】</strong></p>
-<ul>
-<li>运行时异常：由程序员处理不当造成，如空指针、数组越界、类型转换</li>
-<li>其他异常：程序员无法完全控制的外在问题所导致的，通常为IOE异常，即找不到文件路径等</li>
-</ul>
-<p><strong>【异常按处理机制角度的分类】</strong></p>
-<ul>
-<li><p>为什么区分checked 和 unchecked：原因其实很简单，编译器将检查你是否为所有的已检查异常提供了异常处理机制，比如说我们使用<code>Class.forName()</code>来查找给定的字符串的<code>class</code>对象的时候，如果没有为这个方法提供异常处理，编译是无法通过的。 </p>
-</li>
-<li><p>Checked exception：</p>
-<ul>
-<li>编译器可帮助检查你的程序是否已抛出或处理了可能的异常</li>
-<li>异常的向上抛出机制进行处理，如果子类可能产生A异常，那么在父类中也必须<code>throws A</code>异常。可能导致的问题：代码效率低，耦合度过高。</li>
-<li>checked exception是需要强制catch的异常，你在调用这个方法的时候，你如果不catch这个异常，那么编译器就会报错，比如说我们读写文件的时候会<code>catch IOException</code>，执行数据库操作会有<code>SQLException</code>等。</li>
-<li>对checked Exception处理机制　　　　<ul>
-<li>抛出：声明是<code>throws</code>，抛出时<code>throw</code>　　　</li>
-<li>捕获（<code>try</code>/<code>catch</code>）：<code>try</code>出现异常，忽略后面代码直接进入<code>catch</code>；无异常不进入<code>catch</code>；若<code>catch</code>中没有匹配的异常处理，程序退出；若子类重写了父类方法，父类方法没有抛出异常，子类应自己处理全部异常而不再传播；子类从父类继承的方法不能增加或更改异常</li>
-<li>处理：不能代替简单的测试，尽量苛刻、不过分细化、将正常处理与异常处理分开、利用好层次结构、早抛出晚捕获、避免不必要的检查</li>
-<li>清理现场、释放资源（<code>finally</code>）：<code>finally</code>中语句不论有无异常都执行</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>unchecked exception：</p>
-<ul>
-<li>程序猿对此不做任何事情，不得不重写你的代码（不需要在编译时使用<code>try-catch</code>等机制处理）</li>
-<li>这类异常都是<code>RuntimeException</code>的子类，它们不能通过client code来试图解决</li>
-<li>这种异常不是必须需要<code>catch</code>的，你是无法预料的，比如说在调用一个<code>list.size()</code>时，如果<code>list</code>为<code>null</code>，那么就会报<code>NullPointerException</code>，而这个异常就是 <code>RuntimeException</code>，也就是<code>UncheckedException</code></li>
-<li>常见的unchecked exception：JVM抛出，如空指针、数组越界、数据格式、不合法的参数、不合法的状态、找不到类等    </li>
-</ul>
-</li>
-</ul>
-<p><strong>checked和unchecked总结</strong></p>
-<ul>
-<li>当要决定是采用checked exception还是Unchecked exception的时候，问一个问题： “如果这种异常一旦抛出，client会做怎样的补救？”<ul>
-<li>如果客户端可以通过其他的方法恢复异常，那么采用checked exception；</li>
-<li>如果客户端对出现的这种异常无能为力，那么采用unchecked exception；</li>
-<li>异常出现的时候，要做一些试图恢复它的动作而不要仅仅的打印它的信息。</li>
-</ul>
-</li>
-<li>尽量使用unchecked exception来处理编程错误：因为uncheckedexception不用使客户端代码显式的处理它们，它们自己会在出现的地方挂起程序并打印出异常信息。</li>
-<li><p>如果client端对某种异常无能为力，可以把它转变为一个unchecked exception，程序被挂起并返回客户端异常信息</p>
-<p><strong>Checked exception应该让客户端从中得到丰富的信息。</strong> </p>
-</li>
-</ul>
-<p><strong>要想让代码更加易读，倾向于用unchecked exception来处理程序中的错误</strong></p>
-<h3 id="checked异常的处理机制"><a href="#checked异常的处理机制" class="headerlink" title="checked异常的处理机制"></a><em>checked异常的处理机制</em></h3><p> <strong>异常中的LSP原则</strong></p>
-<ul>
-<li>如果子类型中<code>override</code>了父类型中的函数，那么子类型中方法抛出的异常不能比父类型抛出的异常类型更广泛</li>
-<li>子类型方法可以抛出更具体的异常，也可以不抛出任何异常</li>
-<li>如果父类型的方法未抛出异常，那么子类型的方法也不能抛出异常。</li>
-<li>其他的参考第五章第二节的LSP</li>
-</ul>
-<p><strong>利用<code>throws</code>进行声明</strong></p>
-<ul>
-<li>使用<code>throws</code>声明异常：此时需要告知你的client需要处理这些异常，如果client没有handler来处理被抛出的checked exception，程序就终止执行。</li>
-<li>程序员必须在方法的spec中明确写清本方法会抛出的所有checked exception，以便于调用该方法的client加以处理</li>
-<li>在使用throws时，方法要在定义和spec中明确声明所抛出的全部checked exception，没有抛出checked异常，编译出错，Unchecked异常和Error可以不用处理。</li>
-</ul>
-<p><strong>利用<code>throw</code>抛出一个异常</strong></p>
-<ul>
-<li>步骤：<ul>
-<li>找到一个能表达错误的<code>Exception</code>类/或者构造一个新的<code>Exception</code>类</li>
-<li>构造<code>Exception</code>类的实例，将错误信息写入</li>
-<li>抛出它</li>
-</ul>
-</li>
-<li><p>一旦抛出异常，方法不会再将控制权返回给调用它的client，因此也无需考虑返回错误代码</p>
-<p><strong><code>try-catch</code>语句</strong></p>
-</li>
-<li><p>使用<code>try</code>和<code>catch</code>关键字可以捕获异常。<code>try</code>/<code>catch</code>代码块放在异常可能发生的地方。</p>
-</li>
-<li><code>try</code>/<code>catch</code>代码块中的代码称为保护代码，</li>
-<li><code>catch</code>语句包含要捕获异常类型的声明。当保护代码块中发生一个异常时，<code>try</code>后面的<code>catch</code>块就会被检查。</li>
-<li>如果发生的异常包含在<code>catch</code>块中，异常会被传递到该<code>catch</code>块，这和传递一个参数到方法是一样。</li>
-</ul>
-<p><strong><code>finally</code>语句</strong></p>
-<ul>
-<li>场景：当异常抛出时，方法中正常执行的代码被终止；但如果异常发生前曾申请过某些资源，那么异常发生后这些资源要被恰当的清理，所以需要用<code>finally</code>语句。</li>
-<li><code>finally</code> 关键字用来创建在 try 代码块后面执行的代码块。</li>
-<li>无论是否发生异常，<code>finally</code> 代码块中的代码总会被执行。</li>
-<li>在 <code>finally</code> 代码块中，可以运行清理类型等收尾善后性质的语句。</li>
-<li><code>finally</code> 代码块出现在<code>catch</code>代码块最后：</li>
-<li>注意下面事项：<ul>
-<li><code>catch</code>不能独立于<code>try</code>存在。</li>
-<li>在<code>try</code>/<code>catch</code>后面添加 <code>finally</code> 块并非强制性要求的。</li>
-<li><code>try</code>代码后不能既没<code>catch</code>块也没 <code>finally</code>块。</li>
-<li><code>try, catch, finally</code>块之间不能添加任何代码。</li>
-</ul>
-</li>
-</ul>
-<h3 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a><em>自定义异常</em></h3><ul>
-<li>如果JDK提供的exception类无法充分描述你的程序发生的错误，可以创建自己的异常类。<ul>
-<li>如果希望写一个检查性异常类，则需要继承<code>Exception</code>类。</li>
-<li>如果你想写一个运行时异常类，那么需要继承<code>RuntimeException</code>类。</li>
-</ul>
-</li>
-</ul>
-<h2 id="第三节-断言和防御性编程"><a href="#第三节-断言和防御性编程" class="headerlink" title="第三节 断言和防御性编程"></a>第三节 断言和防御性编程</h2><h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a><em>断言</em></h3><p><strong>什么是断言</strong></p>
-<ul>
-<li><strong>作用：</strong>允许程序在运行时检查自己，测试有关程序逻辑的假设，如前置条件、后置条件、内部不变量、表示不变量、控制流不变量等</li>
-<li><strong>目的</strong>： 为了在开发阶段调试程序、尽快避免错误</li>
-<li>使用阶段：<ul>
-<li>断言主要用于开发阶段，避免引入和帮助发现bug</li>
-<li>实际运行阶段， 不再使用断言</li>
-<li>软件发布阶段，禁用断言避免影响性能。</li>
-</ul>
-</li>
-</ul>
-<p><strong>应用场景</strong></p>
-<ul>
-<li>输入参数或输出参数的取值处于预期范围</li>
-<li>子程序开始执行（结束）时，文件或流处于打开（关闭）状态</li>
-<li>子程序开始执行（结束）时，文件或流的读写位置处于开头（结尾）</li>
-<li>文件或流已打开</li>
-<li>输入变量的值没有被子程序修改</li>
-<li>指针非空</li>
-<li>传入子程序的数组至少能容纳X个元素</li>
-<li>表已初始化，存储着真实的数据</li>
-<li>子程序开始（结束）时，容器空（满）</li>
-<li>一个高度优化过的子程序与一个缓慢的子程序，结果一致</li>
-<li>断言只在开发阶段被编译到目标代码中，而在生成代码时不编译进去。使用断言的指导建议：</li>
-<li>用错误处理代码来处理预期会发生的状况，断言不行</li>
-<li>避免把需要执行的代码放入断言中（如果未编译断言呢？）</li>
-<li>用断言来注解并验证前条件和后条件</li>
-<li>对于高健壮性的代码，应该先用断言，再处理错误</li>
-</ul>
-<p><strong>注意</strong></p>
-<ul>
-<li>编译时加入-ea(enable assertion)选项运行断言，-da(disable assertion)关闭断言</li>
-<li>条件语句或开关没有涵盖所有可能的情况，最好使用断言来阻止非法事件</li>
-<li>可以在预计正常情况下程序不会到达的地方放置断言：<code>assert false</code></li>
-<li>断言有代价，需慎用，一般用于验证正确性，处理绝不应该发生的情况</li>
-<li><p>不能作为公共方法的检查，也不能有边界效应</p>
-<p><strong>断言和异常的对比</strong></p>
-</li>
-<li><p>用异常处理技术来处理你“希望发生”的不正常情况</p>
-</li>
-<li>用断言来处理“不希望发生”的情况；断言的方式处理一定是发生了错误</li>
-<li>不要把业务逻辑（执行代码）放到断言里面去处理</li>
-<li>参数检查通常是方法发布的规范（或契约）的一部分，无论断言是启用还是禁用，都必须遵守这些规范。<ul>
-<li>如果参数来自于外部（不受自己控制），使用异常处理</li>
-<li>如果来自于自己所写的其他代码，可以使用断言来帮助发现错误（例如postcondition就需要）</li>
-</ul>
-</li>
-</ul>
-<h2 id="第四节-调试"><a href="#第四节-调试" class="headerlink" title="第四节 调试"></a>第四节 调试</h2><h3 id="什么是bug"><a href="#什么是bug" class="headerlink" title="什么是bug"></a><em>什么是bug</em></h3><ul>
-<li>bug即程序中的错误，导致程序以非预期或未预料到的方式执行。</li>
-<li>一个包含大量bug和/或严重干扰其功能的bug的程序被称为buggy。</li>
-<li>报告程序中的bug通常被称为bug报告、故障报告、问题报告、故障报告、缺陷报告等</li>
-</ul>
-<p><strong>bug产生的原因</strong></p>
-<ul>
-<li>代码错误</li>
-<li>未完成的要求或不够详细</li>
-<li>误解用户需求</li>
-<li>设计文档中的逻辑错误</li>
-<li>缺乏文件</li>
-<li>没有足够的测试</li>
-</ul>
-<p><strong>bug的常见类型</strong></p>
-<ul>
-<li>数学bug：例如 零除法，算术溢出</li>
-<li>逻辑bug：例如 无线循环和无限递归</li>
-<li>源头bug：例如 使用了为被定义的变量、资源泄漏，其中有限的系统资源如内存或文件句柄通过重复分配耗尽而不释放。缓冲区溢出，其中程序试图将数据存储在分配存储的末尾。</li>
-<li>团队工程bug：例如 评论过时或者评论错误、文件与实际产品的区别</li>
-</ul>
-<h3 id="调试的基本过程"><a href="#调试的基本过程" class="headerlink" title="调试的基本过程"></a><em>调试的基本过程</em></h3><ul>
-<li>Debug是测试的后续步骤：测试发现问题，debug消除问题；当防御式编程和测试都无法挡住bug时，我们就必须进行debug了；</li>
-<li>Debug的目的：寻求错误的根源并消除它；（Debug占用了大量的时间）</li>
-</ul>
-<p><strong>调试的过程</strong></p>
-<ul>
-<li><strong>常用方法：假设-检验</strong></li>
-<li>重现（Reproduce）$\to$诊断（Diagnose/Locating）$\to$修复（Fix）$\to$反思（Reflect）</li>
-<li>重现（Reproduce）：寻找一个可靠、方便得在线需求问题的方法。<ul>
-<li>从最小的测试用例开始复现错误（保持复现bug的前提下降低输入规模）</li>
-<li>消除因版本、环境、配置等不同引起的差异（通过构建软件实现），确定bug出现的环境（通过程序模拟硬件平台的细节，实现不同的操作系统环境）</li>
-<li>利用逆向设计推断导致错误的输入</li>
-<li>若无法重现，则无法观察以证明分析和修补的正确性</li>
-</ul>
-</li>
-<li>诊断（Diagnose/Locating）：构建假设，并通过执行实验来测试它们，直到您确信已识别错误的根本原因。<ul>
-<li>从假设开始，构造实验，证明它是对的或者错的</li>
-<li>从不符合理论的观察结果开始，修正理论</li>
-<li>查看导致错误的测试输入，以及错误的结果，失败的断言以及由此导致的堆栈跟踪</li>
-<li>提出一个与所有数据一致的假设，说明错误发生的位置或错误发生的位置，设计实验测试假设</li>
-<li>收集实验数据，减少错误可能出现的范围，做出新的假设</li>
-<li>设计不同的实验：检查内部状态、修改运行方式、改变本身逻辑 </li>
-<li>每次只做一个修改、做好记录、不忽略细节、运行不同的测试用例、设置断点、用可实现相同功能并且被证实无问题的组件替代当前组件</li>
-</ul>
-</li>
-<li>修复（Fix）：设计和实施解决问题的变化，避免引入回归，并保持或提高软件的整体质量。<ul>
-<li>确保从干净的源代码树开始</li>
-<li>运行现有的测试，并证明它们通过</li>
-<li>添加一个或多个新测试，或修复现有测试，以演示错误</li>
-<li>修复错误、发现可改进之处</li>
-<li>证明你的修复工作正常且没有引入回归（以前通过的测试现在失败）</li>
-<li>如果引入回归，通过回顾以前的版本来找出确切的变化</li>
-</ul>
-</li>
-<li>反思（Reflect）：思考需求、设计、测试、结构（库、编译器等）</li>
-</ul>
-<h3 id="调试的技术和工具"><a href="#调试的技术和工具" class="headerlink" title="调试的技术和工具"></a><em>调试的技术和工具</em></h3><p><strong>调试技术</strong></p>
-<ul>
-<li>暴力调试（Brute Force Attack）<ul>
-<li>蛮力方法可以分为至少三类：<ul>
-<li>看内存导出文件</li>
-<li>根据“在整个程序中分散打印语句”的常见建议进行调试。</li>
-<li>自动化调试工具</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>递归调试（Induction）</li>
-<li>演绎调试（Decution）</li>
-<li>回溯调试（Backtracking）</li>
-<li>测试调试（Testing）</li>
-</ul>
-<p><strong>调试工具</strong></p>
-<ul>
-<li>语法和逻辑检查（本课程未涵盖）</li>
-<li>源代码比较器(Source-code comparator)</li>
-<li>内存堆转储（Memory heap dump）</li>
-<li>打印调试/日志记录(Print debugging / logging)</li>
-<li>堆栈跟踪(Stack trace)</li>
-<li>编译器警告消息(Compiler Warning Messages)</li>
-<li>调试器(Debugger)</li>
-<li>执行分析器(Execution Profiler)</li>
-<li>测试框架(Test Framework）</li>
-</ul>
-<h2 id="第五节-测试与测试优先编程"><a href="#第五节-测试与测试优先编程" class="headerlink" title="第五节 测试与测试优先编程"></a>第五节 测试与测试优先编程</h2><h3 id="测试和测试优先编程"><a href="#测试和测试优先编程" class="headerlink" title="测试和测试优先编程"></a><em>测试和测试优先编程</em></h3><p><strong>测试的定义</strong></p>
-<ul>
-<li>测试：发现程序中的错误 提高程序正确性的信心</li>
-<li>程序正确确认的基本方法:<ul>
-<li>形式化推理</li>
-<li>代码评审</li>
-<li>测试</li>
-</ul>
-</li>
-<li><p>测试是提高软件质量的重要手段</p>
-<ul>
-<li>确认是否可达到可用的级别</li>
-<li>关注系统某一侧面的质量特性</li>
-<li>是否满足需求</li>
-<li>是否正确响应所有需求</li>
-<li>性能是否可接受</li>
-<li>是否可用</li>
-<li>可否正确部署安装</li>
-<li>是否达到期望</li>
-</ul>
-<p><strong>测试的分类</strong></p>
-</li>
-<li><p>单元测试</p>
-</li>
-<li>集成测试</li>
-<li>系统测试</li>
-<li>回归测试</li>
-<li>验收测试</li>
-</ul>
-<h3 id="黑盒测试"><a href="#黑盒测试" class="headerlink" title="黑盒测试"></a><em>黑盒测试</em></h3><ul>
-<li><p>白盒测试:对程序内部代码结构的测试 只关注代码内部的问题</p>
-</li>
-<li><p>黑盒测试:对程序外部表现出来的行为的测试 采用两个方法</p>
-<ul>
-<li><p>等价划分</p>
-<p>  将程序可能的输入进行分类 划分为不同集合 包括不合法数据</p>
-<ul>
-<li>等价类划分可有两种不同的情况：有效等价类和无效等价类。</li>
-<li>若一组对象自反、对称、传递，则为等价类</li>
-<li>可产生相似结果的输入集合中的一个可代替整个集合</li>
-<li>同理，对输出也可以划分等价类</li>
-<li>极端：每个分区只有一个测试用例，覆盖所有分区</li>
-</ul>
-</li>
-<li><p>边界值分析方法</p>
-<p>  边界值分析法是对输入输出的边界值进行测试一种黑盒测试方法，是对等价类分析法的补充。</p>
-<ul>
-<li>错误通常隐藏在边界中，如一位偏移、边界值需单独处理等</li>
-<li>找到有效数据和无效数据的分界点（最大值、最小值），对该分界点以及两边的值分别单独进行测试。</li>
-<li>等价类划分法可以挑选等价类范围内任意一个数据作为代表，而边界值分析法要求每个边界值都要作为测试条件。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>测试困难</p>
-<ul>
-<li>软件行为在离散输入空间中差异巨大 <ul>
-<li>大多数正确，少数错误</li>
-<li>bug出现不遵循特定概率分布</li>
-</ul>
-</li>
-<li>无统计规律可循</li>
-</ul>
-</li>
-</ul>
-<h3 id="代码覆盖度"><a href="#代码覆盖度" class="headerlink" title="代码覆盖度"></a><em>代码覆盖度</em></h3><ul>
-<li>定义：已有的测试用例有多大程度覆盖了被测程序；</li>
-<li>代码覆盖度越低，测试越不充分；但要做到很高的代码覆盖度，需要更多的测试用例，测试代价高；</li>
-<li>代码覆盖率高的程序在测试期间执行了更多的源代码，与低代码覆盖率的程序相比，包含未检测到的软件错误的可能性较低</li>
-<li>基本覆盖标准：函数覆盖；语句覆盖、分支覆盖、条件覆盖、路径覆盖</li>
-<li>测试效果：路径 &gt; 分支 &gt; 语句</li>
-<li>测试难度：路径 &gt; 分支 &gt; 语句</li>
-</ul>
-<h3 id="以注释的形式撰写测试策略"><a href="#以注释的形式撰写测试策略" class="headerlink" title="以注释的形式撰写测试策略"></a><em>以注释的形式撰写测试策略</em></h3><ul>
-<li>“测试策略”通俗来讲就是6个字：“测什么”和“怎么测”。测试策略非常重要，需要在程序中显性记录下来。</li>
-<li>目的：在代码评审过程中，其他人能够理解你的测试，并评判测试是否充分</li>
-<li>在测试类的顶端写策略</li>
-<li><img src="https://i.imgur.com/5tn5eZi.png" alt></li>
-<li>在每个测试方法前说明测试用例是如何选择的</li>
-<li><img src="https://i.imgur.com/iq0sHgU.png" alt></li>
-</ul>
-<h3 id="JUnit-测试用例写法"><a href="#JUnit-测试用例写法" class="headerlink" title="JUnit 测试用例写法"></a><em>JUnit 测试用例写法</em></h3><ul>
-<li>JUnit单元测试是依据 注释中<code>@Test</code>之前的方法编写的</li>
-<li>JUnit测试经常调用多次方法，使用<code>assertEqual || assertTrue || assertFalse</code>来检查结果</li>
-<li><code>@Before</code>：准备测试、完成初始化，每个测试方法前执行一次</li>
-<li><code>@After</code>：清理现场，每个测试方法后执行一次</li>
-<li><code>@Test</code>：表明测试方法，内含assert语句<ul>
-<li>第一个参数是预期结果、第二个参数实施及结果；</li>
-<li>如果断言失败，该测试方法直接返回，JUnit记录该测试的失败；</li>
-<li>一个测试方法失败，其他测试方法仍运行</li>
-<li><code>@Test(expected = *.class)</code>：对错误的测试，expected的属性值是一个异常</li>
-<li><code>@Test(timeout = xxx)</code>：测试方法在制定的时间之内没有运行完则失败</li>
-</ul>
-</li>
-<li><code>@ignore</code>：忽略测试方法</li>
-<li><strong><em>examples</em></strong></li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evaluate</span><span class="params">(String expression)</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (String summand: expression.split(<span class="string">"\\+"</span>))</span><br><span class="line">            sum += Integer.valueOf(summand);</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluatesExpression</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Calculator calculator = <span class="keyword">new</span> Calculator();</span><br><span class="line">        <span class="keyword">int</span> sum = calculator.evaluate(<span class="string">"1+2+3"</span>);</span><br><span class="line">        assertEquals(<span class="number">6</span>, sum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180619224136881-874452125.png" alt="img"></p>
-<hr>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结（3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/06/24/软件构造知识点总结（3/" class="post-title-link" itemprop="url">Untitled</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2019-06-24 11:41:29 / Modified: 11:51:04" itemprop="dateCreated datePublished" datetime="2019-06-24T11:41:29+08:00">2019-06-24</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h1 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h1><hr>
-<h2 id="第一节-可复用性的度量、形态和外部观察"><a href="#第一节-可复用性的度量、形态和外部观察" class="headerlink" title="第一节  可复用性的度量、形态和外部观察"></a>第一节  可复用性的度量、形态和外部观察</h2><h3 id="什么是软件复用"><a href="#什么是软件复用" class="headerlink" title="什么是软件复用"></a><em>什么是软件复用</em></h3><ul>
-<li>软件复用是使用现有软件组件实施或更新软件系统的过程。 </li>
-<li>软件复用的两个观点：<ul>
-<li>面向复用编程(programming for reuse)：开发出可复用的软件<ul>
-<li>开发成本高于一般软件的成本：要有足够高的适应性</li>
-<li>性能差些： 针对更普适场景，缺少足够的针对性</li>
-</ul>
-</li>
-<li>基于复用编程(programming with reuse)：利用已有的可复用软件搭建应用系统<ul>
-<li>可复用软件库，对其进行有效的管理</li>
-<li>往往无法拿来就用，需要适配</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>为什么需要复用：<ul>
-<li>复用降低成本和开发时间</li>
-<li>复用的代码经过充分测试，可靠、稳定</li>
-<li>产出标准化，在不同应用中保持一致</li>
-</ul>
-</li>
-<li><p>软件复用的代价：</p>
-<ul>
-<li>软件可复用的部分需要设计在如下的标准上：明确的定义、开放的方法、简洁的交互规范、可理解的文档，并着眼于未来。</li>
-<li>不仅program for reuse代价高，program with reuse代价也高</li>
-</ul>
-</li>
-<li><p>代码复用的类型：</p>
-<ul>
-<li>白盒复用：源代码可见，可修改和扩展<ul>
-<li>含义：复制已有代码到正在开发的系统，进行修改</li>
-<li>优点：可订制化程度高</li>
-<li>缺点：对其修改增加了软件的复杂度，且需要对其内部充分的了解</li>
-</ul>
-</li>
-<li>黑盒服用：源代码不可见，不能修改<ul>
-<li>含义：只能通过过API接口来使用，无法修改代码</li>
-<li>优点：清晰、简单</li>
-<li>缺点：适用性差</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>高复用性的软件应具有如下特性：<ul>
-<li>小、简单</li>
-<li>与标准兼容</li>
-<li>灵活可变</li>
-<li>可扩展</li>
-<li>泛型、参数化</li>
-<li>模块化</li>
-<li>变化的局部性</li>
-<li>稳定</li>
-<li>丰富的文档和帮助</li>
-</ul>
-</li>
-</ul>
-<h2 id="可复用实现的级别"><a href="#可复用实现的级别" class="headerlink" title="可复用实现的级别"></a>可复用实现的级别</h2><p><strong>源代码级别的复用</strong></p>
-<p><strong>模块级别的复用：类、抽象类、接口</strong></p>
-<ul>
-<li>复用类：<ul>
-<li>源码并非是必要的，可能只需要类文件或jar</li>
-<li>只需要将这个类加入到类路径</li>
-<li>可以使用工具javap获得一个类的<code>public</code>方法</li>
-</ul>
-</li>
-<li>使用复用类的注意事项：<ul>
-<li>文档十分重要</li>
-<li>压缩会有助于复用</li>
-<li>管理更少的代码</li>
-<li>版本兼容性</li>
-<li>需要和类相关的包</li>
-</ul>
-</li>
-<li>复用类的方法：继承和委派<ul>
-<li>继承（Inheritance）：<ul>
-<li>类扩展了现有类的属性/行为；</li>
-<li>另外，他们可能会<code>Override</code>现有的行为；</li>
-<li>通常需要在实施之前设计继承层次结构；</li>
-</ul>
-</li>
-<li>委派（Delegation）：<ul>
-<li>根本没有父子关系的类中使用继承是不合理的，可以用委派的方式来代替。</li>
-<li>委托是简单的将一个对象连接到另一个对象上，使另一个对象获得这个对象方法的子集（一个实体将某个事物传递给另一个实体）。</li>
-<li>明确的委托：明确将需要传的对象传到目标对象上</li>
-<li>含蓄的委托：委托可以被描述为一种共享代码数据的低级别机制</li>
-<li>委派的类型：<ul>
-<li>Use（A uses B）</li>
-<li>Composition/aggregation (A owns B)</li>
-<li>Association (A has B)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>库级别的复用：API/包</strong></p>
-<ul>
-<li>方法：Libaray、framework<ul>
-<li>library：<ul>
-<li>库定义：一组提供可重用功能的类和方法（API）</li>
-<li>开发者构造可运行软件实体，其中涉及到对可复用库的调用</li>
-<li>Java中有很多的库可以复用，例如Guava：Google的Java核心库；Apache Commons等</li>
-</ul>
-</li>
-<li>framework：<ul>
-<li>框架定义：一组具体类、抽象类、及其之间的连接关系 </li>
-<li>作为主程序加以执行，执行过程中调用开发者所写的程序</li>
-<li>开发者根据 framework的规约，填充自己的代码进去，形成完整系统</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>系统级别的复用：框架</strong></p>
-<p>　　将framework看作是更大规模的API复用，除了提供可复用的API，还将这 些模块之间的关系都确定下来，形成了整体应用的领域复用。开发者的任务就是增加新代码、对抽象类进行具体化。展开来说就是以下几点：</p>
-<ul>
-<li>通常通过选择性覆盖来扩展框架; 或者程序员可以添加专门的用户代码来提供特定的功能—定义继承了抽象类祖先操作的具体类</li>
-<li>设计模式(Hook方法)，它被应用程序覆盖以扩展框架。 Hook方法系统地将应用程序域的接口和行为与应用程序在特定上下文中所需的变体解耦。</li>
-<li>控制反转，由第三方的容器来控制对象之间的依赖关系，而非传统实现中由代码直接操控。由第三方的容器来控制对象之间的依赖关系，而非传统实现中由代码直接操控。</li>
-<li>不可修改的框架代码：在接受用户实现的扩展时，框架代码不应该被修改。 换句话说，用户可以扩展框架，但不应修改其代码。</li>
-</ul>
-<h3 id="对可复用性的外部观察"><a href="#对可复用性的外部观察" class="headerlink" title="对可复用性的外部观察"></a><em>对可复用性的外部观察</em></h3><ul>
-<li><p>Type Variation  类型可变</p>
-<ul>
-<li>能够复用的部分应该类型参数化，以适应不同的数据类型</li>
-<li>复用的部分应该一般化</li>
-<li>适应不同的类型，且满足LSP</li>
-</ul>
-</li>
-<li><p>Implementation Variation 实现可变</p>
-<ul>
-<li>ADT 有多种不同的实现，提供不同的representations 和abstract function ，但具有同样的specification (pre-condition, post-condition, invariants) ，从而可以适应不同的应用场景</li>
-</ul>
-</li>
-<li><p>Routine Grouping 功能分组</p>
-<ul>
-<li>提供完备的细粒度操作，保证功能的完整性，不同场景下复用不同的操作( 及其组合)</li>
-</ul>
-</li>
-<li><p>Representation Independence 表示独立</p>
-<ul>
-<li>内部实现可能会经常变化，但客户端不应受到影响。</li>
-</ul>
-</li>
-<li><p>Factoring Out Common Behaviors 共性抽取</p>
-<ul>
-<li>将共同的行为（共性）抽象出来，形成可复用实体</li>
-</ul>
-</li>
-</ul>
-<h3 id="白盒框架和黑盒框架"><a href="#白盒框架和黑盒框架" class="headerlink" title="白盒框架和黑盒框架"></a><em>白盒框架和黑盒框架</em></h3><p>框架也可分为白盒框架和黑盒框架两类。 </p>
-<ul>
-<li>白盒框架：<ul>
-<li>通过继承和动态绑定实现可扩展性。</li>
-<li>通过继承框架基类并重写预定义的hook方法来扩展现有功能。</li>
-<li>通常使用模板方法模式等设计模式来覆盖hook方法。</li>
-</ul>
-</li>
-<li>黑盒框架：<ul>
-<li>通过为可插入框架的组件定义接口来实现可扩展性。</li>
-<li>通过定义符合特定接口的组件来复用现有功能。</li>
-<li>这些组件通过委派（Delegation）与框架集成。</li>
-</ul>
-</li>
-</ul>
-<h2 id="第二节-设计可复用的软件"><a href="#第二节-设计可复用的软件" class="headerlink" title="第二节  设计可复用的软件"></a>第二节  设计可复用的软件</h2><h3 id="设计可复用的类——LSP"><a href="#设计可复用的类——LSP" class="headerlink" title="设计可复用的类——LSP"></a><em>设计可复用的类——LSP</em></h3><ul>
-<li>在OOP之中设计可复用的类<ul>
-<li>封装和信息隐藏</li>
-<li>继承和重写</li>
-<li>多态、子类和重载</li>
-<li>泛型编程</li>
-<li><strong>LSP原则</strong></li>
-<li><strong>委派和组合（Composition）</strong></li>
-</ul>
-</li>
-</ul>
-<p><strong>行为子结构</strong></p>
-<ul>
-<li><p>子类型多态（ Subtype polymorphism）：客户端可用统一的方式处理不同类型的对象 。</p>
-</li>
-<li><p><strong><em>examples</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Animal a = <span class="keyword">new</span> Animal(); </span><br><span class="line">Animal c1 = <span class="keyword">new</span> Cat(); </span><br><span class="line">Cat c2 = <span class="keyword">new</span> Cat();</span><br></pre></td></tr></table></figure>
-<p> 在可以使用<code>a</code>的场景，都可以用<code>c1</code>和<code>c2</code>代替而不会有任何问题。</p>
-</li>
-<li><p>在java的静态类型检查之中，编译器强调了几条规则：</p>
-<ul>
-<li>子类型可以增加方法，但不可删</li>
-<li>子类型需要实现抽象类型中的所有未实现方法</li>
-<li>子类型中重写的方法必须有相同或子类型的返回值</li>
-<li>子类型中重写的方法必须使用同样类型的参数</li>
-<li>子类型中重写的方法不能抛出额外的异常</li>
-</ul>
-</li>
-<li><p>行为子结构也适用于指定的方法：</p>
-<ul>
-<li>更强的不变量</li>
-<li>更弱的前置条件</li>
-<li>更强的后置条件</li>
-</ul>
-</li>
-</ul>
-<p><strong>逆变与协变</strong></p>
-<ul>
-<li><p>逆变与协变综述：如果A、B表示类型，f(⋅)表示类型转换，≤表示继承关系（比如，$A≤B$表示A是由B派生出来的子类）：</p>
-<ul>
-<li>f(⋅)是逆变（contravariant）的，当$A \le B$时有$f(B) \le f(A)$成立；</li>
-<li>f(⋅)是协变（covariant）的，当$A \le B$时有$f(A) \le f(B)$成立；</li>
-<li>f(⋅)是不变（invariant）的，当$A \le B$时上述两个式子均不成立，即f(A)与f(B)相互之间没有继承关系。</li>
-</ul>
-</li>
-<li><p>协变（Co-variance）：</p>
-<ul>
-<li>父类型$\to$子类型：越来越具体(specific)。</li>
-<li>在LSP中，返回值和异常的类型：不变或变得更具体 。</li>
-<li><strong><em>examples</em></strong></li>
-</ul>
-</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180613214134458-1132318774.png" alt="img"></p>
-<ul>
-<li>逆变(Contra-variance)：<ul>
-<li>父类型$\to$子类型：越来越抽象。</li>
-<li>参数类型：要相反的变化，不变或越来越抽象。 </li>
-<li><strong><em>examples</em></strong></li>
-</ul>
-</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180613214453893-254989486.png" alt="img"></p>
-<p>这在Java中是不允许的，因为它会使重载规则复杂化。</p>
-<p><strong>Liskov替换原则(LSP)</strong></p>
-<ul>
-<li>里氏替换原则的主要作用就是规范继承时子类的一些书写规则。其主要目的就是保持父类方法不被覆盖。</li>
-<li>含义：<ul>
-<li>子类必须完全实现父类的方法</li>
-<li>子类可以有自己的个性</li>
-<li>覆盖或实现父类的方法时输入参数可以被放大</li>
-<li>覆盖或实现父类的方法时输出结果可以被缩小</li>
-</ul>
-</li>
-<li>LSP是子类型关系的一个特殊定义，称为（强）行为子类型化。在编程语言中，LSP依赖于以下限制：<ul>
-<li>前置条件不能强化</li>
-<li>后置条件不能弱化</li>
-<li>不变量要保持或增强</li>
-<li>子类型方法参数：逆变</li>
-<li>子类型方法的返回值：协变</li>
-<li>异常类型：协变</li>
-</ul>
-</li>
-</ul>
-<h2 id="各种应用中的LSP"><a href="#各种应用中的LSP" class="headerlink" title="各种应用中的LSP"></a>各种应用中的LSP</h2><p><strong>数组是协变的</strong></p>
-<ul>
-<li>数组是协变的：一个数组<code>T[]</code> ，可能包含了T类型的实例或者T的任何子类型的实例</li>
-<li>即子类型的数组可以赋予父类型的数组进行使用，但数组的类型实际为子类型。</li>
-</ul>
-<p><strong>泛型中的LSP</strong></p>
-<ul>
-<li>Java中泛型是不变的,但可以通过通配符”?”实现协变和逆变：<ul>
-<li><code>&lt;? extends&gt;</code>实现了泛型的协变：<code>List&lt;? extends Number&gt; list = new ArrayList&lt;Integer&gt;()</code>;</li>
-<li><code>&lt;? super&gt;</code>实现了泛型的逆变：<code>List&lt;? super Number&gt; list = new ArrayList&lt;Object&gt;()</code>;</li>
-</ul>
-</li>
-<li>由于泛型的协变只能规定类的上界，逆变只能规定下界，使用时需要遵循PECS（producer—extends, consumer-super）：<ul>
-<li>要从泛型类取数据时，用extends；</li>
-<li>要往泛型类写数据时，用super；</li>
-<li>既要取又要写，就不用通配符（即extends与super都不用）。</li>
-</ul>
-</li>
-<li>泛型是类型不变的（泛型不是协变的）。举例来说 <ul>
-<li><code>ArrayList&lt;String&gt;</code> 是<code>List&lt;String&gt;</code>的子类型 </li>
-<li><code>List&lt;String&gt;</code>不是<code>List&lt;Object&gt;</code>的子类型</li>
-</ul>
-</li>
-<li>在代码的编译完成之后，泛型的类型信息就会被编译器擦除。因此，这些类型信息并不能在运行阶段时被获得。这一过程称之为类型擦除（type erasure）。</li>
-<li>类型擦除的详细定义：如果类型参数没有限制，则用它们的边界或Object来替换泛型类型中的所有类型参数。因此，产生的字节码只包含普通的类、接口和方法。</li>
-<li>类型擦除的结果：<code>&lt;T&gt;</code>被擦除<code>T</code>变成了<code>Object</code></li>
-</ul>
-<p><strong>Wildcards（通配符）</strong></p>
-<ul>
-<li>无界通配符类型使用通配符（<code>?</code>）指定，例如<code>List&lt;?&gt;</code>，这被称为未知类型的列表。 </li>
-<li><p>在两种情况下，无界通配符是一种有用的方法：</p>
-<ul>
-<li>如果您正在编写可使用Object类中提供的功能实现的方法。</li>
-<li>当代码使用泛型类中不依赖于类型参数的方法时。 例如<code>List.size</code>或<code>List.clear</code>。 事实上，<code>Class&lt;?&gt;</code>经常被使用，因为<code>Class&lt;T&gt;</code>中的大多数方法不依赖于<code>T</code>。</li>
-</ul>
-<p><strong><em>examples</em></strong></p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(List&lt;Object&gt; list)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">for</span> (Object elem : list) </span><br><span class="line">        System.out.println(elem + <span class="string">" "</span>); </span><br><span class="line">    System.out.println(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>printList</code>的目标是打印任何类型的列表，但它无法实现该目标 ，它仅打印<code>Object</code>实例列表; 它不能打印<code>List &lt;Integer&gt;</code>，<code>List &lt;String&gt;</code>，<code>List &lt;Double&gt;</code>等，因为它们不是<code>List &lt;Object&gt;</code>的子类型。 </p>
-<ul>
-<li>要编写通用的<code>printList</code>方法，请使用<code>List&lt;?&gt;</code></li>
-<li>低边界通配符<code>&lt;? super A&gt; e.g. List&lt;? super Integer&gt;  List&lt;Number&gt;</code></li>
-<li>上边界通配符<code>&lt;? extends A&gt; e.g. List&lt;? extends Number&gt;  List&lt;Integer&gt;</code></li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(List&lt;?&gt; list)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">for</span> (Object elem: list) </span><br><span class="line">		System.out.println(); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">	List&lt;Integer&gt; li = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); </span><br><span class="line">	List&lt;String&gt;  ls = Arrays.asList(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>); </span><br><span class="line">	printList(li); </span><br><span class="line">	printList(ls);</span><br></pre></td></tr></table></figure>
-<h3 id="委派与组合"><a href="#委派与组合" class="headerlink" title="委派与组合"></a><em>委派与组合</em></h3><p><strong>委派（Delegation）</strong></p>
-<ul>
-<li>委派/委托：一个对象请求另一个对象的功能 。</li>
-<li>委派是复用的一种常见形式。</li>
-<li>分为显性委派：将发送对象传递给接收对象；</li>
-<li><p>以及隐性委派：由语言的成员查找规则。</p>
-</li>
-<li><p>委派设计模式：是一种用来实现委派的软件设计模式；</p>
-</li>
-<li><p>委派依赖于动态绑定，因为它要求给定的方法调用可以在运行时调用不同的代码段；</p>
-</li>
-<li><p>委派的过程如下：</p>
-</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616010823670-1888403800.png" alt="img"></p>
-<pre><code>Receiver对象将操作委托给Delegate对象，同时Receiver对象确保客户端不会滥用委托对象；
-</code></pre><p><strong>委派与继承</strong></p>
-<ul>
-<li>继承：通过新操作扩展基类或覆盖操作。 </li>
-<li>委托：捕获操作并将其发送给另一个对象。 </li>
-<li>许多设计模式使用继承和委派的组合。 </li>
-<li>Problem：如果子类只需要复用父类中的一小部分方法，</li>
-<li>Solution：可以不需要使用继承，而是通过委派机制来实现。</li>
-<li>本质上，一个类不需要继承另一个类的全部方法，通过委托机制调用部分方法。</li>
-</ul>
-<p><strong>复合继承原则（CRP）</strong></p>
-<ul>
-<li>复合复用原则(CRP)：类应当通过它们之间的组合（通过包含其它类的实例来实现期望的功能）达到多态表现和代码复用，而不仅仅是从基础类或父类继承。 </li>
-<li>我们可以将组合（Composition）理解为（has a）而继承理解为(is a)；</li>
-<li><p>委派可以看做Object层面的复用机制，而继承可以看做是类的层面；</p>
-</li>
-<li><p>只需针对不同子类的对象，委派能够计算该子类的奖金的方法的BonusCalculator。这样一来就不需要在子类继承的时候进行重写。</p>
-</li>
-<li><strong>总结</strong>：组合来代替继承的更普遍实现：<ul>
-<li>用接口来实现系统的最基础行为</li>
-<li>接口之间用extends来实现系统功能的扩展（接口组合）</li>
-<li>类implements 组合接口</li>
-</ul>
-</li>
-</ul>
-<p><strong>委派的类型</strong></p>
-<ul>
-<li>临时性委派（Dependency）：最简单的方法，调用类里的方法（use a），其中一个类使用另一个类而不实际地将其作为属性。</li>
-<li><p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616013924654-1586422474.png" alt="img"></p>
-</li>
-<li><p>永久性委派（Association）：类之中有其它类的具体实例来作为一个变量（has a）</p>
-</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616013942858-522907537.png" alt="img"></p>
-<ul>
-<li>更强的委派，组合（Composition）：更强的委派。将一些简单的对象组合成一个更为复杂的对象。（is part of）!</li>
-</ul>
-<p><a href="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616014036320-1708798381.png" target="_blank" rel="noopener">img</a></p>
-<ul>
-<li>聚合（Aggregation）:对象是在类的外部生成的，然后作为一个参数传入到类的内部构造器。(has a)</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616014114448-820873723.png" alt="img"></p>
-<p><strong>组合与聚合</strong><br>　　在组合中，当拥有的对象被破坏时，被包含的对象也被破坏。在聚合中，这不一定是真的。以生活中的事物为例：大学拥有多个部门，每个部门都有一批教授。 如果大学关闭，部门将不复存在，但这些部门的教授将继续存在。 一位教授可以在一个以上的部门工作，但一个部门不能成为多个大学的一部分。大学与部门之间的关系即为组合，而部分与教授之间的关系为聚合。</p>
-<h3 id="设计可复用库与框架"><a href="#设计可复用库与框架" class="headerlink" title="设计可复用库与框架"></a><em>设计可复用库与框架</em></h3><p>之所以library和framework被称为系统层面的复用，是因为它们不仅定义了1个可复用的接口/类，而是将某个完整系统中的所有可复用的接口/类都实现出来，并且定义了这些类之间的交互关系、调用关系，从而形成了系统整体 的“架构”。</p>
-<ul>
-<li>相应术语：<ul>
-<li>API（Application Programming Interface）：库或框架的接口</li>
-<li>Client（客户端）：使用API的代码</li>
-<li>Plugin（插件）：客户端定制框架的代码</li>
-<li>Extension Point：框架内预留的“空白”，开发者开发出符合接口要求的代码( 即plugin) ， 框架可调用，从而相当于开发者扩展了框架的功能</li>
-<li>Protocol（协议）：API与客户端之间预期的交互序列。</li>
-<li>Callback（反馈）：框架将调用的插件方法来访问定制的功能。</li>
-<li>Lifecycle method：根据协议和插件的状态，按顺序调用的回调方法。</li>
-</ul>
-</li>
-</ul>
-<p><strong>API和库</strong></p>
-<ul>
-<li>建议：始终以开发API的标准面对任何开发任务；面向“复用”编程而不是面向“应用”编程。 </li>
-<li>难度：要有足够良好的设计，一旦发布就无法再自由改变。 </li>
-<li>编写一个API需要考虑以下方面：<ul>
-<li>API应该做一件事，且做得很好</li>
-<li>API应该尽可能小，但不能太小</li>
-<li>Implementation不应该影响API</li>
-<li>记录文档很重要</li>
-<li>考虑性能后果</li>
-<li>API必须与平台和平共存</li>
-<li>类的设计：尽量减少可变性，遵循LSP原则</li>
-<li>方法的设计：不要让客户做任何模块可以做的事情，及时报错</li>
-</ul>
-</li>
-</ul>
-<p><strong>框架</strong></p>
-<ul>
-<li>框架（Framework）是整个或部分系统的可重用设计，表现为一组抽象构件及构件实例间交互的方法；另一种定义认为，框架是可被应用开发者定制的应用骨架。前者是从应用方面而后者是从目的方面给出的定义。</li>
-<li>为了增加代码的复用性，可以使用委派和继承机制。同时，在使用这两种机制增加代码复用的过程中，我们也相应地在不同的类之间增加了关系（委派或继承关系）。而对于一个项目而言，各个不同类之间的依赖关系就可以看做为一个框架。一个大规模的项目可能由许多不同的框架组合而成。</li>
-<li><p>框架与设计模式：</p>
-<ul>
-<li>框架、设计模式这两个概念总容易被混淆，其实它们之间还是有区别的。构件通常是代码重用，而设计模式是设计重用，框架则介于两者之间，部分代码重用，部分设计重用，有时分析也可重用。在软件生产中有三种级别的重用：内部重用，即在同一应用中能公共使用的抽象块;代码重用，即将通用模块组合成库或工具集，以便在多个应用和领域都能使用；应用框架的重用，即为专用领域提供通用的或现成的基础结构，以获得最高级别的重用性。  </li>
-<li>框架与设计模式虽然相似，但却有着根本的不同。设计模式是对在某种环境中反复出现的问题以及解决该问题的方案的描述，它比框架更抽象；框架可以用代码表示，也能直接执行或复用，而对模式而言只有实例才能用代码表示;设计模式是比框架更小的元素，一个框架中往往含有一个或多个设计模式，框架总是针对某一特定应用领域，但同一模式却可适用于各种应用。可以说，框架是软件，而设计模式是软件的知识。</li>
-</ul>
-</li>
-<li><p>框架分为白盒框架和黑盒框架。 </p>
-<ul>
-<li><p>白盒框架： </p>
-<ul>
-<li><p>白盒框架是基于面向对象的继承机制。之所以说是白盒框架，是因为在这种框架中，父类的方法对子类而言是可见的。子类可以通过继承或重写父类的方法来实现更具体的方法。</p>
-</li>
-<li><p>虽然层次结构比较清晰，但是这种方式也有其局限性，父类中的方法子类一定拥有，要么继承，要么重写，不可能存在子类中不存在的方法而在父类中存在。</p>
-</li>
-<li><p>通过子类化和重写方法进行扩展（使用继承）； </p>
-</li>
-<li><p>通用设计模式：模板方法； </p>
-</li>
-<li><p>子类具有主要方法但对框架进行控制。</p>
-</li>
-<li><p>允许扩展每一个非私有方法</p>
-</li>
-<li><p>需要理解父类的实现</p>
-</li>
-<li><p>一次只进行一次扩展</p>
-</li>
-<li><p>通常被认为是开发者框架</p>
-</li>
-<li><p><strong><em>examples</em></strong></p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintOnScreen</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        JFrame frame = <span class="keyword">new</span> JFrame(); </span><br><span class="line">        JOptionPane.showMessageDialog(frame, textToShow());</span><br><span class="line">        frame.dispose();</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> String <span class="title">textToShow</span><span class="params">()</span></span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">PrintOnScreen</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> String <span class="title">textToShow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"printing this text on "</span> + <span class="string">"screen using PrintOnScreen "</span> + <span class="string">"white Box Framework"</span>; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>黑盒框架： </p>
-<ul>
-<li>黑盒框架时基于委派的组合方式，是不同对象之间的组合。之所以是黑盒，是因为不用去管对象中的方法是如何实现的，只需关心对象上拥有的方法。</li>
-<li>这种方式较白盒框架更为灵活，因为可以在运行时动态地传入不同对象，实现不同对象间的动态组合；而继承机制在静态编译时就已经确定好。</li>
-<li>通过实现插件接口进行扩展（使用组合/委派）； </li>
-<li>常用设计模式：Strategy, Observer ； </li>
-<li>插件加载机制加载插件并对框架进行控制。</li>
-<li>允许在接口中对public方法扩展</li>
-<li>只需要理解接口</li>
-<li>通常提供更多的模块</li>
-<li>通常被认为是终端用户框架，平台</li>
-<li>黑盒框架与白盒框架之间可以相互转换，具体例子可以看一下，软件构造课程中有关黑盒框架的例子，更改上面的白盒框架为黑盒框架：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TextToShow</span> </span>&#123; </span><br><span class="line">    <span class="function">String <span class="title">text</span><span class="params">()</span></span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTextToShow</span> <span class="keyword">implements</span> <span class="title">TextToShow</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">text</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Printing"</span>; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintOnScreen</span> </span>&#123;</span><br><span class="line">    TextToShow textToShow;   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PrintOnScreen</span><span class="params">(TextToShow tx)</span> </span>&#123; </span><br><span class="line">        <span class="keyword">this</span>.textToShow = tx; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        JFrame frame = <span class="keyword">new</span> JFrame(); </span><br><span class="line">        JOptionPane.showMessageDialog(frame, textToShow.text());</span><br><span class="line">        frame.dispose(); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="第三节-可复用的设计模式"><a href="#第三节-可复用的设计模式" class="headerlink" title="第三节 可复用的设计模式"></a>第三节 可复用的设计模式</h2><h3 id="结构型模式：Structural-patterns"><a href="#结构型模式：Structural-patterns" class="headerlink" title="结构型模式：Structural patterns"></a><em>结构型模式：Structural patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1361.html" target="_blank" rel="noopener">适配器模式</a>（Adapter）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1366.html" target="_blank" rel="noopener">装饰器模式</a>（Decorator）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1369.html" target="_blank" rel="noopener">外观模式</a>（Facade Pattern）</strong></p>
-<h3 id="行为类模式：Behavioral-patterns"><a href="#行为类模式：Behavioral-patterns" class="headerlink" title="行为类模式：Behavioral patterns"></a><em>行为类模式：Behavioral patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1378.html" target="_blank" rel="noopener">策略模式</a>（Strategy）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1376.html" target="_blank" rel="noopener">模板模式</a>（Template method）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1395.html" target="_blank" rel="noopener">迭代器模式</a>（Iterator）</strong></p>
-<hr>
-<h1 id="第六章"><a href="#第六章" class="headerlink" title="第六章"></a>第六章</h1><h2 id="第一节-可维护性的度量与构造原则"><a href="#第一节-可维护性的度量与构造原则" class="headerlink" title="第一节 可维护性的度量与构造原则"></a>第一节 可维护性的度量与构造原则</h2><h3 id="软件的维护和演化"><a href="#软件的维护和演化" class="headerlink" title="软件的维护和演化"></a><em>软件的维护和演化</em></h3><ul>
-<li><strong>定义</strong>：软件可维护性是指软件产品被修改的能力，修改包括纠正、改进或软件对环境、需求和功能规格说明变化的适应。简而言之，软件维护：修复错误、改善性能。</li>
-<li><strong>类型</strong>：纠错性（25%）、适应性（25%）、完善性（50%）、预防性（4%）</li>
-<li><strong>演化</strong>：软件演化是一个程序不断调节以满足新的软件需求过程。</li>
-<li><strong>演化的规律</strong>：软件质量下降，延续软件生命</li>
-<li><strong>软件维护和演化的目标：</strong>提高软件的适应性，延续软件生命 。</li>
-<li><strong>意义</strong>：软件维护不仅仅是运维工程师的工作，而是从设计和开发阶段就开始了 。在设计与开发阶段就要考虑将来的可维护性 ，设计方案需要“easy to change”</li>
-<li>基于可维护性建设的例子：<ul>
-<li>模块化</li>
-<li>OO设计原则</li>
-<li>OO设计模式</li>
-<li>基于状态的构造技术</li>
-<li>表驱动的构造技术</li>
-<li>基于语法的构造技术</li>
-</ul>
-</li>
-</ul>
-<h3 id="可维护性的常见度量指标"><a href="#可维护性的常见度量指标" class="headerlink" title="可维护性的常见度量指标"></a><em>可维护性的常见度量指标</em></h3><ul>
-<li>可维护性：可轻松修改软件系统或组件，以纠正故障，提高性能或其他属性，或适应变化的环境。</li>
-<li>除此之外，可维护性还有其他许多别名：可扩展性（Extensibility）、灵活性（Flexibility）、可适应性（Adaptability）、可管理性（Manageability）、支持性（Supportability）。总之，有好的可维护性就意味着容易改变，容易扩展。</li>
-<li>软件可维护性的五个子特性：<ul>
-<li>易分析性。软件产品诊断软件中的缺陷或失效原因或识别待修改部分的能力。</li>
-<li>易改变性。软件产品使指定的修改可以被实现的能力，实现包括编码、设计和文档的更改。如果软件由最终用户修改，那么易改变性可能会影响易操作性。</li>
-<li>稳定性。软件产品避免由于软件修改而造成意外结果的能力。</li>
-<li>易测试性。软件产品使已修改软件能被确认的能力。</li>
-<li>维护性的依从性。软件产品遵循与维护性相关的标准或约定的能力。</li>
-</ul>
-</li>
-<li>一些常用的可维护性度量标准：<ul>
-<li>圈复杂度（CyclomaticComplexity）：度量代码的结构复杂度。</li>
-<li>代码行数（Lines of Code）：指示代码中的大致行数。</li>
-<li>Halstead Volume：基于源代码中（不同）运算符和操作数的数量的合成度量。</li>
-<li>可维护性指数（MI）：计算介于0和100之间的索引值，表示维护代码的相对容易性。 高价值意味着更好的可维护性。</li>
-<li>继承的层次数：表示扩展到类层次结构的根的类定义的数量。 等级越深，就越难理解特定方法和字段在何处被定义或重新定义。</li>
-<li>类之间的耦合度：通过参数，局部变量，返回类型，方法调用，泛型或模板实例化，基类，接口实现，在外部类型上定义的字段和属性修饰来测量耦合到唯一类。</li>
-<li>单元测试覆盖率：指示代码库的哪些部分被自动化单元测试覆盖。</li>
-</ul>
-</li>
-</ul>
-<h3 id="模块化设计规范：聚合度与耦合度"><a href="#模块化设计规范：聚合度与耦合度" class="headerlink" title="模块化设计规范：聚合度与耦合度"></a><em>模块化设计规范：聚合度与耦合度</em></h3><ul>
-<li>模块化编程的含义：模块化编程是一种设计技术，它强调将程序的功能分解为独立的可互换模块，以便每个模块都包含执行所需功能的一个方面。</li>
-<li>设计规范：高内聚低耦合</li>
-<li>评估模块化的五个标准：<ul>
-<li>可分解性：将问题分解为各个可独立解决的子问题</li>
-<li>可组合性：可容易的将模块组合起来形成新的系统</li>
-<li>可理解性：每个子模块都可被系统设计者容易的理解</li>
-<li>可持续性：小的变化将只影响一小部分模块，而不会影响整个体系结构</li>
-<li>出现异常之后的保护：运行时的不正常将局限于小范围模块内</li>
-</ul>
-</li>
-<li>模块化设计的五条原则：<ul>
-<li>直接映射：模块的结构与现实世界中问题领域的结构保持一致</li>
-<li>尽可能少的接口：模块应尽可能少的与其他模块通讯</li>
-<li>尽可能小的接口：如果两个模块通讯，那么它们应交换尽可能少的信息</li>
-<li>显式接口：当A与B通讯时，应明显的发生在A与B的接口之间</li>
-<li>信息隐藏：经常可能发生变化的设计决策应尽可能隐藏在抽象接口后面</li>
-</ul>
-</li>
-</ul>
-<p><strong>内聚性</strong></p>
-<ul>
-<li>又称块内联系。指模块的功能强度的度量，即一个模块内部各个元素彼此结合的紧密程度的度量。若一个模块内各元素（语名之间、程序段之间）联系的越紧密，则它的内聚性就越高。</li>
-<li>所谓高内聚是指一个软件模块是由相关性很强的代码组成，只负责一项任务，也就是常说的单一责任原则。</li>
-</ul>
-<p><strong>耦合性</strong></p>
-<ul>
-<li>也称块间联系。指软件系统结构中各模块间相互联系紧密程度的一种度量。模块之间联系越紧密，其耦合性就越强，模块的独立性则越差。模块间耦合高低取决于模块间接口的复杂性、调用的方式及传递的信息。</li>
-<li>对于低耦合，粗浅的理解是：一个完整的系统，模块与模块之间，尽可能的使其独立存在。也就是说，让每个模块，尽可能的独立完成某个特定的子功能。模块与模块之间的接口，尽量的少而简单。如果某两个模块间的关系比较复杂的话，最好首先考虑进一步的模块划分。这样有利于修改和组合。</li>
-</ul>
-<h3 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a><em>SOLID原则</em></h3><p>单一职责原则告诉我们实现类要职责单一；里氏替换原则告诉我们不要破坏继承体系；依赖倒置原则告诉我们要面向接口编程；接口隔离原则告诉我们在设计接口的时候要精简单一；迪米特法则告诉我们要降低耦合。而开闭原则是总纲（实现效果），它告诉我们要对扩展开放，对修改关闭。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><strong>SRP</strong></th>
-<th style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/srp.pdf" target="_blank" rel="noopener">The Single Responsibility Principle</a></th>
-<th style="text-align:center">单一责任原则</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><strong>OCP</strong></td>
-<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/ocp.pdf" target="_blank" rel="noopener">The Open Closed Principle</a></td>
-<td style="text-align:center">开放封闭原则</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>LSP</strong></td>
-<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/lsp.pdf" target="_blank" rel="noopener">The Liskov Substitution Principle</a></td>
-<td style="text-align:center">里氏替换原则</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>ISP</strong></td>
-<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/isp.pdf" target="_blank" rel="noopener">The Interface Segregation Principle</a></td>
-<td style="text-align:center">接口分离原则</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>DIP</strong></td>
-<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/dip.pdf" target="_blank" rel="noopener">The Dependency Inversion Principle</a></td>
-<td style="text-align:center">依赖倒置原则</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>SRP 单一责任原则</strong></p>
-<ul>
-<li>含义：需要修改某个类的时候原因有且只有一个。换句话说就是让一个类只做一种类型责任，当这个类需要承当其他类型的责任的时候，就需要分解这个类。</li>
-<li>如果一个类包含了多个责任，那么将引起不良后果：引入额外的包，占据资源；导致频繁的重新配置、部署等。</li>
-<li>SRP是最简单的原则，却是最难做好的原则。</li>
-<li>SRP的一个反例：</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616152042182-554585047.png" alt="img"></p>
-<p> <strong>OCP 开放封闭原则</strong></p>
-<ul>
-<li>软件实体应该是可扩展，而不可修改的。也就是说，对扩展是开放的，而对修改是封闭的。这个原则是诸多面向对象编程原则中最抽象、最难理解的一个。<ul>
-<li>模块的行为应是可扩展的，从而该模块可表现出新的行为以满足需求的变化。</li>
-<li>模块自身的代码是不应被修改的</li>
-<li>扩展模块行为的一般途径是修改模块的内部实现</li>
-<li>如果一个模块不能被修改，那么它通常被认为是具有固定的行为。</li>
-</ul>
-</li>
-<li>关键解决方案：抽象技术。 使用继承和组合来改变类的行为。</li>
-<li>OCP的一个反例：</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616152951843-865388217.png" alt="img"></p>
-<ul>
-<li>OCP的一个例子：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Bad ***example***   </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;  </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;   </span><br><span class="line">   		<span class="keyword">if</span> (s.m_type==<span class="number">1</span>)   </span><br><span class="line">   			drawRectangle(s);   </span><br><span class="line">     	<span class="keyword">else</span> <span class="keyword">if</span> (s.m_type==<span class="number">2</span>)   </span><br><span class="line">         	drawCircle(s);   </span><br><span class="line">     &#125;   </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawCircle</span><span class="params">(Circle r)</span>   </span></span><br><span class="line"><span class="function">     	</span>&#123;....&#125;   </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawRectangle</span><span class="params">(Rectangle r)</span>   </span></span><br><span class="line"><span class="function">        </span>&#123;....&#125;   </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="keyword">int</span> m_type; &#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123; Rectangle() &#123; <span class="keyword">super</span>.m_type=<span class="number">1</span>; &#125; &#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123; Circle() &#123; <span class="keyword">super</span>.m_type=<span class="number">2</span>; &#125; &#125;</span><br></pre></td></tr></table></figure>
-<p>​    上面代码存在的问题：</p>
-<ul>
-<li>不可能在不修改GraphEditor的情况下添加新的Shape</li>
-<li>GraphEditor和Shape之间的紧密耦合</li>
-<li>不调用GraphEditor就很难测试特定的Shape</li>
-</ul>
-<p>​    改进之后的代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Good ***example***  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;   </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;   </span><br><span class="line">    s.draw();   </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>; &#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="comment">// draw the rectangle &#125; </span></span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <strong>LSP 里氏替换原则</strong></p>
-<ul>
-<li><p>Liskov’s 替换原则意思是：”子类型必须能够替换它们的基类型。”或者换个说法：”使用基类引用的地方必须能使用继承类的对象而不必知道它。” 这个原则正是保证继承能够被正确使用的前提。通常我们都说，“优先使用组合（委托）而不是继承”或者说“只有在确定是 is-a 的关系时才能使用继承”，因为继承经常导致”紧耦合“的设计。</p>
-<p><strong>ISP 接口分离原则</strong></p>
-</li>
-<li><p>含义：客户端不应依赖于它们不需要的方法。换句话说，使用多个专门的接口比使用单一的总接口总要好。</p>
-</li>
-<li>客户模块不应该依赖大的接口，应该裁减为小的接口给客户模块使用，以减少依赖性。如Java中一个类实现多个接口，不同的接口给不用的客户模块使用，而不是提供给客户模块一个大的接口。</li>
-<li>“胖”接口具有很多缺点。<ul>
-<li>胖接口可分解为多个小的接口；</li>
-<li>不同的接口向不同的客户端提供服务；</li>
-<li>客户端只访问自己所需要的端口。</li>
-</ul>
-</li>
-<li>下图展示出了这种思想：</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616154856198-1879077574.png" alt="img"></p>
-<ul>
-<li>ISP的一个反例</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616154935237-744032046.png" alt="img"></p>
-<p><strong>DIP 依赖转置原则</strong></p>
-<ul>
-<li>定义：<ul>
-<li>高层模块不应该依赖于低层模块，二者都应该依赖于抽象 </li>
-<li>抽象不应该依赖于细节，细节应该依赖于抽象</li>
-</ul>
-</li>
-<li>这个设计原则的亮点在于任何被DI框架注入的类很容易用mock对象进行测试和维护，因为对象创建代码集中在框架中，客户端代码也不混乱。有很多方式可以实现依赖倒置，比如像AspectJ等的AOP（Aspect Oriented programming）框架使用的字节码技术，或Spring框架使用的代理等。<ul>
-<li>高层模块不要依赖低层模块；</li>
-<li>高层和低层模块都要依赖于抽象；</li>
-<li>抽象不要依赖于具体实现； </li>
-<li>具体实现要依赖于抽象；</li>
-<li>抽象和接口使模块之间的依赖分离。</li>
-</ul>
-</li>
-<li>一个具体的例子：</li>
-</ul>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616155346632-1952811759.png" alt="img"></p>
-<p>进行抽象改进后：</p>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616155435214-568838317.png" alt="img"></p>
-<p><strong>SOLID 总结</strong></p>
-<ol>
-<li>一个对象只承担一种责任，所有服务接口只通过它来执行这种任务。</li>
-<li>程序实体，比如类和对象，向扩展行为开放，向修改行为关闭。</li>
-<li>子类应该可以用来替代它所继承的类。</li>
-<li>一个类对另一个类的依赖应该限制在最小化的接口上。</li>
-<li>依赖抽象层(接口)，而不是具体类。</li>
-</ol>
-<h2 id="第二节-可维护的设计模式"><a href="#第二节-可维护的设计模式" class="headerlink" title="第二节 可维护的设计模式"></a>第二节 可维护的设计模式</h2><h3 id="创造性模式：Creational-patterns"><a href="#创造性模式：Creational-patterns" class="headerlink" title="创造性模式：Creational patterns"></a><em>创造性模式：Creational patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1348.html" target="_blank" rel="noopener">工厂模式</a>（Factory Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1351.html" target="_blank" rel="noopener">抽象工厂模式</a>（Abstract Factory Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1354.html" target="_blank" rel="noopener">建造者模式</a>（Builder Pattern）</strong></p>
-<h3 id="结构化模式：Structural-patterns"><a href="#结构化模式：Structural-patterns" class="headerlink" title="结构化模式：Structural patterns"></a><em>结构化模式：Structural patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1364.html" target="_blank" rel="noopener">桥接模式</a>（Bridge Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1359.html" target="_blank" rel="noopener">代理模式</a>（Proxy Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1373.html" target="_blank" rel="noopener">组合模式</a>（Composite Pattern）</strong></p>
-<h3 id="行为化模式：Behavioral-patterns"><a href="#行为化模式：Behavioral-patterns" class="headerlink" title="行为化模式：Behavioral patterns"></a><em>行为化模式：Behavioral patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1393.html" target="_blank" rel="noopener">中介者模式</a>（Mediator Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1390.html" target="_blank" rel="noopener">观察者模式</a>（Observer Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1397.html" target="_blank" rel="noopener">访问者模式</a>（Visitor Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1383.html" target="_blank" rel="noopener">责任链模式</a>（Chain of Responsibility Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1380.html" target="_blank" rel="noopener">命令模式</a>（Command Pattern）</strong></p>
-<h2 id="第三节-面向可维护的构造技术"><a href="#第三节-面向可维护的构造技术" class="headerlink" title="第三节 面向可维护的构造技术"></a>第三节 面向可维护的构造技术</h2><h2 id="基于状态的构造技术"><a href="#基于状态的构造技术" class="headerlink" title="基于状态的构造技术"></a>基于状态的构造技术</h2><p><strong><a href="http://c.biancheng.net/view/1388.html" target="_blank" rel="noopener">状态模式</a>（State Pattern）</strong></p>
-<p><strong><a href="http://c.biancheng.net/view/1400.html" target="_blank" rel="noopener">备忘录模式</a>（Memento Pattern）</strong></p>
-<h3 id="基于语法的构造技术"><a href="#基于语法的构造技术" class="headerlink" title="基于语法的构造技术"></a><em>基于语法的构造技术</em></h3><p><strong>运用场景</strong></p>
-<ul>
-<li>有一类应用，从外部读取文本数据， 在应用中做进一步处理。 具体来说，读取的一个字节或字符序列可能是：</li>
-<li>输入文件有特定格式，程序需读取文件并从中抽取正确的内容。</li>
-<li>从网络上传输过来的消息，遵循特定的协议。</li>
-<li>用户在命令行输入的指令，遵顼特定的格式。</li>
-<li>内存中存储的字符串，也有格式需要。</li>
-</ul>
-<p>对于这些类型的序列，语法的概念是设计的一个好选择：</p>
-<ul>
-<li>使用grammar判断字符串是否合法，并解析成程序里使用的数据结构 。</li>
-<li>正则表达式</li>
-<li>通常是递归的数据结构 。</li>
-</ul>
-<p><strong>语法成分</strong></p>
-<p>terminals 终止节点、叶节点</p>
-<p>nonterminal 非终止节点（遵循特定规则，利用操作符、终止节点和其他非终止节点，构造新的字符串）</p>
-<h3 id="语法中的操作符"><a href="#语法中的操作符" class="headerlink" title="语法中的操作符"></a><em>语法中的操作符</em></h3><ul>
-<li>三个基本语法的操作符：<ul>
-<li>连接，不是通过一个符号，而是一个空间：<ul>
-<li><code>x ::= y z //x等价于y后跟一个z</code></li>
-</ul>
-</li>
-<li>重复，以*表示：　　                                 <ul>
-<li><code>x ::= y* // x等价于0个或更多个y</code></li>
-</ul>
-</li>
-<li>联合，也称为交替，如图所示 | ：　　       <ul>
-<li><code>x ::= y | z //x等价于一个y或者一个z</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>三个基本操作符的组合：<ul>
-<li>可选（0或1次出现），由<code>?</code>表示：<ul>
-<li><code>x ::= y? //x等价于一个y或者一个空串</code></li>
-</ul>
-</li>
-<li>出现1次或多次：以<code>+</code>表示：          <ul>
-<li><code>x ::= y+ //x等价于一个或者更多个y， 等价于 x ::= y y*</code></li>
-</ul>
-</li>
-<li>字符类<code>[…]</code>，表示长度的字符类，包含方括号中列出的任何字符的1个字符串：<ul>
-<li><code>x ::= [abc] //等价于 x ::= &#39;a&#39; | &#39;b&#39; | &#39;c&#39;</code></li>
-</ul>
-</li>
-<li>否定的字符类<code>[^…]</code>，表示长度，包含未在括号中列出的任何字符的1个字符串：<ul>
-<li><code>x ::= [^abc] //等价于 x ::= &#39;d&#39; | &#39;e&#39; | &#39;f&#39; | ... (all other characters in Unicode)</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>例子：<ul>
-<li><code>x ::= (y z | a b)* //an x is zero or more y z or a b pairs</code></li>
-<li><code>m ::= a (b|c) d //an m is a, followed by either b or c, followed by d</code></li>
-</ul>
-</li>
-</ul>
-<p><strong>Markdown 和 HTML的语法</strong></p>
-<p> <img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616210554679-1772816897.png" alt="img"></p>
-<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616210511151-582940878.png" alt="img"></p>
-<h3 id="正则语法与正则表达式"><a href="#正则语法与正则表达式" class="headerlink" title="正则语法与正则表达式"></a><em>正则语法与正则表达式</em></h3><ul>
-<li>正则语法：简化之后可以表达为一个产生式而不包含任何非终止节点。 </li>
-<li>正则语法示例：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//Rugular!</span><br><span class="line">url ::= &apos;http://&apos; ([a-z]+ &apos;.&apos;)+ [a-z]+ (&apos;:&apos; [0-9]+)? &apos;/&apos;</span><br><span class="line"></span><br><span class="line">//Regular!</span><br><span class="line">markdown ::= ([^_]* | &apos;_&apos; [^_]* &apos;_&apos; )* </span><br><span class="line"></span><br><span class="line">//Not Regular!</span><br><span class="line">html ::= ( [^&lt;&gt;]* | &apos;&lt;i&gt;&apos; html &apos;&lt;i&gt;&apos; )*</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在Java中使用正则表达式<ul>
-<li>适用场合：我们用正则表达式匹配字符串（例如 String.split , String.matches , java.util.regex.Pattern）</li>
-</ul>
-</li>
-</ul>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -3273,7 +2169,7 @@ Process finished with exit code 0
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -3373,9 +2269,9 @@ Process finished with exit code 0
   
     
       
-        
-      
     
+      
+        
       
     
       

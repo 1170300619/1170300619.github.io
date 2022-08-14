@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
+<meta name="keywords" content="code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sakurastream">
+<meta property="og:url" content="http://yoursite.com/2022/07/07/experience/index.html">
+<meta property="og:site_name" content="Sakurastream">
+<meta property="og:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2022-07-07T09:18:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sakurastream">
+<meta name="twitter:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
+  <link rel="canonical" href="http://yoursite.com/2022/07/07/experience/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title> | Sakurastream</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sakurastream</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/07/experience/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-07-07 21:37:39 / Modified: 17:18:25" itemprop="dateCreated datePublished" datetime="2022-07-07T21:37:39+08:00">2022-07-07</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-函数中几种const构不构成重载的分析"><a href="#1-函数中几种const构不构成重载的分析" class="headerlink" title="1. 函数中几种const构不构成重载的分析"></a>1. 函数中几种const构不构成重载的分析</h3><ul>
+<li><p>函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误</p>
+<pre><code>  void test(int a){
+      cout &lt;&lt; a &lt;&lt; endl;
+  }
+  //下面的代码会报重定义错误
+  void test(const int a){
+      cout &lt;&lt; a &lt;&lt; endl; 
+  }
+</code></pre></li>
+<li><p>函数中引用传递和指针传递增加const构成重载，因为传入的是确切的对象，<code>const</code>可以区分传入的这些对象能否被修改的性质</p>
+<pre><code>  int test(int *a){
+      return *a;
+  }
+  int test(const int *a){
+      return *a;
+  }
+</code></pre></li>
+<li><p>成员函数中函数后面加<code>const</code>构成重载，和上面的情况同理，是能决定成员变量能否被修改的</p>
+<pre><code>  class test{
+  public:
+      test(){}
+      ~test(){}
+      int display(){
+          return this.a;
+      }
+      int display const(){
+          return this.a;
+      }
+  private:
+      int a;
+  }
+</code></pre></li>
+</ul>
+<h3 id="2-如何做到在const成员函数内修改成员变量"><a href="#2-如何做到在const成员函数内修改成员变量" class="headerlink" title="2.如何做到在const成员函数内修改成员变量"></a>2.如何做到在const成员函数内修改成员变量</h3><ul>
+<li>使用mutable关键字去修饰成员变量，这样成员变量始终是可以变化的</li>
+<li><p>定义一个常量指针指向this所指的对象，然后用这个指针去修改成员变量</p>
+<pre><code>  class test{
+  public:
+      test(){}
+      ~test(){}
+
+      void display(int a) const{
+          test *const te = const_cast&lt;test *const&gt;(this);
+          te-&gt;value = 2;
+          cout &lt;&lt; te-value &lt;&lt; endl;
+      }
+  private:
+      int value;
+  }
+</code></pre></li>
+</ul>
+<h3 id="3-内联函数和宏定义的区别"><a href="#3-内联函数和宏定义的区别" class="headerlink" title="3.内联函数和宏定义的区别"></a>3.内联函数和宏定义的区别</h3><p>1.内联函数是函数，有参数类型检查，更为安全<br>2.内联函数由编译器进行处理，而宏定义由预处理器进行处理<br>3.内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</p>
+<h3 id="4-c-编译过程"><a href="#4-c-编译过程" class="headerlink" title="4.c++编译过程"></a>4.c++编译过程</h3><p>分为预处理+编译+汇编+链接</p>
+<ul>
+<li>预处理：主要处理那些源代码中以#开始的预编译指令，主要处理规则如下：<ul>
+<li>将宏定义进行文本替换</li>
+<li>将<code>#include</code>的文件插入到对应位置（递归进行，因为可能循环包含）</li>
+<li>删除注释</li>
+</ul>
+</li>
+<li>编译：进行一系列词法分析，语法分析，语义分析及优化后生成相应的汇编代码文件（内联函数就在这一阶段）</li>
+<li>汇编：将汇编代码转变成机器语言</li>
+<li><p>链接：将各个目标文件组装在一起，并生成可执行文件。</p>
+<h3 id="5-程序的内存分配"><a href="#5-程序的内存分配" class="headerlink" title="5.程序的内存分配"></a>5.程序的内存分配</h3><p>1.栈区：由编译器自动分配释放，存放函数的参数值，局部变量等。<br>2.堆区：由程序员自己分配释放，分配方式类似于链表<br>3.全局静态区：全局变量和静态变量的位置，初始化的在一起，未初始化的在一起<br>4.常量区：常量存放地址，程序接受系统释放<br>5.程序代码区：存放函数的二进制代码</p>
+<h3 id="6-内存中堆和栈的区别"><a href="#6-内存中堆和栈的区别" class="headerlink" title="6.内存中堆和栈的区别"></a>6.内存中堆和栈的区别</h3><p>1.栈由系统统一分配，例如局部变量声明后就自动放在栈中（先进后出）<br>2.堆需要自己申请，比如malloc函数和new</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2022/07/05/牛客c-面经/" rel="next" title="牛客c++面经">
+                  <i class="fa fa-chevron-left"></i> 牛客c++面经
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2022/07/09/计算机网络面经/" rel="prev" title="计算机网络面经">
+                  计算机网络面经 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数中几种const构不构成重载的分析"><span class="nav-number">1.</span> <span class="nav-text">1. 函数中几种const构不构成重载的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何做到在const成员函数内修改成员变量"><span class="nav-number">2.</span> <span class="nav-text">2.如何做到在const成员函数内修改成员变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-内联函数和宏定义的区别"><span class="nav-number">3.</span> <span class="nav-text">3.内联函数和宏定义的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-c-编译过程"><span class="nav-number">4.</span> <span class="nav-text">4.c++编译过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-程序的内存分配"><span class="nav-number">5.</span> <span class="nav-text">5.程序的内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-内存中堆和栈的区别"><span class="nav-number">6.</span> <span class="nav-text">6.内存中堆和栈的区别</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Gift</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gift</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="一. C++部分1.说一说指针和引用的区别指针内部保存的是指向的对象的地址信息，而引用是变量的别名；指针可以随时初始化，而引用被定义之后就要初始化，不可以为空sizeof引用是被引用的对象的大小，而sizeof指针是指针类型的大小指针既有顶层const（指针本身不能变），也有底层const（指针指向的对象不能变），而引用只有底层const，顶层const是无意义的。二者的++操作不同，指针++表示">
+<meta name="keywords" content="code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="牛客c++面经">
+<meta property="og:url" content="http://yoursite.com/2022/07/05/牛客c-面经/index.html">
+<meta property="og:site_name" content="Sakurastream">
+<meta property="og:description" content="一. C++部分1.说一说指针和引用的区别指针内部保存的是指向的对象的地址信息，而引用是变量的别名；指针可以随时初始化，而引用被定义之后就要初始化，不可以为空sizeof引用是被引用的对象的大小，而sizeof指针是指针类型的大小指针既有顶层const（指针本身不能变），也有底层const（指针指向的对象不能变），而引用只有底层const，顶层const是无意义的。二者的++操作不同，指针++表示">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2022-07-09T04:35:50.926Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="牛客c++面经">
+<meta name="twitter:description" content="一. C++部分1.说一说指针和引用的区别指针内部保存的是指向的对象的地址信息，而引用是变量的别名；指针可以随时初始化，而引用被定义之后就要初始化，不可以为空sizeof引用是被引用的对象的大小，而sizeof指针是指针类型的大小指针既有顶层const（指针本身不能变），也有底层const（指针指向的对象不能变），而引用只有底层const，顶层const是无意义的。二者的++操作不同，指针++表示">
+  <link rel="canonical" href="http://yoursite.com/2022/07/05/牛客c-面经/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>牛客c++面经 | Sakurastream</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sakurastream</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/05/牛客c-面经/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">牛客c++面经
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-07-05 20:15:56" itemprop="dateCreated datePublished" datetime="2022-07-05T20:15:56+08:00">2022-07-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-09 12:35:50" itemprop="dateModified" datetime="2022-07-09T12:35:50+08:00">2022-07-09</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一-C-部分"><a href="#一-C-部分" class="headerlink" title="一. C++部分"></a>一. C++部分</h1><h3 id="1-说一说指针和引用的区别"><a href="#1-说一说指针和引用的区别" class="headerlink" title="1.说一说指针和引用的区别"></a>1.说一说指针和引用的区别</h3><p>指针内部保存的是指向的对象的地址信息，而引用是变量的别名；<br>指针可以随时初始化，而引用被定义之后就要初始化，不可以为空<br>sizeof引用是被引用的对象的大小，而sizeof指针是指针类型的大小<br>指针既有顶层const（指针本身不能变），也有底层const（指针指向的对象不能变），而引用只有底层const，顶层const是无意义的。<br>二者的++操作不同，指针++表示指针运算，而引用++表示变量执行++。<br>引用只是C++的语法糖，可以看作是自动取地址解引用的常量指针。在汇编层面是一样的。</p>
+<h3 id="2-struct和class的区别"><a href="#2-struct和class的区别" class="headerlink" title="2.struct和class的区别"></a>2.struct和class的区别</h3><p>默认的（继承）访问权限，class是private，struct默认是public<br>class可以实现模板类，而struct不可以<br>struct是值类型，而class是引用类型</p>
+<h3 id="3-c-中多态"><a href="#3-c-中多态" class="headerlink" title="3.c++中多态"></a>3.c++中多态</h3><p>为了使代码重用性增加，使得代码可以模块化<br>静态多态：通过重载函数和泛型编程实现，通过基类指针指向的对象不同而调用不同的函数。是在编译器就完成的，编译器根据实参类型来确定。具有更好的类型安全性，因为编译阶段会对所有的绑定类型进行检查。<br>动态多态：通过虚函数和继承实现，运行时确定。</p>
+<h3 id="4-面向对象"><a href="#4-面向对象" class="headerlink" title="4.面向对象"></a>4.面向对象</h3><p>面向对象的三大特征：封装、继承、多态。封装：将客观事物进行抽象，将其属性和方法合成为一个类，类封装了成员变量和成员函数，同时又实现对属性和方法的权限控制，降低与外界的耦合度 继承：子类继承父类的各种属性和方法，同时子类还可以在父类的基础上重新定义和扩展父类的属性和方法，使其具有不同的功能，继承提高了代码的复用性及可维护性 多态：同一调用语句在父类和子类间使用时具有不同的表现形式，可以使用同一段代码处理不行类型的对象，提高代码的复用性</p>
+<h3 id="5-浅拷贝和深拷贝"><a href="#5-浅拷贝和深拷贝" class="headerlink" title="5.浅拷贝和深拷贝"></a>5.浅拷贝和深拷贝</h3><p>浅拷贝 (Shallow Copy) 只复制某个对象的指针, 而不复制对象本身, 新旧对象还是共享同一块内存。在对象析构后，容易产生指针访问一个不存在的对象，从而产生悬空指针。<br>深拷贝 (Deep Copy) 在拷贝的过程中会另外创造一个一模一样的对象. 新对象跟原对象不共享内存, 修改新对象不会改到原对象. </p>
+<h3 id="6-STL容器的实现和查找时间复杂度"><a href="#6-STL容器的实现和查找时间复杂度" class="headerlink" title="6.STL容器的实现和查找时间复杂度"></a>6.STL容器的实现和查找时间复杂度</h3><ol>
+<li>vector 采用一维数组实现，元素在内存连续存放，不同操作的时间复杂度为： 插入: O(N) 查看: O(1) 删除: O(N) 2. deque 采用双向队列实现，元素在内存连续存放，不同操作的时间复杂度为： 插入: O(N) 查看: O(1) 删除: O(N) 3. list 采用双向链表实现，元素存放在堆中，不同操作的时间复杂度为： 插入: O(1) 查看: O(N) 删除: O(1) 4. map、set、multimap、multiset 上述四种容器采用红黑树实现，红黑树是平衡二叉树的一种。不同操作的时间复杂度近似为: 插入: O(logN) 查看: O(logN) 删除: O(logN) 5. unordered_map、unordered_set、unordered_multimap、 unordered_multiset 上述四种容器采用哈希表实现，不同操作的时间复杂度为： 插入: O(1)，最坏情况O(N) 查看: O(1)，最坏情况O(N) 删除: O(1)，最坏情况O(N) 注意：容器的时间复杂度取决于其底层实现方式。</li>
+</ol>
+<h3 id="7-STL-中容器的类型，每种分别有哪些容器"><a href="#7-STL-中容器的类型，每种分别有哪些容器" class="headerlink" title="7.STL 中容器的类型，每种分别有哪些容器"></a>7.STL 中容器的类型，每种分别有哪些容器</h3><ol>
+<li>序列式容器 array、vector、deque、list、forward_list 2. 关联式容器 map、multimap、set、multiset 3. 无序关联式容器 unordered_map、unordered_multimap、unordered_set、unordered_multiset 4. 容器适配器 stack、queue、priority_queue</li>
+</ol>
+<h3 id="8-简述一下-C-的重载和重写"><a href="#8-简述一下-C-的重载和重写" class="headerlink" title="8.简述一下 C++ 的重载和重写"></a>8.简述一下 C++ 的重载和重写</h3><ol>
+<li>重载<br>a. 重载是指不同的函数使用相同的函数名，但是函数的参数个数或类型不同（参数列表不同）。调用的时候根据函数的参数来区别不同的函数，函数重载跟返回值无关。<br>b. 重载的规则 - 函数名相同 - 必须具有不同的参数列表 - 可以有不同的访问修饰符<br>c. 重载用来实现静态多态（函数名相同，功能不一样）。<br>d. 重载是多个函数或者同一个类中方法之间的关系，是平行关系。</li>
+<li>重写<br>a. 重写（也叫覆盖）是指在派生类中重新对基类中的虚函数重新实现。即函数名和参数都一样，只是函数的实现体不一样。<br>b. 重写的规则： - 方法声明必须完全与父类中被重写的方法相同 - 访问修饰符的权限要大于或者等于父类中被重写的方法的访问修饰符 - 子类重写的方法可以加virtual，也可以不加<br>c. 重写用来实现动态多态（根据调用方法的对象的类型来执行不同的函数）。<br>d. 重写是父类和子类之间的关系，是垂直关系。</li>
+</ol>
+<p>隐藏的实质是：在函数查找时，名字查找先于类型检查。如果派生类中成员和基类中的成员同名，就隐藏掉。编译器首先在相应作用域中查找函数，如果找到名字一样的则停止查找。</p>
+<h3 id="9-简述一下虚函数的实现原理"><a href="#9-简述一下虚函数的实现原理" class="headerlink" title="9.简述一下虚函数的实现原理"></a>9.简述一下虚函数的实现原理</h3><p><a href="https://zhuanlan.zhihu.com/p/75172640" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/75172640</a></p>
+<ol>
+<li>C++ 中的虚函数的作用主要是实现了动态多态的机制。 2. 虚函数实现原理 编译器处理虚函数时，给每个对象添加一个隐藏的成员。隐藏的成员是一个指针类型的数据，指向的是函数地址数组，这个数组被称为虚函数表（virtual function table，vtbl）。虚函数表中存储的是类中的虚函数的地址。如果派生类重写了基类中的虚函数，则派生类对象的虚函数表中保存的是派生类的虚函数地址，如果派生类没有重写基类中的虚函数，则派生类对象的虚函数表中保存的是父类的虚函数地址。使用虚函数时，对于内存和执行速度方面会有一定的成本： 1. 每个对象都会变大，变大的量为存储虚函数表指针； 2. 对于每个类，编译器都会创建一个虚函数表； 3. 对于每次调用虚函数，都需要额外执行一个操作，就是到表中查找虚函数地址。</li>
+</ol>
+<h3 id="10-为什么将析构函数设置成虚函数"><a href="#10-为什么将析构函数设置成虚函数" class="headerlink" title="10.为什么将析构函数设置成虚函数"></a>10.为什么将析构函数设置成虚函数</h3><p>虚析构函数的主要作用是为了防止遗漏资源的释放，防止内存泄露。如果基类中的析构函数没有声明为虚函数，基类指针指向派生类对象时，则当基类指针释放时不会调用派生类对象的析构函数，而是调用基类的析构函数，如果派生类析构函数中做了某些释放资源的操作，则这时就会造成内存泄露。</p>
+<h3 id="11-哈希冲突的原因和影响因素，哈希冲突的解决方法"><a href="#11-哈希冲突的原因和影响因素，哈希冲突的解决方法" class="headerlink" title="11.哈希冲突的原因和影响因素，哈希冲突的解决方法"></a>11.哈希冲突的原因和影响因素，哈希冲突的解决方法</h3><ol>
+<li>哈希冲突产生的原因 哈希是通过对数据进行再压缩，提高效率的一种解决方法。但由于通过哈希函数产生的哈希值是有限的，而数据可能比较多，导致经过哈希函数处理后仍然有不同的数据对应相同的值，这时候就产生了哈希冲突。</li>
+<li>产生哈希冲突的影响因素 装填因子（装填因子=数据总数 / 哈希表长）、哈希函数、处理冲突的方法 </li>
+<li>哈希冲突的解决方法<br>a.开放地址方法<br>b.链式地址法<br>c.建立公共溢出区<br>d.再哈希法</li>
+</ol>
+<h3 id="12-map，unordered-map-的区别"><a href="#12-map，unordered-map-的区别" class="headerlink" title="12.map，unordered_map 的区别"></a>12.map，unordered_map 的区别</h3><p>map：内部实现了一个红黑树，该结构具有自动排序的功能，因此 map 内部的所有元素都是有序的，红黑树的每一个节点都代表着 map 的一个元素，因此，对于 map 进行的查找，删除，添加等一系列的操作都相当于是对红黑树进行这样的操作，故红黑树的效率决定了 map 的效率。<br>unordered_map：内部实现了一个哈希表，因此其元素的排列顺序是杂乱的，无序的。</p>
+<h3 id="13-红黑树的特性，为什么要有红黑树"><a href="#13-红黑树的特性，为什么要有红黑树" class="headerlink" title="13.红黑树的特性，为什么要有红黑树"></a>13.红黑树的特性，为什么要有红黑树</h3><p>在那种插入、删除很频繁的场景中，平衡树需要频繁着进行调整，这会使平衡树的性能大打折扣，为了解决这个问题，于是有了红黑树，红黑树具有如下特点：<br> 1、具有二叉查找树的特点；<br> 2、根节点是黑色的；<br> 3、每个叶子节点都是黑色的空节点（NIL），也就是说，叶子节点不存数据；<br> 4、任何相邻的节点都不能同时为红色，也就是说，红色节点是被黑色节点隔开的；<br> 5、每个节点，从该节点到达其可达的叶子节点是所有路径，都包含相同数目的黑色节点。</p>
+<h3 id="14-vector-的扩容机制，扩容以后，它的内存地址会变化吗？"><a href="#14-vector-的扩容机制，扩容以后，它的内存地址会变化吗？" class="headerlink" title="14.vector 的扩容机制，扩容以后，它的内存地址会变化吗？"></a>14.vector 的扩容机制，扩容以后，它的内存地址会变化吗？</h3><p> 当 vector 的大小和容量相等（size==capacity）也就是满载时，如果再向其添加元素，那么 vector 就需要扩容。vector 容器扩容的过程需要经历以下 3 步： 1. 完全弃用现有的内存空间，重新申请更大的内存空间； 2. 将旧内存空间中的数据，按原有顺序移动到新的内存空间中； 3. 最后将旧的内存空间释放。 因为 vector 扩容需要申请新的空间，所以扩容以后它的内存地址会发生改变。vector 扩容是非常耗时的，为了降低再次分配内存空间时的成本，每次扩容时 vector 都会申请比用户需求量更多的内存空间（这也就是 vector 容量的由来，即 capacity&gt;=size），以便后期使用。<br> vector底层使用三个指针来实现，分别是：顺序表头，顺序表的有效长度位置，顺序表末尾。<br> <a href="https://blog.csdn.net/m0_51723227/article/details/121374795#:~:text=%E5%9C%A8%E6%A0%87%E5%87%86C%2B%2B%E4%B8%AD%2C,%2C%E8%BE%BE%E5%88%B0%E5%AD%98%E5%82%A8%E6%95%88%E6%9E%9C" target="_blank" rel="noopener">https://blog.csdn.net/m0_51723227/article/details/121374795#:~:text=%E5%9C%A8%E6%A0%87%E5%87%86C%2B%2B%E4%B8%AD%2C,%2C%E8%BE%BE%E5%88%B0%E5%AD%98%E5%82%A8%E6%95%88%E6%9E%9C</a>.</p>
+<h3 id="15-请你说说-map-实现原理，各操作的时间复杂度是多少"><a href="#15-请你说说-map-实现原理，各操作的时间复杂度是多少" class="headerlink" title="15.请你说说 map 实现原理，各操作的时间复杂度是多少"></a>15.请你说说 map 实现原理，各操作的时间复杂度是多少</h3><ol>
+<li>map 实现原理 map 内部实现了一个红黑树（红黑树是非严格平衡的二叉搜索树，而 AVL是严格平衡二叉搜索树），红黑树有自动排序的功能，因此 map 内部所有元素都是有序的，红黑树的每一个节点都代表着 map 的一个元素。因此，对于 map 进行的查找、删除、添加等一系列的操作都相当于是对红黑树进行的操作。map 中的元素是按照二叉树（又名二叉查找树、二叉排序树）存储的，特点就是左子树上所有节点的键值都小于根节点的键值，右子树所有节点的键值都大于根节点的键值，使用中序遍历可将键值按照从小到大遍历出来。 2. 各操作的时间复杂度 插入: O(logN) 查看: O(logN) 删除: O(logN)</li>
+</ol>
+<h3 id="16-shared-ptr-怎么知道跟它共享对象的指针释放了"><a href="#16-shared-ptr-怎么知道跟它共享对象的指针释放了" class="headerlink" title="16.shared_ptr 怎么知道跟它共享对象的指针释放了"></a>16.shared_ptr 怎么知道跟它共享对象的指针释放了</h3><p>shared_ptr基于”引用计数”模型实现，多个shared_ptr可指向同一个动态对象，并维护一个共享的引用计数器，记录了引用同一对象的shared_ptr实例的数量。当最后一个指向动态对象的shared_ptr销毁时，会自动销毁其所指对象(通过delete操作符)。</p>
+<h3 id="17-请你说说左值、右值、左值引用、右值引用、右值引用的使用场景"><a href="#17-请你说说左值、右值、左值引用、右值引用、右值引用的使用场景" class="headerlink" title="17.请你说说左值、右值、左值引用、右值引用、右值引用的使用场景"></a>17.请你说说左值、右值、左值引用、右值引用、右值引用的使用场景</h3><ol>
+<li>左值 在 C++ 中可以取地址的、有名字的就是左值 int a = 10; // 其中 a 就是左值 </li>
+<li>右值 不能取地址的、没有名字的就是右值 int a = 10; // 其中 10 就是右值右值 </li>
+<li>左值引用 左值引用就是对一个左值进行引用。传统的 C++ 引用（现在称为左值引用）使得标识符关联到左值。左值是一个表示数据的表达式（如变量名或解除引用的指针），程序可获取其地址。最初，左值可出现在赋值语句的左边，但修饰符 const 的出现使得可以声明这样的标识符，即不能给它赋值，但可获取其地址： int n; int <em> pt = new int; const int b = 101; int &amp; rn = n; int &amp; rt = </em>pt; const int &amp; rb = b; const int &amp; rb = 10; </li>
+<li>右值引用 右值引用就是对一个右值进行引用。C++ 11 新增了右值引用（rvalue reference），这种引用可指向右值（即可出现在赋值表达式右边的值），但不能对其应用地址运算符。右值包括字面常量（C-风格字符串除外，它表示地址）、诸如 x + y 等表达式以及返回值的函数（条件是该函数返回的不是引用），右值引用使用 &amp;&amp; 声明： int x = 10; int y = 23; int &amp;&amp; r1 = 13; int &amp;&amp; r2 = x + y; double &amp;&amp; r3 = std::sqrt(2.0); </li>
+<li>右值引用的使用场景 右值引用可以实现移动语义、完美转发。</li>
+</ol>
+<h3 id="17-weak-ptr-如何解决-shared-ptr-的循环引用问题？"><a href="#17-weak-ptr-如何解决-shared-ptr-的循环引用问题？" class="headerlink" title="17.weak_ptr 如何解决 shared_ptr 的循环引用问题？"></a>17.weak_ptr 如何解决 shared_ptr 的循环引用问题？</h3><p>weak_ptr 是为了配合 shared_ptr 而引入的一种智能指针，它指向一个由 shared_ptr 管理的对象而不影响所指对象的生命周期，也就是将一个 weak_ptr 绑定到一个 shared_ptr 不会改变 shared_ptr 的引用计数，依此特性可以解决 shared_ptr 的循环引用问题。 weak_ptr 没有解引用 * 和获取指针 -&gt; 运算符，它只能通过 lock 成员函数去获取对应的 shared_ptr 智能指针对象，从而获取对应的地址和内容。 不论是否有 weak_ptr 指向，一旦最后一个指向对象的 shared_ptr 被销毁，对象就会被释放。</p>
+<h3 id="18-请你说说虚函数可以是内联函数吗"><a href="#18-请你说说虚函数可以是内联函数吗" class="headerlink" title="18.请你说说虚函数可以是内联函数吗"></a>18.请你说说虚函数可以是内联函数吗</h3><p>虚函数可以是内联函数，内联是可以修饰虚函数的，但是当虚函数表现多态性的时候不能内联。内联是在编译期建议编译器内联，而虚函数的多态性在运行期，编译器无法知道运行期调用哪个代码，因此虚函数表现为多态性时不可以内联。virtual 唯一可以内联的时候是：编译器知道所调用的对象是哪个类，这只有在编译器具有实际对象而不是对象的指针或引用时才会发生。</p>
+<h3 id="19-请你说说迭代器失效原因，有哪些情况"><a href="#19-请你说说迭代器失效原因，有哪些情况" class="headerlink" title="19.请你说说迭代器失效原因，有哪些情况"></a>19.请你说说迭代器失效原因，有哪些情况</h3><p>STL 中某些容器调用了某些成员方法后会导致迭代器失效。例如 vector 容器，如果调用 reserve() 来增加容器容量，之前创建好的任何迭代器（例如开始迭代器和结束迭代器）都可能会失效，这是因为，为了增加容器的容量，vector 容器的元素可能已经被复制或移到了新的内存地址。 </p>
+<ol>
+<li>序列式容器迭代器失效 对于序列式容器，例如 vector、deque，由于序列式容器是组合式容器，当当前元素的迭代器被删除后，其后的所有元素的迭代器都会失效，这是因为 vector、deque都是连续存储的一段空间，所以当对其进行 erase 操作时，其后的每一个元素都会向前移一个位置。解决：erase 返回下一个有效的迭代器。 </li>
+<li>关联式容器迭代器失效 对于关联容器，例如如 map、 set，删除当前的迭代器，仅仅会使当前的迭代器失效，只要在 erase 时，递增当前迭代器即可。这是因为 map 之类的容器，使用了红黑树来实现，插入、删除一个节点不会对其他点造成影响。erase 迭代器只是被删元素的迭代器失效，但是返回值为 void，所以要采用 erase(iter++) 自增方式删除迭代器。</li>
+</ol>
+<h3 id="20-请你说说-auto-和-decltype-如何使用"><a href="#20-请你说说-auto-和-decltype-如何使用" class="headerlink" title="20.请你说说 auto 和 decltype 如何使用"></a>20.请你说说 auto 和 decltype 如何使用</h3><p>auto 实现自动类型推断，要求进行显示初始化，让编译器能够将变量的类型设置为初始值的类型<br>decltype 将变量的类型声明为表达式指定的类型。decltype的类型推导并不是像auto一样是从变量声明的初始化表达式获得变量的类型，而是总是以一个普通表达式作为参数，返回该表达式的类型,而且decltype并不会对表达式进行求值。</p>
+<h3 id="21-说说-C-中智能指针和指针的区别是什么？"><a href="#21-说说-C-中智能指针和指针的区别是什么？" class="headerlink" title="21.说说 C++ 中智能指针和指针的区别是什么？"></a>21.说说 C++ 中智能指针和指针的区别是什么？</h3><p>智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，区别是它负责自动释放所指的对象，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。指针是一种数据类型，用于保存内存地址，而智能指针是类模板。</p>
+<h3 id="22-简述一下-C-中的四种类型转换"><a href="#22-简述一下-C-中的四种类型转换" class="headerlink" title="22.简述一下 C++ 中的四种类型转换"></a>22.简述一下 C++ 中的四种类型转换</h3><p>1.static_cast 静态转换 用于类层次结构中基类（父类）和派生类（子类）之间指针或引用的转换 - 进行上行转换（把派生类的指针或引用转换成基类表示）是安全的 - 进行下行转换（把基类指针或引用转换成派生类表示）时，由于没有动态类型检查，所以是不安全的 用于基本数据类型之间的转换，如把 int 转换成 char，把 char 转换成 int。这种转换的安全性也要开发人员来保证<br>2.dynamic_cast 动态转换 dynamic_cast 主要用于类层次间的上行转换和下行转换 在类层次间进行上行转换时，dynamic_cast 和 static_cast 的效果是一样的 在进行下行转换时，dynamic_cast 具有类型检查的功能，比 static_cast 更安全 </p>
+<ol>
+<li>const_cast 常量转换 该运算符用来修改类型的const属性 常量指针被转化成非常量指针，并且仍然指向原来的对象 常量引用被转换成非常量引用，并且仍然指向原来的对象 注意:不能直接对非指针和非引用的变量使用 const_cast 操作符 </li>
+<li>reinterpret_cast 重新解释转换 这是最不安全的一种转换机制，最有可能出问题 主要用于将一种数据类型从一种类型转换为另一种类型，它可以将一个指针转换成一个整数，也可以将一个整数转换成一个指针</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2022/07/04/中望面经/" rel="next" title="中望面经">
+                  <i class="fa fa-chevron-left"></i> 中望面经
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2022/07/07/experience/" rel="prev" title>
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-C-部分"><span class="nav-number">1.</span> <span class="nav-text">一. C++部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-说一说指针和引用的区别"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.说一说指针和引用的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-struct和class的区别"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.struct和class的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-c-中多态"><span class="nav-number">1.0.3.</span> <span class="nav-text">3.c++中多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-面向对象"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.面向对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-浅拷贝和深拷贝"><span class="nav-number">1.0.5.</span> <span class="nav-text">5.浅拷贝和深拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-STL容器的实现和查找时间复杂度"><span class="nav-number">1.0.6.</span> <span class="nav-text">6.STL容器的实现和查找时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-STL-中容器的类型，每种分别有哪些容器"><span class="nav-number">1.0.7.</span> <span class="nav-text">7.STL 中容器的类型，每种分别有哪些容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-简述一下-C-的重载和重写"><span class="nav-number">1.0.8.</span> <span class="nav-text">8.简述一下 C++ 的重载和重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-简述一下虚函数的实现原理"><span class="nav-number">1.0.9.</span> <span class="nav-text">9.简述一下虚函数的实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-为什么将析构函数设置成虚函数"><span class="nav-number">1.0.10.</span> <span class="nav-text">10.为什么将析构函数设置成虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-哈希冲突的原因和影响因素，哈希冲突的解决方法"><span class="nav-number">1.0.11.</span> <span class="nav-text">11.哈希冲突的原因和影响因素，哈希冲突的解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-map，unordered-map-的区别"><span class="nav-number">1.0.12.</span> <span class="nav-text">12.map，unordered_map 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-红黑树的特性，为什么要有红黑树"><span class="nav-number">1.0.13.</span> <span class="nav-text">13.红黑树的特性，为什么要有红黑树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-vector-的扩容机制，扩容以后，它的内存地址会变化吗？"><span class="nav-number">1.0.14.</span> <span class="nav-text">14.vector 的扩容机制，扩容以后，它的内存地址会变化吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-请你说说-map-实现原理，各操作的时间复杂度是多少"><span class="nav-number">1.0.15.</span> <span class="nav-text">15.请你说说 map 实现原理，各操作的时间复杂度是多少</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-shared-ptr-怎么知道跟它共享对象的指针释放了"><span class="nav-number">1.0.16.</span> <span class="nav-text">16.shared_ptr 怎么知道跟它共享对象的指针释放了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-请你说说左值、右值、左值引用、右值引用、右值引用的使用场景"><span class="nav-number">1.0.17.</span> <span class="nav-text">17.请你说说左值、右值、左值引用、右值引用、右值引用的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-weak-ptr-如何解决-shared-ptr-的循环引用问题？"><span class="nav-number">1.0.18.</span> <span class="nav-text">17.weak_ptr 如何解决 shared_ptr 的循环引用问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-请你说说虚函数可以是内联函数吗"><span class="nav-number">1.0.19.</span> <span class="nav-text">18.请你说说虚函数可以是内联函数吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-请你说说迭代器失效原因，有哪些情况"><span class="nav-number">1.0.20.</span> <span class="nav-text">19.请你说说迭代器失效原因，有哪些情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-请你说说-auto-和-decltype-如何使用"><span class="nav-number">1.0.21.</span> <span class="nav-text">20.请你说说 auto 和 decltype 如何使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-说说-C-中智能指针和指针的区别是什么？"><span class="nav-number">1.0.22.</span> <span class="nav-text">21.说说 C++ 中智能指针和指针的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-简述一下-C-中的四种类型转换"><span class="nav-number">1.0.23.</span> <span class="nav-text">22.简述一下 C++ 中的四种类型转换</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Gift</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gift</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
