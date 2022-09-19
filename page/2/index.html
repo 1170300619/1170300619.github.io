@@ -191,6 +191,333 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/05/回溯问题的去重技巧/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/04/05/回溯问题的去重技巧/" class="post-title-link" itemprop="url">回溯问题的去重技巧</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-04-05 23:04:56" itemprop="dateCreated datePublished" datetime="2022-04-05T23:04:56+08:00">2022-04-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-06 14:47:28" itemprop="dateModified" datetime="2022-04-06T14:47:28+08:00">2022-04-06</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-回溯问题"><a href="#1-回溯问题" class="headerlink" title="1. 回溯问题"></a>1. 回溯问题</h1><p>在<code>leetcode</code>中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树性结构，其中，所遍历的集合的大小构成了树的宽度，递归的深度构成了树的深度。下面我们给出回溯函数的模板，包括返回值、参数以及写法：</p>
+<ul>
+<li><p><strong>回溯方法的函数伪代码</strong></p>
+<pre><code>  void backtarcking(参数)
+</code></pre></li>
+</ul>
+<p>这里我们使用<code>void</code>作为回溯函数的返回值，因为我们需要做的是在集合中寻找符合题意的解，那么就可以设置一个<code>result</code>数组来保存符合题意的解，在递归调用的过程中，不断将解加入<code>result</code>即可，函数遇到终止条件就可以<code>return</code>。</p>
+<ul>
+<li><p><strong>回溯函数的终止条件</strong></p>
+<p>  终止条件视情况而定，有可能是遍历到叶子节点，有可能是需要满足一些条件，在<code>backtracking</code>函数中，首先要做的就是判断是否触发了终止条件，如果触发了，那么就处理当前的结果，需要的话还要<code>return</code>，这里的关键是，如果需要遍历所有情况，则不需要<code>return</code>，因为其会导致后面的通往叶子节点的路径不会被遍历到。如果需要剪枝的话，则需要<code>return</code>。终止条件的伪代码为：</p>
+<pre><code>  if(终止条件){
+      处理结果；
+      (return, 视情况而定)
+  }
+</code></pre><p>  还需要注意的是，有些寻找子集的问题或者排列组合的问题中，并不需要终止条件，此时只需要处理结果就可以。</p>
+</li>
+<li><p><strong>回溯函数的递归部分</strong></p>
+<p>  递归部分是回溯函数的核心，只有把递归部分写的明白，才算真正懂得了何为“回溯”，所谓回溯就是指在遍历过程中保存的中间结果，在之后的遍历时仍然需要，那么就需要保存起来，常用的方法是使用<code>path</code>数组保存起来，遍历到当前节点时，将节点信息保存至<code>path</code>中，遍历后，在将最后一个保存的信息弹出，这样<code>path</code>中最后保存的就是前一个节点的信息。递归部分的伪代码：</p>
+<pre><code>  for(int i = startIndex; i &lt; size; i++){
+      处理节点
+      path.push_back(当前节点)
+      backtracking(i + 1, 其他参数)；
+      path.pop_back(); // 回溯
+  }
+</code></pre></li>
+</ul>
+<h1 id="2-回溯问题中的去重技巧"><a href="#2-回溯问题中的去重技巧" class="headerlink" title="2. 回溯问题中的去重技巧"></a>2. 回溯问题中的去重技巧</h1><p>在回溯问题中有这样几道题，比如<a href="https://leetcode-cn.com/problems/combination-sum-ii/" target="_blank" rel="noopener">leetcode-&gt;40</a>。这里的要求是解中不能包含重复的组合。我们一下就能想到，把符合题意的解放入<code>unordered_map</code>或者<code>unordered_set</code>中，每次有新的解，就去容器中<code>find</code>一下，如果<code>find</code>的结果等于容器的<code>end()</code>，那么就说明没有重复解，再次加入容器即可。然后理想很丰满，现实很骨感，这样的判断很容易导致超时。那么有什么更好的方法呢？既然在遍历过程中已经对所有情况进行了搜索，何不在搜索过程中就进行重复判断，比如这道题的示例<code>1</code>中，<code>[1,7]</code>和<code>[7,1]</code>都是会被搜索到的，那么怎么判断这两者重复了呢？答案就是排序，排完序后都是<code>[1,7]</code>。排序也分为两种情况，第一种是找到答案后再排序，这样无疑复杂度会很高，并且还是需要对结果进行判重，需要用到<code>unordered_map</code>或者<code>unordered_set</code>。第二种则是对初始数组进行排序，这样原数组就变成了<code>[1,1,2,5,6,7,10]</code>，在搜索过程中会遇到两次<code>[1,7]</code>,那么只需要判断：如果当前节点是否和前一个节点相同，并且在前一个节点使用过，那么当前节点就不能使用。此时可以利用一个<code>vector&lt;bool&gt; used</code>来保存每个节点的使用状态，要注意的是，判重是在同一层进行的，不同层之间<code>used</code>是不影响的。我们用一个例子来画一下树状图，比如<code>nums = [1,1,2]，target = 3</code></p>
+<img src="/2022/04/05/回溯问题的去重技巧/1.png" title="This is an example image">
+<p>总体代码如下：</p>
+<pre><code>class Solution {
+private:
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+
+    void backtracking(int target, const vector&lt;int&gt;&amp; candidates, int startIndex, vector&lt;bool&gt; used){
+        int sum = 0;
+        for(int j = 0; j &lt; path.size(); j++){
+            sum += path[j];
+        }   
+        if(sum == target){
+            result.push_back(path);
+            return;
+        }else if(sum &gt; target)return ; // 剪枝
+
+        for(int i = startIndex; i &lt; candidates.size(); i++){
+            if(i &gt; 0 &amp;&amp; candidates[i] == candidates[i - 1] &amp;&amp; used[i - 1] == false){ // 判重
+                continue;
+            }
+            path.push_back(candidates[i]);
+            used[i] = true;
+            backtracking(target, candidates, i + 1, used);
+            used[i] = false; // 回溯
+            path.pop_back(); // 回溯
+        }
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; combinationSum2(vector&lt;int&gt;&amp; candidates, int target) {
+        result.clear();
+        path.clear();
+        vector&lt;bool&gt; used(candidates.size(), false);
+        sort(candidates.begin(), candidates.end()); // 记住要排序
+        backtracking(target, candidates, 0, used);
+        return result;
+    }
+};
+</code></pre><p>当然，这里还有优化的空间，比如在递归调用中，每次进入下一层之后才会计算<code>path</code>的和，我们可以将<code>sum</code>放入<code>backtracking</code>的参数中，在进入下一层之前计算当前<code>sum + candidates[i]</code>的和是否大于<code>target</code>，如果大于的话就<code>break</code>，可以减少递归调用。</p>
+<h1 id="3-去重问题的特殊情况"><a href="#3-去重问题的特殊情况" class="headerlink" title="3. 去重问题的特殊情况"></a>3. 去重问题的特殊情况</h1><p>下面我们来看一下<a href="https://leetcode-cn.com/problems/increasing-subsequences/" target="_blank" rel="noopener">leetcode-&gt;491</a>，这道题需要找到数组中不同的递增子序列。这就说明我们不能对原数组进行排序。那么就会给判重增加一定的难度，但是想到使用<code>map</code>和<code>set</code>增加的复杂度，我们依然使用在搜索过程中进行判重的方法。在示例1的搜索过程中，会依次遍历到<code>[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[4,7]</code>，这里就产生了重复，我们画一下抽象树性图：</p>
+<img src="/2022/04/05/回溯问题的去重技巧/2.png" title="This is an example image">
+<p>此时可以看到，导致重复的原因是同一层内出现了重复的元素，那么判重方法就是在同一层内判断当前节点的值是否和之前的<strong>所有值</strong>有相同情况出现。简单的增加一个判重函数即可。</p>
+<pre><code>//判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
+        for(int i = start;i &lt; end; i++){
+            if(nums[i] == nums[end])return false;
+        }
+        return true;
+    }
+</code></pre><p>其中start是递归for循环中startIndex的位置，end为递归for循环中i的位置。这样判重就可以方便的降低复杂度，避免了map和set的使用。</p>
+<p>总体代码如下：</p>
+<pre><code>class Solution {
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+    void backtracking(const vector&lt;int&gt;&amp; nums, int startIndex){
+        if(path.size() &gt;= 2){ // path中至少存了2两个数就可以放入result中了
+            result.push_back(path); // 并且由于需要遍历所以不需要return
+        }
+        for(int i = startIndex; i &lt; nums.size(); i++){
+            //如果 i 不等于 startIndex 并且重复，那么就跳过当前值
+            if(i != startIndex &amp;&amp; !isRepeat(nums, startIndex, i))continue;
+            if(startIndex == 0 || nums[i] &gt;= path.back()){ // 第一个数和满足条件的数要放入
+                path.push_back(nums[i]);
+                backtracking(nums, i + 1);
+                path.pop_back();
+        }
+        }   
+    }
+    //判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
+        for(int i = start;i &lt; end; i++){
+            if(nums[i] == nums[end])return false;
+        }
+        return true;
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; findSubsequences(vector&lt;int&gt;&amp; nums) {
+        result.clear();
+        path.clear();
+        backtracking(nums, 0);
+        return result;
+    }
+};
+</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/17/拷贝构造和拷贝赋值/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/03/17/拷贝构造和拷贝赋值/" class="post-title-link" itemprop="url">拷贝构造和拷贝赋值</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-03-17 16:08:26 / Modified: 18:19:19" itemprop="dateCreated datePublished" datetime="2022-03-17T16:08:26+08:00">2022-03-17</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-拷贝构造函数"><a href="#1-拷贝构造函数" class="headerlink" title="1. 拷贝构造函数"></a>1. 拷贝构造函数</h1><p>如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。例如我们有如下类框架：</p>
+<pre><code>class HasPtr{
+public:
+    HasPtr(const std::string &amp;s = std::string()):
+        ps(new std::string(s)), i(0) { }
+
+    //拷贝构造函数，其中动态分配了一个新的string，并将对象拷贝到ps指向的位置
+    //这里涉及到string的new构造方法，即动态创建一个堆内存，该内存保存hp.ps保存的值，并将ps设置为指向当前新开辟内存，这样就不会出现当前对象的ps和传入的参数同时指向一个内存地址的情况
+    HasPtr(const HasPtr&amp; hp):
+        ps(new std::string(*hp.ps)), i(hp.i) {}
+private:
+    std::string *ps;
+    int i;
+}
+</code></pre><p>拷贝构造函数在很多情况下都会被隐式使用，所以其不应该是<code>explicit</code>的。同时，其第一个参数必须是引用类型，否则其调用永远不会成功。假设该参数不是引用，而是传值参数，</p>
+<pre><code>HasPtr(const HasPtr hp):   
+</code></pre><p>那么拷贝构造时</p>
+<pre><code>HasPtr hp1;
+HasPtr hp2(hp1); //拷贝构造
+</code></pre><p>此时<code>hp1</code>是实参，将会传值给形参<code>hp</code>，而此时相当于调用<code>HasPtr hp(hp1)</code>，此时编译器又会调用类的拷贝构造函数，导致这一过程无限继续下去，使得调用无法成功。</p>
+<p>拷贝构造会在以下情况发生：</p>
+<ul>
+<li>拷贝初始化（用<code>=</code>初始化变量）</li>
+<li>将一个对象作为实参传递给一个非引用类型的形参</li>
+<li>从一个返回类型为非引用类型的函数返回一个对象</li>
+<li>用花括号列表初始化一个数组中的元素或一个聚合类中的成员</li>
+<li>某些类类型还会对它们所分配的对象使用拷贝初始化，例如初始化标准库容器或者调用其<code>insert</code>和<code>push</code>成员时。（与之相对的是，用<code>emplace</code>创建的元素都进行直接初始化）。</li>
+</ul>
+<h1 id="2-拷贝赋值运算符"><a href="#2-拷贝赋值运算符" class="headerlink" title="2. 拷贝赋值运算符"></a>2. 拷贝赋值运算符</h1><p>与类控制其对象如何初始化一样，类也可以控制其对象如何赋值。</p>
+<pre><code>HasPtr hp1, hp2;
+hp1 = hp2; //使用拷贝赋值运算符
+</code></pre><p>为了实现自定义的拷贝赋值运算符，我们需要重载赋值运算符，其本质上就是一个函数，接受一个与其所在类相同类型的参数，如下形式：</p>
+<pre><code>class HasPtr {
+public:
+    HasPtr(const std::string &amp;s = std::string()) : ps(new std::string(s)), i(0) { }
+    HasPtr(const HasPtr &amp;hp) : ps(new std::string(*hp.ps)), i(hp.i) { }
+
+    //重载赋值运算符实现拷贝赋值运算符，返回引用
+    HasPtr&amp; operator=(const HasPtr &amp;rhs_hp) {
+        if(this != &amp;rhs_hp){
+            //在堆上新开辟内存，保存hp.ps的内容，并返回一个指向当前位置的指针
+            std::string *temp_ps = new std::string(*rhs_hp.ps);
+            delete ps; //这里销毁了ps指向的内存，而ps指针还存在
+            ps = temp_ps; //将当前对象的ps设置为temp_ps
+            i = rhs_hp.i;
+        }
+        return *this; //返回自身类类型的引用
+    }
+private:
+    std::string *ps;
+    int i;
+};
+</code></pre><p><strong>为了与内置类型的赋值保持一致，赋值运算符通常返回一个指向其左侧运算对象的引用。</strong></p>
+<h1 id="3-合成拷贝构造函数"><a href="#3-合成拷贝构造函数" class="headerlink" title="3. 合成拷贝构造函数"></a>3. 合成拷贝构造函数</h1><p>如果我们没有为一个类定义拷贝构造函数，编译器就会为我们定义一个，称为合成拷贝构造函数。一般情况下，它的作用是将其参数给定的对象中每个非<code>static</code>成员逐个拷贝到正在创建的对象中。那么我们就可以理解直接初始化和拷贝初始化的差异了。（拷贝初始化是指使用<code>=</code>进行的初始化）。</p>
+<pre><code>string dots(10, &#39;.&#39;);  //直接初始化
+string s(dots);        //直接初始化
+string s2 = dots;      //拷贝初始化
+string null_book = &quot;9-99-999-99&quot;; //拷贝初始化
+string nines = string(100, &#39;9&#39;);  //拷贝初始化
+</code></pre><p>使用直接初始化时，实际上是要求编译器使用普通的函数匹配来选择与我们提供的参数最匹配的构造函数。当使用拷贝初始化时，要求编译器将右侧运算对象拷贝到正在创建的对象中，必要的化还要进行类型转换。拷贝初始化一般情况下使用拷贝构造函数来完成，在之后的章节会介绍移动构造函数，会更方便的进行拷贝构造。</p>
+<h1 id="4-合成拷贝赋值运算符"><a href="#4-合成拷贝赋值运算符" class="headerlink" title="4. 合成拷贝赋值运算符"></a>4. 合成拷贝赋值运算符</h1><p>如果我们没有为一个类定义拷贝赋值运算符，编译器就会为我们定义一个，称为合成拷贝赋值运算符。它会将右侧对象的每个非static成员赋予左侧运算对象的对应成员，对于数组成员，逐个赋值数组元素。最终返回一个指向左侧运算对象的引用。</p>
+<h1 id="5-注意事项"><a href="#5-注意事项" class="headerlink" title="5. 注意事项"></a>5. 注意事项</h1><ul>
+<li>某些情况下，合成拷贝构造函数和合成拷贝赋值运算符的作用是禁止该类型对象的构造和赋值。这时候是因为我们定义的类并不需要拷贝、赋值或者销毁其成员。这里参考<code>13.1.6</code>章节的阻止拷贝章节。</li>
+<li>对于使用<code>shared_ptr</code>控制的对象类型，拷贝构造和拷贝赋值会增加<code>count</code>次数，而<code>weak_ptr</code>则不会。</li>
+</ul>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/15/背包问题入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1514,378 +1841,6 @@ A_{i i} & \text { if } i=j \\
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/Ceres Solvel 非线性最小二乘法建模/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/25/Ceres Solvel 非线性最小二乘法建模/" class="post-title-link" itemprop="url">Ceres Solvel非线性最小二乘法建模</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2020-12-25 13:15:21 / Modified: 15:08:50" itemprop="dateCreated datePublished" datetime="2020-12-25T13:15:21+08:00">2020-12-25</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Ceres由两个部分组成，一个是建模API，它提供了非常丰富的工具，可以迅速构建一个优化问题模型。另一个是解算器API，用于管控最小化算法。这一章将围绕如何用Ceres进行优化问题建模展开。</p>
-<h1 id="自动微分AutoDiffCostFunction"><a href="#自动微分AutoDiffCostFunction" class="headerlink" title="自动微分AutoDiffCostFunction"></a>自动微分AutoDiffCostFunction</h1><p>定义一个<font face="黑体" font color="red">CostFunction</font>（例如使用数值微分法或者解析微分法）可能是一个繁琐且容易出错的过程，尤其是在计算导数的时候。为此，Ceres提供了<font face="黑体" font color="red">AutoDiffCostFunction</font>。</p>
-<pre><code>template &lt;typename CostFunctor,
-        int kNumResiduals,  // Number of residuals, or ceres::DYNAMIC.
-        int N0,       // Number of parameters in block 0.
-        int N1 = 0,   // Number of parameters in block 1.
-        int N2 = 0,   // Number of parameters in block 2.
-        int N3 = 0,   // Number of parameters in block 3.
-        int N4 = 0,   // Number of parameters in block 4.
-        int N5 = 0,   // Number of parameters in block 5.
-        int N6 = 0,   // Number of parameters in block 6.
-        int N7 = 0,   // Number of parameters in block 7.
-        int N8 = 0,   // Number of parameters in block 8.
-        int N9 = 0&gt;   // Number of parameters in block 9.
-class AutoDiffCostFunction : public
-SizedCostFunction&lt;kNumResiduals, N0, N1, N2, N3, N4, N5, N6, N7, N8, N9&gt; {
-    public:
-        explicit AutoDiffCostFunction(CostFunctor* functor);
-        // Ignore the template parameter kNumResiduals and use
-        // num_residuals instead.
-        AutoDiffCostFunction(CostFunctor* functor, int num_residuals);
-};
-</code></pre><p>为了获得一个可以自动微分的代价函数，必须定义一个类。这个类中带有模板函数：<font face="黑体" font color="red">operator()</font>，它使用模板T类型进行代价函数运算。自动微分将根据需要用<font face="黑体" font color="red">Jet</font>类型替代替代模板T。但这个是隐藏的，编程的时候要把这个T看作一个双精度浮点数。这个函数必须把计算结果以最后一个参数（唯一一个非常量参数）传递出来，并且返回<font face="黑体" font color="red">True</font>，告诉计算机运算成功完成。例如，现在有一个标量的偏差函数$e = k - x^Ty$。这里$x$和$y$都是二维向量参数，$k$是个常量 。这种类型的偏差，即一个常量和一个表达式的差值，在最小二乘法问题中很常见。例如，$x ^ T y$可能是一系列测量结果的期望值，那么每一次测量$K$都对应了一个代价函数类的实例。被加到<font face="黑体" font color="red">Problem</font>中的是$e ^ 2$或者$(k - x^Ty) ^ 2$。平方处理由Ceres优化框架完成。这个例子的具体代码如下：</p>
-<blockquote>
-<p>这里有个疑问，之前自动微分算法的代码中没有使用类，而是使用的struct，不知道为什么这里是class，个人认为应该都可以，因为我们的代码中都使用的struct。</p>
-</blockquote>
-<pre><code>class MyScalarCostFunctor {
-    MyScalarCostFunctor(double k): k_(k) {}
-
-template &lt;typename T&gt;
-bool operator()(const T* const x , const T* const y, T* e) const {
-    e[0] = k_ - x[0] * y[0] - x[1] * y[1];
-    return true;
-}
-
-private:
-    double k_;
-};
-</code></pre><p>注意，在<font face="黑体" font color="red">operator()</font>的声明中，首先是输入参数，他们都是指向T类型数组的常指针。如果由更多的输入参数就跟在<font face="黑体" font color="red">y</font>后面。而输出值永远是最后一个参数，并且也是一个指向数组的指针。在上述例子中，<font face="黑体" font color="red">e</font>是标量，所以只赋值<font face="黑体" font color="red">e[0]</font>。</p>
-<p>然后给出这个类的定义，它的自动微分代价函数可以如下构造：</p>
-<pre><code>CostFunction* cost_function
-    = new AutoDiffCostFunction&lt;MyScalarCostFunctor, 1, 2, 2&gt;(
-        new MyScalarCostFunctor(1.0));              ^  ^  ^
-                                                    |  |  |
-                        Dimension of residual ------+  |  |
-                        Dimension of x ----------------+  |
-                        Dimension of y -------------------+
-</code></pre><p>在这个例子中，对每次测量<font face="黑体" font color="red">k</font>都有一个实例。模板参数1,2,2将<font face="黑体" font color="red">Functor</font>描述为一个一维输出参数和两个二维输入参数。<font face="黑体" font color="red">AutoDiffCostFunction</font>也支持在运行时动态确定参数个数。例如下面的代码：</p>
-<pre><code>CostFunction* cost_function
-    = new AutoDiffCostFunction&lt;MyScalarCostFunctor, DYNAMIC,  2,  2&gt;(
-        new CostFunctorWithDynamicNumResiduals(1.0),    ^     ^  ^
-        runtime_number_of_residuals);  &lt;----+           |     |  |
-                                            |           |     |  |
-                                            |           |     |  |
-           Actual number of residuals ------+           |     |  |
-           Indicate dynamic number of residuals --------+     |  |
-           Dimension of x ------------------------------------+  |
-           Dimension of y ---------------------------------------+
-</code></pre><p>Ceres目前支持代价函数最多有10个相互独立的变量，但是对每个变量有多少维度没有限制。</p>
-<p>注意，新用户常常犯的一个错误就是把模板参数中的数字理解成参数的个数。但事实上，模板参数中数字的含义是每个参数的维度。这两个概念不能混淆。比如在这个例子中<font face="黑体" font color="red">x,y</font>都是二维变量，所以模板参数中有两个2。</p>
-<h1 id="Problem的构建"><a href="#Problem的构建" class="headerlink" title="Problem的构建"></a>Problem的构建</h1><p><font face="黑体" font color="red">Problem</font>保持了非线性最小二乘问题的强化的边界。要创建最小二乘问题，可以使用<font face="黑体" font color="red">Problem::AddResidualBlock()</font>和<font face="黑体" font color="red">Problem::AddParameterBlock()</font>。例如，下面这个Problem包含了三个参数块，维度分别为3，4，5。同时有两个残差块，维度分别是2和6。</p>
-<pre><code>double x1[] = { 1.0, 2.0, 3.0 };
-double x2[] = { 1.0, 2.0, 3.0, 5.0 };
-double x3[] = { 1.0, 2.0, 3.0, 6.0, 7.0 };
-
-Problem problem;
-problem.AddResidualBlock(new MyUnaryCostFunction(...), x1);
-problem.AddResidualBlock(new MyBinaryCostFunction(...), x2, x3);
-</code></pre><p><font face="黑体" font color="red">Problem::AddResidualBlock()</font>，顾名思义，就是把残差块加入到Problem中。它添加了一个<font face="黑体" font color="red">CostFunction</font>，一个<font face="黑体" font color="red">LossFunction</font>（非必要）并且把<font face="黑体" font color="red">CostFunction</font>链接到一系列的参数块上。代价函数包含了关于期望的参数块大小的信息。该函数检查他们是否与<font face="黑体" font color="red">parameter_blocks</font>一致。如果不匹配，程序将终止。<font face="黑体" font color="red">LossFunction</font>可以是<font face="黑体" font color="red">Null</font>，这种情况下这一项的代价就是残差的平方。</p>
-<blockquote>
-<p>另外官网中给出了很多Problem的方法，可以查看一下。这里只对添加残差块的方法给出了实例。</p>
-</blockquote>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/Ceres Solvel库函数的解读/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/24/Ceres Solvel库函数的解读/" class="post-title-link" itemprop="url">Ceres Solvel库函数的解读</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2020-12-24 14:04:15 / Modified: 18:25:24" itemprop="dateCreated datePublished" datetime="2020-12-24T14:04:15+08:00">2020-12-24</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="关于微分计算（On-Derivatives"><a href="#关于微分计算（On-Derivatives" class="headerlink" title="关于微分计算（On Derivatives)"></a>关于微分计算（On Derivatives)</h1><p>与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：</p>
-<blockquote>
-<ul>
-<li>解析微分算法（<font face="黑体">Analytic Derivatives</font>）：用户自己手动或者借助Maple或者Mathematica等工具求解导数，然后写到<font color="red" font face="黑体">CostFunction</font>里面。</li>
-<li>数值微分算法（Numeric Derivatives）：Ceres用有限差分数值计算导数</li>
-<li>自动微分算法（Automatic Dericatives）：Ceres用C++模板和操作符重载自动分析计算微分。</li>
-</ul>
-</blockquote>
-<p>应该使用这三种方法中的哪一种（单独或组合）取决于用户愿意做出的情况和权衡。官方给出了一个简单粗暴的建议：<br>优先选用自动微分算法，某些情况可能需要用到解析微分算法，尽量避免数值微分算法。</p>
-<h2 id="Spivak标记"><a href="#Spivak标记" class="headerlink" title="Spivak标记"></a>Spivak标记</h2><p>为了简化阅读和推理，引入Spivak标记。</p>
-<p>对于单自变量函数$f$,$f(a)$表示它在$a$处的函数值。$Df$表示它的一阶导数，那么$Df(a)$就是函数在$a$处的一阶导数。即，</p>
-<script type="math/tex; mode=display">Df(a) = \frac{d}{dx}f(x)|_{x=a}</script><p>$D^kf$表示$f$的第$k$阶导数。</p>
-<p>对于双自变量函数$g(x,y)$，$D_1g$和$D_2g$分别表示关于$g$的两个偏微分。即，</p>
-<script type="math/tex; mode=display">D_1g = \frac{\partial}{\partial x}g(x,y)andD_2g = \frac{\partial}{\partial y}g(x,y)</script><p>$D_g$表示$g$的雅可比矩阵</p>
-<blockquote>
-<p>雅可比矩阵即</p>
-</blockquote>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-  \frac{\partial y_1}{\partial x_1}& \cdots & \frac{\partial y_1}{\partial x_n}\\
- \vdots & \ddots & \vdots\\ 
-  \frac{\partial y_m}{\partial x_1}& \cdots & \frac{\partial y_m}{\partial x_n}
-\end{bmatrix}</script><p>这里的$y_1$即$g$，其他的行不存在，因为只存在一个因变量$g$。即雅可比矩阵是一个一行两列的矩阵。即，</p>
-<script type="math/tex; mode=display">Dg = \begin{bmatrix}
-  D_1g& D_2g
-\end{bmatrix}</script><p>更一般的，如果$g:\mathbb{R}^{n} \longrightarrow \mathbb{R}^{m}$，那么$Dg$表示的就是一个$m \times n$的雅可比矩阵。</p>
-<h2 id="自动微分法（Automatic-Derivatices）"><a href="#自动微分法（Automatic-Derivatices）" class="headerlink" title="自动微分法（Automatic Derivatices）"></a>自动微分法（Automatic Derivatices）</h2><p>我们来思考一个相对复杂的曲线拟合问题。待确定参数方程如下：</p>
-<script type="math/tex; mode=display">y = \frac{b_1}{(1+e^{b_2 - b_3x})^{1/b_4}}</script><p>现在给定一系列的对应数据点$\left\{x_i,y_i\right \},\forall i=1,\cdots,n$。我们面临的问题就是求解$b_1,b_2,b_3,b_4$使下列表达式的取值最小：</p>
-<script type="math/tex; mode=display">\begin{aligned}
-E\left(b_{1}, b_{2}, b_{3}, b_{4}\right) &=\sum_{i} f^{2}\left(b_{1}, b_{2}, b_{3}, b_{4} ; x_{i}, y_{i}\right) \\
-&=\sum_{i}\left(\frac{b_{1}}{\left(1+e^{b_{2}-b_3x_i}\right)^{1 / b_{4}}}-y_{i}\right)^{2}
-\end{aligned}</script><p>下面我们使用自动微分算法，它是一种可以快速计算精确导数的算法。下面的代码片段实现了上述问题的<font color="red" font face="黑体">CostFunction</font>。</p>
-<pre><code>struct Rat43CostFunctor {
-    Rat43CostFunctor(const double x, const double y) : x_(x), y_(y) {}
-
-template &lt;typename T&gt;  
-bool operator()(const T* parameters, T* residuals) const {
-    const T b1 = parameters[0];
-    const T b2 = parameters[1];
-    const T b3 = parameters[2];
-    const T b4 = parameters[3];
-    residuals[0] = b1 * pow(1.0 + exp(b2 -  b3 * x_), -1.0 / b4) - y_;
-    return true;
-}
-
-private:
-    const double x_;
-    const double y_;
-};
-
-CostFunction* cost_function =
-    new AutoDiffCostFunction&lt;Rat43CostFunctor, 1, 4&gt;(    
-        new Rat43CostFunctor(x, y));
-</code></pre><p>接下来我们对自动微分算法的原理进行研究。为了研究其工作原理，必须要学习 <strong>二元数（Dual number)</strong> 和 <strong>射流(Jet)</strong>。</p>
-<h3 id="二元数和射流"><a href="#二元数和射流" class="headerlink" title="二元数和射流"></a>二元数和射流</h3><p><strong>二元数(Dual number)</strong> 是实数的一个延伸，类似于复数。复数则通过引入虚数来增加实数，比如$i$，二元数引入了一个极小二元数单位，比如$\epsilon$，且$\epsilon^2 = 0$（平方后太小可以忽略）。一个二元数$a+\upsilon\epsilon$包含两个分量，实分量$a$和极小分量$\upsilon$。令人惊喜的是，这个简单的变化带来了一种方便的计算精确导数的方法，而不需要考虑复杂的符号表达式。</p>
-<p>例如，考虑函数</p>
-<script type="math/tex; mode=display">f(x) = x^2</script><p>然后</p>
-<script type="math/tex; mode=display">\begin{aligned}
-f(10+\epsilon) &=(10+\epsilon)^{2} \\
-&=100+20 \epsilon+\epsilon^{2} \\
-&=100+20 \epsilon
-\end{aligned}</script><p>观察$\epsilon$的系数，我们发现$Df(10) = 20$。事实上，这个规律可以推广到不是多项式的函数。考虑一个任意可微函数$f(x)$，然后我们计算$f(x+ \epsilon)$，通过在$x$附近做泰勒展开，这就得到了无穷级数</p>
-<script type="math/tex; mode=display">
-\begin{array}{l}
-f(x+\epsilon)=f(x)+D f(x) \epsilon+D^{2} f(x) \frac{\epsilon^{2}}{2}+D^{3} f(x) \frac{\epsilon^{3}}{6}+\cdots \\
-f(x+\epsilon)=f(x)+D f(x) \epsilon
-\end{array}</script><p>记住，$\epsilon^2 = 0$。</p>
-<p><strong>射流(Jet)</strong> 是一个$n$维二元数。我们定义$n$个极小单位$\epsilon_i,i=1,\cdots,n$。并且存在性质$\forall i,j:\epsilon_i\epsilon_j=0$。射流数由实数$a$和$n$维极小分量组成。</p>
-<script type="math/tex; mode=display">x = a + \sum_j \upsilon_j \epsilon_j</script><p>为了简化我们改写为这种形式</p>
-<script type="math/tex; mode=display">x = a + \mathbf{v}</script><p>然后使用泰勒级数展开，我们可以看到：</p>
-<script type="math/tex; mode=display">f(a+\mathbf{v}) = f(a) +Df(a)\mathbf{v}</script><p>对多变量函数$f : \mathbb{R^n} \longrightarrow \mathbb{R^m} $相似。对于自变量$x_i = a_i + \mathbf{v}_i, \forall i = 1,\cdots,n :$</p>
-<script type="math/tex; mode=display">f(x_1,\cdots,x_n) = f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n)\mathbf{v}_i</script><p>如果每个选取的极小量$\mathbf{v}_i = e_i $是$i^{th}$标准基向量，那么上面的表达式就可以简化为</p>
-<script type="math/tex; mode=display">
-f(x_1,\cdots,x_n) = f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n) \epsilon_i</script><p>我们可以查找$\epsilon_i$的系数来提取雅可比矩阵的坐标。</p>
-<h3 id="实现射流（Jet"><a href="#实现射流（Jet" class="headerlink" title="实现射流（Jet)"></a>实现射流（Jet)</h3><p>为了让上面学到的内容在实践中发挥作用，我们需要能够计算函数$f$的值，不仅在自变量是实数的时候，也需要在自变量是二元数的情况下适用。但是通常我们并非通过泰勒展开式来求函数值。这也就是为什么我们需要用到C++模板和操作符重载。下面的代码段实现了<font color="red" font face="黑体">Jet</font>类以及对该类的一些操作和函数。</p>
-<pre><code>template&lt;int N&gt; struct Jet {
-    double a;
-    Eigen::Matrix&lt;double, 1, N&gt; v;
-};
-
-template&lt;int N&gt; Jet&lt;N&gt; operator+(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
-    return Jet&lt;N&gt;(f.a + g.a, f.v + g.v);
-}
-
-template&lt;int N&gt; Jet&lt;N&gt; operator-(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
-    return Jet&lt;N&gt;(f.a - g.a, f.v - g.v);
-}
-
-template&lt;int N&gt; Jet&lt;N&gt; operator*(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
-    return Jet&lt;N&gt;(f.a * g.a, f.a * g.v + f.v * g.a);
-}
-
-template&lt;int N&gt; Jet&lt;N&gt; operator/(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
-    return Jet&lt;N&gt;(f.a / g.a, f.v / g.a - f.a * g.v / (g.a * g.a));
-}
-
-template &lt;int N&gt; Jet&lt;N&gt; exp(const Jet&lt;N&gt;&amp; f) {
-    return Jet&lt;T, N&gt;(exp(f.a), exp(f.a) * f.v);
-}
-
-// This is a simple implementation for illustration purposes, the
-// actual implementation of pow requires careful handling of a number
-// of corner cases.
-template &lt;int N&gt;  Jet&lt;N&gt; pow(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) {
-    return Jet&lt;N&gt;(pow(f.a, g.a),
-            g.a * pow(f.a, g.a - 1.0) * f.v +
-            pow(f.a, g.a) * log(f.a); * g.v);
-}
-</code></pre><p>有了这些重载的函数，我们现在可以用一个<font color="red" font face="黑体">Jets</font>数组来调用<font color="red" font face="黑体">Rat43CostFunctor</font>，而不是<font color="red" font face="黑体">double</font>双精度类型。将其与初始化的<font color="red" font face="黑体">Jets</font>结合起来，我们就可以计算雅可比矩阵了：</p>
-<pre><code>class Rat43Automatic : public ceres::SizedCostFunction&lt;1,4&gt; {
-    public:
-      Rat43Automatic(const Rat43CostFunctor* functor) : functor_(functor) {}
-      virtual ~Rat43Automatic() {}
-      virtual bool Evaluate(double const* const* parameters,
-                    double* residuals,
-                    double** jacobians) const {
-    // Just evaluate the residuals if Jacobians are not required.
-    if (!jacobians) return (*functor_)(parameters[0], residuals);
-
-    // 初始化Jets，四个待求参数
-    ceres::Jet&lt;4&gt; jets[4];
-    for (int i = 0; i &lt; 4; ++i) {
-        jets[i].a = parameters[0][i];
-        jets[i].v.setZero();
-        jets[i].v[i] = 1.0;
-    }
-
-    ceres::Jet&lt;4&gt; result;
-    (*functor_)(jets, &amp;result);
-
-    // 把Jet的值（前面提到的，极小单位分量的系数）复制出啦.
-    residuals[0] = result.a;
-    for (int i = 0; i &lt; 4; ++i) {
-        jacobians[0][i] = result.v[i];
-    }
-    return true;
-}
-
-private:
-    std::unique_ptr&lt;const Rat43CostFunctor&gt; functor_;
-};
-</code></pre><p>这就是<font face="黑体" font color="red">AutoDiffCostFunction</font>的核心工作原理。</p>
-<h3 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h3><p>自动微分使用户不必计算和推理Jacobians的符号表达式，但是这个捷径是有代价的。例如，考虑以下简单的函数：</p>
-<pre><code>struct Functor {
-    template &lt;typename T&gt; bool operator()(const T* x, T* residual) const {
-        residual[0] = 1.0 - sqrt(x[0] * x[0] + x[1] * x[1]);
-        return true;
-    }
-};
-</code></pre><p>查看计算残差的代码，没有人预见到任何问题。但是，如果我们看一下雅可比矩阵的解析表达式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-y &=1-\sqrt{x_{0}^{2}+x_{1}^{2}} \\
-D_{1} y &=-\frac{x_{0}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}, D_{2} y=-\frac{x_{1}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}
-\end{aligned}</script><p>我们发现它在$x_0 = 0,x_1 = 0$处是不确定的。</p>
-<p>这个问题没有完美的解决方案。在某些情况下，我们需要明确地指出可能出现的不确定的点，并使用使用<font face="黑体" font color="blue">L’Hopital rule</font>（这里要去Ceres Solvel官网的rotation.h文件中的转换例程），在其他情况下，可能需要对表达式进行正则化，以消除这些点。</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1935,7 +1890,7 @@ D_{1} y &=-\frac{x_{0}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}, D_{2} y=-\frac{x_{1}}{\sqrt
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2035,11 +1990,11 @@ D_{1} y &=-\frac{x_{0}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}, D_{2} y=-\frac{x_{1}}{\sqrt
   
     
       
-    
-      
-    
-      
         
+      
+    
+      
+    
       
     
       

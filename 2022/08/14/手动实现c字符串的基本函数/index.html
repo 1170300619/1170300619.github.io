@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Sakurastream">
 <meta property="og:description" content="1.strlen函数原型：size_t strlen(const char *str)，计算字符串的长度 int my_strlen(const char *str){     int count = 0;     assert(str != nullptr);     while(*str != &amp;#39;\0&amp;#39;){         count++;         str++;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2022-08-14T12:30:18.474Z">
+<meta property="og:updated_time" content="2022-09-15T02:21:38.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动实现c字符串的基本函数">
 <meta name="twitter:description" content="1.strlen函数原型：size_t strlen(const char *str)，计算字符串的长度 int my_strlen(const char *str){     int count = 0;     assert(str != nullptr);     while(*str != &amp;#39;\0&amp;#39;){         count++;         str++;">
@@ -224,11 +224,19 @@
                 
               
 
-              <time title="Created: 2022-08-14 14:47:31 / Modified: 20:30:18" itemprop="dateCreated datePublished" datetime="2022-08-14T14:47:31+08:00">2022-08-14</time>
+              <time title="Created: 2022-08-14 14:47:31" itemprop="dateCreated datePublished" datetime="2022-08-14T14:47:31+08:00">2022-08-14</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-15 10:21:38" itemprop="dateModified" datetime="2022-09-15T10:21:38+08:00">2022-09-15</time>
+              </span>
             
           
 
@@ -258,7 +266,7 @@
     assert(str_des != nullptr);
     assert(str_source != nullptr);
     char *ret = str_des;
-    while((*str++ = *str_source++) != &#39;\0&#39;){
+    while((*str_des++ = *str_source++) != &#39;\0&#39;){
         ;
     }
     return ret;
@@ -343,6 +351,10 @@
 
             <div class="post-nav-prev post-nav-item">
               
+                <a href="/2022/08/19/WebServer面试问题总结/" rel="prev" title="WebServer面试问题总结">
+                  WebServer面试问题总结 <i class="fa fa-chevron-right"></i>
+                </a>
+              
             </div>
           </div>
         
@@ -405,7 +417,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

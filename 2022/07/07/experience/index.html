@@ -63,10 +63,12 @@
 <meta property="og:site_name" content="Sakurastream">
 <meta property="og:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2022-07-07T09:18:25.000Z">
+<meta property="og:image" content="e:/Hexo/source/_posts/pic/阻塞与非阻塞IO.png">
+<meta property="og:updated_time" content="2022-09-17T12:39:58.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Sakurastream">
 <meta name="twitter:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
+<meta name="twitter:image" content="e:/Hexo/source/_posts/pic/阻塞与非阻塞IO.png">
   <link rel="canonical" href="http://yoursite.com/2022/07/07/experience/">
 
 
@@ -224,11 +226,19 @@
                 
               
 
-              <time title="Created: 2022-07-07 21:37:39 / Modified: 17:18:25" itemprop="dateCreated datePublished" datetime="2022-07-07T21:37:39+08:00">2022-07-07</time>
+              <time title="Created: 2022-07-07 21:37:39" itemprop="dateCreated datePublished" datetime="2022-07-07T21:37:39+08:00">2022-07-07</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 20:39:58" itemprop="dateModified" datetime="2022-09-17T20:39:58+08:00">2022-09-17</time>
+              </span>
             
           
 
@@ -243,7 +253,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-函数中几种const构不构成重载的分析"><a href="#1-函数中几种const构不构成重载的分析" class="headerlink" title="1. 函数中几种const构不构成重载的分析"></a>1. 函数中几种const构不构成重载的分析</h3><ul>
+        <h2 id="1-函数中几种const构不构成重载的分析"><a href="#1-函数中几种const构不构成重载的分析" class="headerlink" title="1. 函数中几种const构不构成重载的分析"></a>1. 函数中几种const构不构成重载的分析</h2><ul>
 <li><p>函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误</p>
 <pre><code>  void test(int a){
       cout &lt;&lt; a &lt;&lt; endl;
@@ -277,7 +287,7 @@
   }
 </code></pre></li>
 </ul>
-<h3 id="2-如何做到在const成员函数内修改成员变量"><a href="#2-如何做到在const成员函数内修改成员变量" class="headerlink" title="2.如何做到在const成员函数内修改成员变量"></a>2.如何做到在const成员函数内修改成员变量</h3><ul>
+<h2 id="2-如何做到在const成员函数内修改成员变量"><a href="#2-如何做到在const成员函数内修改成员变量" class="headerlink" title="2.如何做到在const成员函数内修改成员变量"></a>2.如何做到在const成员函数内修改成员变量</h2><ul>
 <li>使用mutable关键字去修饰成员变量，这样成员变量始终是可以变化的</li>
 <li><p>定义一个常量指针指向this所指的对象，然后用这个指针去修改成员变量</p>
 <pre><code>  class test{
@@ -295,8 +305,8 @@
   }
 </code></pre></li>
 </ul>
-<h3 id="3-内联函数和宏定义的区别"><a href="#3-内联函数和宏定义的区别" class="headerlink" title="3.内联函数和宏定义的区别"></a>3.内联函数和宏定义的区别</h3><p>1.内联函数是函数，有参数类型检查，更为安全<br>2.内联函数由编译器进行处理，而宏定义由预处理器进行处理<br>3.内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</p>
-<h3 id="4-c-编译过程"><a href="#4-c-编译过程" class="headerlink" title="4.c++编译过程"></a>4.c++编译过程</h3><p>分为预处理+编译+汇编+链接</p>
+<h2 id="3-内联函数和宏定义的区别"><a href="#3-内联函数和宏定义的区别" class="headerlink" title="3.内联函数和宏定义的区别"></a>3.内联函数和宏定义的区别</h2><p>1.内联函数是函数，有参数类型检查，更为安全<br>2.内联函数由编译器进行处理，而宏定义由预处理器进行处理<br>3.内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</p>
+<h2 id="4-c-编译过程"><a href="#4-c-编译过程" class="headerlink" title="4.c++编译过程"></a>4.c++编译过程</h2><p>分为预处理+编译+汇编+链接</p>
 <ul>
 <li>预处理：主要处理那些源代码中以#开始的预编译指令，主要处理规则如下：<ul>
 <li>将宏定义进行文本替换</li>
@@ -306,11 +316,302 @@
 </li>
 <li>编译：进行一系列词法分析，语法分析，语义分析及优化后生成相应的汇编代码文件（内联函数就在这一阶段）</li>
 <li>汇编：将汇编代码转变成机器语言</li>
-<li><p>链接：将各个目标文件组装在一起，并生成可执行文件。</p>
-<h3 id="5-程序的内存分配"><a href="#5-程序的内存分配" class="headerlink" title="5.程序的内存分配"></a>5.程序的内存分配</h3><p>1.栈区：由编译器自动分配释放，存放函数的参数值，局部变量等。<br>2.堆区：由程序员自己分配释放，分配方式类似于链表<br>3.全局静态区：全局变量和静态变量的位置，初始化的在一起，未初始化的在一起<br>4.常量区：常量存放地址，程序接受系统释放<br>5.程序代码区：存放函数的二进制代码</p>
-<h3 id="6-内存中堆和栈的区别"><a href="#6-内存中堆和栈的区别" class="headerlink" title="6.内存中堆和栈的区别"></a>6.内存中堆和栈的区别</h3><p>1.栈由系统统一分配，例如局部变量声明后就自动放在栈中（先进后出）<br>2.堆需要自己申请，比如malloc函数和new</p>
+<li>链接：将各个目标文件组装在一起，并生成可执行文件。</li>
+</ul>
+<h2 id="5-程序的内存分配"><a href="#5-程序的内存分配" class="headerlink" title="5.程序的内存分配"></a>5.程序的内存分配</h2><p>1.栈区：由编译器自动分配释放，存放函数的参数值，局部变量等。<br>2.堆区：由程序员自己分配释放，分配方式类似于链表<br>3.全局静态区：全局变量和静态变量的位置，初始化的在一起，未初始化的在一起<br>4.常量区：常量存放地址，程序接受系统释放<br>5.程序代码区：存放函数的二进制代码</p>
+<h2 id="6-内存中堆和栈的区别"><a href="#6-内存中堆和栈的区别" class="headerlink" title="6.内存中堆和栈的区别"></a>6.内存中堆和栈的区别</h2><p>1.栈由系统统一分配，例如局部变量声明后就自动放在栈中（先进后出）<br>2.堆需要自己申请，比如malloc函数和new</p>
+<h2 id="7-实现一个在main函数运行之前运行的函数"><a href="#7-实现一个在main函数运行之前运行的函数" class="headerlink" title="7.实现一个在main函数运行之前运行的函数"></a>7.实现一个在main函数运行之前运行的函数</h2><p>1.使用attribute关键字</p>
+<pre><code>__attribute((constructor))void before(){
+    cout &lt;&lt; &quot;before main&quot; &lt;&lt; endl;
+}
+</code></pre><p>2.使用全局对象的构造函数，其会在main函数执行之前运行</p>
+<pre><code>class my_test{
+public:
+    my_test(){
+        cout &lt;&lt; &quot;test&quot; &lt;&lt; endl;
+    }
+    ~my_test(){}
+}
+
+my_test test;
+
+void main(){
+    cout &lt;&lt; &quot;this is main func&quot; &lt;&lt; endl;
+}
+</code></pre><h2 id="8-c-常量储存的位置"><a href="#8-c-常量储存的位置" class="headerlink" title="8.c++常量储存的位置"></a>8.c++常量储存的位置</h2><p>1.局部常量（和局部变量位置一样）：栈区<br>2.全局常量（和全局变量位置一样）：全局静态区<br>3.字面值常量：存放在常量区</p>
+<h2 id="9-C-隐式转换"><a href="#9-C-隐式转换" class="headerlink" title="9.C++隐式转换"></a>9.C++隐式转换</h2><p>1.算数类型</p>
+<ul>
+<li>整型提升：将小整数转换成较大的整数类型</li>
+<li>有符号类型转换为无符号类型，其值可能回发生变化</li>
+<li>在条件判断中，非布尔类型自动转换为布尔类型（0为false，其余为true)</li>
+</ul>
+<p>2.类类型<br>《C++ Primer》中提到：可以用单个形参来调用的构造函数定义了从形参类型到该类类型的一个隐式转换。</p>
+<pre><code>class Test{
+public:
+    Test(int i);
+};
+
+Test t1 = 1;
+</code></pre><p>这里由于隐式转换，1先被Test构造函数构造成Test对象，然后才被赋值为1，其操作等同于</p>
+<pre><code>Test tmp(1);
+Test t1 = tmp;
+</code></pre><p>为了防止这种看起来很模棱两可的写法，可以使用关键字 explicit来防止隐式转换。其只对有一个参数的类构造函数有效，如果类构造函数的参数大于等于2是不会产生隐式转换的（有一种特殊情况，就是多个参数，但是除了其中某一个之外，其他参数都有默认值）。</p>
+<h2 id="10-extern-“C”作用"><a href="#10-extern-“C”作用" class="headerlink" title="10. extern “C”作用"></a>10. extern “C”作用</h2><p>被该语句修饰的变量和函数是按照C语言方式编译和链接的。一般在C++代码调用C语言代码，在C++的头文件中使用。实现C++和C的混合编程。</p>
+<p>作为一种面向对象的语言， C++ 支持函数重载，而过程式语言 C 则不支持。所以，函数被 C++ 编译后在符号库中的名字与 C 语言的有所不同。例如，假设某个函数的原型为：</p>
+<pre><code>void foo( int x, int y );
+</code></pre><p>该函数被 C 编译器编译后在符号库中的名字为 _foo ，而 C++ 编译器则会产生像 _foo_int_int 之类的名字（不同的编译器可能生成的名字不同，但是都采用了相同的机制，生成的新名字称为 mangled name ）。 _foo_int_int 这样的名字包含了函数名、函数参数数量及类型信息， C++ 就是靠这种机制来实现函数重载的。例如，在 C++ 中，函数 void foo( int x, int y ) 与 void foo( int x, float y ) 编译生成的符号是不相同的，后者为 _foo_int_float 。</p>
+<p>假设在C++中，模块A的头文件如下：</p>
+<pre><code>//模块A头文件　moduleA.h
+#ifndef MODULE_A_H
+#define MODULE_A_H
+int foo( int x, int y );
+#endif
+</code></pre><p>在模块 B 中引用该函数：</p>
+<pre><code>// 模块B实现文件　moduleB.cpp
+#include &quot;moduleA.h&quot;
+foo(2,3);
+</code></pre><p>实际上，在连接阶段，连接器会从模块 A 生成的目标文件 moduleA.obj 中寻找 _foo_int_int 这样的符号！</p>
+<p>对于上面例子，如果 B 模块是 C 程序，而A模块是 C++ 库头文件的话，会导致链接错误；同理，如果B模块是 C++ 程序，而A模块是C库的头文件也会导致错误。而加了extern “C”后，链接的时候寻找的就是未经修改的符号名_foo，不会产生错误。</p>
+<h2 id="11-说说RTTI"><a href="#11-说说RTTI" class="headerlink" title="11.说说RTTI"></a>11.说说RTTI</h2><p>1.RTTI是运行阶段类型识别的简称，其用途为：假设有一个基类和多个派生类，则可以让基类指针指向其中任何一个类的对象，但是我们想要知道指针具体指向的是哪个类的对象，因为：</p>
+<ul>
+<li>有可能想要调用类方法的正确版本，因为派生类对象可能包含不是继承来的方法，即只有派生类对象可以调用该方法。</li>
+<li>也有可能是出于调试的目的，想跟踪生成对象的类型。<br>2.有3个支持RTTI的元素：</li>
+<li>dynamic_cast运算符使用一个指向基类的指针来生成一个指向派生类的指针，其主要用于“安全的向下转型”，即基类对象的指针或者引用来转换为同一继承层次的其他指针和引用。向下转型有两种情况，一种是基类指针指向派生类对象，这种转换是安全的；另一种是基类指针所指对象为基类对象，这种情况会失败并返回空指针（即0）。对于引用类型，失败的时候抛出一个bad_cast异常。</li>
+<li>typeid运算符和type_info类：用于判断具体的类型</li>
+<li>二者之间的区别：前者用于判断是否能够进行转换，并进行类型检查，而后者直接判断具体的类型。</li>
+</ul>
+<h2 id="new和malloc的区别"><a href="#new和malloc的区别" class="headerlink" title="new和malloc的区别"></a>new和malloc的区别</h2><p>1.new分配在自由储存区（C++中一个抽象概念，凡是通过new进行内存申请的，该内存就是自由储存区）；malloc从堆上动态分配内存。那么自由存储区是否能够是堆（问题等价于new是否能在堆上动态分配内存），这取决于operator new 的实现细节。自由存储区不仅可以是堆，还可以是静态存储区，这都看operator new在哪里为对象分配内存。<br>2.new操作符内存分配成功时，返回的是对象类型的指针，类型严格与对象匹配，无须进行类型转换，故new是符合类型安全性的操作符。而malloc内存分配成功则是返回void <em> ，需要通过强制类型转换将void</em>指针转换成我们需要的类型。<br>3.new内存分配失败时，会抛出bac_alloc异常，它不会返回NULL；malloc分配内存失败时返回NULL。<br>4.使用new操作符申请内存分配时无须指定内存块的大小，编译器会根据类型信息自行计算，而malloc则需要显式地指出所需内存的尺寸。<br>5.使用new操作符来分配对象内存时会经历三个步骤：</p>
+<ul>
+<li>第一步：调用operator new 函数分配一块足够大的，原始的，未命名的内存空间以便存储特定类型的对象。</li>
+<li>第二步：调用相应的构造函数以初始化对象，并为其传入初值。</li>
+<li>第三部：对象构造完成后，返回一个指向该对象的指针。<br>使用delete操作符来释放对象内存时会经历两个步骤：</li>
+<li>第一步：调用对象的析构函数。</li>
+<li><p>第二步：编译器调用operator delete(或operator delete[])函数释放内存空间。<br>而malloc/free是库函数，只能动态的申请和释放内存，无法强制要求其做自定义类型对象构造和析构函数<br>6.对数组的处理：new对数组的支持体现在它会分别调用构造函数函数初始化每一个数组元素，释放对象时为每个对象调用析构函数。注意delete[] 要与new []配套使用，不然会找出数组对象部分释放的现象，造成内存泄漏。而malloc不会进行这些操作。<br>7.operator new的实现可以基于malloc，而malloc的实现不可以去调用new，示例代码如下：</p>
+<p>  void * operator new (sieze_t size)<br>  {</p>
+<pre><code>  if(void * mem = malloc(size)
+      return mem;
+  else
+      throw bad_alloc();
+</code></pre><p>  }<br>8.重新分配内存<br>使用malloc分配的内存后，如果在使用过程中发现内存不足，可以使用realloc函数进行内存重新分配实现内存的扩充。realloc先判断当前的指针所指内存是否有足够的连续空间，如果有，原地扩大可分配的内存地址，并且返回原来的地址指针；如果空间不够，先按照新指定的大小分配空间，将原有数据从头到尾拷贝到新分配的内存区域，而后释放原来的内存区域。<br>new没有这样直观的配套设施来扩充内存。</p>
 </li>
 </ul>
+<h2 id="sizeof的一些特性"><a href="#sizeof的一些特性" class="headerlink" title="sizeof的一些特性"></a>sizeof的一些特性</h2><ul>
+<li>sizeof是运算符，不是函数</li>
+<li>sizeof不能求得void类型的长度</li>
+<li>sizeof<strong>可以</strong>求得void指针的长度，在32位的机器上为4byte字节（因为是指针变量）</li>
+<li>sizeof可以求得静态分配内存的数组的长度，需要注意的是，如果在一个函数内部使用sizeof对数组求长度，而且这个数组是通过函数参数的形式传递进来，则长度还是4字节，因为这里参数被自动转换为了指针（即数组第一个元素的地址），这样可以减少拷贝导致的效率低下。另外，当字符数组表示字符串时，sizeof值将会把’\0’包含进去。</li>
+<li>sizeof不能求得动态分配的内存的大小，比如使用new分配的数组，还是会被当做指针求长度</li>
+<li>当表达式作为sizeof的操作数时，它返回表达式的计算结果的类型大小，但是不会对表达式求值。</li>
+<li>sizeof可以对函数调用求大小，并且求得的大小等于返回类型的大小，但是不执行函数体</li>
+<li>sizeof求得的结构体（及其对象）的大小并不等于各个数据成员对象的大小之和。这里涉及到内存对齐的规则，具体如下：<br>结构体的大小等于结构体内最大成员大小的整数倍；结构体内的成员的首地址相对于结构体首地址的偏移量是其类型大小的整数倍。</li>
+</ul>
+<h2 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h2><p>尽管内存是以字节为单位，但是大部分处理器并不是按字节块来存取内存的.它一般会以双字节,四字节,8字节,16字节甚至32字节为单位来存取内存，我们将上述这些存取单位称为内存存取粒度。提高存取数据的速度。比如有的平台每次都是从偶地址处读取数据，对于一个int型的变量，若从偶地址单元处存放，则只需一个读取周期即可读取该变量；但是若从奇地址单元处存放，则需要2个读取周期读取该变量。某些平台只能在特定的地址处访问特定类型的数据，否则抛出硬件异常给操作系统。32位机器和64位的机器内存对齐中，内置类型只有指针不一样：32为4字节，64位为8字节。</p>
+<h2 id="函数调用压栈过程"><a href="#函数调用压栈过程" class="headerlink" title="函数调用压栈过程"></a>函数调用压栈过程</h2><p>1.首先main函数中参数从右到左进行压栈，然后压入main函数的返回地址，如果发生函数调用，同样会压入该函数的地址，然后跳转到该函数内进行参数压栈等操作，函数返回时，参数出栈，最后会通过栈中保存的函数返回地址返回到main函数内，实现回溯过程。</p>
+<h1 id="多线程问题"><a href="#多线程问题" class="headerlink" title="多线程问题"></a>多线程问题</h1><p>1.join函数：让一个线程阻塞在当前位置，如下：</p>
+<pre><code>void fun(){
+    cout &lt;&lt; &quot;fun() &lt;&lt; endl;
+}
+
+int main(){
+    thread t1(fun);
+    t1.join();
+    cout &lt;&lt; &quot;main() &lt;&lt; endl;
+}
+</code></pre><p>此程序的打印顺序为：fun() -&gt; main()，因为t1.join()函数会自动的将主线程阻塞，直到t1线程完成，才会继续执行主线程。同时join函数还有另外一个作用，就是回收该线程的资源，如果删除掉t1.join()，最后程序会报错。</p>
+<p>2.detach()函数<br>detach()函数的作用是将子线程和主线程分离，让子线程在后台独立运行，如果主线程运行的很快，子线程还未执行完的话，那么子线程会在后台继续执行，执行完毕时由线程库回收其资源。</p>
+<p>3.mutex：互斥锁<br>想实现让多个线程互斥的访问某段代码，可以使用互斥锁，如下：</p>
+<pre><code>mutex m;
+
+void fun(){
+    m.lock();
+    fun_other_thing();
+    m.unlock();
+}
+</code></pre><p>线程申请该互斥锁，如果成功获取，则一直拥有直到该线程调用unlock()解锁。如果无法申请到，则线程阻塞在该过程中。</p>
+<p>4.lock_guard<br>在前面的代码中，如果fun_other_thing()函数的代码有问题，把么unlock()函数无法正常解锁，为了避免这种异常情况导致的无法解锁，可以使用lock_guard()自动加锁解锁，其原理和智能指针类似，会在构造函数里自动加锁，当lock_guard()出了局部作用域，会自动调用析构函数解锁。</p>
+<pre><code>mutex m;
+
+void fun(){
+    lock_guard&lt;mutex&gt; loc(m); //构造函数里自动加锁
+    fun_other_thing();
+    //出了这个局部作用域，自动解锁
+}
+</code></pre><p>5.unique_lock<br>lock_guard只能保证在析构时执行解锁操作，其本身并没有提供加锁和解锁的接口，为了提高并发度，需要尽可能减少锁定的区域，也就是减少锁的粒度。unique_lock弥补了这一缺点，提供了lock()和unlock()的接口，如下例子：</p>
+<pre><code>mutex m;
+
+void fun(){
+    unique_lock&lt;mutex&gt; loc(m);
+    fun_other_thing1();
+    loc.unlock();
+
+    fun_other_thing2();
+
+    loc.lock();
+    fun_other_thing3();
+    loc.unlock();
+}
+</code></pre><p>这个例子中，只锁住了fun_other_thing1()和fun_other_thing3()两个函数，减小了锁的粒度。</p>
+<p>6.条件变量condition_variable<br>一般情况下，unique_lock和condition_variable配合使用，当条件变量的wait()函数被调用前，它使用unique_lock来锁住当前线程，进入wait函数后，首先会检查条件是否为真，如果不为真，则wait会阻塞并释放锁，允许其他线程继续执行，直到另外一个线程在相同的条件变量上调用了notification()来唤醒当前线程，此时返回while循环判断里。下面通过一个例子来实现三个线程的顺序执行：</p>
+<pre><code>class Foo {
+private:
+    mutex m;                      // 互斥锁
+    condition_variable cd_v;      // 条件变量
+    bool flag1;                   // 两个标志位
+    bool flag2;
+public:
+    Foo() : flag1(false), flag2(false) {}   // 初始化两个标志位为false，表示second和third还不能打印
+
+    void first() {
+        for (int i = 0; i &lt; 10; ++i) {
+            cout &lt;&lt; &quot;first&quot; &lt;&lt; endl;
+        }
+        flag1 = true;        // first执行后，将flag1置为true，表示second可以打印了
+        cd_v.notify_all();   // 唤醒等待队列里的所有线程
+    }
+
+    void second() {
+        unique_lock&lt;mutex&gt; loc(m);    // 加锁
+        // （1）先判断flag1是否为true，true则不会进入while循环，顺利向下执行；
+        // （2）flag1为false则执行wait函数，释放锁，并进入对象cd_v的等待队列；
+        // （3）当别的线程调用对象cd_v的notify_all()函数，会唤醒在等待队列中的这个线程，然后重新获得锁，继续步骤（1）
+        while (flag1==false) {
+            cd_v.wait(loc);
+        }        
+        for (int i = 0; i &lt; 10; ++i) {
+            cout &lt;&lt; &quot;second&quot; &lt;&lt; endl;
+        }
+        flag2 = true;      // 修改flag2表示third已经可以打印了
+        cd_v.notify_all(); // 唤醒等待队列里的所有线程
+        // 当离开这个局部作用域时，unique_lock会调用析构函数，自动解锁
+    }    
+
+    void third() {
+        unique_lock&lt;mutex&gt; loc(m);
+        while (flag2==false) {
+            cd_v.wait(loc);
+        }
+        for (int i = 0; i &lt; 10; ++i) {
+            cout &lt;&lt; &quot;third&quot; &lt;&lt; endl;
+        }
+    }
+};
+
+
+int main() {
+    Foo F;  
+    thread(&amp;Foo::third, &amp;F).detach();
+    thread(&amp;Foo::first, &amp;F).detach();
+    thread(&amp;Foo::second, &amp;F).detach();               
+    system(&quot;pause&quot;);   
+}
+</code></pre><p>我们设置两个标志位，flag1为true表示允许second打印、flag2为true表示允许third打印，先初始化flag1、flag2为false。线程创建后，可能出现以下的执行顺序：</p>
+<ul>
+<li>如果在first()还未打印完时（或者压根还没开始执行时），执行second()，由于此时flag1被初始化为false，进入while循环，调用条件变量的wait函数，会将当前线程阻塞起来，并释放锁。此时需要等另一个子线程执行first()打印完毕后，将flag1设为true，然后调用notify_all()将阻塞的线程唤醒，second()才能接着执行，完成打印。</li>
+<li>如果first()已经执行完毕，然后执行second()，那么flag1为true，执行second()的那个线程不会进入while循环，也不会被阻塞起来，能顺利执行。</li>
+<li>third()的执行先后也可参考以上两种情况。</li>
+</ul>
+<p>7.wait函数<br>wait()会去检查这些条件(通过调用所提供的lambda函数)，当条件满足(lambda函数返回true)时返回。如果条件不满足(lambda函数返回false)，wait()函数将解锁互斥量，并且将这个线程(上段提到的处理数据的线程)置于阻塞或等待状态。当准备数据的线程调用notify_one()通知条件变量时，处理数据的线程从睡眠状态中苏醒，重新获取互斥锁，并且对条件再次检查，在条件满足的情况下，从wait()返回并继续持有锁。当条件不满足时，线程将对互斥量解锁，并且重新开始等待。</p>
+<p>8.生产者和消费者模型<br>生产者向队列中插入数据，消费者则在生产者发出队列准备好了后接收消息，然后取出数据进行处理：</p>
+<pre><code>#include &lt;pthread.h&gt;
+struct msg {
+struct msg *m_next;
+/* ... more stuff here ... */
+};
+struct msg *workq;
+pthread_cond_t qready = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t qlock = PTHREAD_MUTEX_INITIALIZER;
+
+void process_msg(void)
+{
+    struct msg *mp;
+    for (;;) {
+    pthread_mutex_lock(&amp;qlock);
+    while (workq == NULL)
+        pthread_cond_wait(&amp;qready, &amp;qlock);
+    mp = workq;
+    workq = mp-&gt;m_next;
+    pthread_mutex_unlock(&amp;qlock);
+    /* now process the message mp */
+    }
+}
+
+void enqueue_msg(struct msg *mp)
+{
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_mutex_unlock(&amp;qlock);
+    pthread_cond_signal(&amp;qready);
+}
+</code></pre><ul>
+<li>为什么在wait函数前需要加锁<br>在wait函数前加锁是为了保护条件变量，调用wait函数进行等待条件的发生时，mutex会被自动释放，以供其他线程改变条件，其中两个步骤必须是原子性的：把调用线程放到条件等待队列上，以及释放锁。<br>如果不是原子性的，比如先释放锁，这时候生产者向队列中添加数据，然后signal，之后消费者线程才去把调用线程放到等待队列上，signal信号就会丢失；如果先把调用线程放到条件等待队列上，这时候另外一个线程发送了signal，然后调用线程立即获取到锁，两次获取mutex会产生deadlock。</li>
+<li><p>生产者线程中修改条件为什么要加mutex<br>如果不这么做信号可能会丢失，如下：</p>
+<p>  Thead A                             Thread B</p>
+<p>  pthread_mutex_lock(&amp;qlock);<br>  while (workq == NULL)</p>
+<pre><code>                                  mp-&gt;m_next = workq;
+                                  workq = mp;
+                                  pthread_cond_signal(&amp;cond);
+</code></pre><p>  pthread_cond_wait(&amp;qready, &amp;qlock);</p>
+</li>
+</ul>
+<p>在while判断之后向队列中插入数据，虽然已经有了数据，但是线程A还是调用了wait函数去等待下一个信号到来，究其原因是B线程没有获取到锁就进行了操作，应该等到wait函数释放锁之后再进行插入数据的操作。</p>
+<ul>
+<li><p>消费者线程中判断条件为什么要放在while中<br>一个生产者可能对应多个消费者，生产者向队列中插入一条数据之后发出signal，然后各个消费者线程的wait函数获取mutex后返回，这里只有一个线程可以成功，如果这里使用了if，那么就会在当前队列为空的状态下继续执行，显然是不合理的。</p>
+</li>
+<li><p>signal是放在unlock之前还是之后</p>
+</li>
+</ul>
+<p>（1）：先unlock再signal</p>
+<pre><code>void enqueue_msg(struct msg *mp)
+{
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_mutex_unlock(&amp;qlock);
+    pthread_cond_signal(&amp;qready);
+}
+</code></pre><p>如果unlock后恰好有一个消费者获取mutex，然后进入条件判断，发现队列不为空，就会跳过wait函数，那么下面的signal就会不起作用；另外一种情况，一个优先级更低的不需要条件判断的线程也正好获取到了锁，那么就会去执行这个优先级低的线程，违背了设计的初衷</p>
+<p>（2）：先signal再unlock</p>
+<pre><code>void enqueue_msg(struct msg *mp)
+{
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_cond_signal(&amp;qready);
+    pthread_mutex_unlock(&amp;qlock);
+}
+</code></pre><p> 如果把signal放在unlock之前，消费者线程会被唤醒，发现mutex获取不到，则又去sleep了，浪费了资源，但是在Linux下，就不会有这个问题。因为在Linux 线程中，有两个队列，分别是cond_wait队列和mutex_lock队列，cond_signal只是让线程从cond_wait队列移到mutex_lock队列，而不用返回到用户空间，不会有性能的损耗。所以在Linux中推荐使用这种模式。</p>
+<h1 id="操作系统的IO分类"><a href="#操作系统的IO分类" class="headerlink" title="操作系统的IO分类"></a>操作系统的IO分类</h1><p> 1.缓冲与非缓冲IO（减少系统调用次数）</p>
+<ul>
+<li>缓冲 I/O，利用的是标准库的缓存实现文件的加速访问，而标准库再通过系统调用访问文件。</li>
+<li>非缓冲 I/O，直接通过系统调用访问文件，不经过标准库缓存。<br>2.直接与非直接IO</li>
+<li>直接 I/O，不会发生内核缓存和用户程序之间数据复制，而是直接经过文件系统访问磁盘。</li>
+<li><p>非直接 I/O，读操作时，数据从内核缓存中拷贝给用户程序，写操作时，数据从用户程序拷贝给内核缓存，再由内核决定什么时候写入数据到磁盘。<br>3.阻塞与非阻塞IO</p>
+  <div align="center">
+      <img src="E:/Hexo/source/_posts/pic/阻塞与非阻塞IO.png"> 
+  </div> 
+
+</li>
+</ul>
+<h1 id="关于缓存命中"><a href="#关于缓存命中" class="headerlink" title="关于缓存命中"></a>关于缓存命中</h1><p>1.CPU cache每次加载的数据长度是固定的，比如64字节，那么即是我们只请求了4字节的数据，它也会读取64字节的内容到L1 缓存中，方便之后再请求数据的时候先从L1 缓存中查找。其中L1缓存分为数据缓存和指令缓存。</p>
+<ul>
+<li>提升数据缓存命中率：按照内存布局的顺序访问，比如访问二维数组，则按照行排列的方式去访问数据。</li>
+<li>提升指令缓存命中率：按照有规律的分支语句可以提升CPU的分支预测器的执行效率，如果分支预测可以预测到接下来要执行 if 里的指令，还是 else 指令的话，就可以「提前」把这些指令放在指令缓存中，这样 CPU 可以直接从 Cache 读取到指令，于是执行速度就会很快。</li>
+</ul>
+<h1 id="伪共享的问题"><a href="#伪共享的问题" class="headerlink" title="伪共享的问题"></a>伪共享的问题</h1><p>多个线程同时读写同一个Cache Line的不同变量，而导致Cache Line失效的问题，称为伪共享。避免方法为将两个有可能地址连续的变量，使用对齐地址的方法使得二者不在一个Cache Line中，例如：</p>
+<pre><code>struct test{
+    int a;
+    int b __cacheline_aligned_in_smp;
+};
+</code></pre><h1 id="CPU对于线程的选择"><a href="#CPU对于线程的选择" class="headerlink" title="CPU对于线程的选择"></a>CPU对于线程的选择</h1><p>1.完全公平调度：CFS方法，对于普通任务，为其安排一个虚拟运行时间，如果一个任务在运行，那么运行时间越长，其虚拟运行时间就越大，如果一个任务没有被运行，其虚拟运行时间就不变。CPU优先会选择虚拟运行时间较短的任务来运行。<br>2.CPU运行队列：实际上任务数要远大于CPU核心数，这时候就需要队列来排队。每个CPU都有自己的运行队列，其中分为三个队列：Deadline运行队列，Realtime运行队列和CFS运行队列，其中CFS就是用红黑树来进行描述的，其最左侧的叶子节点就是下一次最先被调度的任务。当然这三个队列的优先级是不一样的，Deadline &gt; Realtime &gt; CFS</p>
+<h1 id="C-内存优化"><a href="#C-内存优化" class="headerlink" title="C++内存优化"></a>C++内存优化</h1><p>1.编译器优化：开启O2优化选项<br>2.算法和数据结构的优化</p>
+<ul>
+<li>如果是确定的数据长度，主要做查询工作，建议使用数组来完成</li>
+<li>如果时插入删除为主，需要使用链表的操作</li>
+<li>结构体里面按照CPU位长对齐<br>3.函数优化：使用内联函数，使用引用传递或者移动语义<br>4.类：定义移动构造和移动赋值运算符，避免不必要的复制操作</li>
+</ul>
+<h1 id="C-中有几种类型的new"><a href="#C-中有几种类型的new" class="headerlink" title="C++中有几种类型的new"></a>C++中有几种类型的new</h1><p>1.plain new：也就是我们常用的new，其在空间分配失败的情况下返回bad_alloc而不是NULL<br>2.nothrow new：空间分配失败的情况下，不抛出异常，而是返回NULL<br>3.palcement new：主要用途就是反复使用一块较大的动态分配的内存，来构造不同类型的对象或者他们的数组，需要显式的调用析构函数来销毁，不能使用delete，因为其构造的对象或者数组的大小并不一定等于原来分配的内存大小，使用delete会造成内存泄漏，或者释放内存出现运行时错误。</p>
+<h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用"></a>static的作用</h1><p>1.隐藏：编译多个文件时，没有static的全局变量和函数都具有全局可见性，而加了的只有在本文件中才可见<br>2.全局变量和static变量都在静态变量区，热着都会在程序刚开始运行就完成初始化，也是唯一一次初始化，值为0（没有给定值的情况下）<br>3.类中的static成员变量属于整个类所有，类的所有对象只有一份拷贝；类的static成员函数属于整个类所有，函数没有this指针，因而只能访问类的static成员变量<br>4.类的static成员变量必须先初始化再使用，只能在类体外进行初始化。<br>5.static成员函数不能被virtual修饰，因为static不属于任何对象或者实例，所以加virtual没有意义。况且static函数没有this指针，而虚函数的指向函数表的指针是通过this指针指向的，所以无法实现。</p>
 
     </div>
 
@@ -388,7 +689,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数中几种const构不构成重载的分析"><span class="nav-number">1.</span> <span class="nav-text">1. 函数中几种const构不构成重载的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何做到在const成员函数内修改成员变量"><span class="nav-number">2.</span> <span class="nav-text">2.如何做到在const成员函数内修改成员变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-内联函数和宏定义的区别"><span class="nav-number">3.</span> <span class="nav-text">3.内联函数和宏定义的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-c-编译过程"><span class="nav-number">4.</span> <span class="nav-text">4.c++编译过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-程序的内存分配"><span class="nav-number">5.</span> <span class="nav-text">5.程序的内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-内存中堆和栈的区别"><span class="nav-number">6.</span> <span class="nav-text">6.内存中堆和栈的区别</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-函数中几种const构不构成重载的分析"><span class="nav-number">1.</span> <span class="nav-text">1. 函数中几种const构不构成重载的分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-如何做到在const成员函数内修改成员变量"><span class="nav-number">2.</span> <span class="nav-text">2.如何做到在const成员函数内修改成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-内联函数和宏定义的区别"><span class="nav-number">3.</span> <span class="nav-text">3.内联函数和宏定义的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-c-编译过程"><span class="nav-number">4.</span> <span class="nav-text">4.c++编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-程序的内存分配"><span class="nav-number">5.</span> <span class="nav-text">5.程序的内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-内存中堆和栈的区别"><span class="nav-number">6.</span> <span class="nav-text">6.内存中堆和栈的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-实现一个在main函数运行之前运行的函数"><span class="nav-number">7.</span> <span class="nav-text">7.实现一个在main函数运行之前运行的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-c-常量储存的位置"><span class="nav-number">8.</span> <span class="nav-text">8.c++常量储存的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-C-隐式转换"><span class="nav-number">9.</span> <span class="nav-text">9.C++隐式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-extern-“C”作用"><span class="nav-number">10.</span> <span class="nav-text">10. extern “C”作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-说说RTTI"><span class="nav-number">11.</span> <span class="nav-text">11.说说RTTI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new和malloc的区别"><span class="nav-number">12.</span> <span class="nav-text">new和malloc的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sizeof的一些特性"><span class="nav-number">13.</span> <span class="nav-text">sizeof的一些特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对齐"><span class="nav-number">14.</span> <span class="nav-text">内存对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用压栈过程"><span class="nav-number">15.</span> <span class="nav-text">函数调用压栈过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程问题"><span class="nav-number"></span> <span class="nav-text">多线程问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作系统的IO分类"><span class="nav-number"></span> <span class="nav-text">操作系统的IO分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于缓存命中"><span class="nav-number"></span> <span class="nav-text">关于缓存命中</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伪共享的问题"><span class="nav-number"></span> <span class="nav-text">伪共享的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU对于线程的选择"><span class="nav-number"></span> <span class="nav-text">CPU对于线程的选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-内存优化"><span class="nav-number"></span> <span class="nav-text">C++内存优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-中有几种类型的new"><span class="nav-number"></span> <span class="nav-text">C++中有几种类型的new</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#static的作用"><span class="nav-number"></span> <span class="nav-text">static的作用</span></a></div>
         
       </div>
       <!--/noindex-->
@@ -403,7 +704,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

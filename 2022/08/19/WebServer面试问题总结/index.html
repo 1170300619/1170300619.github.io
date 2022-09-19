@@ -55,15 +55,19 @@
   };
 </script>
 
-  <meta name="keywords" content="code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Sakurastream">
-<meta property="og:url" content="http://yoursite.com/archives/2020/12/index.html">
+  <meta name="description" content="大概流程主线程监听连接，让epoll监听活跃的文件描述符，处理完之后开工作线程，工作线程任务（读写是分开的，不一定是同一个线程搞操作），读写缓冲区是数据httpconn的，httpconn是一个类，一个用户一个实例，所以直接独立了。读取客户端数据（用非阻塞IO),有个读缓冲，每个连接独享一个读和写缓冲，有个65K缓冲区，保证能一次读完，读不完就扩容。先去看读缓冲有没有数据，解析HTTP，生成响应数">
+<meta name="keywords" content="code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebServer面试问题总结">
+<meta property="og:url" content="http://yoursite.com/2022/08/19/WebServer面试问题总结/index.html">
 <meta property="og:site_name" content="Sakurastream">
+<meta property="og:description" content="大概流程主线程监听连接，让epoll监听活跃的文件描述符，处理完之后开工作线程，工作线程任务（读写是分开的，不一定是同一个线程搞操作），读写缓冲区是数据httpconn的，httpconn是一个类，一个用户一个实例，所以直接独立了。读取客户端数据（用非阻塞IO),有个读缓冲，每个连接独享一个读和写缓冲，有个65K缓冲区，保证能一次读完，读不完就扩容。先去看读缓冲有没有数据，解析HTTP，生成响应数">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2022-08-19T13:02:10.678Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sakurastream">
-  <link rel="canonical" href="http://yoursite.com/archives/2020/12/">
+<meta name="twitter:title" content="WebServer面试问题总结">
+<meta name="twitter:description" content="大概流程主线程监听连接，让epoll监听活跃的文件描述符，处理完之后开工作线程，工作线程任务（读写是分开的，不一定是同一个线程搞操作），读写缓冲区是数据httpconn的，httpconn是一个类，一个用户一个实例，所以直接独立了。读取客户端数据（用非阻塞IO),有个读缓冲，每个连接独享一个读和写缓冲，有个65K缓冲区，保证能一次读完，读不完就扩容。先去看读缓冲有没有数据，解析HTTP，生成响应数">
+  <link rel="canonical" href="http://yoursite.com/2022/08/19/WebServer面试问题总结/">
 
 
 <script id="page-configurations">
@@ -71,13 +75,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
-    isArchive: true
+    isArchive: false
   };
 </script>
 
-  <title>Archive | Sakurastream</title>
+  <title>WebServer面试问题总结 | Sakurastream</title>
   
 
 
@@ -183,171 +187,105 @@
         <div class="content-wrap">
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        
-        
-         
-        
-        <span class="collection-header">OK! 33 posts in total. Keep on posting.</span>
-      </div>
-      
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/19/WebServer面试问题总结/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
 
-  
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">WebServer面试问题总结
 
-  
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-08-19 20:55:44 / Modified: 21:02:10" itemprop="dateCreated datePublished" datetime="2022-08-19T20:55:44+08:00">2022-08-19</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
     
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
-    </div>
-  
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2020-12-25T15:12:49+08:00"
-              content="2020-12-25">
-          12-25
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-        
-          <a class="my-post-title-link" href="/2020/12/25/Ceres Solvel非线性最小二乘问题的解算/" itemprop="url">
-            
-              <span itemprop="name">Ceres Solvel非线性最小二乘问题的解算</span>
-            
-          </a>
-        
-      </h2>
-
-    </header>
-  </article>
-
-
-
-  
-
-  
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2020-12-25T13:15:21+08:00"
-              content="2020-12-25">
-          12-25
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-        
-          <a class="my-post-title-link" href="/2020/12/25/Ceres Solvel 非线性最小二乘法建模/" itemprop="url">
-            
-              <span itemprop="name">Ceres Solvel非线性最小二乘法建模</span>
-            
-          </a>
-        
-      </h2>
-
-    </header>
-  </article>
-
-
-
-  
-
-  
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2020-12-24T14:04:15+08:00"
-              content="2020-12-24">
-          12-24
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-        
-          <a class="my-post-title-link" href="/2020/12/24/Ceres Solvel库函数的解读/" itemprop="url">
-            
-              <span itemprop="name">Ceres Solvel库函数的解读</span>
-            
-          </a>
-        
-      </h2>
-
-    </header>
-  </article>
-
-
-
-  
-
-  
-
-  <article class="my-post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="my-post-header">
-
-      <div class="my-post-meta">
-        <time class="my-post-time" itemprop="dateCreated"
-              datetime="2020-12-21T14:22:49+08:00"
-              content="2020-12-21">
-          12-21
-        </time>
-      </div>
-
-      <h2 class="my-post-title">
-        
-          <a class="my-post-title-link" href="/2020/12/21/Ceres Solvel翻译第一期-说明文档/" itemprop="url">
-            
-              <span itemprop="name">Ceres Solvel翻译第一期-说明文档</span>
-            
-          </a>
-        
-      </h2>
-
-    </header>
-  </article>
-
-
-
+      
+        <h1 id="大概流程"><a href="#大概流程" class="headerlink" title="大概流程"></a>大概流程</h1><p>主线程监听连接，让epoll监听活跃的文件描述符，处理完之后开工作线程，工作线程任务（读写是分开的，不一定是同一个线程搞操作），读写缓冲区是数据httpconn的，httpconn是一个类，一个用户一个实例，所以直接独立了。读取客户端数据（用非阻塞IO),有个读缓冲，每个连接独享一个读和写缓冲，有个65K缓冲区，保证能一次读完，读不完就扩容。先去看读缓冲有没有数据，解析HTTP，生成响应数据，封装响应传回去。Reactor没有读和业务逻辑，Proactor才可以实现疯转业务逻辑。</p>
 
     </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2022/08/14/手动实现c字符串的基本函数/" rel="next" title="手动实现c字符串的基本函数">
+                  <i class="fa fa-chevron-left"></i> 手动实现c字符串的基本函数
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2022/08/20/http详解/" rel="prev" title="http详解">
+                  http详解 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
   </div>
   
   
   
+  </article>
 
-  
-
+  </div>
 
 
           </div>
@@ -366,6 +304,11 @@
 
   <aside class="sidebar">
     <div class="sidebar-inner">
+        
+        
+        
+        
+      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -378,6 +321,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#大概流程"><span class="nav-number">1.</span> <span class="nav-text">大概流程</span></a></li></ol></div>
+        
       </div>
       <!--/noindex-->
 

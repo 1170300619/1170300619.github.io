@@ -191,6 +191,293 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/20/http详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/08/20/http详解/" class="post-title-link" itemprop="url">http详解</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-08-20 20:10:51" itemprop="dateCreated datePublished" datetime="2022-08-20T20:10:51+08:00">2022-08-20</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-16 09:23:35" itemprop="dateModified" datetime="2022-09-16T09:23:35+08:00">2022-09-16</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="http请求报文"><a href="#http请求报文" class="headerlink" title="http请求报文"></a>http请求报文</h1><p>http请求报文由请求行、请求头部、空行 和 请求包体 4 个部分组成，如下图所示：</p>
+
+<ol>
+<li>请求行：请求行由方法字段、URL字段和HTTP协议版本3个部分组成，下面主要介绍一下GET和POST方法：</li>
+</ol>
+<ul>
+<li>GET：当客户端要从服务器中读取某个资源时，使用GET方法。</li>
+<li>POST：当客户端给服务器提供信息较多时可以使用POST 方法，POST 方法向服务器提交数据，比如完成表单数据的提交，将数据提交给服务器处理。GET 一般用于获取/查询资源信息，POST 会附带用户数据，一般用于更新资源信息。</li>
+<li><p>如果带参数时，在约定中，GET方法的参数应该放在URL中，POST方法参数应该放在请求体中。例如，如果参数是 <code>name=Java, age = 25</code>，那么GET方法的报文是这样的:</p>
+<p>  GET /updateInfo?name=JavA&amp;age=25 HTTP/1.1<br>  Host: localhost </p>
+</li>
+</ul>
+<p>POST方法的报文为：</p>
+<pre><code>POST /updateInfo HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+
+name=Javanx&amp;age=25
+</code></pre><p>如果不带参数，最大的区别就是二者请求行的方法名称不同而已。实际上两种方法都是基于TCP连接的，GET也可以有请求包体，POST也不一定要使用请求包体，只要客户端和服务端约定好规范即可。</p>
+<ol>
+<li>请求头部：请求头部由关键字/值对组成，每行一对，关键字和值用英文冒号“:”分隔。常见的头部信息有：</li>
+</ol>
+<ul>
+<li>User-Agent：产生请求的浏览器类型;</li>
+<li>Accept：客户端可识别的响应内容类型列表;星号 “ <em> ” 用于按范围将类型分组，用 “ </em>/<em> ” 指示可接受全部类型，用“ type/</em> ”指示可接受 type 类型的所有子类型;</li>
+<li>Accept-Language：客户端可接受的自然语言</li>
+<li>Accept-Encoding：客户端可接受的编码压缩格式;</li>
+<li>Host：请求的主机名，允许多个域名同处一个IP 地址，即虚拟主机;</li>
+<li>connection：连接方式(close 或 keep-alive);</li>
+<li>Cookie：存储于客户端扩展字段，向同一域名的服务端发送属于该域的cookie;</li>
+<li>content-length:表示包体数据长度，用来POST方法区分下一条请求的界限</li>
+</ul>
+<ol>
+<li>空行：最后一个请求头部之后是一个空行，发送回车符和和换行符，通知服务端以下不再有请求头。</li>
+<li>请求包体：请求包体不在GET方法中使用，而是在POST方法中使用。适用于需要客户填写表单的场合。</li>
+</ol>
+
+<h1 id="http响应报文"><a href="#http响应报文" class="headerlink" title="http响应报文"></a>http响应报文</h1><p>HTTP响应报文由状态行、响应头部、空行和响应包体4个部分组成，如下图所示：</p>
+<img src="/2022/08/20/http详解/http响应报文.png" title="This is an example image">
+<p>下面对响应报文格式进行简单的分析：</p>
+<ul>
+<li>状态行：由HTTP协议版本，状态码和状态码的描述文本3个部分组成</li>
+<li>状态码由三位数字组成， 常用的有以下：<br>1xx：表示服务器已接收了客户端请求，客户端可继续发送请求;<br>2xx：表示服务器已成功接收到请求并进行处理;<br>3xx：表示服务器要求客户端重定向;<br>4xx：表示客户端的请求有非法内容;<br>5xx：表示服务器未能正常处理客户端的请求而出现意外错误;</li>
+<li>响应头部：</li>
+</ul>
+<ol>
+<li>Location：Location响应报头域用于重定向接受者到一个新的位置。例如：客户端所请求的页面已不存在原先的位置，为了让客户端重定向到这个页面新的位置，服务器端可以发回Location响应报头后使用重定向语句，让客户端去访问新的域名所对应的服务器上的资源;</li>
+<li>Connection：连接方式<br>对于请求来说：close(告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，断开连接，不等待本次连接的后续请求了)。keepalive(告诉WEB服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待本次连接的后续请求);<br>对于响应来说：close(连接已经关闭); keepalive(连接保持着，在等待本次连接的后续请求); Keep-Alive：如果浏览器请求保持连接，则该头部表明希望WEB 服务器保持连接多长时间(秒);例如：Keep-Alive：300;</li>
+</ol>
+<ul>
+<li>空行：最后一个响应头部之后是一个空行，发送回车符和换行符，通知服务器以下不再有响应头部。</li>
+<li>响应包体：服务器返回给客户端的文本信息</li>
+</ul>
+<h1 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h1><ol>
+<li>GET方法的长度限制：首先说明一点，HTTP 协议没有 Body 和 URL 的长度限制，对 URL 限制的大多是浏览器和服务器的原因。原因是指：解析URL的时候要分配内存，即分配一个buffer来保存所有要储存的数据，处理长 URL 要消耗比较多的资源，为了性能和安全（防止恶意构造长 URL 来攻击）考虑，会给 URL 长度加限制。</li>
+<li>POST 方法会产生两个 TCP 数据包？<br>有些文章中提到，post 会将 header 和 body 分开发送，先发送 header，服务端返回 100 状态码再发送 body。HTTP 协议中没有明确说明 POST 会产生两个 TCP 数据包，而且实际测试(Chrome)发现，header 和 body 不会分开发送。所以，header 和 body 分开发送是部分浏览器或框架的请求方法，不属于 post 必然行为。</li>
+<li>HTTP请求和响应的步骤，例如在浏览器地址栏键入URL,按下回车以后会经历以下流程：</li>
+</ol>
+<ul>
+<li>浏览器向DNS服务器请求解析该URL中的域名对应的IP地址</li>
+<li>解析出IP地址后，根据该IP地址和默认端口80，和服务器建立TCP连接</li>
+<li>浏览器发出读取文件（URL中域名后面部分对应的文件）的HTTP请求，该请求报文作为TCP第三次握手的报文数据发送给服务器</li>
+<li>服务器对浏览器请求做出响应，并把对应的html文本发送给浏览器</li>
+<li>释放TCP连接：若connection 模式为close，则服务器主动关闭TCP 连接，客户端被动关闭连接，释放TCP 连接;若connection 模式为keepalive，则该连接会保持一段时间，在该时间内可以继续接收请求</li>
+<li>浏览器将html文本显示内容</li>
+</ul>
+<ol>
+<li>服务器如何解析POST包体数据，即如何辨别包体结束？<br>一般有两种方式：第一种方式就是在包头中有个content-Length字段，这个字段的值的大小标识了POST数据的长度，服务器收到一个数据包后，先从包头解析出这个字段的值，再根据这个值去读取相应长度的作为http协议的包体数据。还有一个格式叫做http chunked技术（分块），大致意思是将大包分成小包</li>
+<li>如果某个客户端通过程序模拟了一个连接请求，但是迟迟不发含有\r\n\r\n的数据，这路连接将一直占用，这里我们可以设置一个最大URL长度，如果超过这个长度还不包含\r\n\r\n的话我们认为连接非法，将连接断开。并且如果一个客户端连接后不发送任何数据，这样会浪费大量的连接资源，所以还需要一个定时器去定时检测哪些http连接超过这个最大时间没发送数据，找到后将连接断开。</li>
+</ol>
+<h1 id="DNS解析流程"><a href="#DNS解析流程" class="headerlink" title="DNS解析流程"></a>DNS解析流程</h1><p>1.首先看浏览器缓存，若没有则看操作系统缓存，如果没有则去看host文件，如果没有则开始进行对服务器的询问<br>2.首先客户端询问本地DNS服务器，自己要查找的url的IP地址，如果本地服务器能找到缓存则返回，否则本地服务器会去询问根服务器，根服务器返回给它一个顶级域名服务器的地址；本地服务器会再去询问顶级域名服务器，后者会给它一个权威域名服务器地址，本地服务器再去询问，直到查询到自己要找的url的IP地址，并将其返回给客户端，客户端和目标建立连接</p>
+<h1 id="路由表转发规则"><a href="#路由表转发规则" class="headerlink" title="路由表转发规则"></a>路由表转发规则</h1><p>如果有多个网卡，即有多个源IP地址，我们需要判断使用哪个来发送IP数据报<br>1.根据目的IP地址，和本地路由表中的多个条目的子网掩码进行与运算，得到的结果和路由表中的目的IP地址进行比对，正确的就是我们要选择的网卡，<br>2。如果没有匹配的网卡，那么选择默认网关，其目标IP地址和子网掩码都是0.0.0.0<br>3.后续将数据包发送给路由器，路由表中的Gateway就表示路由器的IP地址，即源IP地址</p>
+<h1 id="如何优化HTTP-1-1"><a href="#如何优化HTTP-1-1" class="headerlink" title="如何优化HTTP/1.1"></a>如何优化HTTP/1.1</h1><ol>
+<li>避免发送HTTP请求：缓存技术（强制缓存和协商缓存）</li>
+<li>在需要发送 HTTP 请求时，考虑如何减少请求次数</li>
+</ol>
+<ul>
+<li>减少重定向请求次数：如果有代理服务器，那么重定向的过程可以由它来进行，减少HTTP请求次数（301和308表示客户端可以将重定向响应缓存到本地磁盘，之后自动用新的url来替换之前的url来访问服务器）</li>
+<li>合并请求（对于多个小的资源的请求，合并成一个总的资源请求）</li>
+<li>延迟发送请求：请求网页的时候，没必要把全部资源都获取到，而是只获取当前用户所看到的页面资源，当用户向下滑动页面的时候，再向服务器获取接下来的资源，这样就达到了延迟发送请求的效果。</li>
+</ul>
+<ol>
+<li>减少 HTTP 响应的数据大小</li>
+</ol>
+<ul>
+<li>无损压缩：br，gzip算法：将常出现的数据用较短的二进制比特序列表示，将不常出现的数据用较长的二进制比特序列表示</li>
+<li>有损压缩：比如对图<h1 id="TCP为什么是三次握手"><a href="#TCP为什么是三次握手" class="headerlink" title="TCP为什么是三次握手"></a>TCP为什么是三次握手</h1>1.阻止重复历史连接的初始化（主要原因）<br>如果是两步，那么服务端接收到之后就会建立连接，并向客户端发送数据，如果当前建立的连接并不是客户端需要的，那么就白白浪费了这次历史连接的建立，增加了开销。<br>2.同步双方的初始序列号：如果只有两次，那么服务端的序列号无法被确认，四次的话又可以压缩，所以是三次。<br>3.避免资源浪费：如果初始SYN发生了网络阻塞，客户端进行了超时重传，那么服务端由于不知道自己发送的SYN+ACK是否被接收到，只能再次建立连接。</li>
+</ul>
+<h1 id="为什么每次建立-TCP-连接时，初始化的序列号都要求不一样"><a href="#为什么每次建立-TCP-连接时，初始化的序列号都要求不一样" class="headerlink" title="为什么每次建立 TCP 连接时，初始化的序列号都要求不一样"></a>为什么每次建立 TCP 连接时，初始化的序列号都要求不一样</h1><ul>
+<li>为了防止历史报文被下一个相同四元组的连接接收（主要方面）<br>客户端和服务端建立一个 TCP 连接，在客户端发送数据包被网络阻塞了，然后超时重传了这个数据包，而此时服务端设备断电重启了，之前与客户端建立的连接就消失了，于是在收到客户端的数据包的时候就会发送 RST 报文。紧接着，客户端又与服务端建立了与上一个连接相同四元组的连接；在新连接建立完成后，上一个连接中被网络阻塞的数据包正好抵达了服务端，刚好该数据包的序列号正好是在服务端的接收窗口内，所以该数据包会被服务端正常接收，就会造成数据错乱。</li>
+<li>为了安全性，防止黑客伪造的相同序列号的 TCP 报文被对方接收</li>
+</ul>
+<p>初始序列号的产生：M + F<br>M是一个计时器，每隔4微秒+1，F是根据源 IP、目的 IP、源端口、目的端口生成一个随机数值。</p>
+<h1 id="既然-IP-层会分片，为什么-TCP-层还需要-MSS"><a href="#既然-IP-层会分片，为什么-TCP-层还需要-MSS" class="headerlink" title="既然 IP 层会分片，为什么 TCP 层还需要 MSS"></a>既然 IP 层会分片，为什么 TCP 层还需要 MSS</h1><p>如果一个 IP 分片丢失，整个 IP 报文的所有分片都得重传。<br>因为 IP 层本身没有超时重传机制，它由传输层的 TCP 来负责超时和重传。<br>经过 TCP 层分片后，如果一个 TCP 分片丢失后，进行重发时也是以 MSS 为单位，而不用重传所有的分片，大大增加了重传的效率</p>
+<h1 id="为什么需要-TIME-WAIT状态"><a href="#为什么需要-TIME-WAIT状态" class="headerlink" title="为什么需要 TIME_WAIT状态"></a>为什么需要 TIME_WAIT状态</h1><ul>
+<li>防止历史连接中的数据，被后面相同四元组的连接错误的接收；<br>如果某一个网络包被延迟，并且在延迟过程中客户端和服务端连接断开，然后如果TIME_WAIT状态没有或者过短，那么如果客户端和服务端以相同的四元组重新建立连接，那么该被延迟的数据是有可能被窗口接受的，而TIME_WAIT持续2MSL时间，就是为了让两个方向上的数据包都被丢弃，使得原来连接的数据包在网络中都自然消失，再出现的数据包一定都是新建立连接所产生的。</li>
+<li>保证「被动关闭连接」的一方，能被正确的关闭；</li>
+<li>如果客户端（主动关闭方）最后一次 ACK 报文（第四次挥手）在网络中丢失了，那么按照 TCP 可靠性原则，服务端（被动关闭方）会重发 FIN 报文。</li>
+</ul>
+<p>假设客户端没有 TIME_WAIT 状态，而是在发完最后一次回 ACK 报文就直接进入 CLOSE 状态，如果该 ACK 报文丢失了，服务端则重传的 FIN 报文，而这时客户端已经进入到关闭状态了，在收到服务端重传的 FIN 报文后，就会回 RST 报文。<br>服务端收到这个 RST 并将其解释为一个错误（Connection reset by peer），这对于一个可靠的协议来说不是一个优雅的终止方式。</p>
+<p>为了防止这种情况出现，客户端必须等待足够长的时间，确保服务端能够收到 ACK，如果服务端没有收到 ACK，那么就会触发 TCP 重传机制，服务端会重新发送一个 FIN，这样一去一来刚好两个 MSL 的时间。<br>客户端在收到服务端重传的 FIN 报文时，TIME_WAIT 状态的等待时间，会重置回 2MSL。</p>
+<h1 id="为什么需要CLOSE-WAIT状态"><a href="#为什么需要CLOSE-WAIT状态" class="headerlink" title="为什么需要CLOSE_WAIT状态"></a>为什么需要CLOSE_WAIT状态</h1><p>因为虽然此时服务端收到了客户端断开连接的请求，此时需要通知进程调用close和shutdown函数来断开连接，而此时可能应用层还有别的任务需要处理，所以需要一个中间状态，然后等调用close或者shutdown函数后，服务端才会变为last_ack状态</p>
+<h1 id="重传机制"><a href="#重传机制" class="headerlink" title="重传机制"></a>重传机制</h1><p>1.超时重传：数据包丢失和确认应答丢失<br>其机制是每一次重传时间增加一倍<br>2.快速重传：数据驱动，三次同样的ACK就会触发，但是并不知道所需要的ACK后面的需不需要重传<br>3.SACK：选择性确认，三次同样的ACK触发，TCP头部保存已经收到的数据段信息，只选择没有接收到的数据段重新发送。<br>4.D-SACK：告知发送方有哪些数据被重复接收了（例如ACK丢失和网络延时），会同时包括ACK和SACK两种，其中ACK表示需要的下一个包序列，SACK表示重复接收到的包，不需要再进行发送</p>
+<h1 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h1><p>1.概念：无需等待确认应答，而可以继续发送数据的最大值。窗口大小一般由接收方告诉发送方<br>2.发送窗口中分为两部分，一部分是已经发送但是还没有收到ACK的窗口大小，一部分是还没有发送的可用的发送部分，每当接收到一些ACK之后，窗口就可以向右滑动来增加可用部分<br>3.接收窗口表示未接收到但可以接收的数据，每次接收到数据后，窗口就可以向右滑动<br>涉及到的部分是流量控制：发送窗口和接收窗口所存放的数据都是放在系统内存缓冲区的，会在数据传输的过程中不断被系统调整</p>
+<h1 id="全连接队列满了之后只能丢弃连接吗"><a href="#全连接队列满了之后只能丢弃连接吗" class="headerlink" title="全连接队列满了之后只能丢弃连接吗"></a>全连接队列满了之后只能丢弃连接吗</h1><p>丢弃连接是Linux内核的默认行为，我们可以通过设置参数tcp_abort_on_overflow的值来修改他的行为</p>
+<ul>
+<li>值为0，则表示如果队列满了，则丢弃客户端发送的最后一次ack</li>
+<li>值为1，则服务端会发送一个RST给客户端，表示废弃掉这个握手过程和这个连接</li>
+</ul>
+<p>通常情况下，应该将该值设置为0，来应对突发的流量，因为可能过一段时间后，全连接队列就能空出位置来接收客户端重新发送的ack，二者还能够成功建立连接</p>
+<h1 id="为什么需要四次挥手"><a href="#为什么需要四次挥手" class="headerlink" title="为什么需要四次挥手"></a>为什么需要四次挥手</h1><p>因为服务端收到客户端的FIN报文时，马上会回复一个ACK报文，但是服务端应用程序可能还有数据要发送，所以并不能马上发送FIN报文，而是将该权限交给应用程序</p>
+<ul>
+<li>如果应用程序还要发送数据，那么发送完数据后才调用关闭连接的函数</li>
+<li>如果应用程序不再发送数据，那么直接就可以调用关闭连接的函数</li>
+</ul>
+<h1 id="三次挥手"><a href="#三次挥手" class="headerlink" title="三次挥手"></a>三次挥手</h1><p>如果服务端没有数据要发送而且开启了TCP延迟确认的情况，那么第二次挥手和第三次挥手就会合并成一次。<br>TCP延迟确认的规则：</p>
+<ul>
+<li>如果有响应数据要发送，那么响应数据和ACK会一起发送</li>
+<li>如果没有响应数据要发送，那么会等待一段时间看是否有响应数据需要发送</li>
+<li>如果在等待期间又接收到了数据，那么会立即发送ACK</li>
+</ul>
+<h1 id="没有accept也可以建立连接"><a href="#没有accept也可以建立连接" class="headerlink" title="没有accept也可以建立连接"></a>没有accept也可以建立连接</h1><p>accept最终返回是从全连接队列中取出一个元素，在前面的过程中实际上已经构建了连接<br>全连接队列和半连接队列是在服务点listen阶段内核创建的，其中全连接队列是链表，半连接队列是哈希表<br>没有listen的情况下也可以建立连接，比如两个客户端产生连接或者客户端和自己建立连接，这是因为内核有一个全局的hash表，可以用来存放客户端的连接信息，当消息发出后，经过回环地址重新回来以后，从hash表中取出连接信息，建立连接。</p>
+<h1 id="TCP的异常断开连接情况"><a href="#TCP的异常断开连接情况" class="headerlink" title="TCP的异常断开连接情况"></a>TCP的异常断开连接情况</h1><p>1.如果进程崩溃，那么内核会发送FIN，和另一端进行四次挥手断开连接<br>2.如果客户端宕机且没有重启，不会发生四次挥手：</p>
+<ul>
+<li>如果服务端发送数据，那么会超时重传，直到达到最大重传次数断开连接</li>
+<li>如果服务端不发送数据，如果服务端开启了keepalive，那么会去探测对方是否还在，如果探测不到，就会断开连接，如果没有开启保活机制，那么会一直保持在连接状态<br>3.如果客户端宕机且迅速重启：此时如果服务端向客户端发送数据，都会收到它发送的RST断开连接的报文</li>
+</ul>
+<h1 id="拔掉网线的问题"><a href="#拔掉网线的问题" class="headerlink" title="拔掉网线的问题"></a>拔掉网线的问题</h1><p>实际上拔掉网线不会影响TCP四元组的信息，其连接状态还是存在<br>1.如果有数据传输</p>
+<ul>
+<li>在数据传输的重传次数到达最大之前插入网线，还是能保持连接</li>
+<li>达到最大重传次数前没有插入网线，则断开连接<br>2.如果没有数据传输</li>
+<li>如果二者都没有keepalive，那么二者都默认是连接状态</li>
+<li>如果开启了保活机制，那么在探测期间内插入了网线，还是保持连接，如果探测失败，则断开连接</li>
+</ul>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/19/WebServer面试问题总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/08/19/WebServer面试问题总结/" class="post-title-link" itemprop="url">WebServer面试问题总结</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-08-19 20:55:44 / Modified: 21:02:10" itemprop="dateCreated datePublished" datetime="2022-08-19T20:55:44+08:00">2022-08-19</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="大概流程"><a href="#大概流程" class="headerlink" title="大概流程"></a>大概流程</h1><p>主线程监听连接，让epoll监听活跃的文件描述符，处理完之后开工作线程，工作线程任务（读写是分开的，不一定是同一个线程搞操作），读写缓冲区是数据httpconn的，httpconn是一个类，一个用户一个实例，所以直接独立了。读取客户端数据（用非阻塞IO),有个读缓冲，每个连接独享一个读和写缓冲，有个65K缓冲区，保证能一次读完，读不完就扩容。先去看读缓冲有没有数据，解析HTTP，生成响应数据，封装响应传回去。Reactor没有读和业务逻辑，Proactor才可以实现疯转业务逻辑。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/14/手动实现c字符串的基本函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -220,11 +507,19 @@
                 
               
 
-              <time title="Created: 2022-08-14 14:47:31 / Modified: 20:30:18" itemprop="dateCreated datePublished" datetime="2022-08-14T14:47:31+08:00">2022-08-14</time>
+              <time title="Created: 2022-08-14 14:47:31" itemprop="dateCreated datePublished" datetime="2022-08-14T14:47:31+08:00">2022-08-14</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-15 10:21:38" itemprop="dateModified" datetime="2022-09-15T10:21:38+08:00">2022-09-15</time>
+              </span>
             
           
 
@@ -254,7 +549,7 @@
     assert(str_des != nullptr);
     assert(str_source != nullptr);
     char *ret = str_des;
-    while((*str++ = *str_source++) != &#39;\0&#39;){
+    while((*str_des++ = *str_source++) != &#39;\0&#39;){
         ;
     }
     return ret;
@@ -609,7 +904,7 @@ unsigned int use_count() const{
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-28 23:48:59" itemprop="dateModified" datetime="2022-07-28T23:48:59+08:00">2022-07-28</time>
+                <time title="Modified: 2022-09-19 09:36:22" itemprop="dateModified" datetime="2022-09-19T09:36:22+08:00">2022-09-19</time>
               </span>
             
           
@@ -632,6 +927,129 @@ unsigned int use_count() const{
 <li>程序可以使用虚拟地址访问大于可用物理地址的内存缓冲区</li>
 <li>不同进程之间的虚拟地址分隔开，不同进程不会操作同一个物理地址，防止程序崩溃</li>
 </ul>
+<h1 id="中断问题"><a href="#中断问题" class="headerlink" title="中断问题"></a>中断问题</h1><p>Linux将中断问题分为上下两部分</p>
+<ul>
+<li>上半部分对应硬件，硬中断，用来快速处理中断，把网卡的数据读到内存中，更新一下硬件寄存器的状态</li>
+<li>下半部分对应内核，软中断，通常耗时比较长，例如从内存中读取数据，根据协议栈对网络数据进行逐层解析和处理，最终交给应用程序</li>
+</ul>
+<h1 id="cpu写入问题"><a href="#cpu写入问题" class="headerlink" title="cpu写入问题"></a>cpu写入问题</h1><ol>
+<li>写直达：同时把数据写入Cache和内存</li>
+</ol>
+<ul>
+<li>如果Cache中有该数据，先将数据更新，再写入到内存中</li>
+<li>如果Cache中没有该数据，则直接写入到内存中</li>
+</ul>
+<ol>
+<li>写回：当写数据时，新的数据被写入到Cache中，只有当修改过的Cache Block被替换时才写入到内存中<br>这种情况下，只有当缓存不命中，且对应的Cache Block是脏的情况下，才会将该脏的数据写入内存中，然后将要写入的数据，先从内存读入到Cache Blockz中，然后再把当前要写入的数据写入到Cache Block中，并标记为脏的</li>
+</ol>
+<h1 id="缓存一致性问题"><a href="#缓存一致性问题" class="headerlink" title="缓存一致性问题"></a>缓存一致性问题</h1><p>如果有多个CPU核心操作缓存数据，按照写回原则，则会出错，因为当没有发生缓存不命中且对应数据为脏时，缓存中的数据不会写回到内存中，此时其他核心从内存中读取的数据就是错的。为了解决，需要写传播和事务的串行化</p>
+<ul>
+<li>写传播：当某个CPU核心更新了Cache中的数据，需要广播到其他核心中，使用总线嗅探技术</li>
+<li>事务的串行化：基于总线嗅探技术实现的MESI方法，解决了上述两个问题</li>
+</ul>
+<h1 id="malloc申请内存的方式"><a href="#malloc申请内存的方式" class="headerlink" title="malloc申请内存的方式"></a>malloc申请内存的方式</h1><p>1.brk()函数从堆申请内存，具体为将指针从堆的低地址向高地址移动，小于128KB<br>2.mmap()函数从文件映射区分配内存，大于128KB<br>malloc分配的是虚拟地址，如果该虚拟地址没有被访问，则不会映射到真实物理地址，如果操作系统访问虚拟地址，通过页表查询发现虚拟地址对应的页没有在物理内存中，就会发生缺页中断，然后才会建立虚拟地址和物理内存之间的映射<br>不能都使用mmap函数，因为其会发生运行态的切换，而且mmap申请的内存总是会被释放掉，从而每次访问都会缺页中断，导致CPU消耗过大<br>也不能都使用brk函数，因为其堆指针连续向上增长，会产生内存碎片问题，导致内存泄露</p>
+<h1 id="free释放内存的问题"><a href="#free释放内存的问题" class="headerlink" title="free释放内存的问题"></a>free释放内存的问题</h1><p>1.如果是malloc使用brk()函数申请的内存，则不会释放掉<br>2.如果是mmap()函数申请的内存，则会释放掉<br>其中malloc返回给用户的数据会有一个16字节的信息头，其中保存了该内存块的大小，这样free释放的时候就知道要释放多大的内存块了</p>
+<h1 id="内存分配的过程"><a href="#内存分配的过程" class="headerlink" title="内存分配的过程"></a>内存分配的过程</h1><p>应用程序通过 malloc 函数申请内存的时候，实际上申请的是虚拟内存，此时并不会分配物理内存。当应用程序读写了这块虚拟内存，CPU 就会去访问这个虚拟内存， 这时会发现这个虚拟内存没有映射到物理内存，CPU 就会产生缺页中断，进程会从用户态切换到内核态，并将缺页中断交给内核的缺页中断函数处理。缺页中断处理函数会看是否有空闲的物理内存，如果有，就直接分配物理内存，并建立虚拟内存与物理内存之间的映射关系。<br>如果没有空闲的物理内存，那么内核就会开始进行回收内存的工作，回收的方式主要是两种：直接内存回收和后台内存回收。</p>
+<ul>
+<li>后台内存回收（kswapd）：在物理内存紧张的时候，会唤醒 kswapd 内核线程来回收内存，这个回收内存的过程异步的，不会阻塞进程的执行。</li>
+<li>直接内存回收（direct reclaim）：如果后台异步回收跟不上进程内存申请的速度，就会开始直接回收，这个回收内存的过程是同步的，会阻塞进程的执行。</li>
+<li>如果直接内存回收后，空闲的物理内存仍然无法满足此次物理内存的申请，那么内核就会放最后的大招了 ——触发 OOM （Out of Memory）机制。OOM Killer 机制会根据算法选择一个占用物理内存较高的进程，然后将其杀死，以便释放内存资源，如果物理内存依然不足，OOM Killer 会继续杀死占用物理内存较高的进程，直到释放足够的内存位置。</li>
+</ul>
+<h1 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h1><p>1.先来先服务<br>2.最短作业：优先选择运行时间最短的<br>3.高响应比优先调度算法：等待时间 + 要求服务时间/ 要求服务时间（无法实现）<br>4.时间片轮转算法：每个进程被分配一个时间片<br>5.最高优先级调度算法：静态和动态优先级<br>6.多级反馈队列 多个队列，每个队列优先级从高到低，新来的任务先加入第一级的队尾，按照先来先服务运行，如果没有运行完则加入第二级的队尾，如果来了一个优先级高的，则先去运行优先级高的任务队列，此时将原任务加入当前队列的队尾</p>
+<h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><p>1.匿名管道：通过fork父进程的文件描述符来建立连接，先进先出<br>2.命名管道：在不相关的进程间也能进行通信，其创建了一个类型为管道的设备文件<br>3.消息队列：在内核中，不适合比较大的文件传输，同时会带来用户态与内核态之间的数据拷贝开销<br>4.共享内存：一个虚拟内存，映射到同一块真实物理内存<br>5.信号量：P操作-1，如果小于0，则阻塞 V操作：如果小于等于0则有进程阻塞，唤醒它，如果大于0，则没有进程阻塞</p>
+<ul>
+<li>1：互斥信号量</li>
+<li>0：同步信号量：需要先执行的只需要V操作，需要后执行的只需要P操作<br>6.信号：异常状态下的通信<br>7.Socket：跨网络和不同的主机间进程通信</li>
+</ul>
+<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p>1.死锁的四个条件</p>
+<ul>
+<li>互斥</li>
+<li>忙等待</li>
+<li>不可剥夺</li>
+<li>环路等待</li>
+</ul>
+<p>2.如何避免</p>
+<ul>
+<li>资源有序分配法来打破环路等待：如果两个进程需要的资源相同，那么就按照同样的顺序去获取资源</li>
+</ul>
+<h1 id="锁的类型"><a href="#锁的类型" class="headerlink" title="锁的类型"></a>锁的类型</h1><p>1.互斥锁：获取不到资源时，将CPU释放，去执行其他进程<br>2.自旋锁：获取不到资源时，线程会忙等待，直到拿到锁<br>3.读写锁：当写锁没有被线程持有，那么多个线程可以持有读锁，如果线程持有了读锁，那么其他线程的读锁和写锁都会被阻塞</p>
+<ul>
+<li>读优先锁：写锁被阻塞，且后来的读锁也会先与写锁被执行</li>
+<li>写优先锁：读锁会阻塞写锁，但是后面的线程无法再持有读锁，那么写线程就会接着被执行</li>
+<li>比较公平的方法：把所有锁加入一个队列，先来先执行<br>4.以上都是悲观锁，还有乐观锁：先修改完共享资源，再验证这段时间内有没有发生冲突，如果没有其他线程在修改资源，那么操作完成，如果发现有其他线程已经修改过这个资源，就放弃本次操作。</li>
+</ul>
+<h1 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h1><p>1.先进先出：选择在内存中保留时间最长的页面<br>2.最近最久未使用：LRU<br>3.最不常用：选择访问次数最少的<br>4.时钟页面：所有页面保存在环形列表中，表针指向最老的页面，如果发生缺页就检查访问位置：如果是0则淘汰，并插入当前页面，如果是1，则置为0，表针向前一个走</p>
+<h1 id="如果系统中具有快表后，那么地址的转换过程变成什么样了？"><a href="#如果系统中具有快表后，那么地址的转换过程变成什么样了？" class="headerlink" title="如果系统中具有快表后，那么地址的转换过程变成什么样了？"></a>如果系统中具有快表后，那么地址的转换过程变成什么样了？</h1><ul>
+<li>CPU给出逻辑地址，由某个硬件算得页号、页内偏移量，将页号与快表中的所有页号进行比较。</li>
+<li>如果找到匹配的页号，说明要访问的页表项在快表中有副本，则直接从中取出该页对应的内存块号，再将内存块号与页内偏移量拼接形成物理地址，最后，访问该物理地址对应的内存单元。因此，若快表命中，则访问某个逻辑地址仅需一次访存即可。</li>
+<li>如果没有找到匹配的页号，则需要访问内存中的页表，找到对应页表项，得到页面存放的内存块号，再将内存块号与页内偏移量拼接形成物理地址，最后，访问该物理地址对应的内存单元。因此,若快表未命中，则访问某个逻辑地址需要两次访存(注意:在找到页表项后，应同时将其存入快表,以便后面可能的再次访问。但若快表已满，则必须按照-定的算法对旧的页表项进行替换)</li>
+</ul>
+<h1 id="动态分区分配算法"><a href="#动态分区分配算法" class="headerlink" title="动态分区分配算法"></a>动态分区分配算法</h1><p>1.首次适应算法：空闲分区以地址递增的次序排列，每次都从低地址开始查找空闲分区链或者空闲分区表，找到第一个能满足大小的空闲分区。<br>2.最佳适应算法：空闲分区按容量递增次序链接，每次分配内存时按顺序查找空闲分区表，找到大小能满足要求的第一个空闲分区。<br>3.最坏适应算法：空闲分区按容量递减次序链接，每次分配内存时按顺序查找空闲分区表，找到大小能满足要求的第一个空闲分区。<br>4.邻近适应算法：空闲分区以地址递增的顺序排列（可排成一个循环链表），每次分配内存时从上次查找结束的位置开始查找空闲分区链，找到大小能满足要求的第一个空闲分区。</p>
+<h1 id="静态链接和动态链接"><a href="#静态链接和动态链接" class="headerlink" title="静态链接和动态链接"></a>静态链接和动态链接</h1><p>1.静态链接：函数和数据被编译进一个二进制文件，链接时，链接器从库中复制这些函数和数据，并把他们和应用程序的其他模块组合起来创建最终的可执行文件。</p>
+<ul>
+<li>空间浪费：每个可执行文件中对所有需要的目标文件都要有一个副本</li>
+<li>更新困难：每当库函数代码发生变化，就需要重新编译链接形成可执行程序</li>
+<li>优点：运行速度快<br>2.动态链接：把程序按照模块拆分成各个相对独立的部分，在程序运行时才将他们链接到一起形成一个完整的程序，而不是像静态链接一样把所有程序模块都链接成一个单独的可执行文件。</li>
+<li>共享库：即使每个程序都依赖一个库，但是该库不会像静态链接那样在内存中存在多个副本，而是多个程序在执行时共享同一个副本。</li>
+<li>更新方便：更新时只需要替换原来的目标文件，而无需将所有的程序再链接一遍。</li>
+<li>性能损耗：每次程序运行都需要进行链接，性能会有一定损失。</li>
+</ul>
+<h1 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h1><p>问题描述：允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。</p>
+<p>一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。</p>
+<pre><code>typedef int semaphore;
+semaphore count_mutex = 1;
+semaphore data_mutex = 1;
+int count = 0;
+
+void reader() {
+    while(TRUE) {
+        down(&amp;count_mutex);
+        count++;
+        if(count == 1) down(&amp;data_mutex); // 第一个读者需要对数据进行加锁，防止写进程访问
+        up(&amp;count_mutex);
+
+        read();  
+
+        down(&amp;count_mutex);
+        count--;
+        if(count == 0) up(&amp;data_mutex);//最后一个读者要对数据进行解锁，防止写进程无法访问
+        up(&amp;count_mutex);
+    }
+}
+
+void writer() {
+    while(TRUE) {
+        down(&amp;data_mutex);
+
+        write();
+
+        up(&amp;data_mutex);
+    }
+}
+</code></pre><h1 id="中断和异常的区别"><a href="#中断和异常的区别" class="headerlink" title="中断和异常的区别"></a>中断和异常的区别</h1><p>1.中断是硬件产生的，通过中断控制器发给CPU，CPU判断其来自哪个硬件设备，最后发送给内核，由内核进行处理<br>2.异常由CPU产生，例如缺页异常；当运行除法程序时，当除数为0时，又会产生除0异常等。其会发送给内核，由内核来进行异常处理。</p>
+<h1 id="用户态和内核态"><a href="#用户态和内核态" class="headerlink" title="用户态和内核态"></a>用户态和内核态</h1><p>1.用户态：用户可以操作和访问的空间，这个空间通常存放我们用户自己的数据等<br>2.内核态：是系统内核来操作的一块空间，用来存放系统内核的函数，接口等<br>3.二者之间的最大区别就是特权级不同：用户态拥有最低的特权级，内核态拥有较高的特权级<br>4.为什么要分为内核态和用户态：为了安全性。在CPU的一些指令中，有些指令如果用错，将导致整个系统崩溃。分开之后，如果用户需要某些操作，内核为其提供了API，可以通过系统调用陷入内核，让内核去执行操作。<br>5.什么样的功能应该在内核态下实现：</p>
+<ul>
+<li>CPU的管理和内存管理：更为安全</li>
+<li>诊断和测试程序：因为需要访问计算机的所有资源</li>
+<li>文件系统：用户数据的管理可以放在用户态下，而对于文件系统本身的管理，需要放在内核态中。</li>
+<li>IO管理：因为要访问各种设备和底层数据结构，所以也要放在内核态实现。<br>6.如何辨别当前处于哪个态：CPU中有一个状态字，标识了当前的状态，用户态为3，内核态为0</li>
+</ul>
+<h1 id="用户态和内核态的切换"><a href="#用户态和内核态的切换" class="headerlink" title="用户态和内核态的切换"></a>用户态和内核态的切换</h1><p>1.系统调用：其机制核心还是通过操作系统为用户特别开放的一个中断来实现，表现为i一个正常的异常（软中断）。</p>
+<ul>
+<li>进程调用：exit和fork</li>
+<li>文件系统访问：chmod和chown</li>
+<li>设备调用：read和write</li>
+<li>信息读取：读取设备信息</li>
+<li>通信：pipe和mmap<br>2.中断：当外围设备完成用户请求的操作之后，会向CPU发出相应的中断信号，这时CPU会暂停执行下一条将要执行的指令，转而去执行中断信号的处理程序，如果先执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了有<br>用户态到内核态的切换。<br>3.异常：当CPU在执行用户态的程序时，发现某些异常情况，就会触发由当前进程切换到异常的内核相关程序中，比如缺页异常。</li>
+</ul>
+<h1 id="申请的虚拟内存大小超过了物理内存的大小"><a href="#申请的虚拟内存大小超过了物理内存的大小" class="headerlink" title="申请的虚拟内存大小超过了物理内存的大小"></a>申请的虚拟内存大小超过了物理内存的大小</h1><p>1.应用程序使用malloc申请的内存实际上是虚拟内存，此时并不会分配物理内存，只有当应用程序读取了虚拟内存，CPU会去访问这块虚拟内存，发现并没有映射到物理内存上，CPU就会产生缺页中断，用户态切换到内核态，由缺页中断处理函数去处理</p>
+<ul>
+<li>如果有空闲物理内存，就会直接分配，并且建立虚拟内存和物理内存的映射</li>
+<li>如果没有，内核就会开始内存回收的任务，如果空闲的物理内存大小不够，就会触发OOM<br>2.在32位机器上，最大可申请的虚拟内存大小是3G<br>3.在64位机器上，最大可申请的虚拟内存大小是128T，即使物理内存只有2G，我们也可以申请4G或者8G的虚拟内存，此时分为两种情况：</li>
+<li>没有开启Swap分区：此时由于物理内存不够，最终会触发OOM（内存溢出）</li>
+<li>开启了Swap分区，此时进程可以正常运行（Swap机制会将不常用的内存先写到磁盘中，然后释放这些内存，再次访问这些内存时，从磁盘读入即可）</li>
+</ul>
+<h1 id="Swap机制触发的条件"><a href="#Swap机制触发的条件" class="headerlink" title="Swap机制触发的条件"></a>Swap机制触发的条件</h1><p>1.内存不足：当系统需要的内存超过了可用的物理内存时，内核会将内存中不常使用的内存页交换到磁盘上为当前进程让出内存，保证正在执行的进程的可用性，这个内存回收的过程是强制的直接内存回收（Direct Page Reclaim）。直接内存回收是同步的过程，会阻塞当前申请内存的进程。<br>2.内存闲置：应用程序在启动阶段使用的大量内存在启动后往往都不会使用，通过后台运行的守护进程（kSwapd），我们可以将这部分只使用一次的内存交换到磁盘上为其他内存的申请预留空间。kSwapd 是后台进程，所以回收内存的过程是异步的，不会阻塞当前申请内存的进程。</p>
 
         
       
@@ -757,11 +1175,19 @@ unsigned int use_count() const{
                 
               
 
-              <time title="Created: 2022-07-07 21:37:39 / Modified: 17:18:25" itemprop="dateCreated datePublished" datetime="2022-07-07T21:37:39+08:00">2022-07-07</time>
+              <time title="Created: 2022-07-07 21:37:39" itemprop="dateCreated datePublished" datetime="2022-07-07T21:37:39+08:00">2022-07-07</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-09-17 20:39:58" itemprop="dateModified" datetime="2022-09-17T20:39:58+08:00">2022-09-17</time>
+              </span>
             
           
 
@@ -776,7 +1202,7 @@ unsigned int use_count() const{
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-函数中几种const构不构成重载的分析"><a href="#1-函数中几种const构不构成重载的分析" class="headerlink" title="1. 函数中几种const构不构成重载的分析"></a>1. 函数中几种const构不构成重载的分析</h3><ul>
+          <h2 id="1-函数中几种const构不构成重载的分析"><a href="#1-函数中几种const构不构成重载的分析" class="headerlink" title="1. 函数中几种const构不构成重载的分析"></a>1. 函数中几种const构不构成重载的分析</h2><ul>
 <li><p>函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误</p>
 <pre><code>  void test(int a){
       cout &lt;&lt; a &lt;&lt; endl;
@@ -810,7 +1236,7 @@ unsigned int use_count() const{
   }
 </code></pre></li>
 </ul>
-<h3 id="2-如何做到在const成员函数内修改成员变量"><a href="#2-如何做到在const成员函数内修改成员变量" class="headerlink" title="2.如何做到在const成员函数内修改成员变量"></a>2.如何做到在const成员函数内修改成员变量</h3><ul>
+<h2 id="2-如何做到在const成员函数内修改成员变量"><a href="#2-如何做到在const成员函数内修改成员变量" class="headerlink" title="2.如何做到在const成员函数内修改成员变量"></a>2.如何做到在const成员函数内修改成员变量</h2><ul>
 <li>使用mutable关键字去修饰成员变量，这样成员变量始终是可以变化的</li>
 <li><p>定义一个常量指针指向this所指的对象，然后用这个指针去修改成员变量</p>
 <pre><code>  class test{
@@ -828,8 +1254,8 @@ unsigned int use_count() const{
   }
 </code></pre></li>
 </ul>
-<h3 id="3-内联函数和宏定义的区别"><a href="#3-内联函数和宏定义的区别" class="headerlink" title="3.内联函数和宏定义的区别"></a>3.内联函数和宏定义的区别</h3><p>1.内联函数是函数，有参数类型检查，更为安全<br>2.内联函数由编译器进行处理，而宏定义由预处理器进行处理<br>3.内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</p>
-<h3 id="4-c-编译过程"><a href="#4-c-编译过程" class="headerlink" title="4.c++编译过程"></a>4.c++编译过程</h3><p>分为预处理+编译+汇编+链接</p>
+<h2 id="3-内联函数和宏定义的区别"><a href="#3-内联函数和宏定义的区别" class="headerlink" title="3.内联函数和宏定义的区别"></a>3.内联函数和宏定义的区别</h2><p>1.内联函数是函数，有参数类型检查，更为安全<br>2.内联函数由编译器进行处理，而宏定义由预处理器进行处理<br>3.内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</p>
+<h2 id="4-c-编译过程"><a href="#4-c-编译过程" class="headerlink" title="4.c++编译过程"></a>4.c++编译过程</h2><p>分为预处理+编译+汇编+链接</p>
 <ul>
 <li>预处理：主要处理那些源代码中以#开始的预编译指令，主要处理规则如下：<ul>
 <li>将宏定义进行文本替换</li>
@@ -839,11 +1265,302 @@ unsigned int use_count() const{
 </li>
 <li>编译：进行一系列词法分析，语法分析，语义分析及优化后生成相应的汇编代码文件（内联函数就在这一阶段）</li>
 <li>汇编：将汇编代码转变成机器语言</li>
-<li><p>链接：将各个目标文件组装在一起，并生成可执行文件。</p>
-<h3 id="5-程序的内存分配"><a href="#5-程序的内存分配" class="headerlink" title="5.程序的内存分配"></a>5.程序的内存分配</h3><p>1.栈区：由编译器自动分配释放，存放函数的参数值，局部变量等。<br>2.堆区：由程序员自己分配释放，分配方式类似于链表<br>3.全局静态区：全局变量和静态变量的位置，初始化的在一起，未初始化的在一起<br>4.常量区：常量存放地址，程序接受系统释放<br>5.程序代码区：存放函数的二进制代码</p>
-<h3 id="6-内存中堆和栈的区别"><a href="#6-内存中堆和栈的区别" class="headerlink" title="6.内存中堆和栈的区别"></a>6.内存中堆和栈的区别</h3><p>1.栈由系统统一分配，例如局部变量声明后就自动放在栈中（先进后出）<br>2.堆需要自己申请，比如malloc函数和new</p>
+<li>链接：将各个目标文件组装在一起，并生成可执行文件。</li>
+</ul>
+<h2 id="5-程序的内存分配"><a href="#5-程序的内存分配" class="headerlink" title="5.程序的内存分配"></a>5.程序的内存分配</h2><p>1.栈区：由编译器自动分配释放，存放函数的参数值，局部变量等。<br>2.堆区：由程序员自己分配释放，分配方式类似于链表<br>3.全局静态区：全局变量和静态变量的位置，初始化的在一起，未初始化的在一起<br>4.常量区：常量存放地址，程序接受系统释放<br>5.程序代码区：存放函数的二进制代码</p>
+<h2 id="6-内存中堆和栈的区别"><a href="#6-内存中堆和栈的区别" class="headerlink" title="6.内存中堆和栈的区别"></a>6.内存中堆和栈的区别</h2><p>1.栈由系统统一分配，例如局部变量声明后就自动放在栈中（先进后出）<br>2.堆需要自己申请，比如malloc函数和new</p>
+<h2 id="7-实现一个在main函数运行之前运行的函数"><a href="#7-实现一个在main函数运行之前运行的函数" class="headerlink" title="7.实现一个在main函数运行之前运行的函数"></a>7.实现一个在main函数运行之前运行的函数</h2><p>1.使用attribute关键字</p>
+<pre><code>__attribute((constructor))void before(){
+    cout &lt;&lt; &quot;before main&quot; &lt;&lt; endl;
+}
+</code></pre><p>2.使用全局对象的构造函数，其会在main函数执行之前运行</p>
+<pre><code>class my_test{
+public:
+    my_test(){
+        cout &lt;&lt; &quot;test&quot; &lt;&lt; endl;
+    }
+    ~my_test(){}
+}
+
+my_test test;
+
+void main(){
+    cout &lt;&lt; &quot;this is main func&quot; &lt;&lt; endl;
+}
+</code></pre><h2 id="8-c-常量储存的位置"><a href="#8-c-常量储存的位置" class="headerlink" title="8.c++常量储存的位置"></a>8.c++常量储存的位置</h2><p>1.局部常量（和局部变量位置一样）：栈区<br>2.全局常量（和全局变量位置一样）：全局静态区<br>3.字面值常量：存放在常量区</p>
+<h2 id="9-C-隐式转换"><a href="#9-C-隐式转换" class="headerlink" title="9.C++隐式转换"></a>9.C++隐式转换</h2><p>1.算数类型</p>
+<ul>
+<li>整型提升：将小整数转换成较大的整数类型</li>
+<li>有符号类型转换为无符号类型，其值可能回发生变化</li>
+<li>在条件判断中，非布尔类型自动转换为布尔类型（0为false，其余为true)</li>
+</ul>
+<p>2.类类型<br>《C++ Primer》中提到：可以用单个形参来调用的构造函数定义了从形参类型到该类类型的一个隐式转换。</p>
+<pre><code>class Test{
+public:
+    Test(int i);
+};
+
+Test t1 = 1;
+</code></pre><p>这里由于隐式转换，1先被Test构造函数构造成Test对象，然后才被赋值为1，其操作等同于</p>
+<pre><code>Test tmp(1);
+Test t1 = tmp;
+</code></pre><p>为了防止这种看起来很模棱两可的写法，可以使用关键字 explicit来防止隐式转换。其只对有一个参数的类构造函数有效，如果类构造函数的参数大于等于2是不会产生隐式转换的（有一种特殊情况，就是多个参数，但是除了其中某一个之外，其他参数都有默认值）。</p>
+<h2 id="10-extern-“C”作用"><a href="#10-extern-“C”作用" class="headerlink" title="10. extern “C”作用"></a>10. extern “C”作用</h2><p>被该语句修饰的变量和函数是按照C语言方式编译和链接的。一般在C++代码调用C语言代码，在C++的头文件中使用。实现C++和C的混合编程。</p>
+<p>作为一种面向对象的语言， C++ 支持函数重载，而过程式语言 C 则不支持。所以，函数被 C++ 编译后在符号库中的名字与 C 语言的有所不同。例如，假设某个函数的原型为：</p>
+<pre><code>void foo( int x, int y );
+</code></pre><p>该函数被 C 编译器编译后在符号库中的名字为 _foo ，而 C++ 编译器则会产生像 _foo_int_int 之类的名字（不同的编译器可能生成的名字不同，但是都采用了相同的机制，生成的新名字称为 mangled name ）。 _foo_int_int 这样的名字包含了函数名、函数参数数量及类型信息， C++ 就是靠这种机制来实现函数重载的。例如，在 C++ 中，函数 void foo( int x, int y ) 与 void foo( int x, float y ) 编译生成的符号是不相同的，后者为 _foo_int_float 。</p>
+<p>假设在C++中，模块A的头文件如下：</p>
+<pre><code>//模块A头文件　moduleA.h
+#ifndef MODULE_A_H
+#define MODULE_A_H
+int foo( int x, int y );
+#endif
+</code></pre><p>在模块 B 中引用该函数：</p>
+<pre><code>// 模块B实现文件　moduleB.cpp
+#include &quot;moduleA.h&quot;
+foo(2,3);
+</code></pre><p>实际上，在连接阶段，连接器会从模块 A 生成的目标文件 moduleA.obj 中寻找 _foo_int_int 这样的符号！</p>
+<p>对于上面例子，如果 B 模块是 C 程序，而A模块是 C++ 库头文件的话，会导致链接错误；同理，如果B模块是 C++ 程序，而A模块是C库的头文件也会导致错误。而加了extern “C”后，链接的时候寻找的就是未经修改的符号名_foo，不会产生错误。</p>
+<h2 id="11-说说RTTI"><a href="#11-说说RTTI" class="headerlink" title="11.说说RTTI"></a>11.说说RTTI</h2><p>1.RTTI是运行阶段类型识别的简称，其用途为：假设有一个基类和多个派生类，则可以让基类指针指向其中任何一个类的对象，但是我们想要知道指针具体指向的是哪个类的对象，因为：</p>
+<ul>
+<li>有可能想要调用类方法的正确版本，因为派生类对象可能包含不是继承来的方法，即只有派生类对象可以调用该方法。</li>
+<li>也有可能是出于调试的目的，想跟踪生成对象的类型。<br>2.有3个支持RTTI的元素：</li>
+<li>dynamic_cast运算符使用一个指向基类的指针来生成一个指向派生类的指针，其主要用于“安全的向下转型”，即基类对象的指针或者引用来转换为同一继承层次的其他指针和引用。向下转型有两种情况，一种是基类指针指向派生类对象，这种转换是安全的；另一种是基类指针所指对象为基类对象，这种情况会失败并返回空指针（即0）。对于引用类型，失败的时候抛出一个bad_cast异常。</li>
+<li>typeid运算符和type_info类：用于判断具体的类型</li>
+<li>二者之间的区别：前者用于判断是否能够进行转换，并进行类型检查，而后者直接判断具体的类型。</li>
+</ul>
+<h2 id="new和malloc的区别"><a href="#new和malloc的区别" class="headerlink" title="new和malloc的区别"></a>new和malloc的区别</h2><p>1.new分配在自由储存区（C++中一个抽象概念，凡是通过new进行内存申请的，该内存就是自由储存区）；malloc从堆上动态分配内存。那么自由存储区是否能够是堆（问题等价于new是否能在堆上动态分配内存），这取决于operator new 的实现细节。自由存储区不仅可以是堆，还可以是静态存储区，这都看operator new在哪里为对象分配内存。<br>2.new操作符内存分配成功时，返回的是对象类型的指针，类型严格与对象匹配，无须进行类型转换，故new是符合类型安全性的操作符。而malloc内存分配成功则是返回void <em> ，需要通过强制类型转换将void</em>指针转换成我们需要的类型。<br>3.new内存分配失败时，会抛出bac_alloc异常，它不会返回NULL；malloc分配内存失败时返回NULL。<br>4.使用new操作符申请内存分配时无须指定内存块的大小，编译器会根据类型信息自行计算，而malloc则需要显式地指出所需内存的尺寸。<br>5.使用new操作符来分配对象内存时会经历三个步骤：</p>
+<ul>
+<li>第一步：调用operator new 函数分配一块足够大的，原始的，未命名的内存空间以便存储特定类型的对象。</li>
+<li>第二步：调用相应的构造函数以初始化对象，并为其传入初值。</li>
+<li>第三部：对象构造完成后，返回一个指向该对象的指针。<br>使用delete操作符来释放对象内存时会经历两个步骤：</li>
+<li>第一步：调用对象的析构函数。</li>
+<li><p>第二步：编译器调用operator delete(或operator delete[])函数释放内存空间。<br>而malloc/free是库函数，只能动态的申请和释放内存，无法强制要求其做自定义类型对象构造和析构函数<br>6.对数组的处理：new对数组的支持体现在它会分别调用构造函数函数初始化每一个数组元素，释放对象时为每个对象调用析构函数。注意delete[] 要与new []配套使用，不然会找出数组对象部分释放的现象，造成内存泄漏。而malloc不会进行这些操作。<br>7.operator new的实现可以基于malloc，而malloc的实现不可以去调用new，示例代码如下：</p>
+<p>  void * operator new (sieze_t size)<br>  {</p>
+<pre><code>  if(void * mem = malloc(size)
+      return mem;
+  else
+      throw bad_alloc();
+</code></pre><p>  }<br>8.重新分配内存<br>使用malloc分配的内存后，如果在使用过程中发现内存不足，可以使用realloc函数进行内存重新分配实现内存的扩充。realloc先判断当前的指针所指内存是否有足够的连续空间，如果有，原地扩大可分配的内存地址，并且返回原来的地址指针；如果空间不够，先按照新指定的大小分配空间，将原有数据从头到尾拷贝到新分配的内存区域，而后释放原来的内存区域。<br>new没有这样直观的配套设施来扩充内存。</p>
 </li>
 </ul>
+<h2 id="sizeof的一些特性"><a href="#sizeof的一些特性" class="headerlink" title="sizeof的一些特性"></a>sizeof的一些特性</h2><ul>
+<li>sizeof是运算符，不是函数</li>
+<li>sizeof不能求得void类型的长度</li>
+<li>sizeof<strong>可以</strong>求得void指针的长度，在32位的机器上为4byte字节（因为是指针变量）</li>
+<li>sizeof可以求得静态分配内存的数组的长度，需要注意的是，如果在一个函数内部使用sizeof对数组求长度，而且这个数组是通过函数参数的形式传递进来，则长度还是4字节，因为这里参数被自动转换为了指针（即数组第一个元素的地址），这样可以减少拷贝导致的效率低下。另外，当字符数组表示字符串时，sizeof值将会把’\0’包含进去。</li>
+<li>sizeof不能求得动态分配的内存的大小，比如使用new分配的数组，还是会被当做指针求长度</li>
+<li>当表达式作为sizeof的操作数时，它返回表达式的计算结果的类型大小，但是不会对表达式求值。</li>
+<li>sizeof可以对函数调用求大小，并且求得的大小等于返回类型的大小，但是不执行函数体</li>
+<li>sizeof求得的结构体（及其对象）的大小并不等于各个数据成员对象的大小之和。这里涉及到内存对齐的规则，具体如下：<br>结构体的大小等于结构体内最大成员大小的整数倍；结构体内的成员的首地址相对于结构体首地址的偏移量是其类型大小的整数倍。</li>
+</ul>
+<h2 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h2><p>尽管内存是以字节为单位，但是大部分处理器并不是按字节块来存取内存的.它一般会以双字节,四字节,8字节,16字节甚至32字节为单位来存取内存，我们将上述这些存取单位称为内存存取粒度。提高存取数据的速度。比如有的平台每次都是从偶地址处读取数据，对于一个int型的变量，若从偶地址单元处存放，则只需一个读取周期即可读取该变量；但是若从奇地址单元处存放，则需要2个读取周期读取该变量。某些平台只能在特定的地址处访问特定类型的数据，否则抛出硬件异常给操作系统。32位机器和64位的机器内存对齐中，内置类型只有指针不一样：32为4字节，64位为8字节。</p>
+<h2 id="函数调用压栈过程"><a href="#函数调用压栈过程" class="headerlink" title="函数调用压栈过程"></a>函数调用压栈过程</h2><p>1.首先main函数中参数从右到左进行压栈，然后压入main函数的返回地址，如果发生函数调用，同样会压入该函数的地址，然后跳转到该函数内进行参数压栈等操作，函数返回时，参数出栈，最后会通过栈中保存的函数返回地址返回到main函数内，实现回溯过程。</p>
+<h1 id="多线程问题"><a href="#多线程问题" class="headerlink" title="多线程问题"></a>多线程问题</h1><p>1.join函数：让一个线程阻塞在当前位置，如下：</p>
+<pre><code>void fun(){
+    cout &lt;&lt; &quot;fun() &lt;&lt; endl;
+}
+
+int main(){
+    thread t1(fun);
+    t1.join();
+    cout &lt;&lt; &quot;main() &lt;&lt; endl;
+}
+</code></pre><p>此程序的打印顺序为：fun() -&gt; main()，因为t1.join()函数会自动的将主线程阻塞，直到t1线程完成，才会继续执行主线程。同时join函数还有另外一个作用，就是回收该线程的资源，如果删除掉t1.join()，最后程序会报错。</p>
+<p>2.detach()函数<br>detach()函数的作用是将子线程和主线程分离，让子线程在后台独立运行，如果主线程运行的很快，子线程还未执行完的话，那么子线程会在后台继续执行，执行完毕时由线程库回收其资源。</p>
+<p>3.mutex：互斥锁<br>想实现让多个线程互斥的访问某段代码，可以使用互斥锁，如下：</p>
+<pre><code>mutex m;
+
+void fun(){
+    m.lock();
+    fun_other_thing();
+    m.unlock();
+}
+</code></pre><p>线程申请该互斥锁，如果成功获取，则一直拥有直到该线程调用unlock()解锁。如果无法申请到，则线程阻塞在该过程中。</p>
+<p>4.lock_guard<br>在前面的代码中，如果fun_other_thing()函数的代码有问题，把么unlock()函数无法正常解锁，为了避免这种异常情况导致的无法解锁，可以使用lock_guard()自动加锁解锁，其原理和智能指针类似，会在构造函数里自动加锁，当lock_guard()出了局部作用域，会自动调用析构函数解锁。</p>
+<pre><code>mutex m;
+
+void fun(){
+    lock_guard&lt;mutex&gt; loc(m); //构造函数里自动加锁
+    fun_other_thing();
+    //出了这个局部作用域，自动解锁
+}
+</code></pre><p>5.unique_lock<br>lock_guard只能保证在析构时执行解锁操作，其本身并没有提供加锁和解锁的接口，为了提高并发度，需要尽可能减少锁定的区域，也就是减少锁的粒度。unique_lock弥补了这一缺点，提供了lock()和unlock()的接口，如下例子：</p>
+<pre><code>mutex m;
+
+void fun(){
+    unique_lock&lt;mutex&gt; loc(m);
+    fun_other_thing1();
+    loc.unlock();
+
+    fun_other_thing2();
+
+    loc.lock();
+    fun_other_thing3();
+    loc.unlock();
+}
+</code></pre><p>这个例子中，只锁住了fun_other_thing1()和fun_other_thing3()两个函数，减小了锁的粒度。</p>
+<p>6.条件变量condition_variable<br>一般情况下，unique_lock和condition_variable配合使用，当条件变量的wait()函数被调用前，它使用unique_lock来锁住当前线程，进入wait函数后，首先会检查条件是否为真，如果不为真，则wait会阻塞并释放锁，允许其他线程继续执行，直到另外一个线程在相同的条件变量上调用了notification()来唤醒当前线程，此时返回while循环判断里。下面通过一个例子来实现三个线程的顺序执行：</p>
+<pre><code>class Foo {
+private:
+    mutex m;                      // 互斥锁
+    condition_variable cd_v;      // 条件变量
+    bool flag1;                   // 两个标志位
+    bool flag2;
+public:
+    Foo() : flag1(false), flag2(false) {}   // 初始化两个标志位为false，表示second和third还不能打印
+
+    void first() {
+        for (int i = 0; i &lt; 10; ++i) {
+            cout &lt;&lt; &quot;first&quot; &lt;&lt; endl;
+        }
+        flag1 = true;        // first执行后，将flag1置为true，表示second可以打印了
+        cd_v.notify_all();   // 唤醒等待队列里的所有线程
+    }
+
+    void second() {
+        unique_lock&lt;mutex&gt; loc(m);    // 加锁
+        // （1）先判断flag1是否为true，true则不会进入while循环，顺利向下执行；
+        // （2）flag1为false则执行wait函数，释放锁，并进入对象cd_v的等待队列；
+        // （3）当别的线程调用对象cd_v的notify_all()函数，会唤醒在等待队列中的这个线程，然后重新获得锁，继续步骤（1）
+        while (flag1==false) {
+            cd_v.wait(loc);
+        }        
+        for (int i = 0; i &lt; 10; ++i) {
+            cout &lt;&lt; &quot;second&quot; &lt;&lt; endl;
+        }
+        flag2 = true;      // 修改flag2表示third已经可以打印了
+        cd_v.notify_all(); // 唤醒等待队列里的所有线程
+        // 当离开这个局部作用域时，unique_lock会调用析构函数，自动解锁
+    }    
+
+    void third() {
+        unique_lock&lt;mutex&gt; loc(m);
+        while (flag2==false) {
+            cd_v.wait(loc);
+        }
+        for (int i = 0; i &lt; 10; ++i) {
+            cout &lt;&lt; &quot;third&quot; &lt;&lt; endl;
+        }
+    }
+};
+
+
+int main() {
+    Foo F;  
+    thread(&amp;Foo::third, &amp;F).detach();
+    thread(&amp;Foo::first, &amp;F).detach();
+    thread(&amp;Foo::second, &amp;F).detach();               
+    system(&quot;pause&quot;);   
+}
+</code></pre><p>我们设置两个标志位，flag1为true表示允许second打印、flag2为true表示允许third打印，先初始化flag1、flag2为false。线程创建后，可能出现以下的执行顺序：</p>
+<ul>
+<li>如果在first()还未打印完时（或者压根还没开始执行时），执行second()，由于此时flag1被初始化为false，进入while循环，调用条件变量的wait函数，会将当前线程阻塞起来，并释放锁。此时需要等另一个子线程执行first()打印完毕后，将flag1设为true，然后调用notify_all()将阻塞的线程唤醒，second()才能接着执行，完成打印。</li>
+<li>如果first()已经执行完毕，然后执行second()，那么flag1为true，执行second()的那个线程不会进入while循环，也不会被阻塞起来，能顺利执行。</li>
+<li>third()的执行先后也可参考以上两种情况。</li>
+</ul>
+<p>7.wait函数<br>wait()会去检查这些条件(通过调用所提供的lambda函数)，当条件满足(lambda函数返回true)时返回。如果条件不满足(lambda函数返回false)，wait()函数将解锁互斥量，并且将这个线程(上段提到的处理数据的线程)置于阻塞或等待状态。当准备数据的线程调用notify_one()通知条件变量时，处理数据的线程从睡眠状态中苏醒，重新获取互斥锁，并且对条件再次检查，在条件满足的情况下，从wait()返回并继续持有锁。当条件不满足时，线程将对互斥量解锁，并且重新开始等待。</p>
+<p>8.生产者和消费者模型<br>生产者向队列中插入数据，消费者则在生产者发出队列准备好了后接收消息，然后取出数据进行处理：</p>
+<pre><code>#include &lt;pthread.h&gt;
+struct msg {
+struct msg *m_next;
+/* ... more stuff here ... */
+};
+struct msg *workq;
+pthread_cond_t qready = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t qlock = PTHREAD_MUTEX_INITIALIZER;
+
+void process_msg(void)
+{
+    struct msg *mp;
+    for (;;) {
+    pthread_mutex_lock(&amp;qlock);
+    while (workq == NULL)
+        pthread_cond_wait(&amp;qready, &amp;qlock);
+    mp = workq;
+    workq = mp-&gt;m_next;
+    pthread_mutex_unlock(&amp;qlock);
+    /* now process the message mp */
+    }
+}
+
+void enqueue_msg(struct msg *mp)
+{
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_mutex_unlock(&amp;qlock);
+    pthread_cond_signal(&amp;qready);
+}
+</code></pre><ul>
+<li>为什么在wait函数前需要加锁<br>在wait函数前加锁是为了保护条件变量，调用wait函数进行等待条件的发生时，mutex会被自动释放，以供其他线程改变条件，其中两个步骤必须是原子性的：把调用线程放到条件等待队列上，以及释放锁。<br>如果不是原子性的，比如先释放锁，这时候生产者向队列中添加数据，然后signal，之后消费者线程才去把调用线程放到等待队列上，signal信号就会丢失；如果先把调用线程放到条件等待队列上，这时候另外一个线程发送了signal，然后调用线程立即获取到锁，两次获取mutex会产生deadlock。</li>
+<li><p>生产者线程中修改条件为什么要加mutex<br>如果不这么做信号可能会丢失，如下：</p>
+<p>  Thead A                             Thread B</p>
+<p>  pthread_mutex_lock(&amp;qlock);<br>  while (workq == NULL)</p>
+<pre><code>                                  mp-&gt;m_next = workq;
+                                  workq = mp;
+                                  pthread_cond_signal(&amp;cond);
+</code></pre><p>  pthread_cond_wait(&amp;qready, &amp;qlock);</p>
+</li>
+</ul>
+<p>在while判断之后向队列中插入数据，虽然已经有了数据，但是线程A还是调用了wait函数去等待下一个信号到来，究其原因是B线程没有获取到锁就进行了操作，应该等到wait函数释放锁之后再进行插入数据的操作。</p>
+<ul>
+<li><p>消费者线程中判断条件为什么要放在while中<br>一个生产者可能对应多个消费者，生产者向队列中插入一条数据之后发出signal，然后各个消费者线程的wait函数获取mutex后返回，这里只有一个线程可以成功，如果这里使用了if，那么就会在当前队列为空的状态下继续执行，显然是不合理的。</p>
+</li>
+<li><p>signal是放在unlock之前还是之后</p>
+</li>
+</ul>
+<p>（1）：先unlock再signal</p>
+<pre><code>void enqueue_msg(struct msg *mp)
+{
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_mutex_unlock(&amp;qlock);
+    pthread_cond_signal(&amp;qready);
+}
+</code></pre><p>如果unlock后恰好有一个消费者获取mutex，然后进入条件判断，发现队列不为空，就会跳过wait函数，那么下面的signal就会不起作用；另外一种情况，一个优先级更低的不需要条件判断的线程也正好获取到了锁，那么就会去执行这个优先级低的线程，违背了设计的初衷</p>
+<p>（2）：先signal再unlock</p>
+<pre><code>void enqueue_msg(struct msg *mp)
+{
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_cond_signal(&amp;qready);
+    pthread_mutex_unlock(&amp;qlock);
+}
+</code></pre><p> 如果把signal放在unlock之前，消费者线程会被唤醒，发现mutex获取不到，则又去sleep了，浪费了资源，但是在Linux下，就不会有这个问题。因为在Linux 线程中，有两个队列，分别是cond_wait队列和mutex_lock队列，cond_signal只是让线程从cond_wait队列移到mutex_lock队列，而不用返回到用户空间，不会有性能的损耗。所以在Linux中推荐使用这种模式。</p>
+<h1 id="操作系统的IO分类"><a href="#操作系统的IO分类" class="headerlink" title="操作系统的IO分类"></a>操作系统的IO分类</h1><p> 1.缓冲与非缓冲IO（减少系统调用次数）</p>
+<ul>
+<li>缓冲 I/O，利用的是标准库的缓存实现文件的加速访问，而标准库再通过系统调用访问文件。</li>
+<li>非缓冲 I/O，直接通过系统调用访问文件，不经过标准库缓存。<br>2.直接与非直接IO</li>
+<li>直接 I/O，不会发生内核缓存和用户程序之间数据复制，而是直接经过文件系统访问磁盘。</li>
+<li><p>非直接 I/O，读操作时，数据从内核缓存中拷贝给用户程序，写操作时，数据从用户程序拷贝给内核缓存，再由内核决定什么时候写入数据到磁盘。<br>3.阻塞与非阻塞IO</p>
+  <div align="center">
+      <img src="E:/Hexo/source/_posts/pic/阻塞与非阻塞IO.png"> 
+  </div> 
+
+</li>
+</ul>
+<h1 id="关于缓存命中"><a href="#关于缓存命中" class="headerlink" title="关于缓存命中"></a>关于缓存命中</h1><p>1.CPU cache每次加载的数据长度是固定的，比如64字节，那么即是我们只请求了4字节的数据，它也会读取64字节的内容到L1 缓存中，方便之后再请求数据的时候先从L1 缓存中查找。其中L1缓存分为数据缓存和指令缓存。</p>
+<ul>
+<li>提升数据缓存命中率：按照内存布局的顺序访问，比如访问二维数组，则按照行排列的方式去访问数据。</li>
+<li>提升指令缓存命中率：按照有规律的分支语句可以提升CPU的分支预测器的执行效率，如果分支预测可以预测到接下来要执行 if 里的指令，还是 else 指令的话，就可以「提前」把这些指令放在指令缓存中，这样 CPU 可以直接从 Cache 读取到指令，于是执行速度就会很快。</li>
+</ul>
+<h1 id="伪共享的问题"><a href="#伪共享的问题" class="headerlink" title="伪共享的问题"></a>伪共享的问题</h1><p>多个线程同时读写同一个Cache Line的不同变量，而导致Cache Line失效的问题，称为伪共享。避免方法为将两个有可能地址连续的变量，使用对齐地址的方法使得二者不在一个Cache Line中，例如：</p>
+<pre><code>struct test{
+    int a;
+    int b __cacheline_aligned_in_smp;
+};
+</code></pre><h1 id="CPU对于线程的选择"><a href="#CPU对于线程的选择" class="headerlink" title="CPU对于线程的选择"></a>CPU对于线程的选择</h1><p>1.完全公平调度：CFS方法，对于普通任务，为其安排一个虚拟运行时间，如果一个任务在运行，那么运行时间越长，其虚拟运行时间就越大，如果一个任务没有被运行，其虚拟运行时间就不变。CPU优先会选择虚拟运行时间较短的任务来运行。<br>2.CPU运行队列：实际上任务数要远大于CPU核心数，这时候就需要队列来排队。每个CPU都有自己的运行队列，其中分为三个队列：Deadline运行队列，Realtime运行队列和CFS运行队列，其中CFS就是用红黑树来进行描述的，其最左侧的叶子节点就是下一次最先被调度的任务。当然这三个队列的优先级是不一样的，Deadline &gt; Realtime &gt; CFS</p>
+<h1 id="C-内存优化"><a href="#C-内存优化" class="headerlink" title="C++内存优化"></a>C++内存优化</h1><p>1.编译器优化：开启O2优化选项<br>2.算法和数据结构的优化</p>
+<ul>
+<li>如果是确定的数据长度，主要做查询工作，建议使用数组来完成</li>
+<li>如果时插入删除为主，需要使用链表的操作</li>
+<li>结构体里面按照CPU位长对齐<br>3.函数优化：使用内联函数，使用引用传递或者移动语义<br>4.类：定义移动构造和移动赋值运算符，避免不必要的复制操作</li>
+</ul>
+<h1 id="C-中有几种类型的new"><a href="#C-中有几种类型的new" class="headerlink" title="C++中有几种类型的new"></a>C++中有几种类型的new</h1><p>1.plain new：也就是我们常用的new，其在空间分配失败的情况下返回bad_alloc而不是NULL<br>2.nothrow new：空间分配失败的情况下，不抛出异常，而是返回NULL<br>3.palcement new：主要用途就是反复使用一块较大的动态分配的内存，来构造不同类型的对象或者他们的数组，需要显式的调用析构函数来销毁，不能使用delete，因为其构造的对象或者数组的大小并不一定等于原来分配的内存大小，使用delete会造成内存泄漏，或者释放内存出现运行时错误。</p>
+<h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用"></a>static的作用</h1><p>1.隐藏：编译多个文件时，没有static的全局变量和函数都具有全局可见性，而加了的只有在本文件中才可见<br>2.全局变量和static变量都在静态变量区，热着都会在程序刚开始运行就完成初始化，也是唯一一次初始化，值为0（没有给定值的情况下）<br>3.类中的static成员变量属于整个类所有，类的所有对象只有一份拷贝；类的static成员函数属于整个类所有，函数没有this指针，因而只能访问类的static成员变量<br>4.类的static成员变量必须先初始化再使用，只能在类体外进行初始化。<br>5.static成员函数不能被virtual修饰，因为static不属于任何对象或者实例，所以加virtual没有意义。况且static函数没有this指针，而虚函数的指向函数表的指针是通过this指针指向的，所以无法实现。</p>
 
         
       
@@ -908,7 +1625,7 @@ unsigned int use_count() const{
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-09 12:35:50" itemprop="dateModified" datetime="2022-07-09T12:35:50+08:00">2022-07-09</time>
+                <time title="Modified: 2022-09-15 10:20:01" itemprop="dateModified" datetime="2022-09-15T10:20:01+08:00">2022-09-15</time>
               </span>
             
           
@@ -926,7 +1643,7 @@ unsigned int use_count() const{
       
           <h1 id="一-C-部分"><a href="#一-C-部分" class="headerlink" title="一. C++部分"></a>一. C++部分</h1><h3 id="1-说一说指针和引用的区别"><a href="#1-说一说指针和引用的区别" class="headerlink" title="1.说一说指针和引用的区别"></a>1.说一说指针和引用的区别</h3><p>指针内部保存的是指向的对象的地址信息，而引用是变量的别名；<br>指针可以随时初始化，而引用被定义之后就要初始化，不可以为空<br>sizeof引用是被引用的对象的大小，而sizeof指针是指针类型的大小<br>指针既有顶层const（指针本身不能变），也有底层const（指针指向的对象不能变），而引用只有底层const，顶层const是无意义的。<br>二者的++操作不同，指针++表示指针运算，而引用++表示变量执行++。<br>引用只是C++的语法糖，可以看作是自动取地址解引用的常量指针。在汇编层面是一样的。</p>
 <h3 id="2-struct和class的区别"><a href="#2-struct和class的区别" class="headerlink" title="2.struct和class的区别"></a>2.struct和class的区别</h3><p>默认的（继承）访问权限，class是private，struct默认是public<br>class可以实现模板类，而struct不可以<br>struct是值类型，而class是引用类型</p>
-<h3 id="3-c-中多态"><a href="#3-c-中多态" class="headerlink" title="3.c++中多态"></a>3.c++中多态</h3><p>为了使代码重用性增加，使得代码可以模块化<br>静态多态：通过重载函数和泛型编程实现，通过基类指针指向的对象不同而调用不同的函数。是在编译器就完成的，编译器根据实参类型来确定。具有更好的类型安全性，因为编译阶段会对所有的绑定类型进行检查。<br>动态多态：通过虚函数和继承实现，运行时确定。</p>
+<h3 id="3-c-中多态"><a href="#3-c-中多态" class="headerlink" title="3.c++中多态"></a>3.c++中多态</h3><p>为了使代码重用性增加，使得代码可以模块化<br>静态多态：通过重载函数和泛型编程实现，通过基类指针指向的对象不同而调用不同的函数。是在编译器就完成的，编译器根据实参类型来确定。具有更好的类型安全性，因为编译阶段会对所有的绑定类型进行检查。<br>动态多态：通过虚函数和继承实现，运行时确定。虚函数表保存在只读数据段，编译器将类对象的前四个字节设置为指向虚函数表的指针。</p>
 <h3 id="4-面向对象"><a href="#4-面向对象" class="headerlink" title="4.面向对象"></a>4.面向对象</h3><p>面向对象的三大特征：封装、继承、多态。封装：将客观事物进行抽象，将其属性和方法合成为一个类，类封装了成员变量和成员函数，同时又实现对属性和方法的权限控制，降低与外界的耦合度 继承：子类继承父类的各种属性和方法，同时子类还可以在父类的基础上重新定义和扩展父类的属性和方法，使其具有不同的功能，继承提高了代码的复用性及可维护性 多态：同一调用语句在父类和子类间使用时具有不同的表现形式，可以使用同一段代码处理不行类型的对象，提高代码的复用性</p>
 <h3 id="5-浅拷贝和深拷贝"><a href="#5-浅拷贝和深拷贝" class="headerlink" title="5.浅拷贝和深拷贝"></a>5.浅拷贝和深拷贝</h3><p>浅拷贝 (Shallow Copy) 只复制某个对象的指针, 而不复制对象本身, 新旧对象还是共享同一块内存。在对象析构后，容易产生指针访问一个不存在的对象，从而产生悬空指针。<br>深拷贝 (Deep Copy) 在拷贝的过程中会另外创造一个一模一样的对象. 新对象跟原对象不共享内存, 修改新对象不会改到原对象. </p>
 <h3 id="6-STL容器的实现和查找时间复杂度"><a href="#6-STL容器的实现和查找时间复杂度" class="headerlink" title="6.STL容器的实现和查找时间复杂度"></a>6.STL容器的实现和查找时间复杂度</h3><ol>
@@ -948,7 +1665,7 @@ unsigned int use_count() const{
 <h3 id="11-哈希冲突的原因和影响因素，哈希冲突的解决方法"><a href="#11-哈希冲突的原因和影响因素，哈希冲突的解决方法" class="headerlink" title="11.哈希冲突的原因和影响因素，哈希冲突的解决方法"></a>11.哈希冲突的原因和影响因素，哈希冲突的解决方法</h3><ol>
 <li>哈希冲突产生的原因 哈希是通过对数据进行再压缩，提高效率的一种解决方法。但由于通过哈希函数产生的哈希值是有限的，而数据可能比较多，导致经过哈希函数处理后仍然有不同的数据对应相同的值，这时候就产生了哈希冲突。</li>
 <li>产生哈希冲突的影响因素 装填因子（装填因子=数据总数 / 哈希表长）、哈希函数、处理冲突的方法 </li>
-<li>哈希冲突的解决方法<br>a.开放地址方法<br>b.链式地址法<br>c.建立公共溢出区<br>d.再哈希法</li>
+<li>哈希冲突的解决方法<br>a.开放地址方法：如果冲突，则根据冲突的值再建立一个值，如果还冲突就重复操作直到不再冲突<br>b.链式地址法：将所有冲突的都放入一个链表中<br>c.建立公共溢出区：基本表和溢出表<br>d.再哈希法：同时构建多个哈希函数，一个发生冲突就使用另一个</li>
 </ol>
 <h3 id="12-map，unordered-map-的区别"><a href="#12-map，unordered-map-的区别" class="headerlink" title="12.map，unordered_map 的区别"></a>12.map，unordered_map 的区别</h3><p>map：内部实现了一个红黑树，该结构具有自动排序的功能，因此 map 内部的所有元素都是有序的，红黑树的每一个节点都代表着 map 的一个元素，因此，对于 map 进行的查找，删除，添加等一系列的操作都相当于是对红黑树进行这样的操作，故红黑树的效率决定了 map 的效率。<br>unordered_map：内部实现了一个哈希表，因此其元素的排列顺序是杂乱的，无序的。</p>
 <h3 id="13-红黑树的特性，为什么要有红黑树"><a href="#13-红黑树的特性，为什么要有红黑树" class="headerlink" title="13.红黑树的特性，为什么要有红黑树"></a>13.红黑树的特性，为什么要有红黑树</h3><p>在那种插入、删除很频繁的场景中，平衡树需要频繁着进行调整，这会使平衡树的性能大打折扣，为了解决这个问题，于是有了红黑树，红黑树具有如下特点：<br> 1、具有二叉查找树的特点；<br> 2、根节点是黑色的；<br> 3、每个叶子节点都是黑色的空节点（NIL），也就是说，叶子节点不存数据；<br> 4、任何相邻的节点都不能同时为红色，也就是说，红色节点是被黑色节点隔开的；<br> 5、每个节点，从该节点到达其可达的叶子节点是所有路径，都包含相同数目的黑色节点。</p>
@@ -978,6 +1695,9 @@ unsigned int use_count() const{
 <li>const_cast 常量转换 该运算符用来修改类型的const属性 常量指针被转化成非常量指针，并且仍然指向原来的对象 常量引用被转换成非常量引用，并且仍然指向原来的对象 注意:不能直接对非指针和非引用的变量使用 const_cast 操作符 </li>
 <li>reinterpret_cast 重新解释转换 这是最不安全的一种转换机制，最有可能出问题 主要用于将一种数据类型从一种类型转换为另一种类型，它可以将一个指针转换成一个整数，也可以将一个整数转换成一个指针</li>
 </ol>
+<h1 id="new-和-delete-是如何实现的"><a href="#new-和-delete-是如何实现的" class="headerlink" title="new 和 delete 是如何实现的"></a>new 和 delete 是如何实现的</h1><p>1.new的实现过程是：首先调用名为operator new 的标准库函数，分配足够大的内存来保存指定类型的一个对象，接下来运行该类型的构造函数，用于初始化该对象，最后返回该对象的指针。<br>2.delete的实现过程：对指针指向的对象运行适当的析构函数，然后调用operator delete的标准库函数释放该对象的内存</p>
+<h1 id="指针占多少字节"><a href="#指针占多少字节" class="headerlink" title="指针占多少字节"></a>指针占多少字节</h1><p>一个指针占内存的大小跟编译环境有关，而与机器的位数无关。32位编译环境下为4字节，64位编译环境下为8字节</p>
+<h1 id="顶层const和底层const"><a href="#顶层const和底层const" class="headerlink" title="顶层const和底层const"></a>顶层const和底层const</h1><p>1.顶层const可以表示任意的对象是常量，这一点对任何数据类型都使用，底层const则与指针和引用的复合类型有关<br>2.当执行对象的拷贝操作时，顶层const不受什么影响，但是底层const的限制不能被忽略。<br>3.对于重载，顶层const不构成重载，底层const构成重载</p>
 
         
       
@@ -1180,333 +1900,6 @@ unsigned int use_count() const{
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/05/回溯问题的去重技巧/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2022/04/05/回溯问题的去重技巧/" class="post-title-link" itemprop="url">回溯问题的去重技巧</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2022-04-05 23:04:56" itemprop="dateCreated datePublished" datetime="2022-04-05T23:04:56+08:00">2022-04-05</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-06 14:47:28" itemprop="dateModified" datetime="2022-04-06T14:47:28+08:00">2022-04-06</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-回溯问题"><a href="#1-回溯问题" class="headerlink" title="1. 回溯问题"></a>1. 回溯问题</h1><p>在<code>leetcode</code>中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树性结构，其中，所遍历的集合的大小构成了树的宽度，递归的深度构成了树的深度。下面我们给出回溯函数的模板，包括返回值、参数以及写法：</p>
-<ul>
-<li><p><strong>回溯方法的函数伪代码</strong></p>
-<pre><code>  void backtarcking(参数)
-</code></pre></li>
-</ul>
-<p>这里我们使用<code>void</code>作为回溯函数的返回值，因为我们需要做的是在集合中寻找符合题意的解，那么就可以设置一个<code>result</code>数组来保存符合题意的解，在递归调用的过程中，不断将解加入<code>result</code>即可，函数遇到终止条件就可以<code>return</code>。</p>
-<ul>
-<li><p><strong>回溯函数的终止条件</strong></p>
-<p>  终止条件视情况而定，有可能是遍历到叶子节点，有可能是需要满足一些条件，在<code>backtracking</code>函数中，首先要做的就是判断是否触发了终止条件，如果触发了，那么就处理当前的结果，需要的话还要<code>return</code>，这里的关键是，如果需要遍历所有情况，则不需要<code>return</code>，因为其会导致后面的通往叶子节点的路径不会被遍历到。如果需要剪枝的话，则需要<code>return</code>。终止条件的伪代码为：</p>
-<pre><code>  if(终止条件){
-      处理结果；
-      (return, 视情况而定)
-  }
-</code></pre><p>  还需要注意的是，有些寻找子集的问题或者排列组合的问题中，并不需要终止条件，此时只需要处理结果就可以。</p>
-</li>
-<li><p><strong>回溯函数的递归部分</strong></p>
-<p>  递归部分是回溯函数的核心，只有把递归部分写的明白，才算真正懂得了何为“回溯”，所谓回溯就是指在遍历过程中保存的中间结果，在之后的遍历时仍然需要，那么就需要保存起来，常用的方法是使用<code>path</code>数组保存起来，遍历到当前节点时，将节点信息保存至<code>path</code>中，遍历后，在将最后一个保存的信息弹出，这样<code>path</code>中最后保存的就是前一个节点的信息。递归部分的伪代码：</p>
-<pre><code>  for(int i = startIndex; i &lt; size; i++){
-      处理节点
-      path.push_back(当前节点)
-      backtracking(i + 1, 其他参数)；
-      path.pop_back(); // 回溯
-  }
-</code></pre></li>
-</ul>
-<h1 id="2-回溯问题中的去重技巧"><a href="#2-回溯问题中的去重技巧" class="headerlink" title="2. 回溯问题中的去重技巧"></a>2. 回溯问题中的去重技巧</h1><p>在回溯问题中有这样几道题，比如<a href="https://leetcode-cn.com/problems/combination-sum-ii/" target="_blank" rel="noopener">leetcode-&gt;40</a>。这里的要求是解中不能包含重复的组合。我们一下就能想到，把符合题意的解放入<code>unordered_map</code>或者<code>unordered_set</code>中，每次有新的解，就去容器中<code>find</code>一下，如果<code>find</code>的结果等于容器的<code>end()</code>，那么就说明没有重复解，再次加入容器即可。然后理想很丰满，现实很骨感，这样的判断很容易导致超时。那么有什么更好的方法呢？既然在遍历过程中已经对所有情况进行了搜索，何不在搜索过程中就进行重复判断，比如这道题的示例<code>1</code>中，<code>[1,7]</code>和<code>[7,1]</code>都是会被搜索到的，那么怎么判断这两者重复了呢？答案就是排序，排完序后都是<code>[1,7]</code>。排序也分为两种情况，第一种是找到答案后再排序，这样无疑复杂度会很高，并且还是需要对结果进行判重，需要用到<code>unordered_map</code>或者<code>unordered_set</code>。第二种则是对初始数组进行排序，这样原数组就变成了<code>[1,1,2,5,6,7,10]</code>，在搜索过程中会遇到两次<code>[1,7]</code>,那么只需要判断：如果当前节点是否和前一个节点相同，并且在前一个节点使用过，那么当前节点就不能使用。此时可以利用一个<code>vector&lt;bool&gt; used</code>来保存每个节点的使用状态，要注意的是，判重是在同一层进行的，不同层之间<code>used</code>是不影响的。我们用一个例子来画一下树状图，比如<code>nums = [1,1,2]，target = 3</code></p>
-<img src="/2022/04/05/回溯问题的去重技巧/1.png" title="This is an example image">
-<p>总体代码如下：</p>
-<pre><code>class Solution {
-private:
-    vector&lt;vector&lt;int&gt;&gt; result;
-    vector&lt;int&gt; path;
-
-    void backtracking(int target, const vector&lt;int&gt;&amp; candidates, int startIndex, vector&lt;bool&gt; used){
-        int sum = 0;
-        for(int j = 0; j &lt; path.size(); j++){
-            sum += path[j];
-        }   
-        if(sum == target){
-            result.push_back(path);
-            return;
-        }else if(sum &gt; target)return ; // 剪枝
-
-        for(int i = startIndex; i &lt; candidates.size(); i++){
-            if(i &gt; 0 &amp;&amp; candidates[i] == candidates[i - 1] &amp;&amp; used[i - 1] == false){ // 判重
-                continue;
-            }
-            path.push_back(candidates[i]);
-            used[i] = true;
-            backtracking(target, candidates, i + 1, used);
-            used[i] = false; // 回溯
-            path.pop_back(); // 回溯
-        }
-    }
-public:
-    vector&lt;vector&lt;int&gt;&gt; combinationSum2(vector&lt;int&gt;&amp; candidates, int target) {
-        result.clear();
-        path.clear();
-        vector&lt;bool&gt; used(candidates.size(), false);
-        sort(candidates.begin(), candidates.end()); // 记住要排序
-        backtracking(target, candidates, 0, used);
-        return result;
-    }
-};
-</code></pre><p>当然，这里还有优化的空间，比如在递归调用中，每次进入下一层之后才会计算<code>path</code>的和，我们可以将<code>sum</code>放入<code>backtracking</code>的参数中，在进入下一层之前计算当前<code>sum + candidates[i]</code>的和是否大于<code>target</code>，如果大于的话就<code>break</code>，可以减少递归调用。</p>
-<h1 id="3-去重问题的特殊情况"><a href="#3-去重问题的特殊情况" class="headerlink" title="3. 去重问题的特殊情况"></a>3. 去重问题的特殊情况</h1><p>下面我们来看一下<a href="https://leetcode-cn.com/problems/increasing-subsequences/" target="_blank" rel="noopener">leetcode-&gt;491</a>，这道题需要找到数组中不同的递增子序列。这就说明我们不能对原数组进行排序。那么就会给判重增加一定的难度，但是想到使用<code>map</code>和<code>set</code>增加的复杂度，我们依然使用在搜索过程中进行判重的方法。在示例1的搜索过程中，会依次遍历到<code>[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[4,7]</code>，这里就产生了重复，我们画一下抽象树性图：</p>
-<img src="/2022/04/05/回溯问题的去重技巧/2.png" title="This is an example image">
-<p>此时可以看到，导致重复的原因是同一层内出现了重复的元素，那么判重方法就是在同一层内判断当前节点的值是否和之前的<strong>所有值</strong>有相同情况出现。简单的增加一个判重函数即可。</p>
-<pre><code>//判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
-    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
-        for(int i = start;i &lt; end; i++){
-            if(nums[i] == nums[end])return false;
-        }
-        return true;
-    }
-</code></pre><p>其中start是递归for循环中startIndex的位置，end为递归for循环中i的位置。这样判重就可以方便的降低复杂度，避免了map和set的使用。</p>
-<p>总体代码如下：</p>
-<pre><code>class Solution {
-    vector&lt;vector&lt;int&gt;&gt; result;
-    vector&lt;int&gt; path;
-    void backtracking(const vector&lt;int&gt;&amp; nums, int startIndex){
-        if(path.size() &gt;= 2){ // path中至少存了2两个数就可以放入result中了
-            result.push_back(path); // 并且由于需要遍历所以不需要return
-        }
-        for(int i = startIndex; i &lt; nums.size(); i++){
-            //如果 i 不等于 startIndex 并且重复，那么就跳过当前值
-            if(i != startIndex &amp;&amp; !isRepeat(nums, startIndex, i))continue;
-            if(startIndex == 0 || nums[i] &gt;= path.back()){ // 第一个数和满足条件的数要放入
-                path.push_back(nums[i]);
-                backtracking(nums, i + 1);
-                path.pop_back();
-        }
-        }   
-    }
-    //判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
-    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end){
-        for(int i = start;i &lt; end; i++){
-            if(nums[i] == nums[end])return false;
-        }
-        return true;
-    }
-public:
-    vector&lt;vector&lt;int&gt;&gt; findSubsequences(vector&lt;int&gt;&amp; nums) {
-        result.clear();
-        path.clear();
-        backtracking(nums, 0);
-        return result;
-    }
-};
-</code></pre>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/17/拷贝构造和拷贝赋值/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2022/03/17/拷贝构造和拷贝赋值/" class="post-title-link" itemprop="url">拷贝构造和拷贝赋值</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2022-03-17 16:08:26 / Modified: 18:19:19" itemprop="dateCreated datePublished" datetime="2022-03-17T16:08:26+08:00">2022-03-17</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-拷贝构造函数"><a href="#1-拷贝构造函数" class="headerlink" title="1. 拷贝构造函数"></a>1. 拷贝构造函数</h1><p>如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。例如我们有如下类框架：</p>
-<pre><code>class HasPtr{
-public:
-    HasPtr(const std::string &amp;s = std::string()):
-        ps(new std::string(s)), i(0) { }
-
-    //拷贝构造函数，其中动态分配了一个新的string，并将对象拷贝到ps指向的位置
-    //这里涉及到string的new构造方法，即动态创建一个堆内存，该内存保存hp.ps保存的值，并将ps设置为指向当前新开辟内存，这样就不会出现当前对象的ps和传入的参数同时指向一个内存地址的情况
-    HasPtr(const HasPtr&amp; hp):
-        ps(new std::string(*hp.ps)), i(hp.i) {}
-private:
-    std::string *ps;
-    int i;
-}
-</code></pre><p>拷贝构造函数在很多情况下都会被隐式使用，所以其不应该是<code>explicit</code>的。同时，其第一个参数必须是引用类型，否则其调用永远不会成功。假设该参数不是引用，而是传值参数，</p>
-<pre><code>HasPtr(const HasPtr hp):   
-</code></pre><p>那么拷贝构造时</p>
-<pre><code>HasPtr hp1;
-HasPtr hp2(hp1); //拷贝构造
-</code></pre><p>此时<code>hp1</code>是实参，将会传值给形参<code>hp</code>，而此时相当于调用<code>HasPtr hp(hp1)</code>，此时编译器又会调用类的拷贝构造函数，导致这一过程无限继续下去，使得调用无法成功。</p>
-<p>拷贝构造会在以下情况发生：</p>
-<ul>
-<li>拷贝初始化（用<code>=</code>初始化变量）</li>
-<li>将一个对象作为实参传递给一个非引用类型的形参</li>
-<li>从一个返回类型为非引用类型的函数返回一个对象</li>
-<li>用花括号列表初始化一个数组中的元素或一个聚合类中的成员</li>
-<li>某些类类型还会对它们所分配的对象使用拷贝初始化，例如初始化标准库容器或者调用其<code>insert</code>和<code>push</code>成员时。（与之相对的是，用<code>emplace</code>创建的元素都进行直接初始化）。</li>
-</ul>
-<h1 id="2-拷贝赋值运算符"><a href="#2-拷贝赋值运算符" class="headerlink" title="2. 拷贝赋值运算符"></a>2. 拷贝赋值运算符</h1><p>与类控制其对象如何初始化一样，类也可以控制其对象如何赋值。</p>
-<pre><code>HasPtr hp1, hp2;
-hp1 = hp2; //使用拷贝赋值运算符
-</code></pre><p>为了实现自定义的拷贝赋值运算符，我们需要重载赋值运算符，其本质上就是一个函数，接受一个与其所在类相同类型的参数，如下形式：</p>
-<pre><code>class HasPtr {
-public:
-    HasPtr(const std::string &amp;s = std::string()) : ps(new std::string(s)), i(0) { }
-    HasPtr(const HasPtr &amp;hp) : ps(new std::string(*hp.ps)), i(hp.i) { }
-
-    //重载赋值运算符实现拷贝赋值运算符，返回引用
-    HasPtr&amp; operator=(const HasPtr &amp;rhs_hp) {
-        if(this != &amp;rhs_hp){
-            //在堆上新开辟内存，保存hp.ps的内容，并返回一个指向当前位置的指针
-            std::string *temp_ps = new std::string(*rhs_hp.ps);
-            delete ps; //这里销毁了ps指向的内存，而ps指针还存在
-            ps = temp_ps; //将当前对象的ps设置为temp_ps
-            i = rhs_hp.i;
-        }
-        return *this; //返回自身类类型的引用
-    }
-private:
-    std::string *ps;
-    int i;
-};
-</code></pre><p><strong>为了与内置类型的赋值保持一致，赋值运算符通常返回一个指向其左侧运算对象的引用。</strong></p>
-<h1 id="3-合成拷贝构造函数"><a href="#3-合成拷贝构造函数" class="headerlink" title="3. 合成拷贝构造函数"></a>3. 合成拷贝构造函数</h1><p>如果我们没有为一个类定义拷贝构造函数，编译器就会为我们定义一个，称为合成拷贝构造函数。一般情况下，它的作用是将其参数给定的对象中每个非<code>static</code>成员逐个拷贝到正在创建的对象中。那么我们就可以理解直接初始化和拷贝初始化的差异了。（拷贝初始化是指使用<code>=</code>进行的初始化）。</p>
-<pre><code>string dots(10, &#39;.&#39;);  //直接初始化
-string s(dots);        //直接初始化
-string s2 = dots;      //拷贝初始化
-string null_book = &quot;9-99-999-99&quot;; //拷贝初始化
-string nines = string(100, &#39;9&#39;);  //拷贝初始化
-</code></pre><p>使用直接初始化时，实际上是要求编译器使用普通的函数匹配来选择与我们提供的参数最匹配的构造函数。当使用拷贝初始化时，要求编译器将右侧运算对象拷贝到正在创建的对象中，必要的化还要进行类型转换。拷贝初始化一般情况下使用拷贝构造函数来完成，在之后的章节会介绍移动构造函数，会更方便的进行拷贝构造。</p>
-<h1 id="4-合成拷贝赋值运算符"><a href="#4-合成拷贝赋值运算符" class="headerlink" title="4. 合成拷贝赋值运算符"></a>4. 合成拷贝赋值运算符</h1><p>如果我们没有为一个类定义拷贝赋值运算符，编译器就会为我们定义一个，称为合成拷贝赋值运算符。它会将右侧对象的每个非static成员赋予左侧运算对象的对应成员，对于数组成员，逐个赋值数组元素。最终返回一个指向左侧运算对象的引用。</p>
-<h1 id="5-注意事项"><a href="#5-注意事项" class="headerlink" title="5. 注意事项"></a>5. 注意事项</h1><ul>
-<li>某些情况下，合成拷贝构造函数和合成拷贝赋值运算符的作用是禁止该类型对象的构造和赋值。这时候是因为我们定义的类并不需要拷贝、赋值或者销毁其成员。这里参考<code>13.1.6</code>章节的阻止拷贝章节。</li>
-<li>对于使用<code>shared_ptr</code>控制的对象类型，拷贝构造和拷贝赋值会增加<code>count</code>次数，而<code>weak_ptr</code>则不会。</li>
-</ul>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1556,7 +1949,7 @@ string nines = string(100, &#39;9&#39;);  //拷贝初始化
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1672,60 +2065,8 @@ string nines = string(100, &#39;9&#39;);  //拷贝初始化
       
     
       
-        
-      
     
       
-    
-  
-    
-      
-<script type="text/x-mathjax-config">
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') {
-          next = next.nextSibling;
-        }
-        if (next && next.nodeName.toLowerCase() === 'br') {
-          next.parentNode.removeChild(next);
-        }
-      }
-    });
-  });
-
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
-      if (element.nodeName.toLowerCase() == 'li') {
-        element = element.parentNode;
-      }
-      element.classList.add('has-jax');
-    }
-  });
-</script>
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
-    MathJax.Hub.Typeset();
-  }, window.MathJax);
-</script>
-
     
   
 
