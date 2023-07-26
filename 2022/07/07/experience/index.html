@@ -55,19 +55,19 @@
   };
 </script>
 
-  <meta name="description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
+  <meta name="description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; 2endl;">
 <meta name="keywords" content="code">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sakurastream">
 <meta property="og:url" content="http://yoursite.com/2022/07/07/experience/index.html">
 <meta property="og:site_name" content="Sakurastream">
-<meta property="og:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
+<meta property="og:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; 2endl;">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="e:/Hexo/source/_posts/pic/阻塞与非阻塞IO.png">
-<meta property="og:updated_time" content="2022-09-17T12:39:58.979Z">
+<meta property="og:updated_time" content="2022-10-12T09:00:26.100Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Sakurastream">
-<meta name="twitter:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;">
+<meta name="twitter:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; endl;   }   //下面的代码会报重定义错误   void test(const int a){       cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; 2endl;">
 <meta name="twitter:image" content="e:/Hexo/source/_posts/pic/阻塞与非阻塞IO.png">
   <link rel="canonical" href="http://yoursite.com/2022/07/07/experience/">
 
@@ -237,7 +237,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 20:39:58" itemprop="dateModified" datetime="2022-09-17T20:39:58+08:00">2022-09-17</time>
+                <time title="Modified: 2022-10-12 17:00:26" itemprop="dateModified" datetime="2022-10-12T17:00:26+08:00">2022-10-12</time>
               </span>
             
           
@@ -260,7 +260,7 @@
   }
   //下面的代码会报重定义错误
   void test(const int a){
-      cout &lt;&lt; a &lt;&lt; endl; 
+      cout &lt;&lt; a &lt;&lt; 2endl; 
   }
 </code></pre></li>
 <li><p>函数中引用传递和指针传递增加const构成重载，因为传入的是确切的对象，<code>const</code>可以区分传入的这些对象能否被修改的性质</p>
@@ -525,13 +525,13 @@ void process_msg(void)
 {
     struct msg *mp;
     for (;;) {
-    pthread_mutex_lock(&amp;qlock);
-    while (workq == NULL)
-        pthread_cond_wait(&amp;qready, &amp;qlock);
-    mp = workq;
-    workq = mp-&gt;m_next;
-    pthread_mutex_unlock(&amp;qlock);
-    /* now process the message mp */
+        pthread_mutex_lock(&amp;qlock);
+        while (workq == NULL)
+            pthread_cond_wait(&amp;qready, &amp;qlock);
+        mp = workq;
+        workq = mp-&gt;m_next;
+        pthread_mutex_unlock(&amp;qlock);
+        /* now process the message mp */
     }
 }
 
@@ -612,6 +612,277 @@ void enqueue_msg(struct msg *mp)
 </ul>
 <h1 id="C-中有几种类型的new"><a href="#C-中有几种类型的new" class="headerlink" title="C++中有几种类型的new"></a>C++中有几种类型的new</h1><p>1.plain new：也就是我们常用的new，其在空间分配失败的情况下返回bad_alloc而不是NULL<br>2.nothrow new：空间分配失败的情况下，不抛出异常，而是返回NULL<br>3.palcement new：主要用途就是反复使用一块较大的动态分配的内存，来构造不同类型的对象或者他们的数组，需要显式的调用析构函数来销毁，不能使用delete，因为其构造的对象或者数组的大小并不一定等于原来分配的内存大小，使用delete会造成内存泄漏，或者释放内存出现运行时错误。</p>
 <h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用"></a>static的作用</h1><p>1.隐藏：编译多个文件时，没有static的全局变量和函数都具有全局可见性，而加了的只有在本文件中才可见<br>2.全局变量和static变量都在静态变量区，热着都会在程序刚开始运行就完成初始化，也是唯一一次初始化，值为0（没有给定值的情况下）<br>3.类中的static成员变量属于整个类所有，类的所有对象只有一份拷贝；类的static成员函数属于整个类所有，函数没有this指针，因而只能访问类的static成员变量<br>4.类的static成员变量必须先初始化再使用，只能在类体外进行初始化。<br>5.static成员函数不能被virtual修饰，因为static不属于任何对象或者实例，所以加virtual没有意义。况且static函数没有this指针，而虚函数的指向函数表的指针是通过this指针指向的，所以无法实现。</p>
+<h1 id="类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些"><a href="#类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些" class="headerlink" title="类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些"></a>类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些</h1><p>1.初始化方式</p>
+<ul>
+<li>赋值初始化：通过函数体内进行赋值初始化</li>
+<li>列表初始化：在冒号后使用初始化列表进行初始化<br>二者的区别：在函数体中初始化，是在所有的数据成员被分配内存空间后进行的；而列表初始化是给数据成员分配内存空间时就进行初始化，此时函数体还未执行。<br>2.一个派生类构造函数的执行顺序：</li>
+<li>虚拟基类的构造函数，如果有多个，就按照继承的顺序执行构造函数</li>
+<li>基类的构造函数（多个普通基类也按照继承的顺序执行构造函数）</li>
+<li>类类型的成员对象的构造函数（按照初始化顺序）</li>
+<li>派生类自己的构造函数<br>3.因为方法一是在构造函数中进行赋值操作，会产生临时对象，降低程序的效率。而成员初始化列表对于类类型，实际上是少了一次调用构造函数的过程，对于内置数据类型二者没有区别。</li>
+</ul>
+<h1 id="必须使用成员列表初始化的情况"><a href="#必须使用成员列表初始化的情况" class="headerlink" title="必须使用成员列表初始化的情况"></a>必须使用成员列表初始化的情况</h1><p>1.初始化一个引用成员<br>2.初始化一个常量成员<br>3.该类是继承一个基类，并且基类中有构造函数，构造函数有一组参数时<br>4.该类的成员变量类型是类类型，而该类类型的构造函数带参数时</p>
+<h1 id="C-赋值，浅拷贝，深拷贝，零拷贝"><a href="#C-赋值，浅拷贝，深拷贝，零拷贝" class="headerlink" title="C++ 赋值，浅拷贝，深拷贝，零拷贝"></a>C++ 赋值，浅拷贝，深拷贝，零拷贝</h1><p>1.浅拷贝：只复制指向某个对象的指针，而不是复制对象本身，新旧对象还是共享同一块内存<br>2.深拷贝：会另外创造一个一样的对象，和原本的对象不共享内存，修改新对象不会修改旧对象<br>3.零拷贝：操作系统中的mmap操作</p>
+<h1 id="coredump错误"><a href="#coredump错误" class="headerlink" title="coredump错误"></a>coredump错误</h1><p>程序由于异常或者bug在运行时异常退出或终止，在一定条件下生成一个叫core的文件，该文件会记录程序在运行时的内存，寄存器状态，内存指针和函数堆栈信息等。</p>
+<h1 id="静态类型和动态类型，静态绑定和动态绑定"><a href="#静态类型和动态类型，静态绑定和动态绑定" class="headerlink" title="静态类型和动态类型，静态绑定和动态绑定"></a>静态类型和动态类型，静态绑定和动态绑定</h1><ul>
+<li>静态类型：对象在声明时采用的类型，在编译期已经确定</li>
+<li>动态类型：通常是<strong>指针或者引用…</strong>目前所指向的对象类型，在运行期决定</li>
+<li>静态绑定：发生在编译期，绑定的是静态类型</li>
+<li>动态绑定：绑定的是动态类型，发生在运行期</li>
+<li>非虚函数一般都是静态绑定，虚函数都是动态绑定</li>
+</ul>
+<h1 id="怎样判断两个浮点数是否相同"><a href="#怎样判断两个浮点数是否相同" class="headerlink" title="怎样判断两个浮点数是否相同"></a>怎样判断两个浮点数是否相同</h1><p>通过相减来和预先设定的精度比较</p>
+<h1 id="100层，两个小球"><a href="#100层，两个小球" class="headerlink" title="100层，两个小球"></a>100层，两个小球</h1><p>每次从第k层开始，那么如果碎了，就可以从1到(k - 1)逐次扫描，<br>下一次从k + (k - 1)开始，如果碎了，那么就可以从k + 1到2k - 2，加上之前第一次也总共是K次<br>所以k + k - 1 + k - 2 … &lt;= 100，那么k最大可以取14</p>
+<h1 id="手动实现strcpy（注意异常情况）"><a href="#手动实现strcpy（注意异常情况）" class="headerlink" title="手动实现strcpy（注意异常情况）"></a>手动实现strcpy（注意异常情况）</h1><pre><code>void mystrcpy(char *dst, const char *src){
+    assert(src != NULL);
+    assert(dst != NULL);
+    while(*dst++ = *src){
+        ;
+    }
+}
+</code></pre><p>或者 </p>
+<pre><code>char* mystrcpy(char *dst, const char *src){
+    assert(src != NULL);
+    assert(dst != NULL);
+    char* start = dst;
+    while(*dst++ = *src){
+        ;
+    }
+    return start;
+}
+</code></pre><h1 id="为什么析构函数一般写成虚函数"><a href="#为什么析构函数一般写成虚函数" class="headerlink" title="为什么析构函数一般写成虚函数"></a>为什么析构函数一般写成虚函数</h1><p>由于类的多态性，基类指针可以指向派生类的对象，如果删除该基类的指针，就会调用该指针指向的派生类析构函数，而派生类的析构函数又自动调用基类的析构函数，这样整个派生类的对象完全被释放。<br>如果析构函数不被声明成虚函数，则编译器实施静态绑定，在删除基类指针时，只会调用基类的析构函数而不调用派生类析构函数，这样就会造成派生类对象析构不完全，造成内存泄漏。</p>
+<h1 id="基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间"><a href="#基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间" class="headerlink" title="基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间"></a>基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间</h1><p>1.虚函数表是全局共享的元素，即全局仅有一个，在编译时就构造完成<br>2.C++中虚函数表位于常量区；而虚函数则位于代码段（.text），也就是C++内存模型中的代码区。</p>
+<h1 id="构造函数、析构函数、虚函数可否声明为内联函数"><a href="#构造函数、析构函数、虚函数可否声明为内联函数" class="headerlink" title="构造函数、析构函数、虚函数可否声明为内联函数"></a>构造函数、析构函数、虚函数可否声明为内联函数</h1><p>1.将构造函数和析构函数声明为inline是没有什么意义的，即编译器并不真正对声明为inline的构造和析构函数进行内联操作，因为编译器会在构造和析构函数中添加额外的操作（申请/释放内存，构造/析构对象等），致使构造函数/析构函数并不像看上去的那么精简。其次，class中的函数默认是inline型的，编译器也只是有选择性的inline，将构造函数和析构函数声明为内联函数是没有什么意义的。<br>2.当是指向派生类的指针（多态性）调用声明为inline的虚函数时，不会内联展开；当是对象本身调用虚函数时，会内联展开，当然前提依然是函数并不复杂的情况下。</p>
+<h1 id="C-模板是什么，你知道底层怎么实现的？"><a href="#C-模板是什么，你知道底层怎么实现的？" class="headerlink" title="C++模板是什么，你知道底层怎么实现的？"></a>C++模板是什么，你知道底层怎么实现的？</h1><p>编译器并不是把函数模板处理成能够处理任意类的函数；编译器从函数模板通过具体类型产生不同的函数；编译器会对函数模板进行两次编译：在声明的地方对模板代码本身进行编译，在调用的地方对参数替换后的代码进行编译。</p>
+<h1 id="构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？"><a href="#构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？" class="headerlink" title="构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？"></a>构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？</h1><p>1.构造函数顺序</p>
+<ul>
+<li>基类构造函数。如果有多个基类，则构造函数的调用顺序是某类在类派生表中出现的顺序，而不是它们在成员初始化表中的顺序。</li>
+<li>成员类对象构造函数。如果有多个成员类对象则构造函数的调用顺序是对象在类中被声明的顺序，而不是它们出现在成员初始化表中的顺序。</li>
+<li>派生类构造函数。<br>2.析构函数顺序</li>
+<li>调用派生类的析构函数；</li>
+<li>调用成员类对象的析构函数；</li>
+<li>调用基类的析构函数。</li>
+</ul>
+<h1 id="单例模式的两种实现"><a href="#单例模式的两种实现" class="headerlink" title="单例模式的两种实现"></a>单例模式的两种实现</h1><p>1.懒汉方式：单例实例在第一次被使用的时候才进行初始化，称为延迟初始化</p>
+<pre><code>class Singleton{
+private:
+    Singleton(){};
+    ~Singleton(){};
+    Singleton(const Singleton&amp;);
+    Singleton&amp; operator=(const Singleton&amp;);
+
+public:
+    static Singleton&amp; getInstance(){
+        static Singleton instance;
+        return instance;
+    }
+}
+</code></pre><p>使用了局部静态变量的方式来保证线程安全</p>
+<p>2.饿汉模式：单例模式在程序运行时立即被初始化</p>
+<pre><code>class Singleton{
+private:
+    Singleton(){};
+    ~Singleton(){};
+    Singleton(const Singleton&amp;);
+    Singleton&amp; operator=(const Singleton&amp;);
+private:
+    static Singleton instance;
+public:
+    static Singleton&amp; getInstance(){
+        return instance;
+    }
+}
+
+//初始化
+Singleton Singleton::instance;
+</code></pre><p>问题：没有线程安全问题，但是static Singleton instance 和 static Singleton&amp; getInstance()二者的初始化顺序不确定，如果在初始化完成之前调用 getInstance() 方法会返回一个未定义的实例。</p>
+<h1 id="shared-ptr的实现"><a href="#shared-ptr的实现" class="headerlink" title="shared_ptr的实现"></a>shared_ptr的实现</h1><pre><code>template&lt;typename T&gt;
+class SharedPtr{
+public:
+    SharedPtr(T* ptr = NULL):_ptr(ptr), _pCount(new int(1)){}
+    SharedPtr(const SharedPtr&amp; s):_ptr(s._ptr), _pCount(s._pCount){
+        (*_pCount)++;
+    }
+
+    SharedPtr&lt;T&gt;&amp; operator=(const SharedPtr&amp; s){
+        if(_ptr_ != s._ptr){
+            if(--(*_pCount) == 0){
+                delete _ptr;
+                delete _pCount;
+            }
+            _ptr = s._ptr;
+            _pCount = s._pCount;
+            (*_pcount)++;
+        }
+        return *this;
+    }
+
+    T&amp; operator*(){
+        return *ptr;
+    }
+
+    T* operator&amp;(){
+        return ptr;
+    }
+
+    ~Shared(){
+        --(*_pCount);
+        if(*_pCount == 0){
+            delete _ptr;
+            delete _pCount;
+            _ptr = nullptr;
+            _pcount = nullptr;
+        }
+    }
+
+private:
+    T* _ptr;
+    unsigned_int* _pCount;
+}
+</code></pre><h1 id="shared-ptr指针的大小"><a href="#shared-ptr指针的大小" class="headerlink" title="shared_ptr指针的大小"></a>shared_ptr指针的大小</h1><p>8字节：一个指针，指向被保护的对象，还有一个计数类，其实现是一个指针，指向两个int类型的变量，分别是shared_ptr的引用计数和weak_ptr的数量</p>
+<h1 id="vector扩容什么时候使用移动构造"><a href="#vector扩容什么时候使用移动构造" class="headerlink" title="vector扩容什么时候使用移动构造"></a>vector扩容什么时候使用移动构造</h1><p>如果vector内保存的是一个类类型，并且该类类型的移动构造函数声明为 noexcept，则会调用移动构造（浅拷贝），否则调用深拷贝，即拷贝构造，这样会大大浪费资源</p>
+<h1 id="稳定排序和不稳定排序"><a href="#稳定排序和不稳定排序" class="headerlink" title="稳定排序和不稳定排序"></a>稳定排序和不稳定排序</h1><p>1.稳定排序：能保证两个相等的元素在排序之后前后顺序不变</p>
+<ul>
+<li>冒泡排序：因为每次遇到相等判断，是不会发生交换的</li>
+<li>插入排序：如果比当前的最大者还大，就插在后面，遇到相等的情况，则插入到相等元素的后面，能保证顺序不变</li>
+<li>归并排序：在合并的过程中，遇到两个相等的元素，会把处在前面的元素先保存，最终保证了稳定性</li>
+</ul>
+<p>2.不稳定排序：</p>
+<ul>
+<li>快速排序：在中枢元素和交界元素交换的时候会破坏稳定性</li>
+<li>堆排序</li>
+</ul>
+<h1 id="一个很大的二维数组，里面大部分数据都是0，怎么保存"><a href="#一个很大的二维数组，里面大部分数据都是0，怎么保存" class="headerlink" title="一个很大的二维数组，里面大部分数据都是0，怎么保存"></a>一个很大的二维数组，里面大部分数据都是0，怎么保存</h1><p>可以使用数组压缩的方式来解决，压缩后的格式为：第一行保存的是原始数组的行列数，和有效数据数，接下来的每一行保存的是原始数据中某个有效数据的行列以及数值。这样使用 n * 3的数组就可以保存原来的数据</p>
+<h1 id="编写String类的构造函数，析构函数和赋值函数"><a href="#编写String类的构造函数，析构函数和赋值函数" class="headerlink" title="编写String类的构造函数，析构函数和赋值函数"></a>编写String类的构造函数，析构函数和赋值函数</h1><pre><code>class String{
+private：
+    char* m_data;
+public:
+    String(const char* str = nullptr){};
+    String(const String&amp; str);
+    ~String(){};
+    String&amp; operator=(const String&amp; str);
+}
+
+String::String(const char* str){
+    if(NULL == str){
+        m_data = new char[1];
+        *m_data = &#39;\0&#39;;
+    }else{
+        int len = strlen(str);
+        m_data = new char[len + 1];
+        strcpy_s(m_data, len + 1, str.m_data);
+    }
+}
+
+String::String(const String&amp; str){
+    int len = strlen(str.m_data);
+    m_data = new char[len + 1];
+    strcpy_s(m_data, len + 1, str);
+}
+
+String::~String{
+    if(m_data != nullptr){
+        delete[] m_data;
+        m_data = nullptr;
+    }
+}
+
+String&amp; String::String(const String&amp; str){
+    //如果与str对象时一样的，即自赋值
+    if(this == &amp;str){
+        return *this;
+    }
+    delete[] m_data;
+    int len = strlen(str.m_data);
+    m_data = new char[len + 1];
+    strcpy_s(m_data, len + 1, str.m_data);
+    return *this;
+}
+</code></pre><h1 id="实现一个unique-ptr"><a href="#实现一个unique-ptr" class="headerlink" title="实现一个unique_ptr"></a>实现一个unique_ptr</h1><pre><code>template&lt;typename T&gt;
+class MyUniquePtr
+{
+public:
+    MyUniquePtr(T* ptr = nullptr):mPtr(ptr){};
+    ~MyUniquePtr(){
+        if(mPtr){
+            delete mPtr;
+            mPtr = nullptr;
+        }
+    }
+    MyUniquePtr(MyUniquePtr &amp;&amp;P) noexcept;
+    MyUniquePtr&amp; operator=(MyUniquePtr &amp;&amp;p) noexcept;
+
+    MyUniquePtr(const MyUniquePt &amp;p) = delete;
+    MyUniquePtr&amp; operator=(const MyUniquePtr &amp;p) = delete;
+
+    void reset(T *q = nullptr) noexcept{
+        if(q != mPtr){
+            if(mPtr){
+                delete mPtr;
+            }
+            mPtr = q;
+        }
+    }
+
+    T* release() noexcept{
+        T* res = mPtr;
+        mPtr = nullptr;
+        return res;
+    }
+
+    void swap(MyUniquePtr &amp;p) noexcept{
+        using std::swap;
+        swap(mPtr, p.mPtr);
+    }
+
+private:
+    T* mPtr;
+};
+
+template &lt;typename T&gt;
+MyUniquePtr&lt;T&gt;&amp; MyUniquePtr&lt;T&gt;::operator=(MyUniquePtr &amp;&amp;p) noexcept{
+    swap(*this, p);
+    return *this;
+}
+
+template &lt;typename T&gt;
+MyUniquePtr&lt;T&gt;::MyUniquePtr(MyUniquePtr &amp;&amp;p) noexcept: mPtr(p.mPtr){
+    p.mPtr = nullptr;
+}
+</code></pre><h1 id="前序和后序不能确定二叉树"><a href="#前序和后序不能确定二叉树" class="headerlink" title="前序和后序不能确定二叉树"></a>前序和后序不能确定二叉树</h1><p>前序和后序在本质上都是将父节点与子结点进行分离,但并没有指明左子树和右子树的能力,因此得到这两个序列只能明确父子关系,而不能确定一个二叉树。</p>
+<h1 id="实现LRU"><a href="#实现LRU" class="headerlink" title="实现LRU"></a>实现LRU</h1><p>struct DLinkedNode {<br>    int key, value;<br>    DLinkedNode<em> prev;<br>    DLinkedNode</em> next;<br>    /<em> 构造函数便于新定义节点时初始化对象 </em>/<br>    DLinkedNode(): key(0), value(0), prev(nullptr), next(nullptr) {}<br>    DLinkedNode(int _key, int _value): key(_key), value(_value), prev(nullptr), next(nullptr) {}<br>};</p>
+<p>class LRUCache {<br>private:<br>    unordered_map<int, dlinkednode*> map;<br>    DLinkedNode<em> head;<br>    DLinkedNode</em> tail;<br>    int size;       // 缓冲区使用的大小<br>    int capacity;   // 缓冲区的容量</int,></p>
+<p>public:<br>    LRUCache(int _capacity): capacity(_capacity), size(0) {<br>        /<em> 使用伪头部和伪尾部节点 </em>/<br>        head = new DLinkedNode();<br>        tail = new DLinkedNode();<br>        head-&gt;next = tail;<br>        tail-&gt;prev = head;<br>    }<br>    /<em> 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 </em>/<br>    int get(int key) {<br>        if (!map.count(key)) return -1;<br>        /<em> 如果 key 存在，先通过哈希表定位，再移到头部 </em>/<br>        DLinkedNode* node = map[key];<br>        moveToHead(node);<br>        return node-&gt;value;<br>    }</p>
+<pre><code>void put(int key, int value) {
+    if (!map.count(key)) {
+        /* 如果 key 不存在，创建一个新的节点 */
+        DLinkedNode* node = new DLinkedNode(key, value);
+        /* 添加进哈希表 */
+        map[key] = node;
+        /* 添加至双向链表的头部 */
+        addToHead(node);
+        /* 缓存大小+1 */
+        size++;
+        if (size &gt; capacity) {
+            DLinkedNode* removed = removeTail();// 如果超出容量，删除双向链表的尾部节点
+            map.erase(removed-&gt;key);// 删除哈希表中对应的项
+            delete removed;// 防止内存泄漏
+            size--;// 缓存大小-1
+        }
+    }
+    else {
+        /* 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部 */
+        DLinkedNode* node = map[key];
+        node-&gt;value = value;
+        moveToHead(node);
+    }
+}
+</code></pre><p>/<strong><strong><strong><em>**</em></strong></strong></strong>定义双向链表需要用的API函数<strong><strong><strong><em>**</em></strong></strong></strong>/<br>public:<br>    /<em> 在虚拟头节点后添加新的节点 node </em>/<br>    void addToHead(DLinkedNode<em> node) {<br>        node-&gt;prev = head;<br>        node-&gt;next = head-&gt;next;<br>        head-&gt;next-&gt;prev = node;<br>        head-&gt;next = node;<br>    }<br>    /</em> 删除当前节点 node 这里也是为什么使用双向链表的原因方便删除节点 <em>/<br>    void removeNode(DLinkedNode</em> node) {<br>        node-&gt;prev-&gt;next = node-&gt;next;<br>        node-&gt;next-&gt;prev = node-&gt;prev;<br>    }<br>    /<em> 把出现频率比较高的节点放入 头部 </em>/<br>    void moveToHead(DLinkedNode<em> node) {<br>        removeNode(node);<br>        addToHead(node);<br>    }<br>    /</em> 移除尾部节点 并返回尾部最后一个节点 <em>/<br>    DLinkedNode</em> removeTail() {<br>        DLinkedNode* node = tail-&gt;prev;<br>        removeNode(node);<br>        return node;<br>    }<br>};</p>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p>void Quick_Sort(int *arr, int begin, int end){<br>    if(begin &gt; end)<br>        return;<br>    int tmp = arr[begin];<br>    int i = begin;<br>    int j = end;<br>    while(i != j){<br>        while(arr[j] &gt;= tmp &amp;&amp; j &gt; i)<br>            j—;<br>        while(arr[i] &lt;= tmp &amp;&amp; j &gt; i)<br>            i++;<br>        if(j &gt; i){<br>            int t = arr[i];<br>            arr[i] = arr[j];<br>            arr[j] = t;<br>        }<br>    }<br>    arr[begin] = arr[i];<br>    arr[i] = tmp;<br>    Quick_Sort(arr, begin, i-1);<br>    Quick_Sort(arr, i+1, end);<br>}</p>
+<h1 id="stl常用容器在内存中的位置"><a href="#stl常用容器在内存中的位置" class="headerlink" title="stl常用容器在内存中的位置"></a>stl常用容器在内存中的位置</h1><ul>
+<li>在栈区定义容器变量，变量本身存储在栈区，但是变量存储的数据在堆区；</li>
+<li>在堆空间定义的容器变量，变量本身存储在堆区，存储的数据也在堆区；</li>
+</ul>
 
     </div>
 
@@ -689,7 +960,7 @@ void enqueue_msg(struct msg *mp)
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-函数中几种const构不构成重载的分析"><span class="nav-number">1.</span> <span class="nav-text">1. 函数中几种const构不构成重载的分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-如何做到在const成员函数内修改成员变量"><span class="nav-number">2.</span> <span class="nav-text">2.如何做到在const成员函数内修改成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-内联函数和宏定义的区别"><span class="nav-number">3.</span> <span class="nav-text">3.内联函数和宏定义的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-c-编译过程"><span class="nav-number">4.</span> <span class="nav-text">4.c++编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-程序的内存分配"><span class="nav-number">5.</span> <span class="nav-text">5.程序的内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-内存中堆和栈的区别"><span class="nav-number">6.</span> <span class="nav-text">6.内存中堆和栈的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-实现一个在main函数运行之前运行的函数"><span class="nav-number">7.</span> <span class="nav-text">7.实现一个在main函数运行之前运行的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-c-常量储存的位置"><span class="nav-number">8.</span> <span class="nav-text">8.c++常量储存的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-C-隐式转换"><span class="nav-number">9.</span> <span class="nav-text">9.C++隐式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-extern-“C”作用"><span class="nav-number">10.</span> <span class="nav-text">10. extern “C”作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-说说RTTI"><span class="nav-number">11.</span> <span class="nav-text">11.说说RTTI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new和malloc的区别"><span class="nav-number">12.</span> <span class="nav-text">new和malloc的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sizeof的一些特性"><span class="nav-number">13.</span> <span class="nav-text">sizeof的一些特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对齐"><span class="nav-number">14.</span> <span class="nav-text">内存对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用压栈过程"><span class="nav-number">15.</span> <span class="nav-text">函数调用压栈过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程问题"><span class="nav-number"></span> <span class="nav-text">多线程问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作系统的IO分类"><span class="nav-number"></span> <span class="nav-text">操作系统的IO分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于缓存命中"><span class="nav-number"></span> <span class="nav-text">关于缓存命中</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伪共享的问题"><span class="nav-number"></span> <span class="nav-text">伪共享的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU对于线程的选择"><span class="nav-number"></span> <span class="nav-text">CPU对于线程的选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-内存优化"><span class="nav-number"></span> <span class="nav-text">C++内存优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-中有几种类型的new"><span class="nav-number"></span> <span class="nav-text">C++中有几种类型的new</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#static的作用"><span class="nav-number"></span> <span class="nav-text">static的作用</span></a></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-函数中几种const构不构成重载的分析"><span class="nav-number">1.</span> <span class="nav-text">1. 函数中几种const构不构成重载的分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-如何做到在const成员函数内修改成员变量"><span class="nav-number">2.</span> <span class="nav-text">2.如何做到在const成员函数内修改成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-内联函数和宏定义的区别"><span class="nav-number">3.</span> <span class="nav-text">3.内联函数和宏定义的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-c-编译过程"><span class="nav-number">4.</span> <span class="nav-text">4.c++编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-程序的内存分配"><span class="nav-number">5.</span> <span class="nav-text">5.程序的内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-内存中堆和栈的区别"><span class="nav-number">6.</span> <span class="nav-text">6.内存中堆和栈的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-实现一个在main函数运行之前运行的函数"><span class="nav-number">7.</span> <span class="nav-text">7.实现一个在main函数运行之前运行的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-c-常量储存的位置"><span class="nav-number">8.</span> <span class="nav-text">8.c++常量储存的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-C-隐式转换"><span class="nav-number">9.</span> <span class="nav-text">9.C++隐式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-extern-“C”作用"><span class="nav-number">10.</span> <span class="nav-text">10. extern “C”作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-说说RTTI"><span class="nav-number">11.</span> <span class="nav-text">11.说说RTTI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new和malloc的区别"><span class="nav-number">12.</span> <span class="nav-text">new和malloc的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sizeof的一些特性"><span class="nav-number">13.</span> <span class="nav-text">sizeof的一些特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对齐"><span class="nav-number">14.</span> <span class="nav-text">内存对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用压栈过程"><span class="nav-number">15.</span> <span class="nav-text">函数调用压栈过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程问题"><span class="nav-number"></span> <span class="nav-text">多线程问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作系统的IO分类"><span class="nav-number"></span> <span class="nav-text">操作系统的IO分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于缓存命中"><span class="nav-number"></span> <span class="nav-text">关于缓存命中</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伪共享的问题"><span class="nav-number"></span> <span class="nav-text">伪共享的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU对于线程的选择"><span class="nav-number"></span> <span class="nav-text">CPU对于线程的选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-内存优化"><span class="nav-number"></span> <span class="nav-text">C++内存优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-中有几种类型的new"><span class="nav-number"></span> <span class="nav-text">C++中有几种类型的new</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#static的作用"><span class="nav-number"></span> <span class="nav-text">static的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些"><span class="nav-number"></span> <span class="nav-text">类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#必须使用成员列表初始化的情况"><span class="nav-number"></span> <span class="nav-text">必须使用成员列表初始化的情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-赋值，浅拷贝，深拷贝，零拷贝"><span class="nav-number"></span> <span class="nav-text">C++ 赋值，浅拷贝，深拷贝，零拷贝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#coredump错误"><span class="nav-number"></span> <span class="nav-text">coredump错误</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态类型和动态类型，静态绑定和动态绑定"><span class="nav-number"></span> <span class="nav-text">静态类型和动态类型，静态绑定和动态绑定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#怎样判断两个浮点数是否相同"><span class="nav-number"></span> <span class="nav-text">怎样判断两个浮点数是否相同</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#100层，两个小球"><span class="nav-number"></span> <span class="nav-text">100层，两个小球</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#手动实现strcpy（注意异常情况）"><span class="nav-number"></span> <span class="nav-text">手动实现strcpy（注意异常情况）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么析构函数一般写成虚函数"><span class="nav-number"></span> <span class="nav-text">为什么析构函数一般写成虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间"><span class="nav-number"></span> <span class="nav-text">基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造函数、析构函数、虚函数可否声明为内联函数"><span class="nav-number"></span> <span class="nav-text">构造函数、析构函数、虚函数可否声明为内联函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-模板是什么，你知道底层怎么实现的？"><span class="nav-number"></span> <span class="nav-text">C++模板是什么，你知道底层怎么实现的？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？"><span class="nav-number"></span> <span class="nav-text">构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单例模式的两种实现"><span class="nav-number"></span> <span class="nav-text">单例模式的两种实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shared-ptr的实现"><span class="nav-number"></span> <span class="nav-text">shared_ptr的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shared-ptr指针的大小"><span class="nav-number"></span> <span class="nav-text">shared_ptr指针的大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vector扩容什么时候使用移动构造"><span class="nav-number"></span> <span class="nav-text">vector扩容什么时候使用移动构造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#稳定排序和不稳定排序"><span class="nav-number"></span> <span class="nav-text">稳定排序和不稳定排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一个很大的二维数组，里面大部分数据都是0，怎么保存"><span class="nav-number"></span> <span class="nav-text">一个很大的二维数组，里面大部分数据都是0，怎么保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写String类的构造函数，析构函数和赋值函数"><span class="nav-number"></span> <span class="nav-text">编写String类的构造函数，析构函数和赋值函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现一个unique-ptr"><span class="nav-number"></span> <span class="nav-text">实现一个unique_ptr</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前序和后序不能确定二叉树"><span class="nav-number"></span> <span class="nav-text">前序和后序不能确定二叉树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现LRU"><span class="nav-number"></span> <span class="nav-text">实现LRU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速排序"><span class="nav-number"></span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stl常用容器在内存中的位置"><span class="nav-number"></span> <span class="nav-text">stl常用容器在内存中的位置</span></a></div>
         
       </div>
       <!--/noindex-->
@@ -704,7 +975,7 @@ void enqueue_msg(struct msg *mp)
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -734,7 +1005,7 @@ void enqueue_msg(struct msg *mp)
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -191,6 +191,257 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/07/26/git常用工作流及命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2023/07/26/git常用工作流及命令/" class="post-title-link" itemprop="url">git常用工作流及命令</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2023-07-26 20:41:21 / Modified: 21:44:54" itemprop="dateCreated datePublished" datetime="2023-07-26T20:41:21+08:00">2023-07-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-git仓库的结构"><a href="#1-git仓库的结构" class="headerlink" title="1. git仓库的结构"></a>1. git仓库的结构</h1><p>首先介绍以下几个术语：</p>
+<ul>
+<li>remote：表示远程仓库</li>
+<li>repository：表示本地仓库</li>
+<li>workspace：表示自己项目的工作区间</li>
+<li>index：暂存区，接下来可以commit</li>
+</ul>
+<img src="/2023/07/26/git常用工作流及命令/git结构图.png" title="This is an test image">
+<h1 id="2-工作流"><a href="#2-工作流" class="headerlink" title="2. 工作流"></a>2. 工作流</h1><p>推荐使用 <strong>github flow</strong> 的工作模式，即不在主仓库的分支上开发，而是首先 <strong>fork</strong> 到自己的 <strong>workspace</strong> 下。每次开发，首先 <strong>checkout</strong> 一个分支，开发后 <strong>commit</strong>，并 <strong>push</strong> 到自己的仓库内，再向主仓库提 <strong>MR</strong>。</p>
+<h2 id="2-1-fork"><a href="#2-1-fork" class="headerlink" title="2.1 fork"></a>2.1 fork</h2><p>一般主仓库是组长建立的，保存着所有人开发的代码，为了防止污染导致数据丢失问题，剩下的小组成员需要对主仓库进行 <strong>fork</strong>，即将其拷贝一份到自己账户下，这样之后的开发工作就可以从自己的仓库开始。</p>
+<h2 id="2-2-clone"><a href="#2-2-clone" class="headerlink" title="2.2 clone"></a>2.2 clone</h2><p>接下来从自己的仓库进行clone。需要注意的是，一般一个仓库都有多个分支，比如有 <strong>master</strong> 主分支和 <strong>develop</strong> 分支，所以 <strong>clone</strong> 时要找到对应的分支，例如要克隆 <strong>develop</strong> 分支，使用的命令如下：</p>
+<pre><code>git clone -b develop ssh链接
+</code></pre><p>命令中 <strong>ssh</strong> 链接需要填写自己仓库下的 <strong>ssh</strong> 链接。</p>
+<h2 id="2-3-添加远程仓库"><a href="#2-3-添加远程仓库" class="headerlink" title="2.3 添加远程仓库"></a>2.3 添加远程仓库</h2><p>在项目的根目录重新打开 <strong>git bash</strong>，首先输入 <strong>git remote -v</strong> 来查看现有的仓库</p>
+<img src="/2023/07/26/git常用工作流及命令/初始现有仓库.png" title="This is an test image">
+<p>其中的 <strong>origin</strong> 表示是自己的远程仓库名称，一个用来 <strong>fetch</strong>，一个用来 <strong>push</strong>。接下来需要将组长的主仓库添加进来，使用的命令为：</p>
+<pre><code>git remote add upstream 主仓库ssh链接
+</code></pre><p>其中upstream是给主仓库起的名字，这个名字可以是任意的。再次查看当前的远程仓库：</p>
+<img src="/2023/07/26/git常用工作流及命令/添加主仓库后远程仓库.png" title="This is an test image">
+<h2 id="2-4-拉取最新代码"><a href="#2-4-拉取最新代码" class="headerlink" title="2.4 拉取最新代码"></a>2.4 拉取最新代码</h2><p>由于主仓库是合并开发，因此其代码进度是最快的，在每次开发前，都需要从主仓库拉取最新的代码，例如要从主仓库拉取 <strong>develop</strong> 分支的最新代码。这里有两种方式，第一种是使用 <strong>git fetch + git merge</strong> 的组合方式，好处是可以在 <strong>fetch</strong> 后查看更新，从而在 <strong>merge</strong> 的时候更方便的解决潜在的代码冲突；第二种方式是使用 <strong>git pull</strong>，它会立即拉取远程仓库的更新，并且直接合并到你的本地分支，这种情况下会导致合并后的代码产生大量冲突，解决起来很麻烦。因此推荐使用第一种组合方式。使用的命令为：</p>
+<pre><code>git fetch upstream develop
+</code></pre><p>由于我们之前已经在本地拉取了 <strong>develop</strong> 分支，因此上面的 <strong>git fetch</strong> 命令是不创建本地新分支的方式，然后使用如下代码查看版本的差异</p>
+<pre><code>git log -p develop..upstream/develop
+</code></pre><p>或者</p>
+<pre><code>git diff develop
+</code></pre><p>然后使用如下代码进行合并</p>
+<pre><code>git merge upstream/develop
+</code></pre><p>需要注意的是，合并过程中可能出现冲突的情况，我们可以对冲突的文件进行编辑。冲突的产生是多个用户同时修改了同一个文件的相同区域的内容。</p>
+<p>（明天写）</p>
+<h2 id="2-5-开发"><a href="#2-5-开发" class="headerlink" title="2.5 开发"></a>2.5 开发</h2><p>通过输入 <strong>git branch</strong> 可以查看当前处于哪个分支；输入 <strong>git branch -a</strong> 可以查看所有的本地分支和远程分支；以及可以输入 <strong>git status</strong> 来查看当前分支和分支的状态。</p>
+<h2 id><a href="#" class="headerlink" title=" "></a> </h2>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/09/25/数据库笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/09/25/数据库笔记/" class="post-title-link" itemprop="url">数据库笔记</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-09-25 14:24:51" itemprop="dateCreated datePublished" datetime="2022-09-25T14:24:51+08:00">2022-09-25</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-10-12 12:09:21" itemprop="dateModified" datetime="2022-10-12T12:09:21+08:00">2022-10-12</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="关系型数据库和非关系型数据库的区别"><a href="#关系型数据库和非关系型数据库的区别" class="headerlink" title="关系型数据库和非关系型数据库的区别"></a>关系型数据库和非关系型数据库的区别</h1><p>1.关系型数据库：指用关系模型来组织数据信息的数据库<br>关系模型指的是二维表格模型，而一个关系型数据库便是由二维表以及表之间的关系所构成的一个数据集合。<br>2.关系型数据库的优势：</p>
+<ul>
+<li>便于理解：二维表构造非常贴近逻辑；</li>
+<li>应用方便：支持通用的SQL（结构化查询语言）语句；</li>
+<li>易于维护：全部由表结构组成，文件格式一致；</li>
+<li>复杂操作：可以用SQL句子多个表之间做非常繁杂的查询；</li>
+<li>事务管理：促使针对安全性性能很高的数据信息浏览规定得到完成。<br>3.关系型数据库存在的不足</li>
+<li>读写性能差，尤其是海量信息的效率高读写能力；</li>
+<li>固定不动的表构造，灵便度稍欠；</li>
+<li>高并发读写时，硬盘I/O存在瓶颈；</li>
+<li>可扩展性不足，不像web server和app server那样简单的添- 加硬件和服务节点来拓展性能和负荷工作能力。</li>
+</ul>
+<p>4.非关系型数据库概念介绍<br>非关系型数据库：指非关系型的，分布式系统的，且一般不确保遵照ACID标准的数据储存系统。<br>非关系型数据库算是一种数据结构化储存的集合，可以是文档或键值对等。<br>5.非关系型数据库的类型：</p>
+<ul>
+<li>键值储存数据库</li>
+<li>列储存数据库</li>
+<li>文档型数据库</li>
+<li>图数据库<br>6.非关系型数据库的优点</li>
+<li>格式灵活：数据存储格式非常多样，应用领域广泛，而关系型数据库则只适用基础的关系模型。</li>
+<li>性能优越：NOSQL是根据键值对的，不用历经SQL层的分析，因此 性能非常高。</li>
+<li>可扩展性：基于键值对，数据之间耦合度极低，因此容易水平扩展。</li>
+<li>低成本：非关系型数据库部署简易，且大部分可以开源使用。<br>6.非关系型数据库的不足：</li>
+<li>不支持sql，学习和运用成本比较高；</li>
+<li>无事务处理机制；</li>
+<li>数据结构导致复杂查询不容易实现。</li>
+</ul>
+<h1 id="为什么使用索引"><a href="#为什么使用索引" class="headerlink" title="为什么使用索引"></a>为什么使用索引</h1><ul>
+<li>通过创建唯一性索引，可以保证数据库表中每一行数据的唯一性。</li>
+<li>可以大大加快数据的检索速度，这也是创建索引的最主要的原因。</li>
+<li>帮助服务器避免排序和临时表</li>
+<li>将随机IO变为顺序IO。</li>
+</ul>
+<h1 id="执行一条SQL查询语句期间发生了什么"><a href="#执行一条SQL查询语句期间发生了什么" class="headerlink" title="执行一条SQL查询语句期间发生了什么"></a>执行一条SQL查询语句期间发生了什么</h1><p>1.连接器：建立连接，管理连接、校验用户身份；<br>2.查询缓存：查询语句如果命中查询缓存则直接返回，否则继续往下执行。MySQL 8.0 已删除该模块；<br>3.解析 SQL，通过解析器对 SQL 查询语句进行词法分析、语法分析，然后构建语法树，方便后续模块读取表名、字段、语句类型；<br>4.执行 SQL：执行 SQL 共有三个阶段：</p>
+<ul>
+<li>预处理阶段：检查表或字段是否存在；将 select <em> 中的 </em> 符号扩展为表上的所有列。</li>
+<li>优化阶段：基于查询成本的考虑， 选择查询成本最小的执行计划；</li>
+<li>执行阶段：根据执行计划执行 SQL 查询语句，从存储引擎读取记录，返回给客户端；</li>
+</ul>
+<h1 id="MyISAM和InnoDB实现B树索引方式的区别是什么？"><a href="#MyISAM和InnoDB实现B树索引方式的区别是什么？" class="headerlink" title="MyISAM和InnoDB实现B树索引方式的区别是什么？"></a>MyISAM和InnoDB实现B树索引方式的区别是什么？</h1><p>1.MyISAM，B+Tree叶节点的data域存放的是数据记录的地址，在索引检索的时候，首先按照B+Tree搜索算法搜索索引，如果指定的key存在，则取出其data域的值，然后以data域的值为地址读取相应的数据记录，这被称为“非聚簇索引”<br>2.InnoDB，其数据文件本身就是索引文件，相比MyISAM，索引文件和数据文件是分离的，其表数据文件本身就是按B+Tree组织的一个索引结构，树的节点data域保存了完整的数据记录，这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引，这被称为“聚簇索引”或者聚集索引，而其余的索引都作为辅助索引，辅助索引的data域存储相应记录主键的值而不是地址，这也是和MyISAM不同的地方。<br>在根据主索引搜索时，直接找到key所在的节点即可取出数据；在根据辅助索引查找时，则需要先取出主键的值，再走一遍主索引。因此，在设计表的时候，不建议使用过长的字段为主键，也不建议使用非单调的字段作为主键，这样会造成主索引频繁分裂。</p>
+<h1 id="Innodb为什么要用自增id作为主键？"><a href="#Innodb为什么要用自增id作为主键？" class="headerlink" title="Innodb为什么要用自增id作为主键？"></a>Innodb为什么要用自增id作为主键？</h1><p>如果表使用自增主键，那么每次插入新的记录，记录就会顺序添加到当前索引节点的后续位置，当一页写满，就会自动开辟一个新的页。 如果使用非自增主键（如果身份证号或学号等），由于每次插入主键的值近似于随机，因此每次新纪录都要被插到现有索引页得中间某个位置， 频繁的移动、分页操作造成了大量的碎片，得到了不够紧凑的索引结构，后续不得不通过OPTIMIZE TABLE（optimize table）来重建表并优化填充页面。</p>
+<h1 id="你了解MySQL的内部构造吗？一般可以分为哪两个部分？"><a href="#你了解MySQL的内部构造吗？一般可以分为哪两个部分？" class="headerlink" title="你了解MySQL的内部构造吗？一般可以分为哪两个部分？"></a>你了解MySQL的内部构造吗？一般可以分为哪两个部分？</h1><p>1.服务层包括连接器、查询缓存、分析器、优化器、执行器等<br>2.存储引擎层负责数据的存储和提取</p>
+<h1 id="说一说Drop、Delete与Truncate的共同点和区别"><a href="#说一说Drop、Delete与Truncate的共同点和区别" class="headerlink" title="说一说Drop、Delete与Truncate的共同点和区别"></a>说一说Drop、Delete与Truncate的共同点和区别</h1><p>Drop、Delete、Truncate都表示删除，但是三者有一些差别： Delete用来删除表的全部或者一部分数据行，执行delete之后，用户需要提交(commmit)或者回滚(rollback)来执行删除或者撤销删除，会触发这个表上所有的delete触发器。 Truncate删除表中的所有数据，这个操作不能回滚，也不会触发这个表上的触发器，TRUNCATE比delete更快，占用的空间更小。 Drop命令从数据库中删除表，所有的数据行，索引和权限也会被删除，所有的DML触发器也不会被触发，这个命令也不能回滚。<br>因此，在不再需要一张表的时候，用Drop；在想删除部分数据行时候，用Delete；在保留表而删除所有数据的时候用Truncate。</p>
+<h1 id="文件索引和数据库索引为什么使用B-树"><a href="#文件索引和数据库索引为什么使用B-树" class="headerlink" title="文件索引和数据库索引为什么使用B+树?"></a>文件索引和数据库索引为什么使用B+树?</h1><p>1.文件与数据库都是需要较大的存储，也就是说，它们都不可能全部存储在内存中，故需要存储到磁盘上。而所谓索引，则为了数据的快速定位与查找，那么索引的结构组织要尽量减少查找过程中磁盘I/O的存取次数，因此B+树相比B树更为合适。数据库系统巧妙利用了局部性原理与磁盘预读原理，将一个节点的大小设为等于一个页，这样每个节点只需要一次I/O就可以完全载入<br>2.最重要的是，B+树还有一个最大的好处：方便扫库。B树必须用中序遍历的方法按序扫库，而B+树直接从叶子结点挨个扫一遍就完了，B+树支持range-query非常方便，而B树不支持，这是数据库选用B+树的最主要原因。<br>3.B+tree的磁盘读写代价更低：B+tree的内部结点并没有指向关键字具体信息的指针(红色部分)，因此其内部结点相对B树更小。如果把所有同一内部结点的关键字存放在同一块盘中，那么盘块所能容纳的关键字数量也越多。一次性读入内存中的需要查找的关键字也就越多，相对来说IO读写次数也就降低了</p>
+<h1 id="数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗"><a href="#数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗" class="headerlink" title="数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗"></a>数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗</h1><p>通过分表，可以减少数据库的单表负担，将压力分散到不同的表上，同时因为不同的表上的数据量少了，起到提高查询性能，缩短查询时间的作用</p>
+<ul>
+<li>水平分表：取模分表就属于随机分表，而时间维度分表则属于连续分表。 如何设计好垂直拆分，我的建议：将不常用的字段单独拆分到另外一张扩展表. 将大文本的字段单独拆分到另外一张扩展表, 将不经常修改的字段放在同一张表中，将经常改变的字段放在另一张表中。 对于海量用户场景，可以考虑取模分表，数据相对比较均匀，不容易出现热点和并发访问的瓶颈。</li>
+<li>库内分表，仅仅是解决了单表数据过大的问题，但并没有把单表的数据分散到不同的物理机上，因此并不能减轻 MySQL 服务器的压力，仍然存在同一个物理机上的资源竞争和瓶颈，包括 CPU、内存、磁盘 IO、网络带宽等。</li>
+</ul>
+<h1 id="索引失效的情况"><a href="#索引失效的情况" class="headerlink" title="索引失效的情况"></a>索引失效的情况</h1><p>1.对索引使用左或者左右模糊匹配：因为B+树是按照索引值有序排列的，只能根据前缀进行比较<br>2.对索引使用函数：不过可以针对函数计算后的值建立一个索引，从而使得该索引的值是函数计算后的值，就可以通过扫描索引来查询数据<br>3.对索引使用表达式计算<br>4.对索引隐式类型转换<br>5.联合索引非最左匹配<br>6.WHEREA子句中的OR</p>
+<h1 id="数据库事务是什么，都有哪些操作？"><a href="#数据库事务是什么，都有哪些操作？" class="headerlink" title="数据库事务是什么，都有哪些操作？"></a>数据库事务是什么，都有哪些操作？</h1><p>事务即为数据库的操作序列，要么完全执行，要么完全不执行。满足ACID属性。<br>A:原子性：要么全做，要么全不做<br>C：一致性：即事务操作前后满足完整性约束，比如A给B转账，完成后，A的少了200元，B的多了200元<br>I：隔离性：事务可以是并发的，隔离性可以保证多个事务并发执行由于使用相同的数据而互不干扰。每个事务都有自己的数据空间。<br>D：持久性：事务完成后，对数据的修改是永久的，即使系统故障也不会丢失。<br>事务的操作：开启事务，回滚，提交。其中回滚在数据没有提交之前可以回滚到之前的版本。</p>
+<h1 id="脏读，幻读，不可重复读的概念"><a href="#脏读，幻读，不可重复读的概念" class="headerlink" title="脏读，幻读，不可重复读的概念"></a>脏读，幻读，不可重复读的概念</h1><p>1.脏读：一个事务读到了另一个未提交事务修改过的数据（因为此时第二个事务有可能发生回滚操作）<br>2.不可重复读：在一个事务内多次读取同一个数据，出现了两次读到的数据不一样的情况（比如A在读一个数据时，B修改了这个数据，当A再次读这个数据时，读到的数据和上一次不一样）<br>3.幻读：在一个事务内多次查询某个符合查询条件的记录数量，前后两次记录数量不一样（比如数据增加或者被删除）</p>
+<p>三者的严重程度：脏读 &gt; 不可重复读 &gt; 幻读</p>
+<h1 id="数据库隔离级别"><a href="#数据库隔离级别" class="headerlink" title="数据库隔离级别"></a>数据库隔离级别</h1><p>1.读未提交：一个事务还没提交时，其所做的变更就可以被其它事务看到（会发生脏读，不可重复读和幻读）<br>2.读提交：一个事务提交后，它所做的变更才能被其它事务看到（会发生不可重复读和幻读）<br>3.可重复读：一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据一样（InnoDB默认的隔离级别）（会发生幻读）<br>4.串行化：会对记录加上读写锁，后访问的事务必须等前面的事务处理完才能继续执行。</p>
+<h1 id="MYSQL有哪些锁"><a href="#MYSQL有哪些锁" class="headerlink" title="MYSQL有哪些锁"></a>MYSQL有哪些锁</h1><p>1.全局锁：使得整个数据库处于只读状态<br>2.表级锁：</p>
+<ul>
+<li>表锁：分为读锁（共享锁）和写锁（独占锁）</li>
+<li>元数据锁（MDL)：对数据库表进行操作时，会自动的给这个表加上MDL，在事务提交后释放。</li>
+<li>意向锁：</li>
+</ul>
+<h1 id="MySQL如何实现事务提交和回滚"><a href="#MySQL如何实现事务提交和回滚" class="headerlink" title="MySQL如何实现事务提交和回滚"></a>MySQL如何实现事务提交和回滚</h1><p>1.实现数据恢复：redo log<br>redo log分为两部分：</p>
+<ul>
+<li>内存中的redo log Buffer是日志缓冲区，这部分数据是容易丢失的</li>
+<li>磁盘上的redo log file是日志文件，这部分数据已经持久化到磁盘，不容易丢失<br>在MySQL中可以自已控制log buffer刷新到log file中的频率，通过innodb_flush_log_at_trx_commit参数可以设置事务提交时log buffer如何保存到log file中，innodb_flush_log_at_trx_commit参数有3个值(0、1、2)，表示三种不同的方式</li>
+<li>为1表示事务每次提交都会将log buffer写入到os buffer，并调用操作系统的fsync()方法将日志写入log file，这种方式的好处是就算MySQL崩溃也不会丢数据，redo log file保存了所有已提交事务的日志，MySQL重新启动后会通过redo log file进行恢复。但这种方式每次提交事务都会写入磁盘，IO性能较差</li>
+<li>为0表示事务提交时不会将log buffer写入到os buffer中，而是每秒写入os buffer然后调用fsync()方法将日志写入log file，这种方式在MySQL系统崩溃时会丢失大约1秒钟的数据</li>
+<li>为2表示事务每次提交仅将log buffer写入到os buffer中，然后每秒调用fsync()方法将日志写入log file，这种方式在MySQL崩溃时也会丢失大约1秒钟的数据</li>
+</ul>
+<p>2.undo log<br>和redo log类似，也分为内存缓冲区和磁盘的日志文件，但是undo log记录的是相反的语句，当事务需要回滚的时候，可以从undo log中找到相应的内容进行回滚操作。</p>
+<p>3.二者的区别<br>为了保证数据的持久性，数据库在执行SQL操作数据之前会先记录redo log和undo log<br>redo log是重做日志，通常是物理日志，记录的是物理数据页的修改，它用来恢复提交后的物理数据页<br>undo log是回滚日志，用来回滚行记录到某个版本，undo log一般是逻辑日志，根据行的数据变化进行记录<br>redo/undo log都是写先写到日志缓冲区，再通过缓冲区写到磁盘日志文件中进行持久化保存<br>undo日志还有一个用途就是用来控制数据的多版本（MVCC）</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/08/20/http详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -231,7 +482,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-16 09:23:35" itemprop="dateModified" datetime="2022-09-16T09:23:35+08:00">2022-09-16</time>
+                <time title="Modified: 2022-10-12 17:00:40" itemprop="dateModified" datetime="2022-10-12T17:00:40+08:00">2022-10-12</time>
               </span>
             
           
@@ -333,13 +584,14 @@ name=Javanx&amp;age=25
 </ol>
 <ul>
 <li>无损压缩：br，gzip算法：将常出现的数据用较短的二进制比特序列表示，将不常出现的数据用较长的二进制比特序列表示</li>
-<li>有损压缩：比如对图<h1 id="TCP为什么是三次握手"><a href="#TCP为什么是三次握手" class="headerlink" title="TCP为什么是三次握手"></a>TCP为什么是三次握手</h1>1.阻止重复历史连接的初始化（主要原因）<br>如果是两步，那么服务端接收到之后就会建立连接，并向客户端发送数据，如果当前建立的连接并不是客户端需要的，那么就白白浪费了这次历史连接的建立，增加了开销。<br>2.同步双方的初始序列号：如果只有两次，那么服务端的序列号无法被确认，四次的话又可以压缩，所以是三次。<br>3.避免资源浪费：如果初始SYN发生了网络阻塞，客户端进行了超时重传，那么服务端由于不知道自己发送的SYN+ACK是否被接收到，只能再次建立连接。</li>
+<li>有损压缩：比如对图</li>
+<li><h1 id="TCP为什么是三次握手"><a href="#TCP为什么是三次握手" class="headerlink" title="TCP为什么是三次握手"></a>TCP为什么是三次握手</h1>1.阻止重复历史连接的初始化（主要原因）<br>如果是两步，那么服务端接收到之后就会建立连接，并向客户端发送数据，如果当前建立的连接并不是客户端需要的，那么就白白浪费了这次历史连接的建立，增加了开销。<br>2.同步双方的初始序列号：如果只有两次，那么服务端的序列号无法被确认，四次的话又可以压缩，所以是三次。<br>3.避免资源浪费：如果初始SYN发生了网络阻塞，客户端进行了超时重传，那么服务端由于不知道自己发送的SYN+ACK是否被接收到，只能再次建立连接。</li>
 </ul>
 <h1 id="为什么每次建立-TCP-连接时，初始化的序列号都要求不一样"><a href="#为什么每次建立-TCP-连接时，初始化的序列号都要求不一样" class="headerlink" title="为什么每次建立 TCP 连接时，初始化的序列号都要求不一样"></a>为什么每次建立 TCP 连接时，初始化的序列号都要求不一样</h1><ul>
 <li>为了防止历史报文被下一个相同四元组的连接接收（主要方面）<br>客户端和服务端建立一个 TCP 连接，在客户端发送数据包被网络阻塞了，然后超时重传了这个数据包，而此时服务端设备断电重启了，之前与客户端建立的连接就消失了，于是在收到客户端的数据包的时候就会发送 RST 报文。紧接着，客户端又与服务端建立了与上一个连接相同四元组的连接；在新连接建立完成后，上一个连接中被网络阻塞的数据包正好抵达了服务端，刚好该数据包的序列号正好是在服务端的接收窗口内，所以该数据包会被服务端正常接收，就会造成数据错乱。</li>
 <li>为了安全性，防止黑客伪造的相同序列号的 TCP 报文被对方接收</li>
 </ul>
-<p>初始序列号的产生：M + F<br>M是一个计时器，每隔4微秒+1，F是根据源 IP、目的 IP、源端口、目的端口生成一个随机数值。</p>
+<p>初始序列号的产生：M + F<br>M是一个计时器，每隔4微秒 + 1，F是根据源 IP、目的 IP、源端口、目的端口生成一个随机数值。</p>
 <h1 id="既然-IP-层会分片，为什么-TCP-层还需要-MSS"><a href="#既然-IP-层会分片，为什么-TCP-层还需要-MSS" class="headerlink" title="既然 IP 层会分片，为什么 TCP 层还需要 MSS"></a>既然 IP 层会分片，为什么 TCP 层还需要 MSS</h1><p>如果一个 IP 分片丢失，整个 IP 报文的所有分片都得重传。<br>因为 IP 层本身没有超时重传机制，它由传输层的 TCP 来负责超时和重传。<br>经过 TCP 层分片后，如果一个 TCP 分片丢失后，进行重发时也是以 MSS 为单位，而不用重传所有的分片，大大增加了重传的效率</p>
 <h1 id="为什么需要-TIME-WAIT状态"><a href="#为什么需要-TIME-WAIT状态" class="headerlink" title="为什么需要 TIME_WAIT状态"></a>为什么需要 TIME_WAIT状态</h1><ul>
 <li>防止历史连接中的数据，被后面相同四元组的连接错误的接收；<br>如果某一个网络包被延迟，并且在延迟过程中客户端和服务端连接断开，然后如果TIME_WAIT状态没有或者过短，那么如果客户端和服务端以相同的四元组重新建立连接，那么该被延迟的数据是有可能被窗口接受的，而TIME_WAIT持续2MSL时间，就是为了让两个方向上的数据包都被丢弃，使得原来连接的数据包在网络中都自然消失，再出现的数据包一定都是新建立连接所产生的。</li>
@@ -672,7 +924,7 @@ name=Javanx&amp;age=25
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-14 14:04:29" itemprop="dateModified" datetime="2022-08-14T14:04:29+08:00">2022-08-14</time>
+                <time title="Modified: 2022-10-20 17:08:28" itemprop="dateModified" datetime="2022-10-20T17:08:28+08:00">2022-10-20</time>
               </span>
             
           
@@ -836,11 +1088,11 @@ unsigned int use_count() const{
       //A * p = new A(300);  //make_shared无法访问私有构造函数
       return 0;
   }
-</code></pre><p>  在这种情况下，std::make_shared进行placement new操作的时候，会直接调用构造函数，但因为我们的构造函数都是私有的，这时候就会报错。而我们在工厂模式里直接new出来的实例是通过成员函数new操作符operator new访问的私有构造函数，所以没有问题。</p>
+</code></pre><p>在这种情况下，std::make_shared进行placement new操作的时候，会直接调用构造函数，但因为我们的构造函数都是私有的，这时候就会报错。而我们在工厂模式里直接new出来的实例是通过成员函数new操作符operator new访问的私有构造函数，所以没有问题。</p>
 </li>
 <li>还有一种情况，make_shared 只分配一次内存, 这看起来很好. 减少了内存分配的开销. 问题来了, weak_ptr 会保持控制块(强引用, 以及弱引用的信息)的生命周期, 而因此连带着保持了对象分配的内存, 只有最后一个 weak_ptr 离开作用域时, 内存才会被释放. 原本强引用减为 0 时就可以释放的内存, 现在变为了强引用, 弱引用都减为 0 时才能释放, 意外的延迟了内存释放的时间. 这对于内存要求高的场景来说, 是一个需要注意的问题。</li>
 </ul>
-
+<h1 id="稳定排序和不稳定排序"><a href="#稳定排序和不稳定排序" class="headerlink" title="稳定排序和不稳定排序"></a>稳定排序和不稳定排序</h1>
         
       
     </div>
@@ -904,7 +1156,7 @@ unsigned int use_count() const{
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-19 09:36:22" itemprop="dateModified" datetime="2022-09-19T09:36:22+08:00">2022-09-19</time>
+                <time title="Modified: 2022-11-16 23:34:28" itemprop="dateModified" datetime="2022-11-16T23:34:28+08:00">2022-11-16</time>
               </span>
             
           
@@ -940,7 +1192,7 @@ unsigned int use_count() const{
 <li>如果Cache中没有该数据，则直接写入到内存中</li>
 </ul>
 <ol>
-<li>写回：当写数据时，新的数据被写入到Cache中，只有当修改过的Cache Block被替换时才写入到内存中<br>这种情况下，只有当缓存不命中，且对应的Cache Block是脏的情况下，才会将该脏的数据写入内存中，然后将要写入的数据，先从内存读入到Cache Blockz中，然后再把当前要写入的数据写入到Cache Block中，并标记为脏的</li>
+<li>写回：当写数据时，新的数据被写入到Cache中，只有当修改过的Cache Block被替换时才写入到内存中<br>这种情况下，只有当缓存不命中，且对应的Cache Block是脏的情况下，才会将该脏的数据写入内存中，然后将要写入的数据，先从内存读入到Cache Block中，然后再把当前要写入的数据写入到Cache Block中，并标记为脏的</li>
 </ol>
 <h1 id="缓存一致性问题"><a href="#缓存一致性问题" class="headerlink" title="缓存一致性问题"></a>缓存一致性问题</h1><p>如果有多个CPU核心操作缓存数据，按照写回原则，则会出错，因为当没有发生缓存不命中且对应数据为脏时，缓存中的数据不会写回到内存中，此时其他核心从内存中读取的数据就是错的。为了解决，需要写传播和事务的串行化</p>
 <ul>
@@ -955,7 +1207,7 @@ unsigned int use_count() const{
 <li>直接内存回收（direct reclaim）：如果后台异步回收跟不上进程内存申请的速度，就会开始直接回收，这个回收内存的过程是同步的，会阻塞进程的执行。</li>
 <li>如果直接内存回收后，空闲的物理内存仍然无法满足此次物理内存的申请，那么内核就会放最后的大招了 ——触发 OOM （Out of Memory）机制。OOM Killer 机制会根据算法选择一个占用物理内存较高的进程，然后将其杀死，以便释放内存资源，如果物理内存依然不足，OOM Killer 会继续杀死占用物理内存较高的进程，直到释放足够的内存位置。</li>
 </ul>
-<h1 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h1><p>1.先来先服务<br>2.最短作业：优先选择运行时间最短的<br>3.高响应比优先调度算法：等待时间 + 要求服务时间/ 要求服务时间（无法实现）<br>4.时间片轮转算法：每个进程被分配一个时间片<br>5.最高优先级调度算法：静态和动态优先级<br>6.多级反馈队列 多个队列，每个队列优先级从高到低，新来的任务先加入第一级的队尾，按照先来先服务运行，如果没有运行完则加入第二级的队尾，如果来了一个优先级高的，则先去运行优先级高的任务队列，此时将原任务加入当前队列的队尾</p>
+<h1 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h1><p>1.先来先服务<br>2.最短作业：优先选择运行时间最短的<br>3.高响应比优先调度算法：等待时间 + 要求服务时间/ 要求服务时间（无法实现）<br>4.时间片轮转算法：每个进程被分配一个时间片<br>5.最高优先级调度算法：静态和动态优先级<br>6.多级反馈队列：多个队列，每个队列优先级从高到低，新来的任务先加入第一级的队尾，按照先来先服务运行，如果没有运行完则加入第二级的队尾，如果来了一个优先级高的，则先去运行优先级高的任务队列，此时将原任务加入当前队列的队尾</p>
 <h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><p>1.匿名管道：通过fork父进程的文件描述符来建立连接，先进先出<br>2.命名管道：在不相关的进程间也能进行通信，其创建了一个类型为管道的设备文件<br>3.消息队列：在内核中，不适合比较大的文件传输，同时会带来用户态与内核态之间的数据拷贝开销<br>4.共享内存：一个虚拟内存，映射到同一块真实物理内存<br>5.信号量：P操作-1，如果小于0，则阻塞 V操作：如果小于等于0则有进程阻塞，唤醒它，如果大于0，则没有进程阻塞</p>
 <ul>
 <li>1：互斥信号量</li>
@@ -1034,7 +1286,7 @@ void writer() {
 <li>文件系统：用户数据的管理可以放在用户态下，而对于文件系统本身的管理，需要放在内核态中。</li>
 <li>IO管理：因为要访问各种设备和底层数据结构，所以也要放在内核态实现。<br>6.如何辨别当前处于哪个态：CPU中有一个状态字，标识了当前的状态，用户态为3，内核态为0</li>
 </ul>
-<h1 id="用户态和内核态的切换"><a href="#用户态和内核态的切换" class="headerlink" title="用户态和内核态的切换"></a>用户态和内核态的切换</h1><p>1.系统调用：其机制核心还是通过操作系统为用户特别开放的一个中断来实现，表现为i一个正常的异常（软中断）。</p>
+<h1 id="用户态和内核态的切换"><a href="#用户态和内核态的切换" class="headerlink" title="用户态和内核态的切换"></a>用户态和内核态的切换</h1><p>1.系统调用：其机制核心还是通过操作系统为用户特别开放的一个中断来实现，表现为一个正常的异常（软中断）。</p>
 <ul>
 <li>进程调用：exit和fork</li>
 <li>文件系统访问：chmod和chown</li>
@@ -1050,6 +1302,30 @@ void writer() {
 <li>开启了Swap分区，此时进程可以正常运行（Swap机制会将不常用的内存先写到磁盘中，然后释放这些内存，再次访问这些内存时，从磁盘读入即可）</li>
 </ul>
 <h1 id="Swap机制触发的条件"><a href="#Swap机制触发的条件" class="headerlink" title="Swap机制触发的条件"></a>Swap机制触发的条件</h1><p>1.内存不足：当系统需要的内存超过了可用的物理内存时，内核会将内存中不常使用的内存页交换到磁盘上为当前进程让出内存，保证正在执行的进程的可用性，这个内存回收的过程是强制的直接内存回收（Direct Page Reclaim）。直接内存回收是同步的过程，会阻塞当前申请内存的进程。<br>2.内存闲置：应用程序在启动阶段使用的大量内存在启动后往往都不会使用，通过后台运行的守护进程（kSwapd），我们可以将这部分只使用一次的内存交换到磁盘上为其他内存的申请预留空间。kSwapd 是后台进程，所以回收内存的过程是异步的，不会阻塞当前申请内存的进程。</p>
+<h1 id="协程是什么"><a href="#协程是什么" class="headerlink" title="协程是什么"></a>协程是什么</h1><p>1.用户态的轻量级线程，是线程内部调度的基本单位，只在用户态内进行切换<br>2.先将寄存器上下文和栈保存，等切换回来的时候再进行恢复<br>3.同一时间只能执行一个协程，而其他协程处于休眠状态，适合对任务进行分时处理<br>4.基本没有到内核态切换的开销，可以不加锁的访问全局变量，所以上下文切换的非常快<br>5.其通信方式是共享队列和消息队列</p>
+<h1 id="一般需要几级页表"><a href="#一般需要几级页表" class="headerlink" title="一般需要几级页表"></a>一般需要几级页表</h1><p>32位系统下，一个页大小是4KB，虚拟地址4GB，那么可以分为100万个页，一个页表项4B，那么4B <em> 2 </em> 2^20 = 4MB，这对应的是一个进程，而多个进程就会有多个页表，导致页表会及其庞大<br>32位系统两级分页就足够了，64位的系统是4级分页</p>
+<h1 id="中断的作用"><a href="#中断的作用" class="headerlink" title="中断的作用"></a>中断的作用</h1><p>一方面，有了中断功能，PC系统就可以使CPU和外设同时工作，使系统可以及时地响应外部事件。而且有了中断功能，CPU可允许多个外设同时工作。这样就大大提高了CPU的利用率，也提高了数据输入、输出的速度。 另一方面，有了中断功能，就可以使CPU及时处理各种软硬件故障。计算机在运行过程中，往往会出现事先预料不到的情况或出现一些故障，如电源掉电、存储出错，运算溢出等等。计算机可以利用中断系统自行处理，而不必停机或报告工作人员。</p>
+<h1 id="CPU-Cache的数据结构和读取过程"><a href="#CPU-Cache的数据结构和读取过程" class="headerlink" title="CPU Cache的数据结构和读取过程"></a>CPU Cache的数据结构和读取过程</h1><p>1.存储结构：Cache Line组成，包括头标记和数据块，每次载入数据都是按照Cache Line整个读取<br>2.访问和存储：索引 + 有效位 + 组标记 + 偏移量，访问步骤如下：</p>
+<ul>
+<li>根据内存地址中索引信息，计算在 CPU Cahe 中的索引，也就是找出对应的 CPU Cache Line 的地址；</li>
+<li>找到对应 CPU Cache Line 后，判断 CPU Cache Line 中的有效位，确认 CPU Cache Line 中数据是否是有效的，如果是无效的，CPU 就会直接访问内存，并重新加载数据，如果数据有效，则往下执行；</li>
+<li>对比内存地址中组标记和 CPU Cache Line 中的组标记，确认 CPU Cache Line 中的数据是我们要访问的内存数据，如果不是的话，CPU 就会直接访问内存，并重新加载数据，如果是的话，则往下执行；</li>
+<li>根据内存地址中偏移量信息，从 CPU Cache Line 的数据块中，读取对应的字。</li>
+</ul>
+<h1 id="关于伪共享的问题"><a href="#关于伪共享的问题" class="headerlink" title="关于伪共享的问题"></a>关于伪共享的问题</h1><p>1.如果两个变量属于同一个Cache Line块，而恰好两个CPU核心需要分别修改这两个变量，则会发生Cache Line没有起到缓存的作用，降低了代码执行的速度<br>2.避免伪共享的方法<br>将变量设置为内存对齐，用空间换取时间</p>
+<h1 id="CPU选择线程的问题"><a href="#CPU选择线程的问题" class="headerlink" title="CPU选择线程的问题"></a>CPU选择线程的问题</h1><p>1.三个运行队列：</p>
+<ul>
+<li>Deadline运行队列</li>
+<li>实时任务运行队列</li>
+<li>CFS运行队列：完全公平调度，优先选择虚拟运行时间少的任务，虚拟运行时间 += 实际运行时间 / 权重</li>
+</ul>
+<h1 id="硬中断和软中断"><a href="#硬中断和软中断" class="headerlink" title="硬中断和软中断"></a>硬中断和软中断</h1><p>Linux 将中断处理程序分为上半部和下半部：<br>上半部，对应硬中断，由硬件触发中断，用来快速处理中断；<br>下半部，对应软中断，由内核触发中断，用来异步处理上半部未完成的工作，Linux 中的软中断包括网络收发、定时、调度、RCU 锁等各种类型</p>
+<h1 id="进程的上下文切换"><a href="#进程的上下文切换" class="headerlink" title="进程的上下文切换"></a>进程的上下文切换</h1><p>1.切换内容：用户空间的虚拟内存，栈，全局变量等；内核空间的堆栈、寄存器等<br>2.何时发生切换：CPU时间片用完；内存不足，则进程也会被挂起，当有优先级更高的进程运行，当前进程也会被挂起；发生硬件中断的时候也会发生进程的切换</p>
+<h1 id="互斥锁和自旋锁"><a href="#互斥锁和自旋锁" class="headerlink" title="互斥锁和自旋锁"></a>互斥锁和自旋锁</h1><p>互斥锁加锁失败会发生线程的上下文切换，需要消耗一定的时间，自旋锁是用户态完成加锁和解锁操作，不会主动产生线程上下文切换，运行时间更快，自旋锁通过 CPU 提供的 CAS 函数实现，包含两个步骤：</p>
+<ul>
+<li>第一步，查看锁的状态，如果锁是空闲的，则执行第二步；</li>
+<li>第二步，将锁设置为当前线程持有；<br>CAS 函数就把这两个步骤合并成一条硬件级指令，形成原子指令，这样就保证了这两个步骤是不可分割的，要么一次性执行完两个步骤，要么两个步骤都不执行。</li>
+</ul>
 
         
       
@@ -1103,11 +1379,19 @@ void writer() {
                 
               
 
-              <time title="Created: 2022-07-09 12:38:22 / Modified: 17:33:34" itemprop="dateCreated datePublished" datetime="2022-07-09T12:38:22+08:00">2022-07-09</time>
+              <time title="Created: 2022-07-09 12:38:22" itemprop="dateCreated datePublished" datetime="2022-07-09T12:38:22+08:00">2022-07-09</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-10-20 21:18:06" itemprop="dateModified" datetime="2022-10-20T21:18:06+08:00">2022-10-20</time>
+              </span>
             
           
 
@@ -1122,7 +1406,24 @@ void writer() {
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h1 id="ping命令的工作原理"><a href="#ping命令的工作原理" class="headerlink" title="ping命令的工作原理"></a>ping命令的工作原理</h1><p>1.ping发送一个ICMP（Internet Control Messages Protocol），即因特网信报控制协议；接收端回声消息给目的地并报告是否收到所希望的应答。它的原理是：利用网络上机器IP地址的唯一性，给目标IP地址发送一个数据包，通过对方回复的数据包来确定两台网络机器是否连接相通，时延是多少。<br>2.ping是应用层直接使用网络层ICMP的一个例子，它没有通过运输层的TCP或UDP。所以ICMP属于网络层协议。<br>3.对于ping命令，我们需要的到达的效果是检查是否联通。那么只需要我们的请求方带上数字标识8（回送请求），如果对方回送的数值是0，那么证明两者是联通的。<br>4.一个例子：</p>
+<ul>
+<li>执行 ping 192.168.0.5：此时ping命令会构建一个固定格式的ICMP请求数据包</li>
+<li>IP层协议将以地址“192.168.0.5”作为目的地址，本机IP地址作为源地址，加上一些其他的控制信息，构建一个IP数据包发往192.168.0.5。 </li>
+<li>目的主机相关操作：接收后检查该数据帧，将IP数据包从帧中提取出来，交给本机的IP层协议。IP层检查后，将有用的信息提取后交给ICMP协议。ICMP协议后者处理后，马上构建一个ICMP应答包，发送给主机A。</li>
+</ul>
+<h1 id="IPV4每个部分的含义"><a href="#IPV4每个部分的含义" class="headerlink" title="IPV4每个部分的含义"></a>IPV4每个部分的含义</h1><p>1.版本：4位，表示是IPV4还是IPV6<br>2.首部长度：默认20B<br>3.总长度：首部+数据和的长度，最大65535B，而MTU为1500B<br>4.标识：用于分片后进行重装<br>5.标志：MF = 1表示后面还有分片，MF = 0表示是最后一个分片，DF = 0表示允许分片<br>6.TTL：生存时间，报文经过每个路由器都将减一，当为0时，丢弃该报文<br>7.协议：6表示TCP，17表示UDP<br>8.首部校验和：只检验数据报首部<br>9.源地址和目的地址</p>
+<h1 id="epoll如何知道数据已经被完整读取"><a href="#epoll如何知道数据已经被完整读取" class="headerlink" title="epoll如何知道数据已经被完整读取"></a>epoll如何知道数据已经被完整读取</h1><p>用epoll + ET模式读取数据，当检查到监听的socket可以读取数据时，使用recv函数读取上面的数据，当该函数返回-1且errno是EAGAIN或EWOULDBLOCK的时候，表示数据已经全部读取完毕。</p>
+<h1 id="epoll的ET模式时-如果数据只读了一半-也就是缓冲区的数据只读了一点-然后又来新事件了怎么办？"><a href="#epoll的ET模式时-如果数据只读了一半-也就是缓冲区的数据只读了一点-然后又来新事件了怎么办？" class="headerlink" title="epoll的ET模式时,如果数据只读了一半,也就是缓冲区的数据只读了一点,然后又来新事件了怎么办？"></a>epoll的ET模式时,如果数据只读了一半,也就是缓冲区的数据只读了一点,然后又来新事件了怎么办？</h1><p>这里我使用通过epoll_ctl对该文件描述符注册epolloneshot事件，一个线程处理socket时，其他线程将无法处理，当该线程处理完后，需要通过epoll_ctl重置epolloneshot事件</p>
+<h1 id="http断点续传"><a href="#http断点续传" class="headerlink" title="http断点续传"></a>http断点续传</h1><p>1.http 1.1中定义了断点续传的相关Range和Content-Range字段。</p>
+<ul>
+<li>客户端：Range字段，指定第一个字节的位置和最后一个字节的位置，有多种格式，可以具体的指示需要哪些字节，甚至可以指定多个范围值</li>
+<li>服务端：Content-Range字段，返回当前接受的范围和文件总大小，响应完成后，返回的响应头内容也不一样，例如200 OK表示不使用断点续传的方式，206则表示使用断点续传的方式</li>
+<li>增强校验：在实际场景中，会出现一种情况，即在终端发起续传请求时，URL 对应的文件内容在服务器端已经发生变化，此时续传的数据肯定是错误的。如何解决这个问题了？显然此时需要有一个标识文件唯一性的方法。在 RFC2616 中也有相应的定义，比如实现Last-Modified 来标识文件的最后修改时间，这样即可判断出续传文件时是否已经发生过改动。同时 FC2616 中还定义有一个 ETag 的头，可以使用 ETag 头来放置文件的唯一标识。<br>2.工作原理</li>
+<li>第一次请求：客户端发起GET请求一个文件，服务器处理请求，返回文件内容以及相应的 Header，其中包括 Etag（例如：627-4d648041f6b80）（假设服务器支持 Etag 生成并已开启了 Etag）状态码为 200。</li>
+<li>第二次请求（断点续传）：客户端发起 HTTP GET 请求一个文件，同时发送 If-Range（该头的内容就是第一次请求时服务器返回的 Etag：627-4d648041f6b80）。<br>服务器判断接收到的 Etag 和计算出来的 Etag 是否匹配，如果匹配，那么响应的状态码为 206；否则，状态码为 200。</li>
+</ul>
+
         
       
     </div>
@@ -1186,7 +1487,7 @@ void writer() {
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-17 20:39:58" itemprop="dateModified" datetime="2022-09-17T20:39:58+08:00">2022-09-17</time>
+                <time title="Modified: 2022-10-12 17:00:26" itemprop="dateModified" datetime="2022-10-12T17:00:26+08:00">2022-10-12</time>
               </span>
             
           
@@ -1209,7 +1510,7 @@ void writer() {
   }
   //下面的代码会报重定义错误
   void test(const int a){
-      cout &lt;&lt; a &lt;&lt; endl; 
+      cout &lt;&lt; a &lt;&lt; 2endl; 
   }
 </code></pre></li>
 <li><p>函数中引用传递和指针传递增加const构成重载，因为传入的是确切的对象，<code>const</code>可以区分传入的这些对象能否被修改的性质</p>
@@ -1474,13 +1775,13 @@ void process_msg(void)
 {
     struct msg *mp;
     for (;;) {
-    pthread_mutex_lock(&amp;qlock);
-    while (workq == NULL)
-        pthread_cond_wait(&amp;qready, &amp;qlock);
-    mp = workq;
-    workq = mp-&gt;m_next;
-    pthread_mutex_unlock(&amp;qlock);
-    /* now process the message mp */
+        pthread_mutex_lock(&amp;qlock);
+        while (workq == NULL)
+            pthread_cond_wait(&amp;qready, &amp;qlock);
+        mp = workq;
+        workq = mp-&gt;m_next;
+        pthread_mutex_unlock(&amp;qlock);
+        /* now process the message mp */
     }
 }
 
@@ -1561,6 +1862,277 @@ void enqueue_msg(struct msg *mp)
 </ul>
 <h1 id="C-中有几种类型的new"><a href="#C-中有几种类型的new" class="headerlink" title="C++中有几种类型的new"></a>C++中有几种类型的new</h1><p>1.plain new：也就是我们常用的new，其在空间分配失败的情况下返回bad_alloc而不是NULL<br>2.nothrow new：空间分配失败的情况下，不抛出异常，而是返回NULL<br>3.palcement new：主要用途就是反复使用一块较大的动态分配的内存，来构造不同类型的对象或者他们的数组，需要显式的调用析构函数来销毁，不能使用delete，因为其构造的对象或者数组的大小并不一定等于原来分配的内存大小，使用delete会造成内存泄漏，或者释放内存出现运行时错误。</p>
 <h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用"></a>static的作用</h1><p>1.隐藏：编译多个文件时，没有static的全局变量和函数都具有全局可见性，而加了的只有在本文件中才可见<br>2.全局变量和static变量都在静态变量区，热着都会在程序刚开始运行就完成初始化，也是唯一一次初始化，值为0（没有给定值的情况下）<br>3.类中的static成员变量属于整个类所有，类的所有对象只有一份拷贝；类的static成员函数属于整个类所有，函数没有this指针，因而只能访问类的static成员变量<br>4.类的static成员变量必须先初始化再使用，只能在类体外进行初始化。<br>5.static成员函数不能被virtual修饰，因为static不属于任何对象或者实例，所以加virtual没有意义。况且static函数没有this指针，而虚函数的指向函数表的指针是通过this指针指向的，所以无法实现。</p>
+<h1 id="类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些"><a href="#类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些" class="headerlink" title="类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些"></a>类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些</h1><p>1.初始化方式</p>
+<ul>
+<li>赋值初始化：通过函数体内进行赋值初始化</li>
+<li>列表初始化：在冒号后使用初始化列表进行初始化<br>二者的区别：在函数体中初始化，是在所有的数据成员被分配内存空间后进行的；而列表初始化是给数据成员分配内存空间时就进行初始化，此时函数体还未执行。<br>2.一个派生类构造函数的执行顺序：</li>
+<li>虚拟基类的构造函数，如果有多个，就按照继承的顺序执行构造函数</li>
+<li>基类的构造函数（多个普通基类也按照继承的顺序执行构造函数）</li>
+<li>类类型的成员对象的构造函数（按照初始化顺序）</li>
+<li>派生类自己的构造函数<br>3.因为方法一是在构造函数中进行赋值操作，会产生临时对象，降低程序的效率。而成员初始化列表对于类类型，实际上是少了一次调用构造函数的过程，对于内置数据类型二者没有区别。</li>
+</ul>
+<h1 id="必须使用成员列表初始化的情况"><a href="#必须使用成员列表初始化的情况" class="headerlink" title="必须使用成员列表初始化的情况"></a>必须使用成员列表初始化的情况</h1><p>1.初始化一个引用成员<br>2.初始化一个常量成员<br>3.该类是继承一个基类，并且基类中有构造函数，构造函数有一组参数时<br>4.该类的成员变量类型是类类型，而该类类型的构造函数带参数时</p>
+<h1 id="C-赋值，浅拷贝，深拷贝，零拷贝"><a href="#C-赋值，浅拷贝，深拷贝，零拷贝" class="headerlink" title="C++ 赋值，浅拷贝，深拷贝，零拷贝"></a>C++ 赋值，浅拷贝，深拷贝，零拷贝</h1><p>1.浅拷贝：只复制指向某个对象的指针，而不是复制对象本身，新旧对象还是共享同一块内存<br>2.深拷贝：会另外创造一个一样的对象，和原本的对象不共享内存，修改新对象不会修改旧对象<br>3.零拷贝：操作系统中的mmap操作</p>
+<h1 id="coredump错误"><a href="#coredump错误" class="headerlink" title="coredump错误"></a>coredump错误</h1><p>程序由于异常或者bug在运行时异常退出或终止，在一定条件下生成一个叫core的文件，该文件会记录程序在运行时的内存，寄存器状态，内存指针和函数堆栈信息等。</p>
+<h1 id="静态类型和动态类型，静态绑定和动态绑定"><a href="#静态类型和动态类型，静态绑定和动态绑定" class="headerlink" title="静态类型和动态类型，静态绑定和动态绑定"></a>静态类型和动态类型，静态绑定和动态绑定</h1><ul>
+<li>静态类型：对象在声明时采用的类型，在编译期已经确定</li>
+<li>动态类型：通常是<strong>指针或者引用…</strong>目前所指向的对象类型，在运行期决定</li>
+<li>静态绑定：发生在编译期，绑定的是静态类型</li>
+<li>动态绑定：绑定的是动态类型，发生在运行期</li>
+<li>非虚函数一般都是静态绑定，虚函数都是动态绑定</li>
+</ul>
+<h1 id="怎样判断两个浮点数是否相同"><a href="#怎样判断两个浮点数是否相同" class="headerlink" title="怎样判断两个浮点数是否相同"></a>怎样判断两个浮点数是否相同</h1><p>通过相减来和预先设定的精度比较</p>
+<h1 id="100层，两个小球"><a href="#100层，两个小球" class="headerlink" title="100层，两个小球"></a>100层，两个小球</h1><p>每次从第k层开始，那么如果碎了，就可以从1到(k - 1)逐次扫描，<br>下一次从k + (k - 1)开始，如果碎了，那么就可以从k + 1到2k - 2，加上之前第一次也总共是K次<br>所以k + k - 1 + k - 2 … &lt;= 100，那么k最大可以取14</p>
+<h1 id="手动实现strcpy（注意异常情况）"><a href="#手动实现strcpy（注意异常情况）" class="headerlink" title="手动实现strcpy（注意异常情况）"></a>手动实现strcpy（注意异常情况）</h1><pre><code>void mystrcpy(char *dst, const char *src){
+    assert(src != NULL);
+    assert(dst != NULL);
+    while(*dst++ = *src){
+        ;
+    }
+}
+</code></pre><p>或者 </p>
+<pre><code>char* mystrcpy(char *dst, const char *src){
+    assert(src != NULL);
+    assert(dst != NULL);
+    char* start = dst;
+    while(*dst++ = *src){
+        ;
+    }
+    return start;
+}
+</code></pre><h1 id="为什么析构函数一般写成虚函数"><a href="#为什么析构函数一般写成虚函数" class="headerlink" title="为什么析构函数一般写成虚函数"></a>为什么析构函数一般写成虚函数</h1><p>由于类的多态性，基类指针可以指向派生类的对象，如果删除该基类的指针，就会调用该指针指向的派生类析构函数，而派生类的析构函数又自动调用基类的析构函数，这样整个派生类的对象完全被释放。<br>如果析构函数不被声明成虚函数，则编译器实施静态绑定，在删除基类指针时，只会调用基类的析构函数而不调用派生类析构函数，这样就会造成派生类对象析构不完全，造成内存泄漏。</p>
+<h1 id="基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间"><a href="#基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间" class="headerlink" title="基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间"></a>基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间</h1><p>1.虚函数表是全局共享的元素，即全局仅有一个，在编译时就构造完成<br>2.C++中虚函数表位于常量区；而虚函数则位于代码段（.text），也就是C++内存模型中的代码区。</p>
+<h1 id="构造函数、析构函数、虚函数可否声明为内联函数"><a href="#构造函数、析构函数、虚函数可否声明为内联函数" class="headerlink" title="构造函数、析构函数、虚函数可否声明为内联函数"></a>构造函数、析构函数、虚函数可否声明为内联函数</h1><p>1.将构造函数和析构函数声明为inline是没有什么意义的，即编译器并不真正对声明为inline的构造和析构函数进行内联操作，因为编译器会在构造和析构函数中添加额外的操作（申请/释放内存，构造/析构对象等），致使构造函数/析构函数并不像看上去的那么精简。其次，class中的函数默认是inline型的，编译器也只是有选择性的inline，将构造函数和析构函数声明为内联函数是没有什么意义的。<br>2.当是指向派生类的指针（多态性）调用声明为inline的虚函数时，不会内联展开；当是对象本身调用虚函数时，会内联展开，当然前提依然是函数并不复杂的情况下。</p>
+<h1 id="C-模板是什么，你知道底层怎么实现的？"><a href="#C-模板是什么，你知道底层怎么实现的？" class="headerlink" title="C++模板是什么，你知道底层怎么实现的？"></a>C++模板是什么，你知道底层怎么实现的？</h1><p>编译器并不是把函数模板处理成能够处理任意类的函数；编译器从函数模板通过具体类型产生不同的函数；编译器会对函数模板进行两次编译：在声明的地方对模板代码本身进行编译，在调用的地方对参数替换后的代码进行编译。</p>
+<h1 id="构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？"><a href="#构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？" class="headerlink" title="构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？"></a>构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？</h1><p>1.构造函数顺序</p>
+<ul>
+<li>基类构造函数。如果有多个基类，则构造函数的调用顺序是某类在类派生表中出现的顺序，而不是它们在成员初始化表中的顺序。</li>
+<li>成员类对象构造函数。如果有多个成员类对象则构造函数的调用顺序是对象在类中被声明的顺序，而不是它们出现在成员初始化表中的顺序。</li>
+<li>派生类构造函数。<br>2.析构函数顺序</li>
+<li>调用派生类的析构函数；</li>
+<li>调用成员类对象的析构函数；</li>
+<li>调用基类的析构函数。</li>
+</ul>
+<h1 id="单例模式的两种实现"><a href="#单例模式的两种实现" class="headerlink" title="单例模式的两种实现"></a>单例模式的两种实现</h1><p>1.懒汉方式：单例实例在第一次被使用的时候才进行初始化，称为延迟初始化</p>
+<pre><code>class Singleton{
+private:
+    Singleton(){};
+    ~Singleton(){};
+    Singleton(const Singleton&amp;);
+    Singleton&amp; operator=(const Singleton&amp;);
+
+public:
+    static Singleton&amp; getInstance(){
+        static Singleton instance;
+        return instance;
+    }
+}
+</code></pre><p>使用了局部静态变量的方式来保证线程安全</p>
+<p>2.饿汉模式：单例模式在程序运行时立即被初始化</p>
+<pre><code>class Singleton{
+private:
+    Singleton(){};
+    ~Singleton(){};
+    Singleton(const Singleton&amp;);
+    Singleton&amp; operator=(const Singleton&amp;);
+private:
+    static Singleton instance;
+public:
+    static Singleton&amp; getInstance(){
+        return instance;
+    }
+}
+
+//初始化
+Singleton Singleton::instance;
+</code></pre><p>问题：没有线程安全问题，但是static Singleton instance 和 static Singleton&amp; getInstance()二者的初始化顺序不确定，如果在初始化完成之前调用 getInstance() 方法会返回一个未定义的实例。</p>
+<h1 id="shared-ptr的实现"><a href="#shared-ptr的实现" class="headerlink" title="shared_ptr的实现"></a>shared_ptr的实现</h1><pre><code>template&lt;typename T&gt;
+class SharedPtr{
+public:
+    SharedPtr(T* ptr = NULL):_ptr(ptr), _pCount(new int(1)){}
+    SharedPtr(const SharedPtr&amp; s):_ptr(s._ptr), _pCount(s._pCount){
+        (*_pCount)++;
+    }
+
+    SharedPtr&lt;T&gt;&amp; operator=(const SharedPtr&amp; s){
+        if(_ptr_ != s._ptr){
+            if(--(*_pCount) == 0){
+                delete _ptr;
+                delete _pCount;
+            }
+            _ptr = s._ptr;
+            _pCount = s._pCount;
+            (*_pcount)++;
+        }
+        return *this;
+    }
+
+    T&amp; operator*(){
+        return *ptr;
+    }
+
+    T* operator&amp;(){
+        return ptr;
+    }
+
+    ~Shared(){
+        --(*_pCount);
+        if(*_pCount == 0){
+            delete _ptr;
+            delete _pCount;
+            _ptr = nullptr;
+            _pcount = nullptr;
+        }
+    }
+
+private:
+    T* _ptr;
+    unsigned_int* _pCount;
+}
+</code></pre><h1 id="shared-ptr指针的大小"><a href="#shared-ptr指针的大小" class="headerlink" title="shared_ptr指针的大小"></a>shared_ptr指针的大小</h1><p>8字节：一个指针，指向被保护的对象，还有一个计数类，其实现是一个指针，指向两个int类型的变量，分别是shared_ptr的引用计数和weak_ptr的数量</p>
+<h1 id="vector扩容什么时候使用移动构造"><a href="#vector扩容什么时候使用移动构造" class="headerlink" title="vector扩容什么时候使用移动构造"></a>vector扩容什么时候使用移动构造</h1><p>如果vector内保存的是一个类类型，并且该类类型的移动构造函数声明为 noexcept，则会调用移动构造（浅拷贝），否则调用深拷贝，即拷贝构造，这样会大大浪费资源</p>
+<h1 id="稳定排序和不稳定排序"><a href="#稳定排序和不稳定排序" class="headerlink" title="稳定排序和不稳定排序"></a>稳定排序和不稳定排序</h1><p>1.稳定排序：能保证两个相等的元素在排序之后前后顺序不变</p>
+<ul>
+<li>冒泡排序：因为每次遇到相等判断，是不会发生交换的</li>
+<li>插入排序：如果比当前的最大者还大，就插在后面，遇到相等的情况，则插入到相等元素的后面，能保证顺序不变</li>
+<li>归并排序：在合并的过程中，遇到两个相等的元素，会把处在前面的元素先保存，最终保证了稳定性</li>
+</ul>
+<p>2.不稳定排序：</p>
+<ul>
+<li>快速排序：在中枢元素和交界元素交换的时候会破坏稳定性</li>
+<li>堆排序</li>
+</ul>
+<h1 id="一个很大的二维数组，里面大部分数据都是0，怎么保存"><a href="#一个很大的二维数组，里面大部分数据都是0，怎么保存" class="headerlink" title="一个很大的二维数组，里面大部分数据都是0，怎么保存"></a>一个很大的二维数组，里面大部分数据都是0，怎么保存</h1><p>可以使用数组压缩的方式来解决，压缩后的格式为：第一行保存的是原始数组的行列数，和有效数据数，接下来的每一行保存的是原始数据中某个有效数据的行列以及数值。这样使用 n * 3的数组就可以保存原来的数据</p>
+<h1 id="编写String类的构造函数，析构函数和赋值函数"><a href="#编写String类的构造函数，析构函数和赋值函数" class="headerlink" title="编写String类的构造函数，析构函数和赋值函数"></a>编写String类的构造函数，析构函数和赋值函数</h1><pre><code>class String{
+private：
+    char* m_data;
+public:
+    String(const char* str = nullptr){};
+    String(const String&amp; str);
+    ~String(){};
+    String&amp; operator=(const String&amp; str);
+}
+
+String::String(const char* str){
+    if(NULL == str){
+        m_data = new char[1];
+        *m_data = &#39;\0&#39;;
+    }else{
+        int len = strlen(str);
+        m_data = new char[len + 1];
+        strcpy_s(m_data, len + 1, str.m_data);
+    }
+}
+
+String::String(const String&amp; str){
+    int len = strlen(str.m_data);
+    m_data = new char[len + 1];
+    strcpy_s(m_data, len + 1, str);
+}
+
+String::~String{
+    if(m_data != nullptr){
+        delete[] m_data;
+        m_data = nullptr;
+    }
+}
+
+String&amp; String::String(const String&amp; str){
+    //如果与str对象时一样的，即自赋值
+    if(this == &amp;str){
+        return *this;
+    }
+    delete[] m_data;
+    int len = strlen(str.m_data);
+    m_data = new char[len + 1];
+    strcpy_s(m_data, len + 1, str.m_data);
+    return *this;
+}
+</code></pre><h1 id="实现一个unique-ptr"><a href="#实现一个unique-ptr" class="headerlink" title="实现一个unique_ptr"></a>实现一个unique_ptr</h1><pre><code>template&lt;typename T&gt;
+class MyUniquePtr
+{
+public:
+    MyUniquePtr(T* ptr = nullptr):mPtr(ptr){};
+    ~MyUniquePtr(){
+        if(mPtr){
+            delete mPtr;
+            mPtr = nullptr;
+        }
+    }
+    MyUniquePtr(MyUniquePtr &amp;&amp;P) noexcept;
+    MyUniquePtr&amp; operator=(MyUniquePtr &amp;&amp;p) noexcept;
+
+    MyUniquePtr(const MyUniquePt &amp;p) = delete;
+    MyUniquePtr&amp; operator=(const MyUniquePtr &amp;p) = delete;
+
+    void reset(T *q = nullptr) noexcept{
+        if(q != mPtr){
+            if(mPtr){
+                delete mPtr;
+            }
+            mPtr = q;
+        }
+    }
+
+    T* release() noexcept{
+        T* res = mPtr;
+        mPtr = nullptr;
+        return res;
+    }
+
+    void swap(MyUniquePtr &amp;p) noexcept{
+        using std::swap;
+        swap(mPtr, p.mPtr);
+    }
+
+private:
+    T* mPtr;
+};
+
+template &lt;typename T&gt;
+MyUniquePtr&lt;T&gt;&amp; MyUniquePtr&lt;T&gt;::operator=(MyUniquePtr &amp;&amp;p) noexcept{
+    swap(*this, p);
+    return *this;
+}
+
+template &lt;typename T&gt;
+MyUniquePtr&lt;T&gt;::MyUniquePtr(MyUniquePtr &amp;&amp;p) noexcept: mPtr(p.mPtr){
+    p.mPtr = nullptr;
+}
+</code></pre><h1 id="前序和后序不能确定二叉树"><a href="#前序和后序不能确定二叉树" class="headerlink" title="前序和后序不能确定二叉树"></a>前序和后序不能确定二叉树</h1><p>前序和后序在本质上都是将父节点与子结点进行分离,但并没有指明左子树和右子树的能力,因此得到这两个序列只能明确父子关系,而不能确定一个二叉树。</p>
+<h1 id="实现LRU"><a href="#实现LRU" class="headerlink" title="实现LRU"></a>实现LRU</h1><p>struct DLinkedNode {<br>    int key, value;<br>    DLinkedNode<em> prev;<br>    DLinkedNode</em> next;<br>    /<em> 构造函数便于新定义节点时初始化对象 </em>/<br>    DLinkedNode(): key(0), value(0), prev(nullptr), next(nullptr) {}<br>    DLinkedNode(int _key, int _value): key(_key), value(_value), prev(nullptr), next(nullptr) {}<br>};</p>
+<p>class LRUCache {<br>private:<br>    unordered_map<int, dlinkednode*> map;<br>    DLinkedNode<em> head;<br>    DLinkedNode</em> tail;<br>    int size;       // 缓冲区使用的大小<br>    int capacity;   // 缓冲区的容量</int,></p>
+<p>public:<br>    LRUCache(int _capacity): capacity(_capacity), size(0) {<br>        /<em> 使用伪头部和伪尾部节点 </em>/<br>        head = new DLinkedNode();<br>        tail = new DLinkedNode();<br>        head-&gt;next = tail;<br>        tail-&gt;prev = head;<br>    }<br>    /<em> 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 </em>/<br>    int get(int key) {<br>        if (!map.count(key)) return -1;<br>        /<em> 如果 key 存在，先通过哈希表定位，再移到头部 </em>/<br>        DLinkedNode* node = map[key];<br>        moveToHead(node);<br>        return node-&gt;value;<br>    }</p>
+<pre><code>void put(int key, int value) {
+    if (!map.count(key)) {
+        /* 如果 key 不存在，创建一个新的节点 */
+        DLinkedNode* node = new DLinkedNode(key, value);
+        /* 添加进哈希表 */
+        map[key] = node;
+        /* 添加至双向链表的头部 */
+        addToHead(node);
+        /* 缓存大小+1 */
+        size++;
+        if (size &gt; capacity) {
+            DLinkedNode* removed = removeTail();// 如果超出容量，删除双向链表的尾部节点
+            map.erase(removed-&gt;key);// 删除哈希表中对应的项
+            delete removed;// 防止内存泄漏
+            size--;// 缓存大小-1
+        }
+    }
+    else {
+        /* 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部 */
+        DLinkedNode* node = map[key];
+        node-&gt;value = value;
+        moveToHead(node);
+    }
+}
+</code></pre><p>/<strong><strong><strong><em>**</em></strong></strong></strong>定义双向链表需要用的API函数<strong><strong><strong><em>**</em></strong></strong></strong>/<br>public:<br>    /<em> 在虚拟头节点后添加新的节点 node </em>/<br>    void addToHead(DLinkedNode<em> node) {<br>        node-&gt;prev = head;<br>        node-&gt;next = head-&gt;next;<br>        head-&gt;next-&gt;prev = node;<br>        head-&gt;next = node;<br>    }<br>    /</em> 删除当前节点 node 这里也是为什么使用双向链表的原因方便删除节点 <em>/<br>    void removeNode(DLinkedNode</em> node) {<br>        node-&gt;prev-&gt;next = node-&gt;next;<br>        node-&gt;next-&gt;prev = node-&gt;prev;<br>    }<br>    /<em> 把出现频率比较高的节点放入 头部 </em>/<br>    void moveToHead(DLinkedNode<em> node) {<br>        removeNode(node);<br>        addToHead(node);<br>    }<br>    /</em> 移除尾部节点 并返回尾部最后一个节点 <em>/<br>    DLinkedNode</em> removeTail() {<br>        DLinkedNode* node = tail-&gt;prev;<br>        removeNode(node);<br>        return node;<br>    }<br>};</p>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p>void Quick_Sort(int *arr, int begin, int end){<br>    if(begin &gt; end)<br>        return;<br>    int tmp = arr[begin];<br>    int i = begin;<br>    int j = end;<br>    while(i != j){<br>        while(arr[j] &gt;= tmp &amp;&amp; j &gt; i)<br>            j—;<br>        while(arr[i] &lt;= tmp &amp;&amp; j &gt; i)<br>            i++;<br>        if(j &gt; i){<br>            int t = arr[i];<br>            arr[i] = arr[j];<br>            arr[j] = t;<br>        }<br>    }<br>    arr[begin] = arr[i];<br>    arr[i] = tmp;<br>    Quick_Sort(arr, begin, i-1);<br>    Quick_Sort(arr, i+1, end);<br>}</p>
+<h1 id="stl常用容器在内存中的位置"><a href="#stl常用容器在内存中的位置" class="headerlink" title="stl常用容器在内存中的位置"></a>stl常用容器在内存中的位置</h1><ul>
+<li>在栈区定义容器变量，变量本身存储在栈区，但是变量存储的数据在堆区；</li>
+<li>在堆空间定义的容器变量，变量本身存储在堆区，存储的数据也在堆区；</li>
+</ul>
 
         
       
@@ -1625,7 +2197,7 @@ void enqueue_msg(struct msg *mp)
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-15 10:20:01" itemprop="dateModified" datetime="2022-09-15T10:20:01+08:00">2022-09-15</time>
+                <time title="Modified: 2022-10-11 15:39:20" itemprop="dateModified" datetime="2022-10-11T15:39:20+08:00">2022-10-11</time>
               </span>
             
           
@@ -1698,189 +2270,75 @@ void enqueue_msg(struct msg *mp)
 <h1 id="new-和-delete-是如何实现的"><a href="#new-和-delete-是如何实现的" class="headerlink" title="new 和 delete 是如何实现的"></a>new 和 delete 是如何实现的</h1><p>1.new的实现过程是：首先调用名为operator new 的标准库函数，分配足够大的内存来保存指定类型的一个对象，接下来运行该类型的构造函数，用于初始化该对象，最后返回该对象的指针。<br>2.delete的实现过程：对指针指向的对象运行适当的析构函数，然后调用operator delete的标准库函数释放该对象的内存</p>
 <h1 id="指针占多少字节"><a href="#指针占多少字节" class="headerlink" title="指针占多少字节"></a>指针占多少字节</h1><p>一个指针占内存的大小跟编译环境有关，而与机器的位数无关。32位编译环境下为4字节，64位编译环境下为8字节</p>
 <h1 id="顶层const和底层const"><a href="#顶层const和底层const" class="headerlink" title="顶层const和底层const"></a>顶层const和底层const</h1><p>1.顶层const可以表示任意的对象是常量，这一点对任何数据类型都使用，底层const则与指针和引用的复合类型有关<br>2.当执行对象的拷贝操作时，顶层const不受什么影响，但是底层const的限制不能被忽略。<br>3.对于重载，顶层const不构成重载，底层const构成重载</p>
+<h1 id="数据库三大范式"><a href="#数据库三大范式" class="headerlink" title="数据库三大范式"></a>数据库三大范式</h1><p>1.列不可再分<br>2.属性完全依赖于主键（一张表中包含了多种不同的属性，那么必须要分成多张表）<br>3.属性不依赖于其他非主属性（要求已经分好了多张表的话，一张表中只能有另一张表的ID，而不能有其他任何信息）</p>
+<h1 id="类成员继承权限问题"><a href="#类成员继承权限问题" class="headerlink" title="类成员继承权限问题"></a>类成员继承权限问题</h1><p>1.若继承方式是public，基类成员在派生类中的访问权限保持不变，也就是说，基类中的成员访问权限，在派生类中仍然保持原来的访问权限；<br>2.若继承方式是private，基类所有成员在派生类中的访问权限都会变为私有(private)权限；<br>3.若继承方式是protected，基类的共有成员和保护成员在派生类中的访问权限都会变为保护(protected)权限，私有成员在派生类中的访问权限仍然是私有(private)权限。</p>
+<h1 id="禁止隐式转换"><a href="#禁止隐式转换" class="headerlink" title="禁止隐式转换"></a>禁止隐式转换</h1><p>C++中提供了explicit关键字，在构造函数声明的时候加上explicit关键字，能够禁止隐式转换。如果构造函数只接受一个参数，则它实际上定义了转换为此类类型的隐式转换机制。可以通过将构造函数声明为explicit加以制止隐式类型转换，关键字explicit只对一个实参的构造函数有效，需要多个实参的构造函数不能用于执行隐式转换，所以无需将这些构造函数指定为explicit。</p>
+<h1 id="数组和指针的区别"><a href="#数组和指针的区别" class="headerlink" title="数组和指针的区别"></a>数组和指针的区别</h1><p>1.数组在内存中是连续存放的，开辟一块连续的内存空间；数组所占存储空间：sizeof（数组名）；数组大小：sizeof(数组名)/sizeof(数组元素数据类型)；<br>2.用运算符sizeof 可以计算出数组的容量（字节数）。sizeof(p),p 为指针得到的是一个指针变量的字节数，而不是p 所指的内存容量。<br>3.在向函数传递参数的时候，如果实参是一个数组，那用于接受的形参为对应的指针。也就是传递过去是数组的首地址而不是整个数组，能够提高效率；</p>
+<h1 id="写一个比较大小的模板"><a href="#写一个比较大小的模板" class="headerlink" title="写一个比较大小的模板"></a>写一个比较大小的模板</h1><pre><code>template&lt;typename type1, typename type2&gt;
 
-        
-      
-    </div>
+type1 max(type1 a, type2 b){
+    return a &gt; b ? a : b;
+}
 
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
+void main(){
+    cout &lt;&lt; max(5.5, &#39;a&#39;) &lt;&lt; endl;
+}
+</code></pre><p>其实该模板有个比较隐晦的bug，那就是a、b只有在能进行转型的时候才能进行比较，否则 a &gt; b 这一步是会报错的。这个时候往往需要对于 &gt; 号进行重载，这代码量瞬间上来了。</p>
+<h1 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h1><p>回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用为调用它所指向的函数时，我们就说这是回调函数，比如epoll中可以通过回调函数找到对应的红黑树节点。</p>
+<h1 id="delete和delete-的区别"><a href="#delete和delete-的区别" class="headerlink" title="delete和delete[]的区别"></a>delete和delete[]的区别</h1><p>delete只会调用一次析构函数。<br>delete[]会调用数组中每个元素的析构函数</p>
+<h1 id="类的对象存储空间"><a href="#类的对象存储空间" class="headerlink" title="类的对象存储空间"></a>类的对象存储空间</h1><p>1.非静态成员的数据类型大小之和。<br>2.编译器加入的额外成员变量（如指向虚函数表的指针）。<br>3.为了边缘对齐优化加入的padding。<br>4.空类(无非静态数据成员)的对象的size为1,这样可以保证每个实例均有独占的内存地址，当作为基类时, size为0，如果带有虚函数，则大小比1大，因为还需要包含一个虚函数表指针<br>5.成员函数不占用对象的内存。这是因为所有的函数都是存放在代码区的，不管是全局函数，还是成员函数。</p>
+<h1 id="在成员函数中调用delete-this会出现什么问题？对象还可以使用吗？"><a href="#在成员函数中调用delete-this会出现什么问题？对象还可以使用吗？" class="headerlink" title="在成员函数中调用delete this会出现什么问题？对象还可以使用吗？"></a>在成员函数中调用delete this会出现什么问题？对象还可以使用吗？</h1><p>在类对象的内存空间中，只有数据成员和虚函数表指针，并不包含代码内容，类的成员函数单独放在代码段中。在调用成员函数时，隐含传递一个this指针，让成员函数知道当前是哪个对象在调用它。当调用delete this时，类对象的内存空间被释放。在delete this之后进行的其他任何函数调用，只要不涉及到this指针的内容，都能够正常运行。一旦涉及到this指针，如操作数据成员，调用虚函数等，就会出现不可预期的问题</p>
+<h1 id="如果在类的析构函数中调用delete-this，会发生什么？"><a href="#如果在类的析构函数中调用delete-this，会发生什么？" class="headerlink" title="如果在类的析构函数中调用delete this，会发生什么？"></a>如果在类的析构函数中调用delete this，会发生什么？</h1><p>会导致堆栈溢出。原因很简单，delete的本质是“为将被释放的内存调用一个或多个析构函数，然后，释放内存”。显然，delete this会去调用本对象的析构函数，而析构函数中又调用delete this，形成无限递归，造成堆栈溢出，系统崩溃。</p>
+<h1 id="auto和decltype的区别"><a href="#auto和decltype的区别" class="headerlink" title="auto和decltype的区别"></a>auto和decltype的区别</h1><h1 id="lambda函数"><a href="#lambda函数" class="headerlink" title="lambda函数"></a>lambda函数</h1><p>1.利用lambda表达式可以编写内嵌的匿名函数，用以替换独立函数或者函数对象；<br>2.每当你定义一个lambda表达式后，编译器会自动生成一个匿名类（这个类当然重载了()运算符），我们称为闭包类型（closure type）。那么在运行时，这个lambda表达式就会返回一个匿名的闭包实例，其实一个右值。所以，我们上面的lambda表达式的结果就是一个闭包。闭包的一个强大之处是其可以通过传值或者引用的方式捕捉其封装作用域内的变量，前面的方括号就是用来定义捕捉模式以及变量，我们又将其称为lambda捕捉块。<br>3.lambda语法如下：</p>
+<pre><code>[capture] （parameters） mutable -&gt;return-type {statement};
+</code></pre><p>4.lambda必须使用尾置返回来指定返回类型，可以忽略参数列表和返回值，但必须永远包含捕获列表和函数体；</p>
+<h1 id="STL中hashtable的实现"><a href="#STL中hashtable的实现" class="headerlink" title="STL中hashtable的实现"></a>STL中hashtable的实现</h1><p>1.STL中的hashtable使用的是开链法解决hash冲突问题<br>2.hashtable中的bucket所维护的list既不是list也不是slist，而是其自己定义的由hashtable_node数据结构组成的linked-list，而bucket聚合体本身使用vector进行存储。hashtable的迭代器只提供前进操作，不提供后退操作</p>
+<h1 id="vector如何释放空间"><a href="#vector如何释放空间" class="headerlink" title="vector如何释放空间"></a>vector如何释放空间</h1><p>1.由于vector的内存占用空间只增不减，比如你首先分配了10,000个字节，然后erase掉后面9,999个，留下一个有效元素，但是内存占用仍为10,000个。所有内存空间是在vector析构时候才能被系统回收。empty()用来检测容器是否为空的，clear()可以清空所有元素。但是即使clear()，vector所占用的内存空间依然如故，无法保证内存的回收。<br>2.如果使用vector，可以用swap()来帮助你释放多余内存或者清空全部内存。</p>
+<h1 id="容器内删除一个元素"><a href="#容器内删除一个元素" class="headerlink" title="容器内删除一个元素"></a>容器内删除一个元素</h1><p>1.顺序容器（序列式容器，比如vector、deque）<br>erase迭代器不仅使所指向被删除的迭代器失效，而且使被删元素之后的所有迭代器失效(list除外)，所以不能使用erase(it++)的方式，但是erase的返回值是下一个有效迭代器；</p>
+<pre><code>it = c.erase(it);
+</code></pre><p>2.关联容器(关联式容器，比如map、set、multimap、multiset等)<br>erase迭代器只是被删除元素的迭代器失效，但是返回值是void，所以要采用erase(it++)的方式删除迭代器；</p>
+<pre><code>c.erase(it++)
+</code></pre><h1 id="STL每种容器对应的迭代器"><a href="#STL每种容器对应的迭代器" class="headerlink" title="STL每种容器对应的迭代器"></a>STL每种容器对应的迭代器</h1><p>1.vector和deque：随机访问迭代器<br>2.stack、queue、priority_queue：无<br>3.list、(multi)set/map：双向迭代器<br>unordered_(multi)set/map、forward_list：前向迭代器</p>
+<h1 id="sizeof和strlen的区别"><a href="#sizeof和strlen的区别" class="headerlink" title="sizeof和strlen的区别"></a>sizeof和strlen的区别</h1><p>1、sizeof会将空字符\0计算在内，而strlen不会将空字符\0计算在内；<br>2、sizeof会计算到字符串最后一个空字符\0并结束，而strlen如果遇到第一个空字符\0的话就会停止并计算遇到的第一个空字符\0前面的长度。</p>
+<pre><code>int main(void)
+{
+    char str[100] = &quot;abcde&quot;;
+    printf(&quot;sizeof(str) = %lu\n&quot;, sizeof(str));     //字节大小为100
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/04/中望面经/">
+    char str1[] = &quot;abcde&quot;;
+    printf(&quot;sizeof(str1) = %lu\n&quot;, sizeof(str1));   //字节大小为6
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
+    char str2[] = &quot;\0abcde&quot;;
+    printf(&quot;sizeof(str2) = %lu\n&quot;, sizeof(str2));   //字节大小为7
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2022/07/04/中望面经/" class="post-title-link" itemprop="url">中望面经</a>
-          
-        </h1>
+    char str3[] = &quot;\0ab\0c de&quot;;
+    printf(&quot;sizeof(str3) = %lu\n&quot;, sizeof(str3));   //字节大小为9
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
+    char str4[] = &quot;abcde&quot;;
+    printf(&quot;strlen(str4) = %lu\n&quot;, strlen(str4));   //字符串长度为5
 
-              
-                
-              
+    char str5[100] = &quot;abcde&quot;;
+    printf(&quot;strlen(str5) = %lu\n&quot;, strlen(str5));   //字符串长度为5
 
-              <time title="Created: 2022-07-04 22:52:06" itemprop="dateCreated datePublished" datetime="2022-07-04T22:52:06+08:00">2022-07-04</time>
-            </span>
-          
-            
+    char str6[] = &quot;\0abcde&quot;;
+    printf(&quot;strlen(str6) = %lu\n&quot;, strlen(str6));   //字符串长度为0
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-15 19:15:57" itemprop="dateModified" datetime="2022-07-15T19:15:57+08:00">2022-07-15</time>
-              </span>
-            
-          
+    char str7[] = &quot;ab cde&quot;;
+    printf(&quot;strlen(str7) = %lu\n&quot;, strlen(str7));   //字符串长度为6
 
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>1.多态，运行时多态（虚函数表和继承），静态多态（重载和模板编程）<br>2.如何实现对象只能分配在栈上：c++中，类的对象建立分为两种，</p>
-<ul>
-<li>静态建立:由编译器在栈上为对象开辟空间，直接调用类的构造函数。<br>  A a;</li>
-<li>动态建立：由new关键字将对象建立在堆空间上，首先执行 operator new()函数，在堆上搜索合适的内存并分配，第二步是调用构造函数构造对象。即间接的调用类的构造函数。<br>  A a = new A;<br>（1）只有使用new关键字才能在堆上建立对象，那么我们就可以将operator new()函数自行声明为私有函数即可，或者设置为delete。<br>  class A{<br>  private；<pre><code>  void* operator new(size_t t){} //设置为私有
-  void operator delete(void *ptr){}
-</code></pre>  public:<pre><code>  A(){}
-  ~A(){}
-</code></pre>  }<br>（2）只在堆上分配新对象<br>即不能直接调用类的构造函数。首先要知道，当对象建立在栈上面时, 是由编译器分配内存空间的，当对象使用完以后，编译器会调用析构函数来释放对象所占的空间。实际上，编译器在为类对象分配栈空间时, 会检查类的析构函数的访问性(其他非静态函数也会检查)，如果类的析构函数是私有的，则编程器不会在栈空间上为类对象分配内存。因此,我们只需要将析构函数设为私有，类对象就无法建立在栈上了。<br>  class A{<br>  public:<pre><code>  A(){}
-  void destroy(delete this;)
-</code></pre>  private:<pre><code>  ~A(){}
-</code></pre>  }<br>注意，由于new表达式会在分配内存以后调用构造函数，因此构造函数必须是公有的，同时由于delete此时无法访问私有的析构函数，因此必须提供一个destroy函数，来进行内存空间的释放。<br>3.c++11新特性<br>auto，智能指针，移动语义（右值引用），完美转发<br>4.内联函数和宏的区别</li>
-<li>内联函数是函数，有参数类型检查，更为安全</li>
-<li>内联函数由编译器进行处理，而宏定义由预处理器进行处理</li>
-<li>内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</li>
+    return 0;
+}
+</code></pre><h1 id="哪些函数不能是虚函数？把你知道的都说一说"><a href="#哪些函数不能是虚函数？把你知道的都说一说" class="headerlink" title="哪些函数不能是虚函数？把你知道的都说一说"></a>哪些函数不能是虚函数？把你知道的都说一说</h1><p>1.构造函数，构造函数初始化对象，派生类必须知道基类函数干了什么，才能进行构造<br>2.内联函数，内联函数表示在编译阶段进行函数体的替换操作，而虚函数意味着在运行期间进行类型确定，所以内联函数不能是虚函数；<br>3.静态函数，静态函数不属于对象属于类，静态成员函数没有this指针，因此静态函数设置为虚函数没有任何意义。<br>4.友元函数，友元函数不属于类的成员函数，不能被继承。对于没有继承特性的函数没有虚函数的说法。<br>5.普通函数，普通函数不属于类的成员函数，不具有继承特性，因此普通函数没有虚函数。</p>
+<h1 id="什么时候必须要自定义析构函数"><a href="#什么时候必须要自定义析构函数" class="headerlink" title="什么时候必须要自定义析构函数"></a>什么时候必须要自定义析构函数</h1><p>如果本类中一个成员变量是别的对象的指针，而且这个指针不是传进来的地址而是这个指针指向的对象，是在本类中(如果是栈里的定位分配，也不用考虑内存)在堆中开辟的空间创建的。并且该指针没有进行过delete操作，那么久需要在析构方法中进行delete操作，此时我们就必须自己写析构函数。</p>
+<h1 id="析构函数的析构过程"><a href="#析构函数的析构过程" class="headerlink" title="析构函数的析构过程"></a>析构函数的析构过程</h1><p>析构函数首先执行函数体，然后销毁成员，成员按照初始化顺序的逆序销毁。注意析构函数本身不直接销毁成员，成员是在析构函数体之后隐含的析构阶段中被销毁的，销毁类类型成员执行它自己的析构函数，销毁内置类型不需要做什么。</p>
+<h1 id="何时会调用析构函数"><a href="#何时会调用析构函数" class="headerlink" title="何时会调用析构函数"></a>何时会调用析构函数</h1><ul>
+<li>变量在离开其作用域时</li>
+<li>当一个对象被销毁时，其成员被销毁</li>
+<li>容器（无论是标准库容器还是数组）被销毁时，其元素被销毁</li>
+<li>对于动态分配的对象，当指向它的指针应用delete运算符时被销毁</li>
+<li>对于临时对象，当创建它的完整表达式结束时被销毁</li>
 </ul>
-<p>5.多线程<br>半同步半反应线程池<br>主线程充当异步线程，负责监听所有socket上的事件，若有新请求到来，主线程接收之以得到新的连接socket，然后往epoll内核事件表中注册该socket上的读写事件，并将数据封装成请求对象插入到请求队列中；所有工作线程睡眠在请求队列上，当有任务到来时，通过竞争（如互斥锁）获得任务的接管权</p>
-<p>6.Linux进程调度和内存管理<br>7.设计模式<br>工厂模式和单例模式，适配器模式和策略模式<br>8.lambda表达式<br>9.手撕strcpy（不用任何库函数)<br>10.快排的 算法原理+手撕代码。<br>11.读代码说输出结果：一个简单的子类继承父类的代码<br>子类析构时，首先执行子类析构函数体的代码，然后执行子类成员对象所在类的析构函数，最后按照子类继承各个父类的次序，倒序各个父类的析构函数<br><a href="https://zhuanlan.zhihu.com/p/371322392" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/371322392</a></p>
-<p>12.栈溢出的原因<br>内存中栈一般存放，函数地址、函数参数、局部变量等信息存储于栈内存；<br>1&gt;函数调用层次过深，每调用一次，函数的参数、局部变量等信息就压一次栈。<br>2&gt;局部变量体积太大</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/06/27/字节面试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2022/06/27/字节面试/" class="post-title-link" itemprop="url">字节面试</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2022-06-27 21:45:55" itemprop="dateCreated datePublished" datetime="2022-06-27T21:45:55+08:00">2022-06-27</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-06-28 22:53:06" itemprop="dateModified" datetime="2022-06-28T22:53:06+08:00">2022-06-28</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-面试的问题"><a href="#1-面试的问题" class="headerlink" title="1.面试的问题"></a>1.面试的问题</h1><p>1.1 <code>linux</code>常用吗，知道哪些命令<br><code>ls</code> 就是 list 的缩写，通过 ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限、查看目录信息等等。比如ls -a<br><code>cd</code> 切换当前目录到指定目录，比如cd ~ 进入<code>home</code>目录，cd /xx 进入该目录<br><code>mkdir</code> 命令用于创建文件夹。<br><code>rm</code> 删除一个目录中的一个或多个文件或目录，如果没有使用 -r 选项，则 rm 不会删除目录。如果使用 rm 来删除文件，通常仍可以将该文件恢复原状。<br><code>cp</code> 命令 将源文件复制至目标文件，或将多个源文件复制至目标目录。</p>
-<p>1.2 进程和线程的区别<br>（1）同一个进程的线程是共享该进程的地址空间和资源，但是不同的进程之间是独立的地址空间和资源<br>（2）一个进程崩溃后，在保护模式下不会对其他的进程产生影响，当时一个线程崩溃了那么该进程就崩溃了，所以说多进程比多线程要健壮<br>（3）进程的切换消耗的资源比较大，所以涉及到频繁的切换，使用线程更好<br>（4）二者均可以并发执行<br>1.3 进程通信方式<br>（1）管道（无名的）<br>（2）FiFO（有名的）<br>（3）消息队列，可以实现消息的随机查询<br>（4）信号量：是一个计数器，用于进程间的互斥和同步，一般结合共享内存使用<br>（5）共享内存：给多个进程共享一个指定的存储区，通过信号量实现互斥和同步，来达到进程间的通信<br>1.4 线程的通信<br>（1）全局变量：最好声明为volatile，在多线程过程中保证原子性<br>（2）消息：线程可以拥有消息队列和消息循环，在不同线程间通信<br>（3）事件：线程可以监视处于有信号状态的事件，适当的时候就可以对事件进行操作<br>1.5 TCP/IP分为几层？tcp属于哪一层？http属于哪一层？http基于tcp还是udp？<br>分为五层，分别是应用层，传输层，网络层，数据链路层，物理层<br>TCP处于传输层，UDP也在这一层，<br>HTTP处于应用层，HTTP/1.1 和 HTTP/2 都是基于 TCP 传输协议的，而 HTTP/3 是基于 UDP 传输协议的。（可以引申出各个版本的区别）<br>1.6 tcp和udp 区别<br>（1）tcp是面向连接的，可靠的传输，以字节流进行传输，传输效率慢，需要的资源多，应用场景为文件传输，邮件传输等，有确认，窗口，重传，拥塞控制等机制，每一条tcp连接只能是一对一的，全双工的，首部20字节开销<br>（2）udp是无连接的不可靠传输，不能保证数据发送顺序，以数据报文段的形式进行传输，没有拥塞控制，支持一对一，一对多，多对一和多对多，首部8个字节<br>1.7 三次握手、四次挥手？<br>1.8 数据库事务是什么，都有哪些操作？<br>事务即为数据库的操作序列，要么完全执行，要么完全不执行。满足ACID属性。<br>A:原子性：要么全做，要么全不做<br>C：一致性：即事务操作前后满足完整性约束，比如A给B转账，完成后，A的少了200元，B的多了200元<br>I：隔离性：事务可以是并发的，隔离性可以保证多个事务并发执行由于使用相同的数据而互不干扰。每个事务都有自己的数据空间。<br>D：持久性：事务完成后，对数据的修改是永久的，即使系统故障也不会丢失。<br>事务的操作：开启事务，回滚，提交。其中回滚在数据没有提交之前可以回滚到之前的版本。</p>
-<p>1.9 Mysql的索引<br>索引就类似于目录，方便我们快速获取数据的一种数据结构。Mysql5.5之后的版本默认存储引擎是InnoDB，其支持B+树索引。这里就可以聊聊B+树和B树的区别，说明为什么Mysql使用B+树来作为索引。（二级索引去查主键索引：回表，以及覆盖索引。）（B+树和B树和二叉树和哈希的比较）</p>
-<p>各种索引：<br>（1）：建立在主键上的索引，唯一而且不能为空值<br>（2）唯一索引：使用UNIQUE值创建的索引可以有多个，索引列的值必须为1，但是允许有空值<br>（3）普通索引：建立在普通字段上的索引，不要求字段为主键，也不需要字段为UNIQUE<br>（4）联合索引：将多个字段组合成一个索引，使用最左匹配原则进行查找和匹配。但是特殊情况是，如果最左匹配到的某个索引列的值是范围值的话，那么之后的索引列就不能再最左匹配。Mysql5.6以后有了索引下推优化，可以在联合索引遍历的过程重， 对联合索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。</p>
-<p>1.20 抢30数学题：分为说出30赢和输，不同的策略</p>
+<h1 id="什么时候需要自己重写拷贝构造函数"><a href="#什么时候需要自己重写拷贝构造函数" class="headerlink" title="什么时候需要自己重写拷贝构造函数"></a>什么时候需要自己重写拷贝构造函数</h1><p>根据三/五法则，如果需要定义一个非空的析构函数，那么通常情况下也需要自定义一个拷贝构造函数。即包含动态分配成员或者包含指针成员的类都应该提供拷贝构造函数，并且考虑重载赋值运算符。</p>
 
         
       
@@ -1949,7 +2407,7 @@ void enqueue_msg(struct msg *mp)
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1979,7 +2437,7 @@ void enqueue_msg(struct msg *mp)
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

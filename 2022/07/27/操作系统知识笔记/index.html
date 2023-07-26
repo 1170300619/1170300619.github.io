@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Sakurastream">
 <meta property="og:description" content="1.Linux 中一个进程的虚拟内存分布长什么样？内核空间+用户空间（6 种不同的内存段）代码段：存放程序代码，运行前就已经确定（编译时确定）常量区：存放const定义的全局变量，define定义的常量和字符串常量等数据段：存放已经初始化的全局变量bss段：存放没有初始化的全局变量或默认为0的全局变量，执行期间会将这一段的内容全部设为0栈：存放函数参数和局部变量，由系统进行申请和释放，空间较小，先">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2022-09-19T01:36:22.571Z">
+<meta property="og:updated_time" content="2022-11-16T15:34:28.256Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="操作系统知识笔记">
 <meta name="twitter:description" content="1.Linux 中一个进程的虚拟内存分布长什么样？内核空间+用户空间（6 种不同的内存段）代码段：存放程序代码，运行前就已经确定（编译时确定）常量区：存放const定义的全局变量，define定义的常量和字符串常量等数据段：存放已经初始化的全局变量bss段：存放没有初始化的全局变量或默认为0的全局变量，执行期间会将这一段的内容全部设为0栈：存放函数参数和局部变量，由系统进行申请和释放，空间较小，先">
@@ -235,7 +235,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-19 09:36:22" itemprop="dateModified" datetime="2022-09-19T09:36:22+08:00">2022-09-19</time>
+                <time title="Modified: 2022-11-16 23:34:28" itemprop="dateModified" datetime="2022-11-16T23:34:28+08:00">2022-11-16</time>
               </span>
             
           
@@ -271,7 +271,7 @@
 <li>如果Cache中没有该数据，则直接写入到内存中</li>
 </ul>
 <ol>
-<li>写回：当写数据时，新的数据被写入到Cache中，只有当修改过的Cache Block被替换时才写入到内存中<br>这种情况下，只有当缓存不命中，且对应的Cache Block是脏的情况下，才会将该脏的数据写入内存中，然后将要写入的数据，先从内存读入到Cache Blockz中，然后再把当前要写入的数据写入到Cache Block中，并标记为脏的</li>
+<li>写回：当写数据时，新的数据被写入到Cache中，只有当修改过的Cache Block被替换时才写入到内存中<br>这种情况下，只有当缓存不命中，且对应的Cache Block是脏的情况下，才会将该脏的数据写入内存中，然后将要写入的数据，先从内存读入到Cache Block中，然后再把当前要写入的数据写入到Cache Block中，并标记为脏的</li>
 </ol>
 <h1 id="缓存一致性问题"><a href="#缓存一致性问题" class="headerlink" title="缓存一致性问题"></a>缓存一致性问题</h1><p>如果有多个CPU核心操作缓存数据，按照写回原则，则会出错，因为当没有发生缓存不命中且对应数据为脏时，缓存中的数据不会写回到内存中，此时其他核心从内存中读取的数据就是错的。为了解决，需要写传播和事务的串行化</p>
 <ul>
@@ -286,7 +286,7 @@
 <li>直接内存回收（direct reclaim）：如果后台异步回收跟不上进程内存申请的速度，就会开始直接回收，这个回收内存的过程是同步的，会阻塞进程的执行。</li>
 <li>如果直接内存回收后，空闲的物理内存仍然无法满足此次物理内存的申请，那么内核就会放最后的大招了 ——触发 OOM （Out of Memory）机制。OOM Killer 机制会根据算法选择一个占用物理内存较高的进程，然后将其杀死，以便释放内存资源，如果物理内存依然不足，OOM Killer 会继续杀死占用物理内存较高的进程，直到释放足够的内存位置。</li>
 </ul>
-<h1 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h1><p>1.先来先服务<br>2.最短作业：优先选择运行时间最短的<br>3.高响应比优先调度算法：等待时间 + 要求服务时间/ 要求服务时间（无法实现）<br>4.时间片轮转算法：每个进程被分配一个时间片<br>5.最高优先级调度算法：静态和动态优先级<br>6.多级反馈队列 多个队列，每个队列优先级从高到低，新来的任务先加入第一级的队尾，按照先来先服务运行，如果没有运行完则加入第二级的队尾，如果来了一个优先级高的，则先去运行优先级高的任务队列，此时将原任务加入当前队列的队尾</p>
+<h1 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h1><p>1.先来先服务<br>2.最短作业：优先选择运行时间最短的<br>3.高响应比优先调度算法：等待时间 + 要求服务时间/ 要求服务时间（无法实现）<br>4.时间片轮转算法：每个进程被分配一个时间片<br>5.最高优先级调度算法：静态和动态优先级<br>6.多级反馈队列：多个队列，每个队列优先级从高到低，新来的任务先加入第一级的队尾，按照先来先服务运行，如果没有运行完则加入第二级的队尾，如果来了一个优先级高的，则先去运行优先级高的任务队列，此时将原任务加入当前队列的队尾</p>
 <h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><p>1.匿名管道：通过fork父进程的文件描述符来建立连接，先进先出<br>2.命名管道：在不相关的进程间也能进行通信，其创建了一个类型为管道的设备文件<br>3.消息队列：在内核中，不适合比较大的文件传输，同时会带来用户态与内核态之间的数据拷贝开销<br>4.共享内存：一个虚拟内存，映射到同一块真实物理内存<br>5.信号量：P操作-1，如果小于0，则阻塞 V操作：如果小于等于0则有进程阻塞，唤醒它，如果大于0，则没有进程阻塞</p>
 <ul>
 <li>1：互斥信号量</li>
@@ -365,7 +365,7 @@ void writer() {
 <li>文件系统：用户数据的管理可以放在用户态下，而对于文件系统本身的管理，需要放在内核态中。</li>
 <li>IO管理：因为要访问各种设备和底层数据结构，所以也要放在内核态实现。<br>6.如何辨别当前处于哪个态：CPU中有一个状态字，标识了当前的状态，用户态为3，内核态为0</li>
 </ul>
-<h1 id="用户态和内核态的切换"><a href="#用户态和内核态的切换" class="headerlink" title="用户态和内核态的切换"></a>用户态和内核态的切换</h1><p>1.系统调用：其机制核心还是通过操作系统为用户特别开放的一个中断来实现，表现为i一个正常的异常（软中断）。</p>
+<h1 id="用户态和内核态的切换"><a href="#用户态和内核态的切换" class="headerlink" title="用户态和内核态的切换"></a>用户态和内核态的切换</h1><p>1.系统调用：其机制核心还是通过操作系统为用户特别开放的一个中断来实现，表现为一个正常的异常（软中断）。</p>
 <ul>
 <li>进程调用：exit和fork</li>
 <li>文件系统访问：chmod和chown</li>
@@ -381,6 +381,30 @@ void writer() {
 <li>开启了Swap分区，此时进程可以正常运行（Swap机制会将不常用的内存先写到磁盘中，然后释放这些内存，再次访问这些内存时，从磁盘读入即可）</li>
 </ul>
 <h1 id="Swap机制触发的条件"><a href="#Swap机制触发的条件" class="headerlink" title="Swap机制触发的条件"></a>Swap机制触发的条件</h1><p>1.内存不足：当系统需要的内存超过了可用的物理内存时，内核会将内存中不常使用的内存页交换到磁盘上为当前进程让出内存，保证正在执行的进程的可用性，这个内存回收的过程是强制的直接内存回收（Direct Page Reclaim）。直接内存回收是同步的过程，会阻塞当前申请内存的进程。<br>2.内存闲置：应用程序在启动阶段使用的大量内存在启动后往往都不会使用，通过后台运行的守护进程（kSwapd），我们可以将这部分只使用一次的内存交换到磁盘上为其他内存的申请预留空间。kSwapd 是后台进程，所以回收内存的过程是异步的，不会阻塞当前申请内存的进程。</p>
+<h1 id="协程是什么"><a href="#协程是什么" class="headerlink" title="协程是什么"></a>协程是什么</h1><p>1.用户态的轻量级线程，是线程内部调度的基本单位，只在用户态内进行切换<br>2.先将寄存器上下文和栈保存，等切换回来的时候再进行恢复<br>3.同一时间只能执行一个协程，而其他协程处于休眠状态，适合对任务进行分时处理<br>4.基本没有到内核态切换的开销，可以不加锁的访问全局变量，所以上下文切换的非常快<br>5.其通信方式是共享队列和消息队列</p>
+<h1 id="一般需要几级页表"><a href="#一般需要几级页表" class="headerlink" title="一般需要几级页表"></a>一般需要几级页表</h1><p>32位系统下，一个页大小是4KB，虚拟地址4GB，那么可以分为100万个页，一个页表项4B，那么4B <em> 2 </em> 2^20 = 4MB，这对应的是一个进程，而多个进程就会有多个页表，导致页表会及其庞大<br>32位系统两级分页就足够了，64位的系统是4级分页</p>
+<h1 id="中断的作用"><a href="#中断的作用" class="headerlink" title="中断的作用"></a>中断的作用</h1><p>一方面，有了中断功能，PC系统就可以使CPU和外设同时工作，使系统可以及时地响应外部事件。而且有了中断功能，CPU可允许多个外设同时工作。这样就大大提高了CPU的利用率，也提高了数据输入、输出的速度。 另一方面，有了中断功能，就可以使CPU及时处理各种软硬件故障。计算机在运行过程中，往往会出现事先预料不到的情况或出现一些故障，如电源掉电、存储出错，运算溢出等等。计算机可以利用中断系统自行处理，而不必停机或报告工作人员。</p>
+<h1 id="CPU-Cache的数据结构和读取过程"><a href="#CPU-Cache的数据结构和读取过程" class="headerlink" title="CPU Cache的数据结构和读取过程"></a>CPU Cache的数据结构和读取过程</h1><p>1.存储结构：Cache Line组成，包括头标记和数据块，每次载入数据都是按照Cache Line整个读取<br>2.访问和存储：索引 + 有效位 + 组标记 + 偏移量，访问步骤如下：</p>
+<ul>
+<li>根据内存地址中索引信息，计算在 CPU Cahe 中的索引，也就是找出对应的 CPU Cache Line 的地址；</li>
+<li>找到对应 CPU Cache Line 后，判断 CPU Cache Line 中的有效位，确认 CPU Cache Line 中数据是否是有效的，如果是无效的，CPU 就会直接访问内存，并重新加载数据，如果数据有效，则往下执行；</li>
+<li>对比内存地址中组标记和 CPU Cache Line 中的组标记，确认 CPU Cache Line 中的数据是我们要访问的内存数据，如果不是的话，CPU 就会直接访问内存，并重新加载数据，如果是的话，则往下执行；</li>
+<li>根据内存地址中偏移量信息，从 CPU Cache Line 的数据块中，读取对应的字。</li>
+</ul>
+<h1 id="关于伪共享的问题"><a href="#关于伪共享的问题" class="headerlink" title="关于伪共享的问题"></a>关于伪共享的问题</h1><p>1.如果两个变量属于同一个Cache Line块，而恰好两个CPU核心需要分别修改这两个变量，则会发生Cache Line没有起到缓存的作用，降低了代码执行的速度<br>2.避免伪共享的方法<br>将变量设置为内存对齐，用空间换取时间</p>
+<h1 id="CPU选择线程的问题"><a href="#CPU选择线程的问题" class="headerlink" title="CPU选择线程的问题"></a>CPU选择线程的问题</h1><p>1.三个运行队列：</p>
+<ul>
+<li>Deadline运行队列</li>
+<li>实时任务运行队列</li>
+<li>CFS运行队列：完全公平调度，优先选择虚拟运行时间少的任务，虚拟运行时间 += 实际运行时间 / 权重</li>
+</ul>
+<h1 id="硬中断和软中断"><a href="#硬中断和软中断" class="headerlink" title="硬中断和软中断"></a>硬中断和软中断</h1><p>Linux 将中断处理程序分为上半部和下半部：<br>上半部，对应硬中断，由硬件触发中断，用来快速处理中断；<br>下半部，对应软中断，由内核触发中断，用来异步处理上半部未完成的工作，Linux 中的软中断包括网络收发、定时、调度、RCU 锁等各种类型</p>
+<h1 id="进程的上下文切换"><a href="#进程的上下文切换" class="headerlink" title="进程的上下文切换"></a>进程的上下文切换</h1><p>1.切换内容：用户空间的虚拟内存，栈，全局变量等；内核空间的堆栈、寄存器等<br>2.何时发生切换：CPU时间片用完；内存不足，则进程也会被挂起，当有优先级更高的进程运行，当前进程也会被挂起；发生硬件中断的时候也会发生进程的切换</p>
+<h1 id="互斥锁和自旋锁"><a href="#互斥锁和自旋锁" class="headerlink" title="互斥锁和自旋锁"></a>互斥锁和自旋锁</h1><p>互斥锁加锁失败会发生线程的上下文切换，需要消耗一定的时间，自旋锁是用户态完成加锁和解锁操作，不会主动产生线程上下文切换，运行时间更快，自旋锁通过 CPU 提供的 CAS 函数实现，包含两个步骤：</p>
+<ul>
+<li>第一步，查看锁的状态，如果锁是空闲的，则执行第二步；</li>
+<li>第二步，将锁设置为当前线程持有；<br>CAS 函数就把这两个步骤合并成一条硬件级指令，形成原子指令，这样就保证了这两个步骤是不可分割的，要么一次性执行完两个步骤，要么两个步骤都不执行。</li>
+</ul>
 
     </div>
 
@@ -458,7 +482,7 @@ void writer() {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断问题"><span class="nav-number">1.</span> <span class="nav-text">中断问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cpu写入问题"><span class="nav-number">2.</span> <span class="nav-text">cpu写入问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存一致性问题"><span class="nav-number">3.</span> <span class="nav-text">缓存一致性问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#malloc申请内存的方式"><span class="nav-number">4.</span> <span class="nav-text">malloc申请内存的方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#free释放内存的问题"><span class="nav-number">5.</span> <span class="nav-text">free释放内存的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存分配的过程"><span class="nav-number">6.</span> <span class="nav-text">内存分配的过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程调度算法"><span class="nav-number">7.</span> <span class="nav-text">进程调度算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信"><span class="nav-number">8.</span> <span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁"><span class="nav-number">9.</span> <span class="nav-text">死锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#锁的类型"><span class="nav-number">10.</span> <span class="nav-text">锁的类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#页面置换算法"><span class="nav-number">11.</span> <span class="nav-text">页面置换算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如果系统中具有快表后，那么地址的转换过程变成什么样了？"><span class="nav-number">12.</span> <span class="nav-text">如果系统中具有快表后，那么地址的转换过程变成什么样了？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态分区分配算法"><span class="nav-number">13.</span> <span class="nav-text">动态分区分配算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态链接和动态链接"><span class="nav-number">14.</span> <span class="nav-text">静态链接和动态链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#读者-写者问题"><span class="nav-number">15.</span> <span class="nav-text">读者-写者问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中断和异常的区别"><span class="nav-number">16.</span> <span class="nav-text">中断和异常的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态和内核态"><span class="nav-number">17.</span> <span class="nav-text">用户态和内核态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态和内核态的切换"><span class="nav-number">18.</span> <span class="nav-text">用户态和内核态的切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#申请的虚拟内存大小超过了物理内存的大小"><span class="nav-number">19.</span> <span class="nav-text">申请的虚拟内存大小超过了物理内存的大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Swap机制触发的条件"><span class="nav-number">20.</span> <span class="nav-text">Swap机制触发的条件</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断问题"><span class="nav-number">1.</span> <span class="nav-text">中断问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cpu写入问题"><span class="nav-number">2.</span> <span class="nav-text">cpu写入问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存一致性问题"><span class="nav-number">3.</span> <span class="nav-text">缓存一致性问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#malloc申请内存的方式"><span class="nav-number">4.</span> <span class="nav-text">malloc申请内存的方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#free释放内存的问题"><span class="nav-number">5.</span> <span class="nav-text">free释放内存的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存分配的过程"><span class="nav-number">6.</span> <span class="nav-text">内存分配的过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程调度算法"><span class="nav-number">7.</span> <span class="nav-text">进程调度算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信"><span class="nav-number">8.</span> <span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁"><span class="nav-number">9.</span> <span class="nav-text">死锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#锁的类型"><span class="nav-number">10.</span> <span class="nav-text">锁的类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#页面置换算法"><span class="nav-number">11.</span> <span class="nav-text">页面置换算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如果系统中具有快表后，那么地址的转换过程变成什么样了？"><span class="nav-number">12.</span> <span class="nav-text">如果系统中具有快表后，那么地址的转换过程变成什么样了？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态分区分配算法"><span class="nav-number">13.</span> <span class="nav-text">动态分区分配算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态链接和动态链接"><span class="nav-number">14.</span> <span class="nav-text">静态链接和动态链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#读者-写者问题"><span class="nav-number">15.</span> <span class="nav-text">读者-写者问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中断和异常的区别"><span class="nav-number">16.</span> <span class="nav-text">中断和异常的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态和内核态"><span class="nav-number">17.</span> <span class="nav-text">用户态和内核态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态和内核态的切换"><span class="nav-number">18.</span> <span class="nav-text">用户态和内核态的切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#申请的虚拟内存大小超过了物理内存的大小"><span class="nav-number">19.</span> <span class="nav-text">申请的虚拟内存大小超过了物理内存的大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Swap机制触发的条件"><span class="nav-number">20.</span> <span class="nav-text">Swap机制触发的条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#协程是什么"><span class="nav-number">21.</span> <span class="nav-text">协程是什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一般需要几级页表"><span class="nav-number">22.</span> <span class="nav-text">一般需要几级页表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中断的作用"><span class="nav-number">23.</span> <span class="nav-text">中断的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU-Cache的数据结构和读取过程"><span class="nav-number">24.</span> <span class="nav-text">CPU Cache的数据结构和读取过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于伪共享的问题"><span class="nav-number">25.</span> <span class="nav-text">关于伪共享的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU选择线程的问题"><span class="nav-number">26.</span> <span class="nav-text">CPU选择线程的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#硬中断和软中断"><span class="nav-number">27.</span> <span class="nav-text">硬中断和软中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程的上下文切换"><span class="nav-number">28.</span> <span class="nav-text">进程的上下文切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#互斥锁和自旋锁"><span class="nav-number">29.</span> <span class="nav-text">互斥锁和自旋锁</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -473,7 +497,7 @@ void writer() {
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -503,7 +527,7 @@ void writer() {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

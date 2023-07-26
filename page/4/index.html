@@ -191,6 +191,1318 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结第四期/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结第四期/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 14:01:58 / Modified: 14:29:51" itemprop="dateCreated datePublished" datetime="2019-06-24T14:01:58+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
+<h2 id="软件构造知识点总结第四期"><a href="#软件构造知识点总结第四期" class="headerlink" title="软件构造知识点总结第四期"></a>软件构造知识点总结第四期</h2><h1 id="第七章"><a href="#第七章" class="headerlink" title="第七章"></a>第七章</h1><h2 id="第一节-健壮性和正确性的区别"><a href="#第一节-健壮性和正确性的区别" class="headerlink" title="第一节  健壮性和正确性的区别"></a>第一节  健壮性和正确性的区别</h2><h3 id="健壮性-Robustness-和正确性-correctness"><a href="#健壮性-Robustness-和正确性-correctness" class="headerlink" title="健壮性(Robustness)和正确性(correctness)"></a><em>健壮性(Robustness)和正确性(correctness)</em></h3><p><strong>健壮性</strong></p>
+<ul>
+<li>定义：系统在不 正常输入或不正常外部环境下仍能够表现正常的程度</li>
+<li>面向健壮性编程：<ul>
+<li>处理未期望的行为和错误终止</li>
+<li>即使终止执行，也要准确/无歧义的向用户展示全面的错误信息</li>
+<li>错误信息有助于进行debug</li>
+</ul>
+</li>
+<li>健壮性原则：<ul>
+<li>Paranoia (偏执狂)：总是假定用户恶意、假定自己的代码可能失败</li>
+<li>把用户想象成白痴，可能输入任何东西（返回给用户的错误提示信息要详细、准确、无歧义）</li>
+<li>对别人宽容点，对自己狠一点（对自己的代码要保守，对用户的行为要开放）</li>
+</ul>
+</li>
+<li>面向健壮性编程的原则：<ul>
+<li>封闭实现细节，限定用户的恶意行为</li>
+<li>考虑极端情况，没有“不可能”</li>
+</ul>
+</li>
+</ul>
+<p><strong>正确性</strong></p>
+<ul>
+<li>含义：程序按照spec加以执行的能力，是最重要的质量指标。</li>
+<li>对比健壮性和正确性：<ul>
+<li>正确性：永不给用户错误的结果； 让开发者变得更容易：用户输入错误，直接结束（不满足precondition调用）。</li>
+<li>健壮性：尽可能保持软件运行而不是总是退出； 让用户变得更容易：出错也可以容忍，程序内部已有容错机制。</li>
+<li>正确性倾向于直接报错(error)，健壮性则倾向于容错(fault-tolerance)；</li>
+<li>对外的接口，倾向于健壮性；对内的实现，倾向于正确性。</li>
+<li>Reliability（可靠性） = Robustness + correctness</li>
+</ul>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Problem</th>
+<th style="text-align:center">健壮性</th>
+<th style="text-align:center">正确性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">浏览器发出包含空格的URL</td>
+<td style="text-align:center">剥离空白，正常处理请求。</td>
+<td style="text-align:center">将HTTP 400错误请求错误状态返回给客户端。</td>
+</tr>
+<tr>
+<td style="text-align:center">视频文件有坏帧</td>
+<td style="text-align:center">跳过腐败区域到下一个可播放部分。</td>
+<td style="text-align:center">停止播放，引发“损坏的视频文件”错误</td>
+</tr>
+<tr>
+<td style="text-align:center">配置文件使用了非法字符</td>
+<td style="text-align:center">在内部识别最常见的评论前缀，忽略它们。</td>
+<td style="text-align:center">终止启动时出现“配置错误”错误</td>
+</tr>
+<tr>
+<td style="text-align:center">奇怪格式的日期输入</td>
+<td style="text-align:center">尝试针对多种不同的日期格式解析字符串。将正确的格式呈现给用户。</td>
+<td style="text-align:center">日期错误无效</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="如何测量健壮性和正确性"><a href="#如何测量健壮性和正确性" class="headerlink" title="如何测量健壮性和正确性"></a><em>如何测量健壮性和正确性</em></h3><ul>
+<li>外部观察角度：<ul>
+<li>Mean time between failures (MTBF，平均失效间隔时间)：描述了可修复系统的两次故障之间的预期时间，而平均故障时间（MTTF）表示不可修复系统的预期故障时间。</li>
+</ul>
+</li>
+<li>内部观察角度：<ul>
+<li>残余缺陷率：每千行代码中遗留的bug的数量</li>
+</ul>
+</li>
+</ul>
+<h2 id="第二节-错误与异常处理"><a href="#第二节-错误与异常处理" class="headerlink" title="第二节 错误与异常处理"></a>第二节 错误与异常处理</h2><h3 id="Java中的错误和异常"><a href="#Java中的错误和异常" class="headerlink" title="Java中的错误和异常"></a><em>Java中的错误和异常</em></h3><p><strong>Throwable</strong></p>
+<ul>
+<li>Java.lang.throwable <ul>
+<li>Throwable 类是 Java 语言中所有错误或异常的超类。</li>
+<li>继承的类：extends Object。</li>
+<li>实现的接口：implements Serializable。</li>
+<li>直接已知子类：Error, Exception（直接已知子类：IOException、RuntimeException）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Error</strong></p>
+<ul>
+<li>Error类描述很少发生的Java运行时系统内部的系统错误和资源耗尽情况（例如，VirtualMachineError，LinkageError）。</li>
+<li>对于内部错误：程序员通常无能为力，一旦发生，想办法让程序优雅的结束</li>
+<li>Error的类型：<ul>
+<li>用户输入错误<ul>
+<li>例如：用户要求连接到语法错误的URL，网络层会投诉。</li>
+</ul>
+</li>
+<li>设备错误<ul>
+<li>硬件并不总是做你想做的。</li>
+<li>输出器被关闭</li>
+</ul>
+</li>
+<li>物理限制<ul>
+<li>磁盘可以填满</li>
+<li>可能耗尽了可用内存</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="异常（Exception）"><a href="#异常（Exception）" class="headerlink" title="异常（Exception）"></a><em>异常（Exception）</em></h3><ul>
+<li>异常：程序执行中的非正常事件，程序无法再按预想的流程执行。</li>
+<li>异常处理：<ul>
+<li>将错误信息传递给上层调用者，并报告“案发现场”的信息。</li>
+<li><code>return</code>之外的第二种退出途径：若找不到异常处理程序，整个系统完全退出</li>
+</ul>
+</li>
+</ul>
+<p><strong>【异常按结构层次的分类】</strong></p>
+<ul>
+<li>运行时异常：由程序员处理不当造成，如空指针、数组越界、类型转换</li>
+<li>其他异常：程序员无法完全控制的外在问题所导致的，通常为IOE异常，即找不到文件路径等</li>
+</ul>
+<p><strong>【异常按处理机制角度的分类】</strong></p>
+<ul>
+<li><p>为什么区分checked 和 unchecked：原因其实很简单，编译器将检查你是否为所有的已检查异常提供了异常处理机制，比如说我们使用<code>Class.forName()</code>来查找给定的字符串的<code>class</code>对象的时候，如果没有为这个方法提供异常处理，编译是无法通过的。 </p>
+</li>
+<li><p>Checked exception：</p>
+<ul>
+<li>编译器可帮助检查你的程序是否已抛出或处理了可能的异常</li>
+<li>异常的向上抛出机制进行处理，如果子类可能产生A异常，那么在父类中也必须<code>throws A</code>异常。可能导致的问题：代码效率低，耦合度过高。</li>
+<li>checked exception是需要强制catch的异常，你在调用这个方法的时候，你如果不catch这个异常，那么编译器就会报错，比如说我们读写文件的时候会<code>catch IOException</code>，执行数据库操作会有<code>SQLException</code>等。</li>
+<li>对checked Exception处理机制　　　　<ul>
+<li>抛出：声明是<code>throws</code>，抛出时<code>throw</code>　　　</li>
+<li>捕获（<code>try</code>/<code>catch</code>）：<code>try</code>出现异常，忽略后面代码直接进入<code>catch</code>；无异常不进入<code>catch</code>；若<code>catch</code>中没有匹配的异常处理，程序退出；若子类重写了父类方法，父类方法没有抛出异常，子类应自己处理全部异常而不再传播；子类从父类继承的方法不能增加或更改异常</li>
+<li>处理：不能代替简单的测试，尽量苛刻、不过分细化、将正常处理与异常处理分开、利用好层次结构、早抛出晚捕获、避免不必要的检查</li>
+<li>清理现场、释放资源（<code>finally</code>）：<code>finally</code>中语句不论有无异常都执行</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>unchecked exception：</p>
+<ul>
+<li>程序猿对此不做任何事情，不得不重写你的代码（不需要在编译时使用<code>try-catch</code>等机制处理）</li>
+<li>这类异常都是<code>RuntimeException</code>的子类，它们不能通过client code来试图解决</li>
+<li>这种异常不是必须需要<code>catch</code>的，你是无法预料的，比如说在调用一个<code>list.size()</code>时，如果<code>list</code>为<code>null</code>，那么就会报<code>NullPointerException</code>，而这个异常就是 <code>RuntimeException</code>，也就是<code>UncheckedException</code></li>
+<li>常见的unchecked exception：JVM抛出，如空指针、数组越界、数据格式、不合法的参数、不合法的状态、找不到类等    </li>
+</ul>
+</li>
+</ul>
+<p><strong>checked和unchecked总结</strong></p>
+<ul>
+<li>当要决定是采用checked exception还是Unchecked exception的时候，问一个问题： “如果这种异常一旦抛出，client会做怎样的补救？”<ul>
+<li>如果客户端可以通过其他的方法恢复异常，那么采用checked exception；</li>
+<li>如果客户端对出现的这种异常无能为力，那么采用unchecked exception；</li>
+<li>异常出现的时候，要做一些试图恢复它的动作而不要仅仅的打印它的信息。</li>
+</ul>
+</li>
+<li>尽量使用unchecked exception来处理编程错误：因为uncheckedexception不用使客户端代码显式的处理它们，它们自己会在出现的地方挂起程序并打印出异常信息。</li>
+<li><p>如果client端对某种异常无能为力，可以把它转变为一个unchecked exception，程序被挂起并返回客户端异常信息</p>
+<p><strong>Checked exception应该让客户端从中得到丰富的信息。</strong> </p>
+</li>
+</ul>
+<p><strong>要想让代码更加易读，倾向于用unchecked exception来处理程序中的错误</strong></p>
+<h3 id="checked异常的处理机制"><a href="#checked异常的处理机制" class="headerlink" title="checked异常的处理机制"></a><em>checked异常的处理机制</em></h3><p> <strong>异常中的LSP原则</strong></p>
+<ul>
+<li>如果子类型中<code>override</code>了父类型中的函数，那么子类型中方法抛出的异常不能比父类型抛出的异常类型更广泛</li>
+<li>子类型方法可以抛出更具体的异常，也可以不抛出任何异常</li>
+<li>如果父类型的方法未抛出异常，那么子类型的方法也不能抛出异常。</li>
+<li>其他的参考第五章第二节的LSP</li>
+</ul>
+<p><strong>利用<code>throws</code>进行声明</strong></p>
+<ul>
+<li>使用<code>throws</code>声明异常：此时需要告知你的client需要处理这些异常，如果client没有handler来处理被抛出的checked exception，程序就终止执行。</li>
+<li>程序员必须在方法的spec中明确写清本方法会抛出的所有checked exception，以便于调用该方法的client加以处理</li>
+<li>在使用throws时，方法要在定义和spec中明确声明所抛出的全部checked exception，没有抛出checked异常，编译出错，Unchecked异常和Error可以不用处理。</li>
+</ul>
+<p><strong>利用<code>throw</code>抛出一个异常</strong></p>
+<ul>
+<li>步骤：<ul>
+<li>找到一个能表达错误的<code>Exception</code>类/或者构造一个新的<code>Exception</code>类</li>
+<li>构造<code>Exception</code>类的实例，将错误信息写入</li>
+<li>抛出它</li>
+</ul>
+</li>
+<li><p>一旦抛出异常，方法不会再将控制权返回给调用它的client，因此也无需考虑返回错误代码</p>
+<p><strong><code>try-catch</code>语句</strong></p>
+</li>
+<li><p>使用<code>try</code>和<code>catch</code>关键字可以捕获异常。<code>try</code>/<code>catch</code>代码块放在异常可能发生的地方。</p>
+</li>
+<li><code>try</code>/<code>catch</code>代码块中的代码称为保护代码，</li>
+<li><code>catch</code>语句包含要捕获异常类型的声明。当保护代码块中发生一个异常时，<code>try</code>后面的<code>catch</code>块就会被检查。</li>
+<li>如果发生的异常包含在<code>catch</code>块中，异常会被传递到该<code>catch</code>块，这和传递一个参数到方法是一样。</li>
+</ul>
+<p><strong><code>finally</code>语句</strong></p>
+<ul>
+<li>场景：当异常抛出时，方法中正常执行的代码被终止；但如果异常发生前曾申请过某些资源，那么异常发生后这些资源要被恰当的清理，所以需要用<code>finally</code>语句。</li>
+<li><code>finally</code> 关键字用来创建在 try 代码块后面执行的代码块。</li>
+<li>无论是否发生异常，<code>finally</code> 代码块中的代码总会被执行。</li>
+<li>在 <code>finally</code> 代码块中，可以运行清理类型等收尾善后性质的语句。</li>
+<li><code>finally</code> 代码块出现在<code>catch</code>代码块最后：</li>
+<li>注意下面事项：<ul>
+<li><code>catch</code>不能独立于<code>try</code>存在。</li>
+<li>在<code>try</code>/<code>catch</code>后面添加 <code>finally</code> 块并非强制性要求的。</li>
+<li><code>try</code>代码后不能既没<code>catch</code>块也没 <code>finally</code>块。</li>
+<li><code>try, catch, finally</code>块之间不能添加任何代码。</li>
+</ul>
+</li>
+</ul>
+<h3 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a><em>自定义异常</em></h3><ul>
+<li>如果JDK提供的exception类无法充分描述你的程序发生的错误，可以创建自己的异常类。<ul>
+<li>如果希望写一个检查性异常类，则需要继承<code>Exception</code>类。</li>
+<li>如果你想写一个运行时异常类，那么需要继承<code>RuntimeException</code>类。</li>
+</ul>
+</li>
+</ul>
+<h2 id="第三节-断言和防御性编程"><a href="#第三节-断言和防御性编程" class="headerlink" title="第三节 断言和防御性编程"></a>第三节 断言和防御性编程</h2><h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a><em>断言</em></h3><p><strong>什么是断言</strong></p>
+<ul>
+<li><strong>作用：</strong>允许程序在运行时检查自己，测试有关程序逻辑的假设，如前置条件、后置条件、内部不变量、表示不变量、控制流不变量等</li>
+<li><strong>目的</strong>： 为了在开发阶段调试程序、尽快避免错误</li>
+<li>使用阶段：<ul>
+<li>断言主要用于开发阶段，避免引入和帮助发现bug</li>
+<li>实际运行阶段， 不再使用断言</li>
+<li>软件发布阶段，禁用断言避免影响性能。</li>
+</ul>
+</li>
+</ul>
+<p><strong>应用场景</strong></p>
+<ul>
+<li>输入参数或输出参数的取值处于预期范围</li>
+<li>子程序开始执行（结束）时，文件或流处于打开（关闭）状态</li>
+<li>子程序开始执行（结束）时，文件或流的读写位置处于开头（结尾）</li>
+<li>文件或流已打开</li>
+<li>输入变量的值没有被子程序修改</li>
+<li>指针非空</li>
+<li>传入子程序的数组至少能容纳X个元素</li>
+<li>表已初始化，存储着真实的数据</li>
+<li>子程序开始（结束）时，容器空（满）</li>
+<li>一个高度优化过的子程序与一个缓慢的子程序，结果一致</li>
+<li>断言只在开发阶段被编译到目标代码中，而在生成代码时不编译进去。使用断言的指导建议：</li>
+<li>用错误处理代码来处理预期会发生的状况，断言不行</li>
+<li>避免把需要执行的代码放入断言中（如果未编译断言呢？）</li>
+<li>用断言来注解并验证前条件和后条件</li>
+<li>对于高健壮性的代码，应该先用断言，再处理错误</li>
+</ul>
+<p><strong>注意</strong></p>
+<ul>
+<li>编译时加入-ea(enable assertion)选项运行断言，-da(disable assertion)关闭断言</li>
+<li>条件语句或开关没有涵盖所有可能的情况，最好使用断言来阻止非法事件</li>
+<li>可以在预计正常情况下程序不会到达的地方放置断言：<code>assert false</code></li>
+<li>断言有代价，需慎用，一般用于验证正确性，处理绝不应该发生的情况</li>
+<li><p>不能作为公共方法的检查，也不能有边界效应</p>
+<p><strong>断言和异常的对比</strong></p>
+</li>
+<li><p>用异常处理技术来处理你“希望发生”的不正常情况</p>
+</li>
+<li>用断言来处理“不希望发生”的情况；断言的方式处理一定是发生了错误</li>
+<li>不要把业务逻辑（执行代码）放到断言里面去处理</li>
+<li>参数检查通常是方法发布的规范（或契约）的一部分，无论断言是启用还是禁用，都必须遵守这些规范。<ul>
+<li>如果参数来自于外部（不受自己控制），使用异常处理</li>
+<li>如果来自于自己所写的其他代码，可以使用断言来帮助发现错误（例如postcondition就需要）</li>
+</ul>
+</li>
+</ul>
+<h2 id="第四节-调试"><a href="#第四节-调试" class="headerlink" title="第四节 调试"></a>第四节 调试</h2><h3 id="什么是bug"><a href="#什么是bug" class="headerlink" title="什么是bug"></a><em>什么是bug</em></h3><ul>
+<li>bug即程序中的错误，导致程序以非预期或未预料到的方式执行。</li>
+<li>一个包含大量bug和/或严重干扰其功能的bug的程序被称为buggy。</li>
+<li>报告程序中的bug通常被称为bug报告、故障报告、问题报告、故障报告、缺陷报告等</li>
+</ul>
+<p><strong>bug产生的原因</strong></p>
+<ul>
+<li>代码错误</li>
+<li>未完成的要求或不够详细</li>
+<li>误解用户需求</li>
+<li>设计文档中的逻辑错误</li>
+<li>缺乏文件</li>
+<li>没有足够的测试</li>
+</ul>
+<p><strong>bug的常见类型</strong></p>
+<ul>
+<li>数学bug：例如 零除法，算术溢出</li>
+<li>逻辑bug：例如 无线循环和无限递归</li>
+<li>源头bug：例如 使用了为被定义的变量、资源泄漏，其中有限的系统资源如内存或文件句柄通过重复分配耗尽而不释放。缓冲区溢出，其中程序试图将数据存储在分配存储的末尾。</li>
+<li>团队工程bug：例如 评论过时或者评论错误、文件与实际产品的区别</li>
+</ul>
+<h3 id="调试的基本过程"><a href="#调试的基本过程" class="headerlink" title="调试的基本过程"></a><em>调试的基本过程</em></h3><ul>
+<li>Debug是测试的后续步骤：测试发现问题，debug消除问题；当防御式编程和测试都无法挡住bug时，我们就必须进行debug了；</li>
+<li>Debug的目的：寻求错误的根源并消除它；（Debug占用了大量的时间）</li>
+</ul>
+<p><strong>调试的过程</strong></p>
+<ul>
+<li><strong>常用方法：假设-检验</strong></li>
+<li>重现（Reproduce）$\to$诊断（Diagnose/Locating）$\to$修复（Fix）$\to$反思（Reflect）</li>
+<li>重现（Reproduce）：寻找一个可靠、方便得在线需求问题的方法。<ul>
+<li>从最小的测试用例开始复现错误（保持复现bug的前提下降低输入规模）</li>
+<li>消除因版本、环境、配置等不同引起的差异（通过构建软件实现），确定bug出现的环境（通过程序模拟硬件平台的细节，实现不同的操作系统环境）</li>
+<li>利用逆向设计推断导致错误的输入</li>
+<li>若无法重现，则无法观察以证明分析和修补的正确性</li>
+</ul>
+</li>
+<li>诊断（Diagnose/Locating）：构建假设，并通过执行实验来测试它们，直到您确信已识别错误的根本原因。<ul>
+<li>从假设开始，构造实验，证明它是对的或者错的</li>
+<li>从不符合理论的观察结果开始，修正理论</li>
+<li>查看导致错误的测试输入，以及错误的结果，失败的断言以及由此导致的堆栈跟踪</li>
+<li>提出一个与所有数据一致的假设，说明错误发生的位置或错误发生的位置，设计实验测试假设</li>
+<li>收集实验数据，减少错误可能出现的范围，做出新的假设</li>
+<li>设计不同的实验：检查内部状态、修改运行方式、改变本身逻辑 </li>
+<li>每次只做一个修改、做好记录、不忽略细节、运行不同的测试用例、设置断点、用可实现相同功能并且被证实无问题的组件替代当前组件</li>
+</ul>
+</li>
+<li>修复（Fix）：设计和实施解决问题的变化，避免引入回归，并保持或提高软件的整体质量。<ul>
+<li>确保从干净的源代码树开始</li>
+<li>运行现有的测试，并证明它们通过</li>
+<li>添加一个或多个新测试，或修复现有测试，以演示错误</li>
+<li>修复错误、发现可改进之处</li>
+<li>证明你的修复工作正常且没有引入回归（以前通过的测试现在失败）</li>
+<li>如果引入回归，通过回顾以前的版本来找出确切的变化</li>
+</ul>
+</li>
+<li>反思（Reflect）：思考需求、设计、测试、结构（库、编译器等）</li>
+</ul>
+<h3 id="调试的技术和工具"><a href="#调试的技术和工具" class="headerlink" title="调试的技术和工具"></a><em>调试的技术和工具</em></h3><p><strong>调试技术</strong></p>
+<ul>
+<li>暴力调试（Brute Force Attack）<ul>
+<li>蛮力方法可以分为至少三类：<ul>
+<li>看内存导出文件</li>
+<li>根据“在整个程序中分散打印语句”的常见建议进行调试。</li>
+<li>自动化调试工具</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>递归调试（Induction）</li>
+<li>演绎调试（Decution）</li>
+<li>回溯调试（Backtracking）</li>
+<li>测试调试（Testing）</li>
+</ul>
+<p><strong>调试工具</strong></p>
+<ul>
+<li>语法和逻辑检查（本课程未涵盖）</li>
+<li>源代码比较器(Source-code comparator)</li>
+<li>内存堆转储（Memory heap dump）</li>
+<li>打印调试/日志记录(Print debugging / logging)</li>
+<li>堆栈跟踪(Stack trace)</li>
+<li>编译器警告消息(Compiler Warning Messages)</li>
+<li>调试器(Debugger)</li>
+<li>执行分析器(Execution Profiler)</li>
+<li>测试框架(Test Framework）</li>
+</ul>
+<h2 id="第五节-测试与测试优先编程"><a href="#第五节-测试与测试优先编程" class="headerlink" title="第五节 测试与测试优先编程"></a>第五节 测试与测试优先编程</h2><h3 id="测试和测试优先编程"><a href="#测试和测试优先编程" class="headerlink" title="测试和测试优先编程"></a><em>测试和测试优先编程</em></h3><p><strong>测试的定义</strong></p>
+<ul>
+<li>测试：发现程序中的错误 提高程序正确性的信心</li>
+<li>程序正确确认的基本方法:<ul>
+<li>形式化推理</li>
+<li>代码评审</li>
+<li>测试</li>
+</ul>
+</li>
+<li><p>测试是提高软件质量的重要手段</p>
+<ul>
+<li>确认是否可达到可用的级别</li>
+<li>关注系统某一侧面的质量特性</li>
+<li>是否满足需求</li>
+<li>是否正确响应所有需求</li>
+<li>性能是否可接受</li>
+<li>是否可用</li>
+<li>可否正确部署安装</li>
+<li>是否达到期望</li>
+</ul>
+<p><strong>测试的分类</strong></p>
+</li>
+<li><p>单元测试</p>
+</li>
+<li>集成测试</li>
+<li>系统测试</li>
+<li>回归测试</li>
+<li>验收测试</li>
+</ul>
+<h3 id="黑盒测试"><a href="#黑盒测试" class="headerlink" title="黑盒测试"></a><em>黑盒测试</em></h3><ul>
+<li><p>白盒测试:对程序内部代码结构的测试 只关注代码内部的问题</p>
+</li>
+<li><p>黑盒测试:对程序外部表现出来的行为的测试 采用两个方法</p>
+<ul>
+<li><p>等价划分</p>
+<p>  将程序可能的输入进行分类 划分为不同集合 包括不合法数据</p>
+<ul>
+<li>等价类划分可有两种不同的情况：有效等价类和无效等价类。</li>
+<li>若一组对象自反、对称、传递，则为等价类</li>
+<li>可产生相似结果的输入集合中的一个可代替整个集合</li>
+<li>同理，对输出也可以划分等价类</li>
+<li>极端：每个分区只有一个测试用例，覆盖所有分区</li>
+</ul>
+</li>
+<li><p>边界值分析方法</p>
+<p>  边界值分析法是对输入输出的边界值进行测试一种黑盒测试方法，是对等价类分析法的补充。</p>
+<ul>
+<li>错误通常隐藏在边界中，如一位偏移、边界值需单独处理等</li>
+<li>找到有效数据和无效数据的分界点（最大值、最小值），对该分界点以及两边的值分别单独进行测试。</li>
+<li>等价类划分法可以挑选等价类范围内任意一个数据作为代表，而边界值分析法要求每个边界值都要作为测试条件。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>测试困难</p>
+<ul>
+<li>软件行为在离散输入空间中差异巨大 <ul>
+<li>大多数正确，少数错误</li>
+<li>bug出现不遵循特定概率分布</li>
+</ul>
+</li>
+<li>无统计规律可循</li>
+</ul>
+</li>
+</ul>
+<h3 id="代码覆盖度"><a href="#代码覆盖度" class="headerlink" title="代码覆盖度"></a><em>代码覆盖度</em></h3><ul>
+<li>定义：已有的测试用例有多大程度覆盖了被测程序；</li>
+<li>代码覆盖度越低，测试越不充分；但要做到很高的代码覆盖度，需要更多的测试用例，测试代价高；</li>
+<li>代码覆盖率高的程序在测试期间执行了更多的源代码，与低代码覆盖率的程序相比，包含未检测到的软件错误的可能性较低</li>
+<li>基本覆盖标准：函数覆盖；语句覆盖、分支覆盖、条件覆盖、路径覆盖</li>
+<li>测试效果：路径 &gt; 分支 &gt; 语句</li>
+<li>测试难度：路径 &gt; 分支 &gt; 语句</li>
+</ul>
+<h3 id="以注释的形式撰写测试策略"><a href="#以注释的形式撰写测试策略" class="headerlink" title="以注释的形式撰写测试策略"></a><em>以注释的形式撰写测试策略</em></h3><ul>
+<li>“测试策略”通俗来讲就是6个字：“测什么”和“怎么测”。测试策略非常重要，需要在程序中显性记录下来。</li>
+<li>目的：在代码评审过程中，其他人能够理解你的测试，并评判测试是否充分</li>
+<li>在测试类的顶端写策略</li>
+<li><img src="https://i.imgur.com/5tn5eZi.png" alt></li>
+<li>在每个测试方法前说明测试用例是如何选择的</li>
+<li><img src="https://i.imgur.com/iq0sHgU.png" alt></li>
+</ul>
+<h3 id="JUnit-测试用例写法"><a href="#JUnit-测试用例写法" class="headerlink" title="JUnit 测试用例写法"></a><em>JUnit 测试用例写法</em></h3><ul>
+<li>JUnit单元测试是依据 注释中<code>@Test</code>之前的方法编写的</li>
+<li>JUnit测试经常调用多次方法，使用<code>assertEqual || assertTrue || assertFalse</code>来检查结果</li>
+<li><code>@Before</code>：准备测试、完成初始化，每个测试方法前执行一次</li>
+<li><code>@After</code>：清理现场，每个测试方法后执行一次</li>
+<li><code>@Test</code>：表明测试方法，内含assert语句<ul>
+<li>第一个参数是预期结果、第二个参数实施及结果；</li>
+<li>如果断言失败，该测试方法直接返回，JUnit记录该测试的失败；</li>
+<li>一个测试方法失败，其他测试方法仍运行</li>
+<li><code>@Test(expected = *.class)</code>：对错误的测试，expected的属性值是一个异常</li>
+<li><code>@Test(timeout = xxx)</code>：测试方法在制定的时间之内没有运行完则失败</li>
+</ul>
+</li>
+<li><code>@ignore</code>：忽略测试方法</li>
+<li><strong><em>examples</em></strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evaluate</span><span class="params">(String expression)</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (String summand: expression.split(<span class="string">"\\+"</span>))</span><br><span class="line">            sum += Integer.valueOf(summand);</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluatesExpression</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Calculator calculator = <span class="keyword">new</span> Calculator();</span><br><span class="line">        <span class="keyword">int</span> sum = calculator.evaluate(<span class="string">"1+2+3"</span>);</span><br><span class="line">        assertEquals(<span class="number">6</span>, sum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180619224136881-874452125.png" alt="img"></p>
+<hr>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结（3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/06/24/软件构造知识点总结（3/" class="post-title-link" itemprop="url">Untitled</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-06-24 11:41:29 / Modified: 11:51:04" itemprop="dateCreated datePublished" datetime="2019-06-24T11:41:29+08:00">2019-06-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <hr>
+<h1 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h1><hr>
+<h2 id="第一节-可复用性的度量、形态和外部观察"><a href="#第一节-可复用性的度量、形态和外部观察" class="headerlink" title="第一节  可复用性的度量、形态和外部观察"></a>第一节  可复用性的度量、形态和外部观察</h2><h3 id="什么是软件复用"><a href="#什么是软件复用" class="headerlink" title="什么是软件复用"></a><em>什么是软件复用</em></h3><ul>
+<li>软件复用是使用现有软件组件实施或更新软件系统的过程。 </li>
+<li>软件复用的两个观点：<ul>
+<li>面向复用编程(programming for reuse)：开发出可复用的软件<ul>
+<li>开发成本高于一般软件的成本：要有足够高的适应性</li>
+<li>性能差些： 针对更普适场景，缺少足够的针对性</li>
+</ul>
+</li>
+<li>基于复用编程(programming with reuse)：利用已有的可复用软件搭建应用系统<ul>
+<li>可复用软件库，对其进行有效的管理</li>
+<li>往往无法拿来就用，需要适配</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>为什么需要复用：<ul>
+<li>复用降低成本和开发时间</li>
+<li>复用的代码经过充分测试，可靠、稳定</li>
+<li>产出标准化，在不同应用中保持一致</li>
+</ul>
+</li>
+<li><p>软件复用的代价：</p>
+<ul>
+<li>软件可复用的部分需要设计在如下的标准上：明确的定义、开放的方法、简洁的交互规范、可理解的文档，并着眼于未来。</li>
+<li>不仅program for reuse代价高，program with reuse代价也高</li>
+</ul>
+</li>
+<li><p>代码复用的类型：</p>
+<ul>
+<li>白盒复用：源代码可见，可修改和扩展<ul>
+<li>含义：复制已有代码到正在开发的系统，进行修改</li>
+<li>优点：可订制化程度高</li>
+<li>缺点：对其修改增加了软件的复杂度，且需要对其内部充分的了解</li>
+</ul>
+</li>
+<li>黑盒服用：源代码不可见，不能修改<ul>
+<li>含义：只能通过过API接口来使用，无法修改代码</li>
+<li>优点：清晰、简单</li>
+<li>缺点：适用性差</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>高复用性的软件应具有如下特性：<ul>
+<li>小、简单</li>
+<li>与标准兼容</li>
+<li>灵活可变</li>
+<li>可扩展</li>
+<li>泛型、参数化</li>
+<li>模块化</li>
+<li>变化的局部性</li>
+<li>稳定</li>
+<li>丰富的文档和帮助</li>
+</ul>
+</li>
+</ul>
+<h2 id="可复用实现的级别"><a href="#可复用实现的级别" class="headerlink" title="可复用实现的级别"></a>可复用实现的级别</h2><p><strong>源代码级别的复用</strong></p>
+<p><strong>模块级别的复用：类、抽象类、接口</strong></p>
+<ul>
+<li>复用类：<ul>
+<li>源码并非是必要的，可能只需要类文件或jar</li>
+<li>只需要将这个类加入到类路径</li>
+<li>可以使用工具javap获得一个类的<code>public</code>方法</li>
+</ul>
+</li>
+<li>使用复用类的注意事项：<ul>
+<li>文档十分重要</li>
+<li>压缩会有助于复用</li>
+<li>管理更少的代码</li>
+<li>版本兼容性</li>
+<li>需要和类相关的包</li>
+</ul>
+</li>
+<li>复用类的方法：继承和委派<ul>
+<li>继承（Inheritance）：<ul>
+<li>类扩展了现有类的属性/行为；</li>
+<li>另外，他们可能会<code>Override</code>现有的行为；</li>
+<li>通常需要在实施之前设计继承层次结构；</li>
+</ul>
+</li>
+<li>委派（Delegation）：<ul>
+<li>根本没有父子关系的类中使用继承是不合理的，可以用委派的方式来代替。</li>
+<li>委托是简单的将一个对象连接到另一个对象上，使另一个对象获得这个对象方法的子集（一个实体将某个事物传递给另一个实体）。</li>
+<li>明确的委托：明确将需要传的对象传到目标对象上</li>
+<li>含蓄的委托：委托可以被描述为一种共享代码数据的低级别机制</li>
+<li>委派的类型：<ul>
+<li>Use（A uses B）</li>
+<li>Composition/aggregation (A owns B)</li>
+<li>Association (A has B)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>库级别的复用：API/包</strong></p>
+<ul>
+<li>方法：Libaray、framework<ul>
+<li>library：<ul>
+<li>库定义：一组提供可重用功能的类和方法（API）</li>
+<li>开发者构造可运行软件实体，其中涉及到对可复用库的调用</li>
+<li>Java中有很多的库可以复用，例如Guava：Google的Java核心库；Apache Commons等</li>
+</ul>
+</li>
+<li>framework：<ul>
+<li>框架定义：一组具体类、抽象类、及其之间的连接关系 </li>
+<li>作为主程序加以执行，执行过程中调用开发者所写的程序</li>
+<li>开发者根据 framework的规约，填充自己的代码进去，形成完整系统</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>系统级别的复用：框架</strong></p>
+<p>　　将framework看作是更大规模的API复用，除了提供可复用的API，还将这 些模块之间的关系都确定下来，形成了整体应用的领域复用。开发者的任务就是增加新代码、对抽象类进行具体化。展开来说就是以下几点：</p>
+<ul>
+<li>通常通过选择性覆盖来扩展框架; 或者程序员可以添加专门的用户代码来提供特定的功能—定义继承了抽象类祖先操作的具体类</li>
+<li>设计模式(Hook方法)，它被应用程序覆盖以扩展框架。 Hook方法系统地将应用程序域的接口和行为与应用程序在特定上下文中所需的变体解耦。</li>
+<li>控制反转，由第三方的容器来控制对象之间的依赖关系，而非传统实现中由代码直接操控。由第三方的容器来控制对象之间的依赖关系，而非传统实现中由代码直接操控。</li>
+<li>不可修改的框架代码：在接受用户实现的扩展时，框架代码不应该被修改。 换句话说，用户可以扩展框架，但不应修改其代码。</li>
+</ul>
+<h3 id="对可复用性的外部观察"><a href="#对可复用性的外部观察" class="headerlink" title="对可复用性的外部观察"></a><em>对可复用性的外部观察</em></h3><ul>
+<li><p>Type Variation  类型可变</p>
+<ul>
+<li>能够复用的部分应该类型参数化，以适应不同的数据类型</li>
+<li>复用的部分应该一般化</li>
+<li>适应不同的类型，且满足LSP</li>
+</ul>
+</li>
+<li><p>Implementation Variation 实现可变</p>
+<ul>
+<li>ADT 有多种不同的实现，提供不同的representations 和abstract function ，但具有同样的specification (pre-condition, post-condition, invariants) ，从而可以适应不同的应用场景</li>
+</ul>
+</li>
+<li><p>Routine Grouping 功能分组</p>
+<ul>
+<li>提供完备的细粒度操作，保证功能的完整性，不同场景下复用不同的操作( 及其组合)</li>
+</ul>
+</li>
+<li><p>Representation Independence 表示独立</p>
+<ul>
+<li>内部实现可能会经常变化，但客户端不应受到影响。</li>
+</ul>
+</li>
+<li><p>Factoring Out Common Behaviors 共性抽取</p>
+<ul>
+<li>将共同的行为（共性）抽象出来，形成可复用实体</li>
+</ul>
+</li>
+</ul>
+<h3 id="白盒框架和黑盒框架"><a href="#白盒框架和黑盒框架" class="headerlink" title="白盒框架和黑盒框架"></a><em>白盒框架和黑盒框架</em></h3><p>框架也可分为白盒框架和黑盒框架两类。 </p>
+<ul>
+<li>白盒框架：<ul>
+<li>通过继承和动态绑定实现可扩展性。</li>
+<li>通过继承框架基类并重写预定义的hook方法来扩展现有功能。</li>
+<li>通常使用模板方法模式等设计模式来覆盖hook方法。</li>
+</ul>
+</li>
+<li>黑盒框架：<ul>
+<li>通过为可插入框架的组件定义接口来实现可扩展性。</li>
+<li>通过定义符合特定接口的组件来复用现有功能。</li>
+<li>这些组件通过委派（Delegation）与框架集成。</li>
+</ul>
+</li>
+</ul>
+<h2 id="第二节-设计可复用的软件"><a href="#第二节-设计可复用的软件" class="headerlink" title="第二节  设计可复用的软件"></a>第二节  设计可复用的软件</h2><h3 id="设计可复用的类——LSP"><a href="#设计可复用的类——LSP" class="headerlink" title="设计可复用的类——LSP"></a><em>设计可复用的类——LSP</em></h3><ul>
+<li>在OOP之中设计可复用的类<ul>
+<li>封装和信息隐藏</li>
+<li>继承和重写</li>
+<li>多态、子类和重载</li>
+<li>泛型编程</li>
+<li><strong>LSP原则</strong></li>
+<li><strong>委派和组合（Composition）</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>行为子结构</strong></p>
+<ul>
+<li><p>子类型多态（ Subtype polymorphism）：客户端可用统一的方式处理不同类型的对象 。</p>
+</li>
+<li><p><strong><em>examples</em></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Animal a = <span class="keyword">new</span> Animal(); </span><br><span class="line">Animal c1 = <span class="keyword">new</span> Cat(); </span><br><span class="line">Cat c2 = <span class="keyword">new</span> Cat();</span><br></pre></td></tr></table></figure>
+<p> 在可以使用<code>a</code>的场景，都可以用<code>c1</code>和<code>c2</code>代替而不会有任何问题。</p>
+</li>
+<li><p>在java的静态类型检查之中，编译器强调了几条规则：</p>
+<ul>
+<li>子类型可以增加方法，但不可删</li>
+<li>子类型需要实现抽象类型中的所有未实现方法</li>
+<li>子类型中重写的方法必须有相同或子类型的返回值</li>
+<li>子类型中重写的方法必须使用同样类型的参数</li>
+<li>子类型中重写的方法不能抛出额外的异常</li>
+</ul>
+</li>
+<li><p>行为子结构也适用于指定的方法：</p>
+<ul>
+<li>更强的不变量</li>
+<li>更弱的前置条件</li>
+<li>更强的后置条件</li>
+</ul>
+</li>
+</ul>
+<p><strong>逆变与协变</strong></p>
+<ul>
+<li><p>逆变与协变综述：如果A、B表示类型，f(⋅)表示类型转换，≤表示继承关系（比如，$A≤B$表示A是由B派生出来的子类）：</p>
+<ul>
+<li>f(⋅)是逆变（contravariant）的，当$A \le B$时有$f(B) \le f(A)$成立；</li>
+<li>f(⋅)是协变（covariant）的，当$A \le B$时有$f(A) \le f(B)$成立；</li>
+<li>f(⋅)是不变（invariant）的，当$A \le B$时上述两个式子均不成立，即f(A)与f(B)相互之间没有继承关系。</li>
+</ul>
+</li>
+<li><p>协变（Co-variance）：</p>
+<ul>
+<li>父类型$\to$子类型：越来越具体(specific)。</li>
+<li>在LSP中，返回值和异常的类型：不变或变得更具体 。</li>
+<li><strong><em>examples</em></strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180613214134458-1132318774.png" alt="img"></p>
+<ul>
+<li>逆变(Contra-variance)：<ul>
+<li>父类型$\to$子类型：越来越抽象。</li>
+<li>参数类型：要相反的变化，不变或越来越抽象。 </li>
+<li><strong><em>examples</em></strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180613214453893-254989486.png" alt="img"></p>
+<p>这在Java中是不允许的，因为它会使重载规则复杂化。</p>
+<p><strong>Liskov替换原则(LSP)</strong></p>
+<ul>
+<li>里氏替换原则的主要作用就是规范继承时子类的一些书写规则。其主要目的就是保持父类方法不被覆盖。</li>
+<li>含义：<ul>
+<li>子类必须完全实现父类的方法</li>
+<li>子类可以有自己的个性</li>
+<li>覆盖或实现父类的方法时输入参数可以被放大</li>
+<li>覆盖或实现父类的方法时输出结果可以被缩小</li>
+</ul>
+</li>
+<li>LSP是子类型关系的一个特殊定义，称为（强）行为子类型化。在编程语言中，LSP依赖于以下限制：<ul>
+<li>前置条件不能强化</li>
+<li>后置条件不能弱化</li>
+<li>不变量要保持或增强</li>
+<li>子类型方法参数：逆变</li>
+<li>子类型方法的返回值：协变</li>
+<li>异常类型：协变</li>
+</ul>
+</li>
+</ul>
+<h2 id="各种应用中的LSP"><a href="#各种应用中的LSP" class="headerlink" title="各种应用中的LSP"></a>各种应用中的LSP</h2><p><strong>数组是协变的</strong></p>
+<ul>
+<li>数组是协变的：一个数组<code>T[]</code> ，可能包含了T类型的实例或者T的任何子类型的实例</li>
+<li>即子类型的数组可以赋予父类型的数组进行使用，但数组的类型实际为子类型。</li>
+</ul>
+<p><strong>泛型中的LSP</strong></p>
+<ul>
+<li>Java中泛型是不变的,但可以通过通配符”?”实现协变和逆变：<ul>
+<li><code>&lt;? extends&gt;</code>实现了泛型的协变：<code>List&lt;? extends Number&gt; list = new ArrayList&lt;Integer&gt;()</code>;</li>
+<li><code>&lt;? super&gt;</code>实现了泛型的逆变：<code>List&lt;? super Number&gt; list = new ArrayList&lt;Object&gt;()</code>;</li>
+</ul>
+</li>
+<li>由于泛型的协变只能规定类的上界，逆变只能规定下界，使用时需要遵循PECS（producer—extends, consumer-super）：<ul>
+<li>要从泛型类取数据时，用extends；</li>
+<li>要往泛型类写数据时，用super；</li>
+<li>既要取又要写，就不用通配符（即extends与super都不用）。</li>
+</ul>
+</li>
+<li>泛型是类型不变的（泛型不是协变的）。举例来说 <ul>
+<li><code>ArrayList&lt;String&gt;</code> 是<code>List&lt;String&gt;</code>的子类型 </li>
+<li><code>List&lt;String&gt;</code>不是<code>List&lt;Object&gt;</code>的子类型</li>
+</ul>
+</li>
+<li>在代码的编译完成之后，泛型的类型信息就会被编译器擦除。因此，这些类型信息并不能在运行阶段时被获得。这一过程称之为类型擦除（type erasure）。</li>
+<li>类型擦除的详细定义：如果类型参数没有限制，则用它们的边界或Object来替换泛型类型中的所有类型参数。因此，产生的字节码只包含普通的类、接口和方法。</li>
+<li>类型擦除的结果：<code>&lt;T&gt;</code>被擦除<code>T</code>变成了<code>Object</code></li>
+</ul>
+<p><strong>Wildcards（通配符）</strong></p>
+<ul>
+<li>无界通配符类型使用通配符（<code>?</code>）指定，例如<code>List&lt;?&gt;</code>，这被称为未知类型的列表。 </li>
+<li><p>在两种情况下，无界通配符是一种有用的方法：</p>
+<ul>
+<li>如果您正在编写可使用Object类中提供的功能实现的方法。</li>
+<li>当代码使用泛型类中不依赖于类型参数的方法时。 例如<code>List.size</code>或<code>List.clear</code>。 事实上，<code>Class&lt;?&gt;</code>经常被使用，因为<code>Class&lt;T&gt;</code>中的大多数方法不依赖于<code>T</code>。</li>
+</ul>
+<p><strong><em>examples</em></strong></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(List&lt;Object&gt; list)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">for</span> (Object elem : list) </span><br><span class="line">        System.out.println(elem + <span class="string">" "</span>); </span><br><span class="line">    System.out.println(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>printList</code>的目标是打印任何类型的列表，但它无法实现该目标 ，它仅打印<code>Object</code>实例列表; 它不能打印<code>List &lt;Integer&gt;</code>，<code>List &lt;String&gt;</code>，<code>List &lt;Double&gt;</code>等，因为它们不是<code>List &lt;Object&gt;</code>的子类型。 </p>
+<ul>
+<li>要编写通用的<code>printList</code>方法，请使用<code>List&lt;?&gt;</code></li>
+<li>低边界通配符<code>&lt;? super A&gt; e.g. List&lt;? super Integer&gt;  List&lt;Number&gt;</code></li>
+<li>上边界通配符<code>&lt;? extends A&gt; e.g. List&lt;? extends Number&gt;  List&lt;Integer&gt;</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(List&lt;?&gt; list)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">for</span> (Object elem: list) </span><br><span class="line">		System.out.println(); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">	List&lt;Integer&gt; li = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); </span><br><span class="line">	List&lt;String&gt;  ls = Arrays.asList(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>); </span><br><span class="line">	printList(li); </span><br><span class="line">	printList(ls);</span><br></pre></td></tr></table></figure>
+<h3 id="委派与组合"><a href="#委派与组合" class="headerlink" title="委派与组合"></a><em>委派与组合</em></h3><p><strong>委派（Delegation）</strong></p>
+<ul>
+<li>委派/委托：一个对象请求另一个对象的功能 。</li>
+<li>委派是复用的一种常见形式。</li>
+<li>分为显性委派：将发送对象传递给接收对象；</li>
+<li><p>以及隐性委派：由语言的成员查找规则。</p>
+</li>
+<li><p>委派设计模式：是一种用来实现委派的软件设计模式；</p>
+</li>
+<li><p>委派依赖于动态绑定，因为它要求给定的方法调用可以在运行时调用不同的代码段；</p>
+</li>
+<li><p>委派的过程如下：</p>
+</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616010823670-1888403800.png" alt="img"></p>
+<pre><code>Receiver对象将操作委托给Delegate对象，同时Receiver对象确保客户端不会滥用委托对象；
+</code></pre><p><strong>委派与继承</strong></p>
+<ul>
+<li>继承：通过新操作扩展基类或覆盖操作。 </li>
+<li>委托：捕获操作并将其发送给另一个对象。 </li>
+<li>许多设计模式使用继承和委派的组合。 </li>
+<li>Problem：如果子类只需要复用父类中的一小部分方法，</li>
+<li>Solution：可以不需要使用继承，而是通过委派机制来实现。</li>
+<li>本质上，一个类不需要继承另一个类的全部方法，通过委托机制调用部分方法。</li>
+</ul>
+<p><strong>复合继承原则（CRP）</strong></p>
+<ul>
+<li>复合复用原则(CRP)：类应当通过它们之间的组合（通过包含其它类的实例来实现期望的功能）达到多态表现和代码复用，而不仅仅是从基础类或父类继承。 </li>
+<li>我们可以将组合（Composition）理解为（has a）而继承理解为(is a)；</li>
+<li><p>委派可以看做Object层面的复用机制，而继承可以看做是类的层面；</p>
+</li>
+<li><p>只需针对不同子类的对象，委派能够计算该子类的奖金的方法的BonusCalculator。这样一来就不需要在子类继承的时候进行重写。</p>
+</li>
+<li><strong>总结</strong>：组合来代替继承的更普遍实现：<ul>
+<li>用接口来实现系统的最基础行为</li>
+<li>接口之间用extends来实现系统功能的扩展（接口组合）</li>
+<li>类implements 组合接口</li>
+</ul>
+</li>
+</ul>
+<p><strong>委派的类型</strong></p>
+<ul>
+<li>临时性委派（Dependency）：最简单的方法，调用类里的方法（use a），其中一个类使用另一个类而不实际地将其作为属性。</li>
+<li><p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616013924654-1586422474.png" alt="img"></p>
+</li>
+<li><p>永久性委派（Association）：类之中有其它类的具体实例来作为一个变量（has a）</p>
+</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616013942858-522907537.png" alt="img"></p>
+<ul>
+<li>更强的委派，组合（Composition）：更强的委派。将一些简单的对象组合成一个更为复杂的对象。（is part of）!</li>
+</ul>
+<p><a href="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616014036320-1708798381.png" target="_blank" rel="noopener">img</a></p>
+<ul>
+<li>聚合（Aggregation）:对象是在类的外部生成的，然后作为一个参数传入到类的内部构造器。(has a)</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616014114448-820873723.png" alt="img"></p>
+<p><strong>组合与聚合</strong><br>　　在组合中，当拥有的对象被破坏时，被包含的对象也被破坏。在聚合中，这不一定是真的。以生活中的事物为例：大学拥有多个部门，每个部门都有一批教授。 如果大学关闭，部门将不复存在，但这些部门的教授将继续存在。 一位教授可以在一个以上的部门工作，但一个部门不能成为多个大学的一部分。大学与部门之间的关系即为组合，而部分与教授之间的关系为聚合。</p>
+<h3 id="设计可复用库与框架"><a href="#设计可复用库与框架" class="headerlink" title="设计可复用库与框架"></a><em>设计可复用库与框架</em></h3><p>之所以library和framework被称为系统层面的复用，是因为它们不仅定义了1个可复用的接口/类，而是将某个完整系统中的所有可复用的接口/类都实现出来，并且定义了这些类之间的交互关系、调用关系，从而形成了系统整体 的“架构”。</p>
+<ul>
+<li>相应术语：<ul>
+<li>API（Application Programming Interface）：库或框架的接口</li>
+<li>Client（客户端）：使用API的代码</li>
+<li>Plugin（插件）：客户端定制框架的代码</li>
+<li>Extension Point：框架内预留的“空白”，开发者开发出符合接口要求的代码( 即plugin) ， 框架可调用，从而相当于开发者扩展了框架的功能</li>
+<li>Protocol（协议）：API与客户端之间预期的交互序列。</li>
+<li>Callback（反馈）：框架将调用的插件方法来访问定制的功能。</li>
+<li>Lifecycle method：根据协议和插件的状态，按顺序调用的回调方法。</li>
+</ul>
+</li>
+</ul>
+<p><strong>API和库</strong></p>
+<ul>
+<li>建议：始终以开发API的标准面对任何开发任务；面向“复用”编程而不是面向“应用”编程。 </li>
+<li>难度：要有足够良好的设计，一旦发布就无法再自由改变。 </li>
+<li>编写一个API需要考虑以下方面：<ul>
+<li>API应该做一件事，且做得很好</li>
+<li>API应该尽可能小，但不能太小</li>
+<li>Implementation不应该影响API</li>
+<li>记录文档很重要</li>
+<li>考虑性能后果</li>
+<li>API必须与平台和平共存</li>
+<li>类的设计：尽量减少可变性，遵循LSP原则</li>
+<li>方法的设计：不要让客户做任何模块可以做的事情，及时报错</li>
+</ul>
+</li>
+</ul>
+<p><strong>框架</strong></p>
+<ul>
+<li>框架（Framework）是整个或部分系统的可重用设计，表现为一组抽象构件及构件实例间交互的方法；另一种定义认为，框架是可被应用开发者定制的应用骨架。前者是从应用方面而后者是从目的方面给出的定义。</li>
+<li>为了增加代码的复用性，可以使用委派和继承机制。同时，在使用这两种机制增加代码复用的过程中，我们也相应地在不同的类之间增加了关系（委派或继承关系）。而对于一个项目而言，各个不同类之间的依赖关系就可以看做为一个框架。一个大规模的项目可能由许多不同的框架组合而成。</li>
+<li><p>框架与设计模式：</p>
+<ul>
+<li>框架、设计模式这两个概念总容易被混淆，其实它们之间还是有区别的。构件通常是代码重用，而设计模式是设计重用，框架则介于两者之间，部分代码重用，部分设计重用，有时分析也可重用。在软件生产中有三种级别的重用：内部重用，即在同一应用中能公共使用的抽象块;代码重用，即将通用模块组合成库或工具集，以便在多个应用和领域都能使用；应用框架的重用，即为专用领域提供通用的或现成的基础结构，以获得最高级别的重用性。  </li>
+<li>框架与设计模式虽然相似，但却有着根本的不同。设计模式是对在某种环境中反复出现的问题以及解决该问题的方案的描述，它比框架更抽象；框架可以用代码表示，也能直接执行或复用，而对模式而言只有实例才能用代码表示;设计模式是比框架更小的元素，一个框架中往往含有一个或多个设计模式，框架总是针对某一特定应用领域，但同一模式却可适用于各种应用。可以说，框架是软件，而设计模式是软件的知识。</li>
+</ul>
+</li>
+<li><p>框架分为白盒框架和黑盒框架。 </p>
+<ul>
+<li><p>白盒框架： </p>
+<ul>
+<li><p>白盒框架是基于面向对象的继承机制。之所以说是白盒框架，是因为在这种框架中，父类的方法对子类而言是可见的。子类可以通过继承或重写父类的方法来实现更具体的方法。</p>
+</li>
+<li><p>虽然层次结构比较清晰，但是这种方式也有其局限性，父类中的方法子类一定拥有，要么继承，要么重写，不可能存在子类中不存在的方法而在父类中存在。</p>
+</li>
+<li><p>通过子类化和重写方法进行扩展（使用继承）； </p>
+</li>
+<li><p>通用设计模式：模板方法； </p>
+</li>
+<li><p>子类具有主要方法但对框架进行控制。</p>
+</li>
+<li><p>允许扩展每一个非私有方法</p>
+</li>
+<li><p>需要理解父类的实现</p>
+</li>
+<li><p>一次只进行一次扩展</p>
+</li>
+<li><p>通常被认为是开发者框架</p>
+</li>
+<li><p><strong><em>examples</em></strong></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintOnScreen</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        JFrame frame = <span class="keyword">new</span> JFrame(); </span><br><span class="line">        JOptionPane.showMessageDialog(frame, textToShow());</span><br><span class="line">        frame.dispose();</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> String <span class="title">textToShow</span><span class="params">()</span></span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">PrintOnScreen</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> String <span class="title">textToShow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"printing this text on "</span> + <span class="string">"screen using PrintOnScreen "</span> + <span class="string">"white Box Framework"</span>; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>黑盒框架： </p>
+<ul>
+<li>黑盒框架时基于委派的组合方式，是不同对象之间的组合。之所以是黑盒，是因为不用去管对象中的方法是如何实现的，只需关心对象上拥有的方法。</li>
+<li>这种方式较白盒框架更为灵活，因为可以在运行时动态地传入不同对象，实现不同对象间的动态组合；而继承机制在静态编译时就已经确定好。</li>
+<li>通过实现插件接口进行扩展（使用组合/委派）； </li>
+<li>常用设计模式：Strategy, Observer ； </li>
+<li>插件加载机制加载插件并对框架进行控制。</li>
+<li>允许在接口中对public方法扩展</li>
+<li>只需要理解接口</li>
+<li>通常提供更多的模块</li>
+<li>通常被认为是终端用户框架，平台</li>
+<li>黑盒框架与白盒框架之间可以相互转换，具体例子可以看一下，软件构造课程中有关黑盒框架的例子，更改上面的白盒框架为黑盒框架：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TextToShow</span> </span>&#123; </span><br><span class="line">    <span class="function">String <span class="title">text</span><span class="params">()</span></span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTextToShow</span> <span class="keyword">implements</span> <span class="title">TextToShow</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">text</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Printing"</span>; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintOnScreen</span> </span>&#123;</span><br><span class="line">    TextToShow textToShow;   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PrintOnScreen</span><span class="params">(TextToShow tx)</span> </span>&#123; </span><br><span class="line">        <span class="keyword">this</span>.textToShow = tx; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        JFrame frame = <span class="keyword">new</span> JFrame(); </span><br><span class="line">        JOptionPane.showMessageDialog(frame, textToShow.text());</span><br><span class="line">        frame.dispose(); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="第三节-可复用的设计模式"><a href="#第三节-可复用的设计模式" class="headerlink" title="第三节 可复用的设计模式"></a>第三节 可复用的设计模式</h2><h3 id="结构型模式：Structural-patterns"><a href="#结构型模式：Structural-patterns" class="headerlink" title="结构型模式：Structural patterns"></a><em>结构型模式：Structural patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1361.html" target="_blank" rel="noopener">适配器模式</a>（Adapter）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1366.html" target="_blank" rel="noopener">装饰器模式</a>（Decorator）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1369.html" target="_blank" rel="noopener">外观模式</a>（Facade Pattern）</strong></p>
+<h3 id="行为类模式：Behavioral-patterns"><a href="#行为类模式：Behavioral-patterns" class="headerlink" title="行为类模式：Behavioral patterns"></a><em>行为类模式：Behavioral patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1378.html" target="_blank" rel="noopener">策略模式</a>（Strategy）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1376.html" target="_blank" rel="noopener">模板模式</a>（Template method）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1395.html" target="_blank" rel="noopener">迭代器模式</a>（Iterator）</strong></p>
+<hr>
+<h1 id="第六章"><a href="#第六章" class="headerlink" title="第六章"></a>第六章</h1><h2 id="第一节-可维护性的度量与构造原则"><a href="#第一节-可维护性的度量与构造原则" class="headerlink" title="第一节 可维护性的度量与构造原则"></a>第一节 可维护性的度量与构造原则</h2><h3 id="软件的维护和演化"><a href="#软件的维护和演化" class="headerlink" title="软件的维护和演化"></a><em>软件的维护和演化</em></h3><ul>
+<li><strong>定义</strong>：软件可维护性是指软件产品被修改的能力，修改包括纠正、改进或软件对环境、需求和功能规格说明变化的适应。简而言之，软件维护：修复错误、改善性能。</li>
+<li><strong>类型</strong>：纠错性（25%）、适应性（25%）、完善性（50%）、预防性（4%）</li>
+<li><strong>演化</strong>：软件演化是一个程序不断调节以满足新的软件需求过程。</li>
+<li><strong>演化的规律</strong>：软件质量下降，延续软件生命</li>
+<li><strong>软件维护和演化的目标：</strong>提高软件的适应性，延续软件生命 。</li>
+<li><strong>意义</strong>：软件维护不仅仅是运维工程师的工作，而是从设计和开发阶段就开始了 。在设计与开发阶段就要考虑将来的可维护性 ，设计方案需要“easy to change”</li>
+<li>基于可维护性建设的例子：<ul>
+<li>模块化</li>
+<li>OO设计原则</li>
+<li>OO设计模式</li>
+<li>基于状态的构造技术</li>
+<li>表驱动的构造技术</li>
+<li>基于语法的构造技术</li>
+</ul>
+</li>
+</ul>
+<h3 id="可维护性的常见度量指标"><a href="#可维护性的常见度量指标" class="headerlink" title="可维护性的常见度量指标"></a><em>可维护性的常见度量指标</em></h3><ul>
+<li>可维护性：可轻松修改软件系统或组件，以纠正故障，提高性能或其他属性，或适应变化的环境。</li>
+<li>除此之外，可维护性还有其他许多别名：可扩展性（Extensibility）、灵活性（Flexibility）、可适应性（Adaptability）、可管理性（Manageability）、支持性（Supportability）。总之，有好的可维护性就意味着容易改变，容易扩展。</li>
+<li>软件可维护性的五个子特性：<ul>
+<li>易分析性。软件产品诊断软件中的缺陷或失效原因或识别待修改部分的能力。</li>
+<li>易改变性。软件产品使指定的修改可以被实现的能力，实现包括编码、设计和文档的更改。如果软件由最终用户修改，那么易改变性可能会影响易操作性。</li>
+<li>稳定性。软件产品避免由于软件修改而造成意外结果的能力。</li>
+<li>易测试性。软件产品使已修改软件能被确认的能力。</li>
+<li>维护性的依从性。软件产品遵循与维护性相关的标准或约定的能力。</li>
+</ul>
+</li>
+<li>一些常用的可维护性度量标准：<ul>
+<li>圈复杂度（CyclomaticComplexity）：度量代码的结构复杂度。</li>
+<li>代码行数（Lines of Code）：指示代码中的大致行数。</li>
+<li>Halstead Volume：基于源代码中（不同）运算符和操作数的数量的合成度量。</li>
+<li>可维护性指数（MI）：计算介于0和100之间的索引值，表示维护代码的相对容易性。 高价值意味着更好的可维护性。</li>
+<li>继承的层次数：表示扩展到类层次结构的根的类定义的数量。 等级越深，就越难理解特定方法和字段在何处被定义或重新定义。</li>
+<li>类之间的耦合度：通过参数，局部变量，返回类型，方法调用，泛型或模板实例化，基类，接口实现，在外部类型上定义的字段和属性修饰来测量耦合到唯一类。</li>
+<li>单元测试覆盖率：指示代码库的哪些部分被自动化单元测试覆盖。</li>
+</ul>
+</li>
+</ul>
+<h3 id="模块化设计规范：聚合度与耦合度"><a href="#模块化设计规范：聚合度与耦合度" class="headerlink" title="模块化设计规范：聚合度与耦合度"></a><em>模块化设计规范：聚合度与耦合度</em></h3><ul>
+<li>模块化编程的含义：模块化编程是一种设计技术，它强调将程序的功能分解为独立的可互换模块，以便每个模块都包含执行所需功能的一个方面。</li>
+<li>设计规范：高内聚低耦合</li>
+<li>评估模块化的五个标准：<ul>
+<li>可分解性：将问题分解为各个可独立解决的子问题</li>
+<li>可组合性：可容易的将模块组合起来形成新的系统</li>
+<li>可理解性：每个子模块都可被系统设计者容易的理解</li>
+<li>可持续性：小的变化将只影响一小部分模块，而不会影响整个体系结构</li>
+<li>出现异常之后的保护：运行时的不正常将局限于小范围模块内</li>
+</ul>
+</li>
+<li>模块化设计的五条原则：<ul>
+<li>直接映射：模块的结构与现实世界中问题领域的结构保持一致</li>
+<li>尽可能少的接口：模块应尽可能少的与其他模块通讯</li>
+<li>尽可能小的接口：如果两个模块通讯，那么它们应交换尽可能少的信息</li>
+<li>显式接口：当A与B通讯时，应明显的发生在A与B的接口之间</li>
+<li>信息隐藏：经常可能发生变化的设计决策应尽可能隐藏在抽象接口后面</li>
+</ul>
+</li>
+</ul>
+<p><strong>内聚性</strong></p>
+<ul>
+<li>又称块内联系。指模块的功能强度的度量，即一个模块内部各个元素彼此结合的紧密程度的度量。若一个模块内各元素（语名之间、程序段之间）联系的越紧密，则它的内聚性就越高。</li>
+<li>所谓高内聚是指一个软件模块是由相关性很强的代码组成，只负责一项任务，也就是常说的单一责任原则。</li>
+</ul>
+<p><strong>耦合性</strong></p>
+<ul>
+<li>也称块间联系。指软件系统结构中各模块间相互联系紧密程度的一种度量。模块之间联系越紧密，其耦合性就越强，模块的独立性则越差。模块间耦合高低取决于模块间接口的复杂性、调用的方式及传递的信息。</li>
+<li>对于低耦合，粗浅的理解是：一个完整的系统，模块与模块之间，尽可能的使其独立存在。也就是说，让每个模块，尽可能的独立完成某个特定的子功能。模块与模块之间的接口，尽量的少而简单。如果某两个模块间的关系比较复杂的话，最好首先考虑进一步的模块划分。这样有利于修改和组合。</li>
+</ul>
+<h3 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a><em>SOLID原则</em></h3><p>单一职责原则告诉我们实现类要职责单一；里氏替换原则告诉我们不要破坏继承体系；依赖倒置原则告诉我们要面向接口编程；接口隔离原则告诉我们在设计接口的时候要精简单一；迪米特法则告诉我们要降低耦合。而开闭原则是总纲（实现效果），它告诉我们要对扩展开放，对修改关闭。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>SRP</strong></th>
+<th style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/srp.pdf" target="_blank" rel="noopener">The Single Responsibility Principle</a></th>
+<th style="text-align:center">单一责任原则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>OCP</strong></td>
+<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/ocp.pdf" target="_blank" rel="noopener">The Open Closed Principle</a></td>
+<td style="text-align:center">开放封闭原则</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>LSP</strong></td>
+<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/lsp.pdf" target="_blank" rel="noopener">The Liskov Substitution Principle</a></td>
+<td style="text-align:center">里氏替换原则</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ISP</strong></td>
+<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/isp.pdf" target="_blank" rel="noopener">The Interface Segregation Principle</a></td>
+<td style="text-align:center">接口分离原则</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>DIP</strong></td>
+<td style="text-align:center"><a href="http://www.objectmentor.com/resources/articles/dip.pdf" target="_blank" rel="noopener">The Dependency Inversion Principle</a></td>
+<td style="text-align:center">依赖倒置原则</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>SRP 单一责任原则</strong></p>
+<ul>
+<li>含义：需要修改某个类的时候原因有且只有一个。换句话说就是让一个类只做一种类型责任，当这个类需要承当其他类型的责任的时候，就需要分解这个类。</li>
+<li>如果一个类包含了多个责任，那么将引起不良后果：引入额外的包，占据资源；导致频繁的重新配置、部署等。</li>
+<li>SRP是最简单的原则，却是最难做好的原则。</li>
+<li>SRP的一个反例：</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616152042182-554585047.png" alt="img"></p>
+<p> <strong>OCP 开放封闭原则</strong></p>
+<ul>
+<li>软件实体应该是可扩展，而不可修改的。也就是说，对扩展是开放的，而对修改是封闭的。这个原则是诸多面向对象编程原则中最抽象、最难理解的一个。<ul>
+<li>模块的行为应是可扩展的，从而该模块可表现出新的行为以满足需求的变化。</li>
+<li>模块自身的代码是不应被修改的</li>
+<li>扩展模块行为的一般途径是修改模块的内部实现</li>
+<li>如果一个模块不能被修改，那么它通常被认为是具有固定的行为。</li>
+</ul>
+</li>
+<li>关键解决方案：抽象技术。 使用继承和组合来改变类的行为。</li>
+<li>OCP的一个反例：</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616152951843-865388217.png" alt="img"></p>
+<ul>
+<li>OCP的一个例子：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Bad ***example***   </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;  </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;   </span><br><span class="line">   		<span class="keyword">if</span> (s.m_type==<span class="number">1</span>)   </span><br><span class="line">   			drawRectangle(s);   </span><br><span class="line">     	<span class="keyword">else</span> <span class="keyword">if</span> (s.m_type==<span class="number">2</span>)   </span><br><span class="line">         	drawCircle(s);   </span><br><span class="line">     &#125;   </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawCircle</span><span class="params">(Circle r)</span>   </span></span><br><span class="line"><span class="function">     	</span>&#123;....&#125;   </span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawRectangle</span><span class="params">(Rectangle r)</span>   </span></span><br><span class="line"><span class="function">        </span>&#123;....&#125;   </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="keyword">int</span> m_type; &#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123; Rectangle() &#123; <span class="keyword">super</span>.m_type=<span class="number">1</span>; &#125; &#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123; Circle() &#123; <span class="keyword">super</span>.m_type=<span class="number">2</span>; &#125; &#125;</span><br></pre></td></tr></table></figure>
+<p>​    上面代码存在的问题：</p>
+<ul>
+<li>不可能在不修改GraphEditor的情况下添加新的Shape</li>
+<li>GraphEditor和Shape之间的紧密耦合</li>
+<li>不调用GraphEditor就很难测试特定的Shape</li>
+</ul>
+<p>​    改进之后的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Good ***example***  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;   </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;   </span><br><span class="line">    s.draw();   </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>; &#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123; </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="comment">// draw the rectangle &#125; </span></span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>LSP 里氏替换原则</strong></p>
+<ul>
+<li><p>Liskov’s 替换原则意思是：”子类型必须能够替换它们的基类型。”或者换个说法：”使用基类引用的地方必须能使用继承类的对象而不必知道它。” 这个原则正是保证继承能够被正确使用的前提。通常我们都说，“优先使用组合（委托）而不是继承”或者说“只有在确定是 is-a 的关系时才能使用继承”，因为继承经常导致”紧耦合“的设计。</p>
+<p><strong>ISP 接口分离原则</strong></p>
+</li>
+<li><p>含义：客户端不应依赖于它们不需要的方法。换句话说，使用多个专门的接口比使用单一的总接口总要好。</p>
+</li>
+<li>客户模块不应该依赖大的接口，应该裁减为小的接口给客户模块使用，以减少依赖性。如Java中一个类实现多个接口，不同的接口给不用的客户模块使用，而不是提供给客户模块一个大的接口。</li>
+<li>“胖”接口具有很多缺点。<ul>
+<li>胖接口可分解为多个小的接口；</li>
+<li>不同的接口向不同的客户端提供服务；</li>
+<li>客户端只访问自己所需要的端口。</li>
+</ul>
+</li>
+<li>下图展示出了这种思想：</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616154856198-1879077574.png" alt="img"></p>
+<ul>
+<li>ISP的一个反例</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616154935237-744032046.png" alt="img"></p>
+<p><strong>DIP 依赖转置原则</strong></p>
+<ul>
+<li>定义：<ul>
+<li>高层模块不应该依赖于低层模块，二者都应该依赖于抽象 </li>
+<li>抽象不应该依赖于细节，细节应该依赖于抽象</li>
+</ul>
+</li>
+<li>这个设计原则的亮点在于任何被DI框架注入的类很容易用mock对象进行测试和维护，因为对象创建代码集中在框架中，客户端代码也不混乱。有很多方式可以实现依赖倒置，比如像AspectJ等的AOP（Aspect Oriented programming）框架使用的字节码技术，或Spring框架使用的代理等。<ul>
+<li>高层模块不要依赖低层模块；</li>
+<li>高层和低层模块都要依赖于抽象；</li>
+<li>抽象不要依赖于具体实现； </li>
+<li>具体实现要依赖于抽象；</li>
+<li>抽象和接口使模块之间的依赖分离。</li>
+</ul>
+</li>
+<li>一个具体的例子：</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616155346632-1952811759.png" alt="img"></p>
+<p>进行抽象改进后：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616155435214-568838317.png" alt="img"></p>
+<p><strong>SOLID 总结</strong></p>
+<ol>
+<li>一个对象只承担一种责任，所有服务接口只通过它来执行这种任务。</li>
+<li>程序实体，比如类和对象，向扩展行为开放，向修改行为关闭。</li>
+<li>子类应该可以用来替代它所继承的类。</li>
+<li>一个类对另一个类的依赖应该限制在最小化的接口上。</li>
+<li>依赖抽象层(接口)，而不是具体类。</li>
+</ol>
+<h2 id="第二节-可维护的设计模式"><a href="#第二节-可维护的设计模式" class="headerlink" title="第二节 可维护的设计模式"></a>第二节 可维护的设计模式</h2><h3 id="创造性模式：Creational-patterns"><a href="#创造性模式：Creational-patterns" class="headerlink" title="创造性模式：Creational patterns"></a><em>创造性模式：Creational patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1348.html" target="_blank" rel="noopener">工厂模式</a>（Factory Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1351.html" target="_blank" rel="noopener">抽象工厂模式</a>（Abstract Factory Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1354.html" target="_blank" rel="noopener">建造者模式</a>（Builder Pattern）</strong></p>
+<h3 id="结构化模式：Structural-patterns"><a href="#结构化模式：Structural-patterns" class="headerlink" title="结构化模式：Structural patterns"></a><em>结构化模式：Structural patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1364.html" target="_blank" rel="noopener">桥接模式</a>（Bridge Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1359.html" target="_blank" rel="noopener">代理模式</a>（Proxy Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1373.html" target="_blank" rel="noopener">组合模式</a>（Composite Pattern）</strong></p>
+<h3 id="行为化模式：Behavioral-patterns"><a href="#行为化模式：Behavioral-patterns" class="headerlink" title="行为化模式：Behavioral patterns"></a><em>行为化模式：Behavioral patterns</em></h3><p><strong><a href="http://c.biancheng.net/view/1393.html" target="_blank" rel="noopener">中介者模式</a>（Mediator Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1390.html" target="_blank" rel="noopener">观察者模式</a>（Observer Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1397.html" target="_blank" rel="noopener">访问者模式</a>（Visitor Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1383.html" target="_blank" rel="noopener">责任链模式</a>（Chain of Responsibility Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1380.html" target="_blank" rel="noopener">命令模式</a>（Command Pattern）</strong></p>
+<h2 id="第三节-面向可维护的构造技术"><a href="#第三节-面向可维护的构造技术" class="headerlink" title="第三节 面向可维护的构造技术"></a>第三节 面向可维护的构造技术</h2><h2 id="基于状态的构造技术"><a href="#基于状态的构造技术" class="headerlink" title="基于状态的构造技术"></a>基于状态的构造技术</h2><p><strong><a href="http://c.biancheng.net/view/1388.html" target="_blank" rel="noopener">状态模式</a>（State Pattern）</strong></p>
+<p><strong><a href="http://c.biancheng.net/view/1400.html" target="_blank" rel="noopener">备忘录模式</a>（Memento Pattern）</strong></p>
+<h3 id="基于语法的构造技术"><a href="#基于语法的构造技术" class="headerlink" title="基于语法的构造技术"></a><em>基于语法的构造技术</em></h3><p><strong>运用场景</strong></p>
+<ul>
+<li>有一类应用，从外部读取文本数据， 在应用中做进一步处理。 具体来说，读取的一个字节或字符序列可能是：</li>
+<li>输入文件有特定格式，程序需读取文件并从中抽取正确的内容。</li>
+<li>从网络上传输过来的消息，遵循特定的协议。</li>
+<li>用户在命令行输入的指令，遵顼特定的格式。</li>
+<li>内存中存储的字符串，也有格式需要。</li>
+</ul>
+<p>对于这些类型的序列，语法的概念是设计的一个好选择：</p>
+<ul>
+<li>使用grammar判断字符串是否合法，并解析成程序里使用的数据结构 。</li>
+<li>正则表达式</li>
+<li>通常是递归的数据结构 。</li>
+</ul>
+<p><strong>语法成分</strong></p>
+<p>terminals 终止节点、叶节点</p>
+<p>nonterminal 非终止节点（遵循特定规则，利用操作符、终止节点和其他非终止节点，构造新的字符串）</p>
+<h3 id="语法中的操作符"><a href="#语法中的操作符" class="headerlink" title="语法中的操作符"></a><em>语法中的操作符</em></h3><ul>
+<li>三个基本语法的操作符：<ul>
+<li>连接，不是通过一个符号，而是一个空间：<ul>
+<li><code>x ::= y z //x等价于y后跟一个z</code></li>
+</ul>
+</li>
+<li>重复，以*表示：　　                                 <ul>
+<li><code>x ::= y* // x等价于0个或更多个y</code></li>
+</ul>
+</li>
+<li>联合，也称为交替，如图所示 | ：　　       <ul>
+<li><code>x ::= y | z //x等价于一个y或者一个z</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>三个基本操作符的组合：<ul>
+<li>可选（0或1次出现），由<code>?</code>表示：<ul>
+<li><code>x ::= y? //x等价于一个y或者一个空串</code></li>
+</ul>
+</li>
+<li>出现1次或多次：以<code>+</code>表示：          <ul>
+<li><code>x ::= y+ //x等价于一个或者更多个y， 等价于 x ::= y y*</code></li>
+</ul>
+</li>
+<li>字符类<code>[…]</code>，表示长度的字符类，包含方括号中列出的任何字符的1个字符串：<ul>
+<li><code>x ::= [abc] //等价于 x ::= &#39;a&#39; | &#39;b&#39; | &#39;c&#39;</code></li>
+</ul>
+</li>
+<li>否定的字符类<code>[^…]</code>，表示长度，包含未在括号中列出的任何字符的1个字符串：<ul>
+<li><code>x ::= [^abc] //等价于 x ::= &#39;d&#39; | &#39;e&#39; | &#39;f&#39; | ... (all other characters in Unicode)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>例子：<ul>
+<li><code>x ::= (y z | a b)* //an x is zero or more y z or a b pairs</code></li>
+<li><code>m ::= a (b|c) d //an m is a, followed by either b or c, followed by d</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Markdown 和 HTML的语法</strong></p>
+<p> <img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616210554679-1772816897.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1336655/201806/1336655-20180616210511151-582940878.png" alt="img"></p>
+<h3 id="正则语法与正则表达式"><a href="#正则语法与正则表达式" class="headerlink" title="正则语法与正则表达式"></a><em>正则语法与正则表达式</em></h3><ul>
+<li>正则语法：简化之后可以表达为一个产生式而不包含任何非终止节点。 </li>
+<li>正则语法示例：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//Rugular!</span><br><span class="line">url ::= &apos;http://&apos; ([a-z]+ &apos;.&apos;)+ [a-z]+ (&apos;:&apos; [0-9]+)? &apos;/&apos;</span><br><span class="line"></span><br><span class="line">//Regular!</span><br><span class="line">markdown ::= ([^_]* | &apos;_&apos; [^_]* &apos;_&apos; )* </span><br><span class="line"></span><br><span class="line">//Not Regular!</span><br><span class="line">html ::= ( [^&lt;&gt;]* | &apos;&lt;i&gt;&apos; html &apos;&lt;i&gt;&apos; )*</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在Java中使用正则表达式<ul>
+<li>适用场合：我们用正则表达式匹配字符串（例如 String.split , String.matches , java.util.regex.Pattern）</li>
+</ul>
+</li>
+</ul>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/软件构造知识点总结（2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1126,7 +2438,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1156,7 +2468,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -1224,6 +2536,10 @@
   
 
   
+    
+      
+    
+      
     
       
     

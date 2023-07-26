@@ -191,6 +191,189 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/04/中望面经/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/07/04/中望面经/" class="post-title-link" itemprop="url">中望面经</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-07-04 22:52:06" itemprop="dateCreated datePublished" datetime="2022-07-04T22:52:06+08:00">2022-07-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-15 19:15:57" itemprop="dateModified" datetime="2022-07-15T19:15:57+08:00">2022-07-15</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>1.多态，运行时多态（虚函数表和继承），静态多态（重载和模板编程）<br>2.如何实现对象只能分配在栈上：c++中，类的对象建立分为两种，</p>
+<ul>
+<li>静态建立:由编译器在栈上为对象开辟空间，直接调用类的构造函数。<br>  A a;</li>
+<li>动态建立：由new关键字将对象建立在堆空间上，首先执行 operator new()函数，在堆上搜索合适的内存并分配，第二步是调用构造函数构造对象。即间接的调用类的构造函数。<br>  A a = new A;<br>（1）只有使用new关键字才能在堆上建立对象，那么我们就可以将operator new()函数自行声明为私有函数即可，或者设置为delete。<br>  class A{<br>  private；<pre><code>  void* operator new(size_t t){} //设置为私有
+  void operator delete(void *ptr){}
+</code></pre>  public:<pre><code>  A(){}
+  ~A(){}
+</code></pre>  }<br>（2）只在堆上分配新对象<br>即不能直接调用类的构造函数。首先要知道，当对象建立在栈上面时, 是由编译器分配内存空间的，当对象使用完以后，编译器会调用析构函数来释放对象所占的空间。实际上，编译器在为类对象分配栈空间时, 会检查类的析构函数的访问性(其他非静态函数也会检查)，如果类的析构函数是私有的，则编程器不会在栈空间上为类对象分配内存。因此,我们只需要将析构函数设为私有，类对象就无法建立在栈上了。<br>  class A{<br>  public:<pre><code>  A(){}
+  void destroy(delete this;)
+</code></pre>  private:<pre><code>  ~A(){}
+</code></pre>  }<br>注意，由于new表达式会在分配内存以后调用构造函数，因此构造函数必须是公有的，同时由于delete此时无法访问私有的析构函数，因此必须提供一个destroy函数，来进行内存空间的释放。<br>3.c++11新特性<br>auto，智能指针，移动语义（右值引用），完美转发<br>4.内联函数和宏的区别</li>
+<li>内联函数是函数，有参数类型检查，更为安全</li>
+<li>内联函数由编译器进行处理，而宏定义由预处理器进行处理</li>
+<li>内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</li>
+</ul>
+<p>5.多线程<br>半同步半反应线程池<br>主线程充当异步线程，负责监听所有socket上的事件，若有新请求到来，主线程接收之以得到新的连接socket，然后往epoll内核事件表中注册该socket上的读写事件，并将数据封装成请求对象插入到请求队列中；所有工作线程睡眠在请求队列上，当有任务到来时，通过竞争（如互斥锁）获得任务的接管权</p>
+<p>6.Linux进程调度和内存管理<br>7.设计模式<br>工厂模式和单例模式，适配器模式和策略模式<br>8.lambda表达式<br>9.手撕strcpy（不用任何库函数)<br>10.快排的 算法原理+手撕代码。<br>11.读代码说输出结果：一个简单的子类继承父类的代码<br>子类析构时，首先执行子类析构函数体的代码，然后执行子类成员对象所在类的析构函数，最后按照子类继承各个父类的次序，倒序各个父类的析构函数<br><a href="https://zhuanlan.zhihu.com/p/371322392" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/371322392</a></p>
+<p>12.栈溢出的原因<br>内存中栈一般存放，函数地址、函数参数、局部变量等信息存储于栈内存；<br>1&gt;函数调用层次过深，每调用一次，函数的参数、局部变量等信息就压一次栈。<br>2&gt;局部变量体积太大</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/06/27/字节面试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gift">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sakurastream">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2022/06/27/字节面试/" class="post-title-link" itemprop="url">字节面试</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2022-06-27 21:45:55" itemprop="dateCreated datePublished" datetime="2022-06-27T21:45:55+08:00">2022-06-27</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-16 23:34:28" itemprop="dateModified" datetime="2022-11-16T23:34:28+08:00">2022-11-16</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-面试的问题"><a href="#1-面试的问题" class="headerlink" title="1.面试的问题"></a>1.面试的问题</h1><p>1.1 <code>linux</code>常用吗，知道哪些命令<br><code>ls</code> 就是 list 的缩写，通过 ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限、查看目录信息等等。比如ls -a<br><code>cd</code> 切换当前目录到指定目录，比如cd ~ 进入<code>home</code>目录，cd /xx 进入该目录<br><code>mkdir</code> 命令用于创建文件夹。<br><code>rm</code> 删除一个目录中的一个或多个文件或目录，如果没有使用 -r 选项，则 rm 不会删除目录。如果使用 rm 来删除文件，通常仍可以将该文件恢复原状。<br><code>cp</code> 命令 将源文件复制至目标文件，或将多个源文件复制至目标目录。</p>
+<p>1.2 进程和线程的区别<br>（1）同一个进程的线程是共享该进程的地址空间和资源，但是不同的进程之间是独立的地址空间和资源<br>（2）一个进程崩溃后，在保护模式下不会对其他的进程产生影响，当时一个线程崩溃了那么该进程就崩溃了，所以说多进程比多线程要健壮<br>（3）进程的切换消耗的资源比较大，所以涉及到频繁的切换，使用线程更好<br>（4）二者均可以并发执行<br>1.3 进程通信方式<br>（1）管道（无名的）<br>（2）FiFO（有名的）<br>（3）消息队列，可以实现消息的随机查询<br>（4）信号量：是一个计数器，用于进程间的互斥和同步，一般结合共享内存使用<br>（5）共享内存：给多个进程共享一个指定的存储区，通过信号量实现互斥和同步，来达到进程间的通信<br>1.4 线程的通信<br>（1）全局变量：最好声明为volatile，在多线程过程中保证原子性<br>（2）消息：线程可以拥有消息队列和消息循环，在不同线程间通信<br>（3）事件：线程可以监视处于有信号状态的事件，适当的时候就可以对事件进行操作<br>1.5 TCP/IP分为几层？tcp属于哪一层？http属于哪一层？http基于tcp还是udp？<br>分为五层，分别是应用层，传输层，网络层，数据链路层，物理层<br>TCP处于传输层，UDP也在这一层，<br>HTTP处于应用层，HTTP/1.1 和 HTTP/2 都是基于 TCP 传输协议的，而 HTTP/3 是基于 UDP 传输协议的。（可以引申出各个版本的区别）<br>1.6 tcp和udp 区别<br>（1）tcp是面向连接的，可靠的传输，以字节流进行传输，传输效率慢，需要的资源多，应用场景为文件传输，邮件传输等，有确认，窗口，重传，拥塞控制等机制，每一条tcp连接只能是一对一的，全双工的，首部20字节开销<br>（2）udp是无连接的不可靠传输，不能保证数据发送顺序，以数据报文段的形式进行传输，没有拥塞控制，支持一对一，一对多，多对一和多对多，首部8个字节<br>1.7 三次握手、四次挥手？</p>
+<p>1.9 Mysql的索引<br>索引就类似于目录，方便我们快速获取数据的一种数据结构。Mysql5.5之后的版本默认存储引擎是InnoDB，其支持B+树索引。这里就可以聊聊B+树和B树的区别，说明为什么Mysql使用B+树来作为索引。（二级索引去查主键索引：回表，以及覆盖索引。）（B+树和B树和二叉树和哈希的比较）</p>
+<p>各种索引：<br>（1）主键索引：建立在主键上的索引，唯一而且不能为空值<br>（2）唯一索引：使用UNIQUE值创建的索引可以有多个，索引列的值必须为1，但是允许有空值<br>（3）普通索引：建立在普通字段上的索引，不要求字段为主键，也不需要字段为UNIQUE<br>（4）联合索引：将多个字段组合成一个索引，使用最左匹配原则进行查找和匹配。但是特殊情况是，如果最左匹配到的某个索引列的值是范围值的话，那么之后的索引列就不能再最左匹配。Mysql5.6以后有了索引下推优化，可以在联合索引遍历的过程重， 对联合索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。</p>
+<p>1.20 抢30数学题：分为说出30赢和输，不同的策略</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/05/回溯问题的去重技巧/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1318,529 +1501,6 @@ public:
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/15/Java泛型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/05/15/Java泛型/" class="post-title-link" itemprop="url">Java泛型</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2021-05-15 13:20:14" itemprop="dateCreated datePublished" datetime="2021-05-15T13:20:14+08:00">2021-05-15</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-16 00:08:17" itemprop="dateModified" datetime="2021-05-16T00:08:17+08:00">2021-05-16</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-为什么要使用泛型设计"><a href="#1-为什么要使用泛型设计" class="headerlink" title="1.为什么要使用泛型设计"></a>1.为什么要使用泛型设计</h1><p><strong>泛型程序设计</strong>意味着编写的代码可以对多种不同类型的对象重用。例如，你不想为收集<strong>String</strong>和<strong>File</strong>对象分别编写不同的类。实际上，也不需要这样做，因为一个<strong>ArrayList</strong>类就可以收集任何类的对象。这就是泛型程序设计的一个例子。</p>
-<pre><code>List arrayList = new ArrayList();
-arrayList.add(&quot;aaaa&quot;);
-arrayList.add(100);
-
-for(int i = 0; i&lt; arrayList.size();i++){
-    String item = (String)arrayList.get(i);
-    Log.d(&quot;泛型测试&quot;,&quot;item = &quot; + item);
-}
-</code></pre><p>毫无疑问，这个程序会在运行时崩溃，为了解决这样的问题（在编译阶段就可以解决），泛型应运而生。我们将第一行声明初始化<strong>list</strong>的代码更改一下，编译器会在编译阶段就能够帮我们发现类似这样的问题。</p>
-<pre><code>List&lt;String&gt; arrayList = new ArrayList&lt;String&gt;();
-...
-//arrayList.add(100); 在编译阶段，编译器就会报错
-</code></pre><h1 id="2-泛型的特性"><a href="#2-泛型的特性" class="headerlink" title="2.泛型的特性"></a>2.泛型的特性</h1><p>泛型只在编译阶段有效，下面是一个经典的泛型的例子。</p>
-<pre><code>List&lt;String&gt; stringArrayList = new ArrayList&lt;String&gt;();
-List&lt;Integer&gt; integerArrayList = new ArrayList&lt;Integer&gt;();
-
-Class classStringArrayList = stringArrayList.getClass();
-Class classIntegerArrayList = integerArrayList.getClass();
-
-if(classStringArrayList.equals(classIntegerArrayList)){
-    Log.d(&quot;泛型测试&quot;,&quot;类型相同&quot;);
-}
-</code></pre><p>输出的结果是<strong>类型相同</strong>。通过上面的例子可以证明，在编译之后程序会采取去泛型化的措施。也就是说<strong>Java</strong>中的泛型，只在编译阶段有效。在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。也就是说，泛型信息不会进入到运行时阶段。</p>
-<h1 id="3-泛型类"><a href="#3-泛型类" class="headerlink" title="3.泛型类"></a>3.泛型类</h1><p>通过泛型可以完成对一组类的操作对外开放相同的接口。最典型的就是各种容器类，如：<strong>List</strong>，<strong>Set</strong>，<strong>Map</strong>。<br>泛型类的基本写法为：</p>
-<pre><code>class 类名称 &lt;泛型标识：可以随便写任意标识号，标识指定的泛型的类型&gt;{
-    private 泛型标识 /*（成员变量类型）*/ var; 
-    .....
-    }
-}
-</code></pre><p>下面我们实现一个简单的泛型类：</p>
-<pre><code>//此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型
-//在实例化泛型类时，必须指定T的具体类型
-public class Generic&lt;T&gt;{ 
-    //key这个成员变量的类型为T,T的类型由外部指定  
-    private T key;
-
-    public Generic(T key) { //泛型构造方法形参key的类型也为T，T的类型由外部指定
-        this.key = key;
-    }
-
-    public T getKey(){ //泛型方法getKey的返回值类型为T，T的类型由外部指定
-        return key;
-    }
-}
-</code></pre><p>传入参数时：如果传入泛型类型实参，会根据传入的泛型实参做相应的限制，此时泛型才会起到本应起到的限制作用。</p>
-<pre><code>//泛型的类型参数只能是类类型（包括自定义类），不能是简单类型
-//传入的实参类型需与泛型的类型参数类型相同，即为Integer.
-Generic&lt;Integer&gt; genericInteger = new Generic&lt;Integer&gt;(123456);
-
-//传入的实参类型需与泛型的类型参数类型相同，即为String.
-Generic&lt;String&gt; genericString = new Generic&lt;String&gt;(&quot;key_vlaue&quot;);
-Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + genericInteger.getKey());
-Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + genericString.getKey());
-</code></pre><p>如果不选择传入泛型类型实参：在泛型类中使用泛型的方法或成员变量定义的类型可以为任何的类型。</p>
-<pre><code>Generic generic = new Generic(&quot;111111&quot;);
-Generic generic1 = new Generic(4444);
-Generic generic2 = new Generic(55.55);
-Generic generic3 = new Generic(false);
-
-Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic.getKey());
-Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic1.getKey());
-Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic2.getKey());
-Log.d(&quot;泛型测试&quot;,&quot;key is &quot; + generic3.getKey());
-</code></pre><p><font face="黑体" font color="red">注意：</font></p>
-<ul>
-<li>泛型的类型参数只能是类类型，不能是简单类型。</li>
-<li><p>不能对确切的泛型类型使用<strong>instanceof</strong>操作。如下面的操作是非法的，编译时会出错。</p>
-<p>if(ex_num instanceof Generic<number>){ }</number></p>
-</li>
-</ul>
-<h1 id="4-泛型接口"><a href="#4-泛型接口" class="headerlink" title="4.泛型接口"></a>4.泛型接口</h1><p>泛型接口常被用在各种类的生产器中：</p>
-<pre><code>//定义一个泛型接口
-public interface Generation&lt;T&gt; {
-    public T next();
-}
-</code></pre><p>当实现泛型接口的类，未传入泛型实参时：</p>
-<pre><code>/**
-* 未传入泛型实参时，与泛型类的定义相同，在声明类的时候，需将泛型的声明也一起加到类中
-* 即：class FruitGenerator&lt;T&gt; implements Generator&lt;T&gt;{
-* 如果不声明泛型，如：class FruitGenerator implements Generator&lt;T&gt;，编译器会报错：&quot;Unknown class&quot;
-*/
-class FruitGenerator&lt;T&gt; implements Generator&lt;T&gt;{
-    @Override
-    public T next() {
-        return null;
-    }
-}
-</code></pre><p>当实现泛型接口的类，传入泛型实参时：</p>
-<pre><code>/**
-* 传入泛型实参时：
-* 定义一个生产器实现这个接口,虽然我们只创建了一个泛型接口Generator&lt;T&gt;
-* 但是我们可以为T传入无数个实参，形成无数种类型的Generator接口。
-* 在实现类实现泛型接口时，如已将泛型类型传入实参类型，则所有使用泛型的地方都要替换成传入的实参类型
-* 此时不需要在声明类中的泛型声明T
-* 即：Generator&lt;T&gt;，public T next();中的的T都要替换成传入的String类型。
-*/
-public class FruitGenerator implements Generator&lt;String&gt; {
-
-    private String[] fruits = new String[]{&quot;Apple&quot;, &quot;Banana&quot;, &quot;Pear&quot;};
-
-    @Override
-    public String next() {
-        Random rand = new Random();
-        return fruits[rand.nextInt(3)];
-    }
-}
-</code></pre><h1 id="5-泛型方法"><a href="#5-泛型方法" class="headerlink" title="5.泛型方法"></a>5.泛型方法</h1><p>泛型方法的基本形式：</p>
-<pre><code>/**
-* 泛型方法的基本介绍
-* @param tClass 传入的泛型实参
-* @return T 返回值为T类型
-* 说明：
-*     1）public与返回值中间&lt;T&gt;非常重要，可以理解为声明此方法为泛型方法。
-*     2）只有声明了&lt;T&gt;的方法才是泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。
-*     3）&lt;T&gt;表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T。
-*     4）与泛型类的定义一样，此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型。
-*/
-public &lt;T&gt; T genericMethod(Class&lt;T&gt; tClass)throws InstantiationException ,
-IllegalAccessException{
-        T instance = tClass.newInstance();
-        return instance;
-}
-</code></pre><h2 id="5-1-泛型方法的基本用法"><a href="#5-1-泛型方法的基本用法" class="headerlink" title="5.1 泛型方法的基本用法"></a>5.1 泛型方法的基本用法</h2><pre><code>public class GenericTest {
-    //这个类是个泛型类，在上面已经介绍过
-    public class Generic&lt;T&gt;{     
-        private T key;
-
-        public Generic(T key) {
-            this.key = key;
-        }
-
-        //我想说的其实是这个，虽然在方法中使用了泛型，但是这并不是一个泛型方法。
-        //这只是类中一个普通的成员方法，只不过他的返回值是在声明泛型类已经声明过的泛型。
-        //所以在这个方法中才可以继续使用 T 这个泛型。
-        public T getKey(){
-            return key;
-        }
-
-        /**
-        * 这个方法显然是有问题的，在编译器会给我们提示这样的错误信息&quot;cannot reslove symbol E&quot;
-        * 因为在类的声明中并未声明泛型E，所以在使用E做形参和返回值类型时，编译器会无法识别。
-        public E setKey(E key){
-            this.key = keu
-        }
-        */
-    }
-
-    /** 
-    * 这才是一个真正的泛型方法。
-    * 首先在public与返回值之间的&lt;T&gt;必不可少，这表明这是一个泛型方法，并且声明了一个泛型T
-    * 这个T可以出现在这个泛型方法的任意位置.
-    * 泛型的数量也可以为任意多个 
-    *    如：public &lt;T,K&gt; K showKeyName(Generic&lt;T&gt; container){
-    *        ...
-    *        }
-    */
-    public &lt;T&gt; T showKeyName(Generic&lt;T&gt; container){
-        System.out.println(&quot;container key :&quot; + container.getKey());
-        //当然这个例子举的不太合适，只是为了说明泛型方法的特性。
-        T test = container.getKey();
-        return test;
-    }
-
-    //这也不是一个泛型方法，这就是一个普通的方法，只是使用了Generic&lt;Number&gt;这个泛型类做形参而已。
-    public void showKeyValue1(Generic&lt;Number&gt; obj){
-        Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
-    }
-
-    //这也不是一个泛型方法，这也是一个普通的方法，只不过使用了泛型通配符?
-    //同时这也印证了泛型通配符章节所描述的，?是一种类型实参，可以看做为Number等所有类的父类
-    public void showKeyValue2(Generic&lt;?&gt; obj){
-        Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
-    }
-
-    /**
-    * 这个方法是有问题的，编译器会为我们提示错误信息：&quot;UnKnown class &#39;E&#39; &quot;
-    * 虽然我们声明了&lt;T&gt;,也表明了这是一个可以处理泛型的类型的泛型方法。
-    * 但是只声明了泛型类型T，并未声明泛型类型E，因此编译器并不知道该如何处理E这个类型。
-    public &lt;T&gt; T showKeyName(Generic&lt;E&gt; container){
-        ...
-    }  
-    */
-
-    /**
-    * 这个方法也是有问题的，编译器会为我们提示错误信息：&quot;UnKnown class &#39;T&#39; &quot;
-    * 对于编译器来说T这个类型并未项目中声明过，因此编译也不知道该如何编译这个类。
-    * 所以这也不是一个正确的泛型方法声明。
-    public void showkey(T genericObj){
-
-    }
-    */
-
-    public static void main(String[] args) {
-        ...
-    }
-}
-</code></pre><h2 id="5-2-泛型类中的泛型方法"><a href="#5-2-泛型类中的泛型方法" class="headerlink" title="5.2 泛型类中的泛型方法"></a>5.2 泛型类中的泛型方法</h2><p>有一种情况是非常特殊的，当泛型方法出现在泛型类中时，我们再通过一个例子看一下：</p>
-<pre><code>public class GenericFruit {
-    class Fruit{
-        @Override
-        public String toString() {
-            return &quot;fruit&quot;;
-        }
-    }
-
-    class Apple extends Fruit{
-        @Override
-        public String toString() {
-            return &quot;apple&quot;;
-        }
-    }
-
-    class Person{
-        @Override
-        public String toString() {
-            return &quot;Person&quot;;
-        }
-    }
-
-    class GenerateTest&lt;T&gt;{
-        public void show_1(T t){
-            System.out.println(t.toString());
-        }
-
-        //在泛型类中声明了一个泛型方法，使用泛型E，这种泛型E可以为任意类型。可以类型与T相同，也可以不同。
-        //由于泛型方法在声明的时候会声明泛型&lt;E&gt;，因此即使在泛型类中并未声明泛型，编译器也能够正确识别泛型方法中识别的泛型。
-        public &lt;E&gt; void show_3(E t){
-            System.out.println(t.toString());
-        }
-
-        //在泛型类中声明了一个泛型方法，使用泛型T，注意这个T是一种全新的类型，可以与泛型类中声明的T不是同一种类型。
-        public &lt;T&gt; void show_2(T t){
-            System.out.println(t.toString());
-        }
-    }
-
-    public static void main(String[] args) {
-        Apple apple = new Apple();
-        Person person = new Person();
-
-        GenerateTest&lt;Fruit&gt; generateTest = new GenerateTest&lt;Fruit&gt;();
-        //apple是Fruit的子类，所以这里可以
-        generateTest.show_1(apple);
-        //编译器会报错，因为泛型类型实参指定的是Fruit，而传入的实参类是Person
-        //generateTest.show_1(person);
-
-        //使用这两个方法都可以成功
-        generateTest.show_2(apple);
-        generateTest.show_2(person);
-
-        //使用这两个方法也都可以成功
-        generateTest.show_3(apple);
-        generateTest.show_3(person);
-    }
-}
-</code></pre><h2 id="5-3-静态方法与泛型"><a href="#5-3-静态方法与泛型" class="headerlink" title="5.3 静态方法与泛型"></a>5.3 静态方法与泛型</h2><p>静态方法有一种情况需要注意一下，那就是在类中的静态方法使用泛型：静态方法无法访问类上定义的泛型；如果静态方法操作的引用数据类型不确定的时候，必须要将泛型定义在方法上。即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。</p>
-<pre><code>public class StaticGenerator&lt;T&gt; {
-    ....
-    ....
-    /**
-    * 如果在类中定义使用泛型的静态方法，需要添加额外的泛型声明（将这个方法定义成泛型方法）
-    * 即使静态方法要使用泛型类中已经声明过的泛型也不可以。
-    * 如：public static void show(T t){..},此时编译器会提示错误信息：
-        &quot;StaticGenerator cannot be refrenced from static context&quot;
-    */
-    public static &lt;T&gt; void show(T t){
-
-    }
-}
-</code></pre><h2 id="5-4-泛型方法总结"><a href="#5-4-泛型方法总结" class="headerlink" title="5.4 泛型方法总结"></a>5.4 泛型方法总结</h2><p>一个基本的指导原则：</p>
-<pre><code>无论何时，如果你能做到，你就该尽量使用泛型方法。也就是说，如果使用泛型方法将整个类泛型化，
-
-那么就应该使用泛型方法。另外对于一个static的方法而已，无法访问泛型类型的参数。
-
-所以如果static方法要使用泛型能力，就必须使其成为泛型方法。
-</code></pre><h1 id="6-泛型上下边界"><a href="#6-泛型上下边界" class="headerlink" title="6.泛型上下边界"></a>6.泛型上下边界</h1><p>在使用泛型的时候，我们还可以为传入的泛型类型实参进行上下边界的限制，如：类型实参只准传入某种类型的父类或某种类型的子类。为泛型添加上边界，即传入的类型实参必须是指定类型的子类型。</p>
-<pre><code>public void showKeyValue1(Generic&lt;? extends Number&gt; obj){
-    Log.d(&quot;泛型测试&quot;,&quot;key value is &quot; + obj.getKey());
-}
-</code></pre><p>具体情况：</p>
-<pre><code>Generic&lt;String&gt; generic1 = new Generic&lt;String&gt;(&quot;11111&quot;);
-Generic&lt;Integer&gt; generic2 = new Generic&lt;Integer&gt;(2222);
-Generic&lt;Float&gt; generic3 = new Generic&lt;Float&gt;(2.4f);
-Generic&lt;Double&gt; generic4 = new Generic&lt;Double&gt;(2.56);
-
-//这一行代码编译器会提示错误，因为String类型并不是Number类型的子类
-//showKeyValue1(generic1);
-
-showKeyValue1(generic2);
-showKeyValue1(generic3);
-showKeyValue1(generic4);
-</code></pre><p>如果我们把泛型类的定义也修改一下：</p>
-<pre><code>public class Generic&lt;T extends Number&gt;{
-    private T key;
-
-    public Generic(T key) {
-        this.key = key;
-    }
-
-    public T getKey(){
-        return key;
-    }
-}
-</code></pre><p>这种情况下：</p>
-<pre><code>//这一行代码也会报错，因为String不是Number的子类
-Generic&lt;String&gt; generic1 = new Generic&lt;String&gt;(&quot;11111&quot;);
-</code></pre><p>再来看一个例子：</p>
-<pre><code>//在泛型方法中添加上下边界限制的时候，必须在权限声明与返回值之间的&lt;T&gt;上添加上下边界，即在泛型声明的时候添加
-//public &lt;T&gt; T showKeyName(Generic&lt;T extends Number&gt; container)，编译器会报错：&quot;Unexpected bound&quot;
-public &lt;T extends Number&gt; T showKeyName(Generic&lt;T&gt; container){
-    System.out.println(&quot;container key :&quot; + container.getKey());
-    T test = container.getKey();
-    return test;
-}
-</code></pre>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/25/Ceres Solvel非线性最小二乘问题的解算/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Gift">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sakurastream">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/25/Ceres Solvel非线性最小二乘问题的解算/" class="post-title-link" itemprop="url">Ceres Solvel非线性最小二乘问题的解算</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              
-                
-              
-
-              <time title="Created: 2020-12-25 15:12:49" itemprop="dateCreated datePublished" datetime="2020-12-25T15:12:49+08:00">2020-12-25</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-28 10:01:22" itemprop="dateModified" datetime="2020-12-28T10:01:22+08:00">2020-12-28</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>如果想要高效地使用Ceres Solver，需要掌握一定的非线性最小二乘解算基础知识。所以在这一部分将将要介绍Ceres中核心优化算法的工作原理。</p>
-<p>设$x \in \mathbb{R}^n$是一个$n$维向量，并且$F(x) = [f_1(x),\cdots,f_m(x)] ^ T$是关于$x$的$n$维方程。那么我们关注下列优化问题</p>
-<script type="math/tex; mode=display">
-argmin_x \frac{1}{2} \left \| F(x) \right \| ^ 2 \\
-L \le x \le U</script><p>其中$L$和$U$分别是参数向量$x$的下限和上限。</p>
-<p>因为对于一个一般的函数，求解全局最小值常常非常棘手，我们不得不关注局部最小值。$F(x)$的雅可比矩阵$J(x)$是一个$m \times n$的矩阵，其中$J_{ij}(x) = \partial _j f_i(x)$，函数的梯度向量$g(x) = \nabla \frac{1}{2} \left | F(x) \right | ^ 2 = J(x)^T F(x)$。</p>
-<p>在计算非线性优化问题的一个通用的策略是，求解原问题的近似简化问题。在每一次循环中，根据近似问题的解可以确定向量$x$的修正值$\triangle x$。对于非线性最小二问题，我们可以通过线性化来建立近似问题，即$F(x + \triangle x) \approx F(x) + J(x) \triangle x$。那么上述问题就变成下列问题：</p>
-<script type="math/tex; mode=display">
-min_{\triangle x} \frac{1}{2} \left \|F(x) + J(x) \triangle x \right \|^2</script><blockquote>
-<p>这里官方教程跳了几步。要求全局最小值非常棘手，所以转而求局部最小值。而求局部最小值就是，从一个任意的起始点，观测四周的“更小值”。如果观测四周都比当前点大，那么当前点就是局部最小值点，算法达到收敛。否则，设这个新找到的最小值点为“当前点”，重复这一步骤。这也就是下文中”<strong>用$x \longleftarrow x + \triangle x$来更新</strong>“的含义。所以现在问题变成了，如何求解四周的点的值。即，给$x$赋予一个步长$\triangle x$，观察周围的$F(x + \triangle x)$，并且寻找最小值。</p>
-</blockquote>
-<p>根据步长的控制方法，非线性优化可以分成两大类。</p>
-<blockquote>
-<ul>
-<li><strong>置信域法Trust Region</strong> （也有文献成为<strong>信任域法</strong>）置信域方法在搜索空间的子集内应用<strong>模型函数</strong>（通常是二次方程）来近似<strong>目标函数</strong>，这个空间被称为<strong>置信域</strong>。如果模型函数成功地使真正的目标函数最小化，则扩大置信域。否则收缩置信域并且再次尝试求解模型函数的优化问题。</li>
-<li><strong>线搜索法Line Search</strong> 线搜索方法首先找到一个下降的方向，目标函数将沿其下降。然后再确定步长，从而决定沿该方向到底移动多远。 下降方向可以通过各种方法计算，如梯度下降法、牛顿法和拟牛顿法。步长可以精确或不精确地确定。</li>
-</ul>
-<p><strong>这里我们只对共轭梯度法进行介绍（因为我们用的库函数所采用的方法就是共轭梯度法）</strong></p>
-</blockquote>
-<p>对以下形式的线性最小二乘问题：</p>
-<script type="math/tex; mode=display">
-min_{\triangle x} \frac{1}{2} \left \|F(x) + J(x) \triangle x \right \|^2</script><p>令$H(x) = J(x) ^ TJ(x)$且$g(x) = - J(x) ^ {T}f(x)$。为了标记方便，我们舍弃对$x$的依赖，那么很容易看出求解上式等价于求解<font face="黑体" font color="red">Normal Equation</font>方程</p>
-<script type="math/tex; mode=display">
-H\triangle x = g</script><p>我们在程序中使用的计算上式的线性解算器是<font face="黑体"><strong>CGNR</strong></font>，该解算器在法向方程上使用共轭梯度求解器，但没有明确地构建<font face="黑体">Normal Equation</font>方程。 它利用下列关系：</p>
-<script type="math/tex; mode=display">
-Hx = J ^ TJx = J^T(Jx)</script><p>共轭梯度的收敛取决于调节器数量$\kappa(H)$，通常$H$的条件比较弱，并且必须使用预调节器才能获得合理的性能。 目前只有<font face="黑体" font color="red">JACOBI</font>预处理器可以用于<font face="黑体" font color="red">CGNR</font>。它使用$H$的块对角线来预处理<font face="黑体">Normal Equation</font>方程。</p>
-<p>当用户选择<font face="黑体">CGNR</font>作为线性求解器时，Ceres会自动从精确的步长算法切换到不精确的步长算法。</p>
-<h1 id="JACOBI预处理器"><a href="#JACOBI预处理器" class="headerlink" title="JACOBI预处理器"></a>JACOBI预处理器</h1><p>求解<font face="黑体" font color="red">Normal Equation</font>方程的收敛速度取决于$H$的特征值的分布。一个有用的上界是$\sqrt {\kappa H}$，$\sqrt {\kappa H}$是矩阵$H$的条件值。对于大多数$BA$问题来说，$\sqrt {\kappa H}$很大，直接应用共轭梯度法对该方程进行求解会导致糟糕的性能。</p>
-<p>这个问题的解决方法是用一个预条件系统来替换$H\triangle x = g$方程。给定一个线性系统，$Ax = b$，预条件器$M$，预条件系统$M^{-1} Ax = M^{-1}b$。这个算法被称作预处理共轭梯度法（PCG），它最坏的情况现在取决于预条件矩阵$\sqrt{M^{-1}A}$的条件数。</p>
-<p>使用预条件器$M$的计算成本是计算$M$以及任意向量$y$的乘积$M^{-1}y$，因此，要考虑两个相互竞争的因素：$H$的结构中有多少是由$M$占据的，以至于条件值$\kappa(HM^{-1})$，以及构造和使用$M$的计算成本。理想的预调节器是条件值$\kappa(M^{-1}A) = 1$。使用$M = A$可以实现这一效果，但是不是一个实际的选择，因为应用这个预调函数需要一个线性方程组，等价于无预先条件的问题。通常情况下，$M$的信息越多，使用的成本就越高。例如，基于不完全$Cholesky$分解的预条件器比$Jacobi$预条件器具有更好的收敛性能，但代价也更高。</p>
-<p>所有的预调节器中最简单的是对角或雅可比的预调机。例如，$M = diag(A)$。对于像$H$这样的块状结构矩阵，可以将其推广到$Jacobi$的预调节器。Ceres实现的块$Jacobi$预调节器叫做<font face="黑体" font color="red">JACOBI</font>，当使用<font face="黑体" font color="red">CGNR</font>时，它指的是$H$的块对角线，即</p>
-<script type="math/tex; mode=display">
-C_{i j}=\left\{\begin{array}{cc}
-A_{i i} & \text { if } i=j \\
-0 & \text { 其他 }
-\end{array}\right.</script><p><font face="黑体">PCG</font>算法的过程如下：假设$x_0 \in \mathbb{R}^n$是初始向量，</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&r_{0}=b-A x_{0}\\
-&z_{0}=C^{-1} r_{0}\\
-&d_{0}=z_{0}\\
-&\text { For } k=0,1,2, \ldots\\
-&\alpha_{k}=\frac{z_{k}^{\top} r_{k}}{d_{k}^{\top} A d_{k}}\\
-&x_{k+1}=x_{k}+\alpha_{k} d_{k}\\
-&r_{k+1}=r_{k}-\alpha_{k} A d_{k}\\
-&z_{k+1}=C^{-1} r_{k+1}\\
-&\beta_{k+1}=\frac{z_{k+1}^{\top} r_{k+1}}{z_{k}^{\top} r_{k}}\\
-&d_{k+1}=x_{k+1}+\beta_{k+1} d_{k}
-\end{aligned}</script>
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1890,7 +1550,7 @@ A_{i i} & \text { if } i=j \\
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1920,7 +1580,7 @@ A_{i i} & \text { if } i=j \\
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -1990,11 +1650,11 @@ A_{i i} & \text { if } i=j \\
   
     
       
+    
+      
+    
+      
         
-      
-    
-      
-    
       
     
       

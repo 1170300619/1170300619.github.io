@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Sakurastream">
 <meta property="og:description" content="一. C++部分1.说一说指针和引用的区别指针内部保存的是指向的对象的地址信息，而引用是变量的别名；指针可以随时初始化，而引用被定义之后就要初始化，不可以为空sizeof引用是被引用的对象的大小，而sizeof指针是指针类型的大小指针既有顶层const（指针本身不能变），也有底层const（指针指向的对象不能变），而引用只有底层const，顶层const是无意义的。二者的++操作不同，指针++表示">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2022-09-15T02:20:01.919Z">
+<meta property="og:updated_time" content="2022-10-11T07:39:20.054Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="牛客c++面经">
 <meta name="twitter:description" content="一. C++部分1.说一说指针和引用的区别指针内部保存的是指向的对象的地址信息，而引用是变量的别名；指针可以随时初始化，而引用被定义之后就要初始化，不可以为空sizeof引用是被引用的对象的大小，而sizeof指针是指针类型的大小指针既有顶层const（指针本身不能变），也有底层const（指针指向的对象不能变），而引用只有底层const，顶层const是无意义的。二者的++操作不同，指针++表示">
@@ -235,7 +235,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-15 10:20:01" itemprop="dateModified" datetime="2022-09-15T10:20:01+08:00">2022-09-15</time>
+                <time title="Modified: 2022-10-11 15:39:20" itemprop="dateModified" datetime="2022-10-11T15:39:20+08:00">2022-10-11</time>
               </span>
             
           
@@ -308,6 +308,75 @@
 <h1 id="new-和-delete-是如何实现的"><a href="#new-和-delete-是如何实现的" class="headerlink" title="new 和 delete 是如何实现的"></a>new 和 delete 是如何实现的</h1><p>1.new的实现过程是：首先调用名为operator new 的标准库函数，分配足够大的内存来保存指定类型的一个对象，接下来运行该类型的构造函数，用于初始化该对象，最后返回该对象的指针。<br>2.delete的实现过程：对指针指向的对象运行适当的析构函数，然后调用operator delete的标准库函数释放该对象的内存</p>
 <h1 id="指针占多少字节"><a href="#指针占多少字节" class="headerlink" title="指针占多少字节"></a>指针占多少字节</h1><p>一个指针占内存的大小跟编译环境有关，而与机器的位数无关。32位编译环境下为4字节，64位编译环境下为8字节</p>
 <h1 id="顶层const和底层const"><a href="#顶层const和底层const" class="headerlink" title="顶层const和底层const"></a>顶层const和底层const</h1><p>1.顶层const可以表示任意的对象是常量，这一点对任何数据类型都使用，底层const则与指针和引用的复合类型有关<br>2.当执行对象的拷贝操作时，顶层const不受什么影响，但是底层const的限制不能被忽略。<br>3.对于重载，顶层const不构成重载，底层const构成重载</p>
+<h1 id="数据库三大范式"><a href="#数据库三大范式" class="headerlink" title="数据库三大范式"></a>数据库三大范式</h1><p>1.列不可再分<br>2.属性完全依赖于主键（一张表中包含了多种不同的属性，那么必须要分成多张表）<br>3.属性不依赖于其他非主属性（要求已经分好了多张表的话，一张表中只能有另一张表的ID，而不能有其他任何信息）</p>
+<h1 id="类成员继承权限问题"><a href="#类成员继承权限问题" class="headerlink" title="类成员继承权限问题"></a>类成员继承权限问题</h1><p>1.若继承方式是public，基类成员在派生类中的访问权限保持不变，也就是说，基类中的成员访问权限，在派生类中仍然保持原来的访问权限；<br>2.若继承方式是private，基类所有成员在派生类中的访问权限都会变为私有(private)权限；<br>3.若继承方式是protected，基类的共有成员和保护成员在派生类中的访问权限都会变为保护(protected)权限，私有成员在派生类中的访问权限仍然是私有(private)权限。</p>
+<h1 id="禁止隐式转换"><a href="#禁止隐式转换" class="headerlink" title="禁止隐式转换"></a>禁止隐式转换</h1><p>C++中提供了explicit关键字，在构造函数声明的时候加上explicit关键字，能够禁止隐式转换。如果构造函数只接受一个参数，则它实际上定义了转换为此类类型的隐式转换机制。可以通过将构造函数声明为explicit加以制止隐式类型转换，关键字explicit只对一个实参的构造函数有效，需要多个实参的构造函数不能用于执行隐式转换，所以无需将这些构造函数指定为explicit。</p>
+<h1 id="数组和指针的区别"><a href="#数组和指针的区别" class="headerlink" title="数组和指针的区别"></a>数组和指针的区别</h1><p>1.数组在内存中是连续存放的，开辟一块连续的内存空间；数组所占存储空间：sizeof（数组名）；数组大小：sizeof(数组名)/sizeof(数组元素数据类型)；<br>2.用运算符sizeof 可以计算出数组的容量（字节数）。sizeof(p),p 为指针得到的是一个指针变量的字节数，而不是p 所指的内存容量。<br>3.在向函数传递参数的时候，如果实参是一个数组，那用于接受的形参为对应的指针。也就是传递过去是数组的首地址而不是整个数组，能够提高效率；</p>
+<h1 id="写一个比较大小的模板"><a href="#写一个比较大小的模板" class="headerlink" title="写一个比较大小的模板"></a>写一个比较大小的模板</h1><pre><code>template&lt;typename type1, typename type2&gt;
+
+type1 max(type1 a, type2 b){
+    return a &gt; b ? a : b;
+}
+
+void main(){
+    cout &lt;&lt; max(5.5, &#39;a&#39;) &lt;&lt; endl;
+}
+</code></pre><p>其实该模板有个比较隐晦的bug，那就是a、b只有在能进行转型的时候才能进行比较，否则 a &gt; b 这一步是会报错的。这个时候往往需要对于 &gt; 号进行重载，这代码量瞬间上来了。</p>
+<h1 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h1><p>回调函数就是一个通过函数指针调用的函数。如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用为调用它所指向的函数时，我们就说这是回调函数，比如epoll中可以通过回调函数找到对应的红黑树节点。</p>
+<h1 id="delete和delete-的区别"><a href="#delete和delete-的区别" class="headerlink" title="delete和delete[]的区别"></a>delete和delete[]的区别</h1><p>delete只会调用一次析构函数。<br>delete[]会调用数组中每个元素的析构函数</p>
+<h1 id="类的对象存储空间"><a href="#类的对象存储空间" class="headerlink" title="类的对象存储空间"></a>类的对象存储空间</h1><p>1.非静态成员的数据类型大小之和。<br>2.编译器加入的额外成员变量（如指向虚函数表的指针）。<br>3.为了边缘对齐优化加入的padding。<br>4.空类(无非静态数据成员)的对象的size为1,这样可以保证每个实例均有独占的内存地址，当作为基类时, size为0，如果带有虚函数，则大小比1大，因为还需要包含一个虚函数表指针<br>5.成员函数不占用对象的内存。这是因为所有的函数都是存放在代码区的，不管是全局函数，还是成员函数。</p>
+<h1 id="在成员函数中调用delete-this会出现什么问题？对象还可以使用吗？"><a href="#在成员函数中调用delete-this会出现什么问题？对象还可以使用吗？" class="headerlink" title="在成员函数中调用delete this会出现什么问题？对象还可以使用吗？"></a>在成员函数中调用delete this会出现什么问题？对象还可以使用吗？</h1><p>在类对象的内存空间中，只有数据成员和虚函数表指针，并不包含代码内容，类的成员函数单独放在代码段中。在调用成员函数时，隐含传递一个this指针，让成员函数知道当前是哪个对象在调用它。当调用delete this时，类对象的内存空间被释放。在delete this之后进行的其他任何函数调用，只要不涉及到this指针的内容，都能够正常运行。一旦涉及到this指针，如操作数据成员，调用虚函数等，就会出现不可预期的问题</p>
+<h1 id="如果在类的析构函数中调用delete-this，会发生什么？"><a href="#如果在类的析构函数中调用delete-this，会发生什么？" class="headerlink" title="如果在类的析构函数中调用delete this，会发生什么？"></a>如果在类的析构函数中调用delete this，会发生什么？</h1><p>会导致堆栈溢出。原因很简单，delete的本质是“为将被释放的内存调用一个或多个析构函数，然后，释放内存”。显然，delete this会去调用本对象的析构函数，而析构函数中又调用delete this，形成无限递归，造成堆栈溢出，系统崩溃。</p>
+<h1 id="auto和decltype的区别"><a href="#auto和decltype的区别" class="headerlink" title="auto和decltype的区别"></a>auto和decltype的区别</h1><h1 id="lambda函数"><a href="#lambda函数" class="headerlink" title="lambda函数"></a>lambda函数</h1><p>1.利用lambda表达式可以编写内嵌的匿名函数，用以替换独立函数或者函数对象；<br>2.每当你定义一个lambda表达式后，编译器会自动生成一个匿名类（这个类当然重载了()运算符），我们称为闭包类型（closure type）。那么在运行时，这个lambda表达式就会返回一个匿名的闭包实例，其实一个右值。所以，我们上面的lambda表达式的结果就是一个闭包。闭包的一个强大之处是其可以通过传值或者引用的方式捕捉其封装作用域内的变量，前面的方括号就是用来定义捕捉模式以及变量，我们又将其称为lambda捕捉块。<br>3.lambda语法如下：</p>
+<pre><code>[capture] （parameters） mutable -&gt;return-type {statement};
+</code></pre><p>4.lambda必须使用尾置返回来指定返回类型，可以忽略参数列表和返回值，但必须永远包含捕获列表和函数体；</p>
+<h1 id="STL中hashtable的实现"><a href="#STL中hashtable的实现" class="headerlink" title="STL中hashtable的实现"></a>STL中hashtable的实现</h1><p>1.STL中的hashtable使用的是开链法解决hash冲突问题<br>2.hashtable中的bucket所维护的list既不是list也不是slist，而是其自己定义的由hashtable_node数据结构组成的linked-list，而bucket聚合体本身使用vector进行存储。hashtable的迭代器只提供前进操作，不提供后退操作</p>
+<h1 id="vector如何释放空间"><a href="#vector如何释放空间" class="headerlink" title="vector如何释放空间"></a>vector如何释放空间</h1><p>1.由于vector的内存占用空间只增不减，比如你首先分配了10,000个字节，然后erase掉后面9,999个，留下一个有效元素，但是内存占用仍为10,000个。所有内存空间是在vector析构时候才能被系统回收。empty()用来检测容器是否为空的，clear()可以清空所有元素。但是即使clear()，vector所占用的内存空间依然如故，无法保证内存的回收。<br>2.如果使用vector，可以用swap()来帮助你释放多余内存或者清空全部内存。</p>
+<h1 id="容器内删除一个元素"><a href="#容器内删除一个元素" class="headerlink" title="容器内删除一个元素"></a>容器内删除一个元素</h1><p>1.顺序容器（序列式容器，比如vector、deque）<br>erase迭代器不仅使所指向被删除的迭代器失效，而且使被删元素之后的所有迭代器失效(list除外)，所以不能使用erase(it++)的方式，但是erase的返回值是下一个有效迭代器；</p>
+<pre><code>it = c.erase(it);
+</code></pre><p>2.关联容器(关联式容器，比如map、set、multimap、multiset等)<br>erase迭代器只是被删除元素的迭代器失效，但是返回值是void，所以要采用erase(it++)的方式删除迭代器；</p>
+<pre><code>c.erase(it++)
+</code></pre><h1 id="STL每种容器对应的迭代器"><a href="#STL每种容器对应的迭代器" class="headerlink" title="STL每种容器对应的迭代器"></a>STL每种容器对应的迭代器</h1><p>1.vector和deque：随机访问迭代器<br>2.stack、queue、priority_queue：无<br>3.list、(multi)set/map：双向迭代器<br>unordered_(multi)set/map、forward_list：前向迭代器</p>
+<h1 id="sizeof和strlen的区别"><a href="#sizeof和strlen的区别" class="headerlink" title="sizeof和strlen的区别"></a>sizeof和strlen的区别</h1><p>1、sizeof会将空字符\0计算在内，而strlen不会将空字符\0计算在内；<br>2、sizeof会计算到字符串最后一个空字符\0并结束，而strlen如果遇到第一个空字符\0的话就会停止并计算遇到的第一个空字符\0前面的长度。</p>
+<pre><code>int main(void)
+{
+    char str[100] = &quot;abcde&quot;;
+    printf(&quot;sizeof(str) = %lu\n&quot;, sizeof(str));     //字节大小为100
+
+    char str1[] = &quot;abcde&quot;;
+    printf(&quot;sizeof(str1) = %lu\n&quot;, sizeof(str1));   //字节大小为6
+
+    char str2[] = &quot;\0abcde&quot;;
+    printf(&quot;sizeof(str2) = %lu\n&quot;, sizeof(str2));   //字节大小为7
+
+    char str3[] = &quot;\0ab\0c de&quot;;
+    printf(&quot;sizeof(str3) = %lu\n&quot;, sizeof(str3));   //字节大小为9
+
+    char str4[] = &quot;abcde&quot;;
+    printf(&quot;strlen(str4) = %lu\n&quot;, strlen(str4));   //字符串长度为5
+
+    char str5[100] = &quot;abcde&quot;;
+    printf(&quot;strlen(str5) = %lu\n&quot;, strlen(str5));   //字符串长度为5
+
+    char str6[] = &quot;\0abcde&quot;;
+    printf(&quot;strlen(str6) = %lu\n&quot;, strlen(str6));   //字符串长度为0
+
+    char str7[] = &quot;ab cde&quot;;
+    printf(&quot;strlen(str7) = %lu\n&quot;, strlen(str7));   //字符串长度为6
+
+    return 0;
+}
+</code></pre><h1 id="哪些函数不能是虚函数？把你知道的都说一说"><a href="#哪些函数不能是虚函数？把你知道的都说一说" class="headerlink" title="哪些函数不能是虚函数？把你知道的都说一说"></a>哪些函数不能是虚函数？把你知道的都说一说</h1><p>1.构造函数，构造函数初始化对象，派生类必须知道基类函数干了什么，才能进行构造<br>2.内联函数，内联函数表示在编译阶段进行函数体的替换操作，而虚函数意味着在运行期间进行类型确定，所以内联函数不能是虚函数；<br>3.静态函数，静态函数不属于对象属于类，静态成员函数没有this指针，因此静态函数设置为虚函数没有任何意义。<br>4.友元函数，友元函数不属于类的成员函数，不能被继承。对于没有继承特性的函数没有虚函数的说法。<br>5.普通函数，普通函数不属于类的成员函数，不具有继承特性，因此普通函数没有虚函数。</p>
+<h1 id="什么时候必须要自定义析构函数"><a href="#什么时候必须要自定义析构函数" class="headerlink" title="什么时候必须要自定义析构函数"></a>什么时候必须要自定义析构函数</h1><p>如果本类中一个成员变量是别的对象的指针，而且这个指针不是传进来的地址而是这个指针指向的对象，是在本类中(如果是栈里的定位分配，也不用考虑内存)在堆中开辟的空间创建的。并且该指针没有进行过delete操作，那么久需要在析构方法中进行delete操作，此时我们就必须自己写析构函数。</p>
+<h1 id="析构函数的析构过程"><a href="#析构函数的析构过程" class="headerlink" title="析构函数的析构过程"></a>析构函数的析构过程</h1><p>析构函数首先执行函数体，然后销毁成员，成员按照初始化顺序的逆序销毁。注意析构函数本身不直接销毁成员，成员是在析构函数体之后隐含的析构阶段中被销毁的，销毁类类型成员执行它自己的析构函数，销毁内置类型不需要做什么。</p>
+<h1 id="何时会调用析构函数"><a href="#何时会调用析构函数" class="headerlink" title="何时会调用析构函数"></a>何时会调用析构函数</h1><ul>
+<li>变量在离开其作用域时</li>
+<li>当一个对象被销毁时，其成员被销毁</li>
+<li>容器（无论是标准库容器还是数组）被销毁时，其元素被销毁</li>
+<li>对于动态分配的对象，当指向它的指针应用delete运算符时被销毁</li>
+<li>对于临时对象，当创建它的完整表达式结束时被销毁</li>
+</ul>
+<h1 id="什么时候需要自己重写拷贝构造函数"><a href="#什么时候需要自己重写拷贝构造函数" class="headerlink" title="什么时候需要自己重写拷贝构造函数"></a>什么时候需要自己重写拷贝构造函数</h1><p>根据三/五法则，如果需要定义一个非空的析构函数，那么通常情况下也需要自定义一个拷贝构造函数。即包含动态分配成员或者包含指针成员的类都应该提供拷贝构造函数，并且考虑重载赋值运算符。</p>
 
     </div>
 
@@ -385,7 +454,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-C-部分"><span class="nav-number">1.</span> <span class="nav-text">一. C++部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-说一说指针和引用的区别"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.说一说指针和引用的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-struct和class的区别"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.struct和class的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-c-中多态"><span class="nav-number">1.0.3.</span> <span class="nav-text">3.c++中多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-面向对象"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.面向对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-浅拷贝和深拷贝"><span class="nav-number">1.0.5.</span> <span class="nav-text">5.浅拷贝和深拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-STL容器的实现和查找时间复杂度"><span class="nav-number">1.0.6.</span> <span class="nav-text">6.STL容器的实现和查找时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-STL-中容器的类型，每种分别有哪些容器"><span class="nav-number">1.0.7.</span> <span class="nav-text">7.STL 中容器的类型，每种分别有哪些容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-简述一下-C-的重载和重写"><span class="nav-number">1.0.8.</span> <span class="nav-text">8.简述一下 C++ 的重载和重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-简述一下虚函数的实现原理"><span class="nav-number">1.0.9.</span> <span class="nav-text">9.简述一下虚函数的实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-为什么将析构函数设置成虚函数"><span class="nav-number">1.0.10.</span> <span class="nav-text">10.为什么将析构函数设置成虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-哈希冲突的原因和影响因素，哈希冲突的解决方法"><span class="nav-number">1.0.11.</span> <span class="nav-text">11.哈希冲突的原因和影响因素，哈希冲突的解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-map，unordered-map-的区别"><span class="nav-number">1.0.12.</span> <span class="nav-text">12.map，unordered_map 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-红黑树的特性，为什么要有红黑树"><span class="nav-number">1.0.13.</span> <span class="nav-text">13.红黑树的特性，为什么要有红黑树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-vector-的扩容机制，扩容以后，它的内存地址会变化吗？"><span class="nav-number">1.0.14.</span> <span class="nav-text">14.vector 的扩容机制，扩容以后，它的内存地址会变化吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-请你说说-map-实现原理，各操作的时间复杂度是多少"><span class="nav-number">1.0.15.</span> <span class="nav-text">15.请你说说 map 实现原理，各操作的时间复杂度是多少</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-shared-ptr-怎么知道跟它共享对象的指针释放了"><span class="nav-number">1.0.16.</span> <span class="nav-text">16.shared_ptr 怎么知道跟它共享对象的指针释放了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-请你说说左值、右值、左值引用、右值引用、右值引用的使用场景"><span class="nav-number">1.0.17.</span> <span class="nav-text">17.请你说说左值、右值、左值引用、右值引用、右值引用的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-weak-ptr-如何解决-shared-ptr-的循环引用问题？"><span class="nav-number">1.0.18.</span> <span class="nav-text">17.weak_ptr 如何解决 shared_ptr 的循环引用问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-请你说说虚函数可以是内联函数吗"><span class="nav-number">1.0.19.</span> <span class="nav-text">18.请你说说虚函数可以是内联函数吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-请你说说迭代器失效原因，有哪些情况"><span class="nav-number">1.0.20.</span> <span class="nav-text">19.请你说说迭代器失效原因，有哪些情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-请你说说-auto-和-decltype-如何使用"><span class="nav-number">1.0.21.</span> <span class="nav-text">20.请你说说 auto 和 decltype 如何使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-说说-C-中智能指针和指针的区别是什么？"><span class="nav-number">1.0.22.</span> <span class="nav-text">21.说说 C++ 中智能指针和指针的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-简述一下-C-中的四种类型转换"><span class="nav-number">1.0.23.</span> <span class="nav-text">22.简述一下 C++ 中的四种类型转换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#new-和-delete-是如何实现的"><span class="nav-number">2.</span> <span class="nav-text">new 和 delete 是如何实现的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指针占多少字节"><span class="nav-number">3.</span> <span class="nav-text">指针占多少字节</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#顶层const和底层const"><span class="nav-number">4.</span> <span class="nav-text">顶层const和底层const</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-C-部分"><span class="nav-number">1.</span> <span class="nav-text">一. C++部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-说一说指针和引用的区别"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.说一说指针和引用的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-struct和class的区别"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.struct和class的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-c-中多态"><span class="nav-number">1.0.3.</span> <span class="nav-text">3.c++中多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-面向对象"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.面向对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-浅拷贝和深拷贝"><span class="nav-number">1.0.5.</span> <span class="nav-text">5.浅拷贝和深拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-STL容器的实现和查找时间复杂度"><span class="nav-number">1.0.6.</span> <span class="nav-text">6.STL容器的实现和查找时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-STL-中容器的类型，每种分别有哪些容器"><span class="nav-number">1.0.7.</span> <span class="nav-text">7.STL 中容器的类型，每种分别有哪些容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-简述一下-C-的重载和重写"><span class="nav-number">1.0.8.</span> <span class="nav-text">8.简述一下 C++ 的重载和重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-简述一下虚函数的实现原理"><span class="nav-number">1.0.9.</span> <span class="nav-text">9.简述一下虚函数的实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-为什么将析构函数设置成虚函数"><span class="nav-number">1.0.10.</span> <span class="nav-text">10.为什么将析构函数设置成虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-哈希冲突的原因和影响因素，哈希冲突的解决方法"><span class="nav-number">1.0.11.</span> <span class="nav-text">11.哈希冲突的原因和影响因素，哈希冲突的解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-map，unordered-map-的区别"><span class="nav-number">1.0.12.</span> <span class="nav-text">12.map，unordered_map 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-红黑树的特性，为什么要有红黑树"><span class="nav-number">1.0.13.</span> <span class="nav-text">13.红黑树的特性，为什么要有红黑树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-vector-的扩容机制，扩容以后，它的内存地址会变化吗？"><span class="nav-number">1.0.14.</span> <span class="nav-text">14.vector 的扩容机制，扩容以后，它的内存地址会变化吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-请你说说-map-实现原理，各操作的时间复杂度是多少"><span class="nav-number">1.0.15.</span> <span class="nav-text">15.请你说说 map 实现原理，各操作的时间复杂度是多少</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-shared-ptr-怎么知道跟它共享对象的指针释放了"><span class="nav-number">1.0.16.</span> <span class="nav-text">16.shared_ptr 怎么知道跟它共享对象的指针释放了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-请你说说左值、右值、左值引用、右值引用、右值引用的使用场景"><span class="nav-number">1.0.17.</span> <span class="nav-text">17.请你说说左值、右值、左值引用、右值引用、右值引用的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-weak-ptr-如何解决-shared-ptr-的循环引用问题？"><span class="nav-number">1.0.18.</span> <span class="nav-text">17.weak_ptr 如何解决 shared_ptr 的循环引用问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-请你说说虚函数可以是内联函数吗"><span class="nav-number">1.0.19.</span> <span class="nav-text">18.请你说说虚函数可以是内联函数吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-请你说说迭代器失效原因，有哪些情况"><span class="nav-number">1.0.20.</span> <span class="nav-text">19.请你说说迭代器失效原因，有哪些情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-请你说说-auto-和-decltype-如何使用"><span class="nav-number">1.0.21.</span> <span class="nav-text">20.请你说说 auto 和 decltype 如何使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-说说-C-中智能指针和指针的区别是什么？"><span class="nav-number">1.0.22.</span> <span class="nav-text">21.说说 C++ 中智能指针和指针的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-简述一下-C-中的四种类型转换"><span class="nav-number">1.0.23.</span> <span class="nav-text">22.简述一下 C++ 中的四种类型转换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#new-和-delete-是如何实现的"><span class="nav-number">2.</span> <span class="nav-text">new 和 delete 是如何实现的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指针占多少字节"><span class="nav-number">3.</span> <span class="nav-text">指针占多少字节</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#顶层const和底层const"><span class="nav-number">4.</span> <span class="nav-text">顶层const和底层const</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库三大范式"><span class="nav-number">5.</span> <span class="nav-text">数据库三大范式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类成员继承权限问题"><span class="nav-number">6.</span> <span class="nav-text">类成员继承权限问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#禁止隐式转换"><span class="nav-number">7.</span> <span class="nav-text">禁止隐式转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数组和指针的区别"><span class="nav-number">8.</span> <span class="nav-text">数组和指针的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#写一个比较大小的模板"><span class="nav-number">9.</span> <span class="nav-text">写一个比较大小的模板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#回调函数"><span class="nav-number">10.</span> <span class="nav-text">回调函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#delete和delete-的区别"><span class="nav-number">11.</span> <span class="nav-text">delete和delete[]的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类的对象存储空间"><span class="nav-number">12.</span> <span class="nav-text">类的对象存储空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在成员函数中调用delete-this会出现什么问题？对象还可以使用吗？"><span class="nav-number">13.</span> <span class="nav-text">在成员函数中调用delete this会出现什么问题？对象还可以使用吗？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如果在类的析构函数中调用delete-this，会发生什么？"><span class="nav-number">14.</span> <span class="nav-text">如果在类的析构函数中调用delete this，会发生什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#auto和decltype的区别"><span class="nav-number">15.</span> <span class="nav-text">auto和decltype的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lambda函数"><span class="nav-number">16.</span> <span class="nav-text">lambda函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STL中hashtable的实现"><span class="nav-number">17.</span> <span class="nav-text">STL中hashtable的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vector如何释放空间"><span class="nav-number">18.</span> <span class="nav-text">vector如何释放空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器内删除一个元素"><span class="nav-number">19.</span> <span class="nav-text">容器内删除一个元素</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STL每种容器对应的迭代器"><span class="nav-number">20.</span> <span class="nav-text">STL每种容器对应的迭代器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sizeof和strlen的区别"><span class="nav-number">21.</span> <span class="nav-text">sizeof和strlen的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#哪些函数不能是虚函数？把你知道的都说一说"><span class="nav-number">22.</span> <span class="nav-text">哪些函数不能是虚函数？把你知道的都说一说</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么时候必须要自定义析构函数"><span class="nav-number">23.</span> <span class="nav-text">什么时候必须要自定义析构函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#析构函数的析构过程"><span class="nav-number">24.</span> <span class="nav-text">析构函数的析构过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#何时会调用析构函数"><span class="nav-number">25.</span> <span class="nav-text">何时会调用析构函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么时候需要自己重写拷贝构造函数"><span class="nav-number">26.</span> <span class="nav-text">什么时候需要自己重写拷贝构造函数</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -400,7 +469,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -430,7 +499,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

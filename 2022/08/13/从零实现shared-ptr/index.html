@@ -63,7 +63,7 @@
 <meta property="og:site_name" content="Sakurastream">
 <meta property="og:description" content="本文结构 基础构造函数 复制语义 移动语义 一些工具函数 析构函数  1.基础构造函数面试中如果要求实现一个shared_ptr，我们可以从最简单的结构写起： template&amp;lt;class T&amp;gt; class my_shared_ptr{ private:     T* m_ptr = nullptr;     unsigned int * m_ref_count = nullptr;">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2022-08-14T06:04:29.848Z">
+<meta property="og:updated_time" content="2022-10-20T09:08:28.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零实现shared_ptr">
 <meta name="twitter:description" content="本文结构 基础构造函数 复制语义 移动语义 一些工具函数 析构函数  1.基础构造函数面试中如果要求实现一个shared_ptr，我们可以从最简单的结构写起： template&amp;lt;class T&amp;gt; class my_shared_ptr{ private:     T* m_ptr = nullptr;     unsigned int * m_ref_count = nullptr;">
@@ -235,7 +235,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-14 14:04:29" itemprop="dateModified" datetime="2022-08-14T14:04:29+08:00">2022-08-14</time>
+                <time title="Modified: 2022-10-20 17:08:28" itemprop="dateModified" datetime="2022-10-20T17:08:28+08:00">2022-10-20</time>
               </span>
             
           
@@ -399,11 +399,11 @@ unsigned int use_count() const{
       //A * p = new A(300);  //make_shared无法访问私有构造函数
       return 0;
   }
-</code></pre><p>  在这种情况下，std::make_shared进行placement new操作的时候，会直接调用构造函数，但因为我们的构造函数都是私有的，这时候就会报错。而我们在工厂模式里直接new出来的实例是通过成员函数new操作符operator new访问的私有构造函数，所以没有问题。</p>
+</code></pre><p>在这种情况下，std::make_shared进行placement new操作的时候，会直接调用构造函数，但因为我们的构造函数都是私有的，这时候就会报错。而我们在工厂模式里直接new出来的实例是通过成员函数new操作符operator new访问的私有构造函数，所以没有问题。</p>
 </li>
 <li>还有一种情况，make_shared 只分配一次内存, 这看起来很好. 减少了内存分配的开销. 问题来了, weak_ptr 会保持控制块(强引用, 以及弱引用的信息)的生命周期, 而因此连带着保持了对象分配的内存, 只有最后一个 weak_ptr 离开作用域时, 内存才会被释放. 原本强引用减为 0 时就可以释放的内存, 现在变为了强引用, 弱引用都减为 0 时才能释放, 意外的延迟了内存释放的时间. 这对于内存要求高的场景来说, 是一个需要注意的问题。</li>
 </ul>
-
+<h1 id="稳定排序和不稳定排序"><a href="#稳定排序和不稳定排序" class="headerlink" title="稳定排序和不稳定排序"></a>稳定排序和不稳定排序</h1>
     </div>
 
     
@@ -480,7 +480,7 @@ unsigned int use_count() const{
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#本文结构"><span class="nav-number">1.</span> <span class="nav-text">本文结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-基础构造函数"><span class="nav-number">1.1.</span> <span class="nav-text">1.基础构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-拷贝构造部分"><span class="nav-number">1.2.</span> <span class="nav-text">2.拷贝构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-移动构造部分"><span class="nav-number">1.3.</span> <span class="nav-text">3.移动构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-一些工具函数"><span class="nav-number">1.4.</span> <span class="nav-text">4.一些工具函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-析构函数"><span class="nav-number">1.5.</span> <span class="nav-text">5.析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-make-shared函数"><span class="nav-number">1.6.</span> <span class="nav-text">6.make_shared函数</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#本文结构"><span class="nav-number">1.</span> <span class="nav-text">本文结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-基础构造函数"><span class="nav-number">1.1.</span> <span class="nav-text">1.基础构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-拷贝构造部分"><span class="nav-number">1.2.</span> <span class="nav-text">2.拷贝构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-移动构造部分"><span class="nav-number">1.3.</span> <span class="nav-text">3.移动构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-一些工具函数"><span class="nav-number">1.4.</span> <span class="nav-text">4.一些工具函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-析构函数"><span class="nav-number">1.5.</span> <span class="nav-text">5.析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-make-shared函数"><span class="nav-number">1.6.</span> <span class="nav-text">6.make_shared函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#稳定排序和不稳定排序"><span class="nav-number">2.</span> <span class="nav-text">稳定排序和不稳定排序</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -495,7 +495,7 @@ unsigned int use_count() const{
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -525,7 +525,7 @@ unsigned int use_count() const{
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
