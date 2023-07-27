@@ -220,11 +220,19 @@
                 
               
 
-              <time title="Created: 2023-07-26 20:41:21 / Modified: 21:44:54" itemprop="dateCreated datePublished" datetime="2023-07-26T20:41:21+08:00">2023-07-26</time>
+              <time title="Created: 2023-07-26 20:41:21" itemprop="dateCreated datePublished" datetime="2023-07-26T20:41:21+08:00">2023-07-26</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-27 21:35:05" itemprop="dateModified" datetime="2023-07-27T21:35:05+08:00">2023-07-27</time>
+              </span>
             
           
 
@@ -269,7 +277,41 @@
 </code></pre><p>需要注意的是，合并过程中可能出现冲突的情况，我们可以对冲突的文件进行编辑。冲突的产生是多个用户同时修改了同一个文件的相同区域的内容。</p>
 <p>（明天写）</p>
 <h2 id="2-5-开发"><a href="#2-5-开发" class="headerlink" title="2.5 开发"></a>2.5 开发</h2><p>通过输入 <strong>git branch</strong> 可以查看当前处于哪个分支；输入 <strong>git branch -a</strong> 可以查看所有的本地分支和远程分支；以及可以输入 <strong>git status</strong> 来查看当前分支和分支的状态。</p>
-<h2 id><a href="#" class="headerlink" title=" "></a> </h2>
+<h2 id="2-6-新建分支"><a href="#2-6-新建分支" class="headerlink" title="2.6 新建分支"></a>2.6 新建分支</h2><p>有了最新的代码，就可以开始着手写代码了。但是需要注意，不要直接在本地的develop分支上直接写，而是要新建一个分支，使用如下命令：</p>
+<pre><code>git checkout -b check # (分支名称，随意)
+</code></pre><p>这样我们就新建了一个check分支，且直接切换到其上，上面的代码其实做了两件事：</p>
+<pre><code>git branch check # 新建 check 分支
+git checkout check # 切换到 check 分支上
+</code></pre><h2 id="2-7-贮藏代码"><a href="#2-7-贮藏代码" class="headerlink" title="2.7 贮藏代码"></a>2.7 贮藏代码</h2><p>当你想提交代码时，始终要记得，主仓库内的代码可能还是比你的进展要更快，因此你还需要到主仓库中拉取最新的代码，这里需要你先把当前的进度 commit 到本地暂存区，或者使用 git stash，将代码贮藏来保管当前的进度。使用的命令为：</p>
+<pre><code>git stash save &quot;save message&quot;
+</code></pre><p>然后切换到 develop 分支上，还是使用 git fetch 和 git merge 去拉取合并最新的代码。贮藏的代码实际上被储存在一个栈上，越晚贮藏的越接近栈顶，可以使用如下代码查看栈中贮藏的信息：</p>
+<pre><code>git stash list
+</code></pre>
+<p>可以看到有三个贮藏，使用如下命令可以将栈顶的贮藏重新应用</p>
+<pre><code>git stash apply
+</code></pre><p>如果想应用其中一个更早的贮藏，可以通过名字来指定</p>
+<pre><code>git stash apply stash@{2}
+</code></pre><p>如上的命令只会尝试应用贮藏的工作，意味着堆栈上还有它，可以使用如下命令将贮藏从堆栈上移除：</p>
+<pre><code>git stash drop stash@{2}
+</code></pre><p>或者可以使用如下代码来应用栈顶的贮藏，并且将其从栈顶弹出</p>
+<pre><code>git stash pop
+</code></pre><p>最后记得要将 check 分支合并到本地的 develop 分支上，之后的操作都要在 develop 上进行。使用的命令如下：</p>
+<pre><code>git checkout develop
+git merge check
+</code></pre><h2 id="2-8-提交和推送"><a href="#2-8-提交和推送" class="headerlink" title="2.8 提交和推送"></a>2.8 提交和推送</h2><p>接下来要将代码提交到本地仓库，首先查看代码的状态</p>
+<pre><code>git diff # 可以查看到这次的改动内容，按 q 退出
+</code></pre><p>然后使用跟踪所有的文件</p>
+<pre><code>git add .
+</code></pre><p>随后提交到暂存区</p>
+<pre><code>git commit -m &quot;add a new txt file&quot;
+</code></pre><p>随后就可以推送到自己的远程仓库</p>
+<pre><code>git push origin HEAD:分支名称
+</code></pre><p>这里的 HEAD 指的是当前分支，冒号后面指的是要 push 的分支，如果远程仓库没有，则会自动创建该分支</p>
+<h2 id="2-9-提MR"><a href="#2-9-提MR" class="headerlink" title="2.9 提MR"></a>2.9 提MR</h2><p>在自己的远程仓库内，可以向主仓库提交分支合并请求，一般是自己的 develop 分支合并到主仓库的 develop 分支，如下时 gitlab 的示例：<br>、<br><img src="/2023/07/26/git常用工作流及命令/gitlab提MR.png" title="This is an test image"></p>
+<p>接下来可以增加这次合并请求的描述，加 title 和 description等，之后就可以 submit 提交。<br>分支合并请求通过后，可以选择将本地的 check 分支删除</p>
+<pre><code>git branch -d check
+</code></pre><h2 id="2-10-注意点"><a href="#2-10-注意点" class="headerlink" title="2.10 注意点"></a>2.10 注意点</h2><p>如果有项目伙伴因需求更改了项目文件名称或是一些文件夹的名称，需要告知所有在工作中的伙伴停下手中的工作，等待文件名称修改后，push到仓库后，其他伙伴再拉新的代码，再进行工作。</p>
+
         
       
     </div>
