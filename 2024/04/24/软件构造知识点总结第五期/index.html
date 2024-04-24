@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="软件构造知识点总结第五期第八章 第一节 软件构造性能的度量原理性能度量指标 时间性能 每条指令、每个控制 结构、整个程序的执行时间 不同语句或控制结构执行时间的分布情况 时间瓶颈在哪里   空间性能 每个变量、每个复杂结构、整个程序的内存消耗 不同变量&#x2F;数据结构的相对消耗 空间瓶颈在哪里 随时间的变化情况    内存管理对象管理模型  三者的差异在于：如何与何时在程序对象与内存对象之间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="漱石斋笔谈">
+<meta property="og:url" content="http://example.com/2024/04/24/%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%E7%AC%AC%E4%BA%94%E6%9C%9F/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="软件构造知识点总结第五期第八章 第一节 软件构造性能的度量原理性能度量指标 时间性能 每条指令、每个控制 结构、整个程序的执行时间 不同语句或控制结构执行时间的分布情况 时间瓶颈在哪里   空间性能 每个变量、每个复杂结构、整个程序的内存消耗 不同变量&#x2F;数据结构的相对消耗 空间瓶颈在哪里 随时间的变化情况    内存管理对象管理模型  三者的差异在于：如何与何时在程序对象与内存对象之间">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-24T15:10:35.500Z">
+<meta property="article:modified_time" content="2019-06-24T06:41:39.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/04/24/%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%E7%AC%AC%E4%BA%94%E6%9C%9F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/04/24/%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%E7%AC%AC%E4%BA%94%E6%9C%9F/","path":"2024/04/24/软件构造知识点总结第五期/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%E7%AC%AC%E4%BA%94%E6%9C%9F"><span class="nav-number">1.</span> <span class="nav-text">软件构造知识点总结第五期</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0"><span class="nav-number"></span> <span class="nav-text">第八章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8A%82-%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E6%80%A7%E8%83%BD%E7%9A%84%E5%BA%A6%E9%87%8F%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">第一节 软件构造性能的度量原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F%E6%8C%87%E6%A0%87"><span class="nav-number">1.1.</span> <span class="nav-text">性能度量指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="nav-number">1.3.</span> <span class="nav-text">Java垃圾回收机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM%E4%B8%AD%E7%9A%84GC"><span class="nav-number">1.4.</span> <span class="nav-text">JVM中的GC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GVM-GC%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="nav-number">1.5.</span> <span class="nav-text">GVM GC性能调优</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8A%82-%E5%8A%A8%E6%80%81%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95%E4%B8%8E%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">第二节 动态程序分析方法与工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory-Dump%EF%BC%88%E5%A0%86%E8%BD%AC%E5%82%A8%E6%96%87%E4%BB%B6%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">Memory Dump（堆转储文件）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stack-Trace"><span class="nav-number">2.2.</span> <span class="nav-text">Stack Trace</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8A%82-%E4%BB%A3%E7%A0%81%E8%B0%83%E4%BC%98%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%92%8CI-O"><span class="nav-number">3.</span> <span class="nav-text">第三节 代码调优的设计模式和I&#x2F;O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%B0%83%E4%BC%98"><span class="nav-number">4.</span> <span class="nav-text">代码调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-I-O"><span class="nav-number">4.1.</span> <span class="nav-text">Java I&#x2F;O</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%E7%AC%AC%E4%BA%94%E6%9C%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-06-24 14:41:39" itemprop="dateModified" datetime="2019-06-24T14:41:39+08:00">2019-06-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><hr>
+<h2 id="软件构造知识点总结第五期"><a href="#软件构造知识点总结第五期" class="headerlink" title="软件构造知识点总结第五期"></a>软件构造知识点总结第五期</h2><h1 id="第八章"><a href="#第八章" class="headerlink" title="第八章"></a>第八章</h1><hr>
+<h2 id="第一节-软件构造性能的度量原理"><a href="#第一节-软件构造性能的度量原理" class="headerlink" title="第一节 软件构造性能的度量原理"></a>第一节 软件构造性能的度量原理</h2><h3 id="性能度量指标"><a href="#性能度量指标" class="headerlink" title="性能度量指标"></a><em>性能度量指标</em></h3><ul>
+<li>时间性能<ul>
+<li>每条指令、每个控制 结构、整个程序的执行时间</li>
+<li>不同语句或控制结构执行时间的分布情况</li>
+<li>时间瓶颈在哪里</li>
+</ul>
+</li>
+<li>空间性能<ul>
+<li>每个变量、每个复杂结构、整个程序的内存消耗</li>
+<li>不同变量&#x2F;数据结构的相对消耗</li>
+<li>空间瓶颈在哪里</li>
+<li>随时间的变化情况</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a><em>内存管理</em></h3><p><strong>对象管理模型</strong></p>
+<ul>
+<li><p>三者的差异在于：如何与何时在程序对象与内存对象之间建立联系</p>
+</li>
+<li><p>静态</p>
+<ul>
+<li><strong>定义</strong>：静态内存是指在程序开始运行时由编译器分配的内存，它的分配是在程序开始编译时完成的，不占用CPU资源。</li>
+<li>程序中的各种变量，在编译时系统已经为其分配了所需的内存空间，当该变量在作用域内使用完毕时，系统会自动释放所占用的内存空间；</li>
+<li>不支持递归，不支持动态创建可变长的复杂数据类型；</li>
+<li>在程序执行期内实体至多关联一个运行时对象</li>
+<li>eg: 基本类型，数组</li>
+</ul>
+</li>
+<li><p>动态-基于栈</p>
+<ul>
+<li>栈定义：方法调用和局部变量的存储位置，保存基本类型<ul>
+<li>如果一个方法被调用，它的栈帧被放到调用栈的顶部</li>
+<li>栈帧保存方法的状态，包括执行哪行代码以及所有局部变量的值</li>
+<li>栈顶始终是当前运行方法</li>
+</ul>
+</li>
+<li>一个实体可以在运行时连续地连接到多个对象，并且运行时机制以堆栈中的<strong>后进先出</strong>顺序分配和释放这些对象</li>
+<li>栈无法支持复杂数据结构</li>
+</ul>
+</li>
+<li><p>动态-基于堆</p>
+<ul>
+<li><strong>堆定义</strong>：在一块内存里分为多个小块，每块包含 一个对象，或者未被占用</li>
+<li>自由模式的内存管理，动态分配，可管理复杂的动态数据结构</li>
+<li>代码中的一个变量可以在不同时间被关联到不同的内存对象上，无法在编译阶段确定。内存对象也可以进一步指向其他对象</li>
+</ul>
+</li>
+</ul>
+<h3 id="Java垃圾回收机制"><a href="#Java垃圾回收机制" class="headerlink" title="Java垃圾回收机制"></a><em>Java垃圾回收机制</em></h3><p><strong>内存回收的三种方式</strong></p>
+<p>​    ①静态模式下的内存回收：在静态内存分配模式下，无需进行内存回收：所有都是已确定的。</p>
+<p>​    ②在栈模式下的内存回收：按block（某个方法）整体进行</p>
+<p>​    ③在堆模式下的内存回收：在heap上进行内存空间回收，最复杂——无法提前预知某个object是否已经变得无用。</p>
+<p> <strong>动态垃圾回收相关概念</strong></p>
+<ul>
+<li>GC（Garbage Collection）：识别垃圾并释放其占用的内存<ul>
+<li>垃圾回收器根据对象的“活性”(从root的可达性)来决定是否回收该对象的内存，”死“的对象是需要回收的垃圾</li>
+</ul>
+</li>
+<li>Root<ul>
+<li>根集合由root对象和局部对象构成</li>
+<li>root对象：<code>Class</code>（不能被回收）、<code>Thread</code>、Java方法&#x2F;接口的本地变量或参数、全局接口引用等</li>
+</ul>
+</li>
+<li>可达&#x2F;不可达对象（Reachable&#x2F;Unreachable）：free模式<ul>
+<li>从根可以直接或间接到达的对象为可达的，否则为不可达的</li>
+<li>从根开始，不断将指向的对象加入活动集，剩下的是垃圾</li>
+</ul>
+</li>
+<li>活动&#x2F;死亡对象（Live&#x2F;dead）：<ul>
+<li>在stack和free的结合模式下，对象的引用被视为有向图，可以从根访问的对象为活动对象，否则为死亡对象。</li>
+</ul>
+</li>
+</ul>
+<p><strong>GC的四种算法</strong></p>
+<ul>
+<li><p>引用计数</p>
+<ul>
+<li><strong>基本思想</strong>：为每个object存储一个计数RC，当有其他 reference指向它时，RC++；当其他reference与其断开时，RC–；如 果RC&#x3D;&#x3D;0，则回收它。</li>
+<li><strong>优点</strong>：简单、计算代价分散，“幽灵时间”短 为0</li>
+<li><strong>缺点</strong>：不全面（容易漏掉循环引用的对象）、并发支 持较弱、占用额外内存空间、等</li>
+</ul>
+</li>
+<li><p>Mark-Sweep（标记-清除）算法</p>
+<ul>
+<li><strong>基本思想</strong>：为每个object设定状态位(live&#x2F;dead)并记录，即mark阶段；将标记为dead的对象进行清理，即sweep可阶段。</li>
+<li><strong>优点：</strong>可以处理循环调用，指针操作无开销，对象不变</li>
+<li><strong>缺点</strong>：复杂度为O(heap),高　堆的占用比高时影响性能，容易造成碎片，需要找到root</li>
+</ul>
+</li>
+<li><p>Copying（复制）算法</p>
+<ul>
+<li><strong>基本思想</strong>：为了解决Mark-Sweep算法的缺陷，Copying算法就被提了出来。它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，就将还存活着的对象复制到另外一块上面，然后再把已使用的内存空间一次清理掉，这样一来就不容易出现内存碎片的问题。</li>
+<li><strong>优势</strong>：运行高效、不易产生内存碎片</li>
+<li><strong>缺点</strong>：复制花费大量的时间，牺牲内存空间</li>
+</ul>
+</li>
+<li><p>Mark-Compact（标记-整理）算法</p>
+<ul>
+<li>基本思想：为了解决Copying算法的缺陷，充分利用内存空间，提出了Mark-Compact算法。该算法标记阶段和Mark-Sweep一样，但是在完成标记之后，它不是直接清理可回收对象，而是将存活对象都向一端移动，然后清理掉端边界以外的内存。</li>
+</ul>
+</li>
+</ul>
+<h3 id="JVM中的GC"><a href="#JVM中的GC" class="headerlink" title="JVM中的GC"></a><em>JVM中的GC</em></h3><p>Java GC将堆分为不同的区域，各区域采用不同的GC策略，以提高GC的效率</p>
+<ul>
+<li><p>Java内存分配和回收的机制概括的说，就是：分代分配，分代回收。</p>
+</li>
+<li><p>对象将根据存活的时间被分为：年轻代（Young Generation）、年老代（Old Generation）、永久代（Permanent Generation，也就是方法区）</p>
+</li>
+<li><p>年轻代：</p>
+<ul>
+<li>对象被创建时，内存的分配首先发生在年轻代（大对象可以直接 被创建在年老代）</li>
+<li>大部分的对象在创建后很快就不再使用，因此很快变得不可达，于是被年轻代的GC机制清理掉（IBM的研究表明，98%的对象都是很快消 亡的）</li>
+<li>为减少GC代价，<strong>使用copying算法</strong></li>
+<li>具体过程<ol>
+<li>绝大多数刚创建的对象会被分配在Eden区，其中的大多数对象很快就会消亡。Eden区是连续的内存空间，因此在其上分配内存极快；</li>
+<li>当Eden区满的时候，执行Minor GC，将消亡的对象清理掉，并将剩余的对象复制到一个存活区Survivor0（此时，Survivor1是空白的，两个Survivor总有一个是空白的）；</li>
+<li>此后，每次Eden区满了，就执行一次Minor GC，并将剩余的对象都添加到Survivor0；</li>
+<li>当Survivor0也满的时候，将其中仍然活着的对象直接复制到Survivor1，以后Eden区执行Minor GC后，就将剩余的对象添加Survivor1（此时，Survivor0是空白的）。</li>
+<li>当两个存活区切换了几次（HotSpot虚拟机默认15次，用-XX:MaxTenuringThreshold控制，大于该值进入老年代）之后，仍然存活的对象（其实只有一小部分，比如，我们自己定义的对象），将被复制到老年代。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>年老代：</p>
+<ul>
+<li>对象如果在年轻代存活了足够长的时间而没有被清理掉，则会被复制到年老代，年老代的空间一般比年轻代大，能存放更多的对象，在年老代上发生的GC次数也比年轻代少。</li>
+<li>使用Mark-Sweep或Mark-Compact算法；</li>
+<li>Minor GC和full GC独立进行，减小代价；</li>
+<li>当perm generation满了之后，无法存储更多的元数据，也启动full GC。</li>
+</ul>
+</li>
+</ul>
+<h3 id="GVM-GC性能调优"><a href="#GVM-GC性能调优" class="headerlink" title="GVM GC性能调优"></a><em>GVM GC性能调优</em></h3><ul>
+<li>尽可能减少GC时间，一般不超过程序执行时间的5%</li>
+<li>一旦初始分配给程序的内存满了，就抛出内存溢出异常，</li>
+<li>在启动程序时，可为其配置内存分配的具体大小</li>
+<li>堆的大小决定着VM将会以何种频度进行GC、每次GC的时间多长。<ul>
+<li>这两个指标具体取值多少为“优”，需要针对特定应用进行分析。</li>
+<li>较大的heap会导致较少发生GC，但每次GC时间很长</li>
+<li>如果根据程序需要来设置heap大小，则需要频繁GC，但每次GC的时间较短</li>
+</ul>
+</li>
+<li>设定堆的大小的具体方法</li>
+</ul>
+<pre><code>-   `Xmx/-Xms`：指定年轻代和老年代空间的初始值和最大值；`Xms`小于`Xmx`时，年轻代和老年代所消耗的空间量可以根据应用程序的需求增长或收缩；Java堆的增长不会比`Xms`大，也不会比`Xmx`小
+-   `XX: NewSize=&lt;n&gt;[g|m|k]`：年轻代空间的初始和最小尺寸，`&lt;n&gt;`是大小，`[g | m | k]`指示大小是否应解释为千兆字节，兆字节或千字节
+-   `XX: MaxNewSize=&lt;n&gt;[g|m|k]`：年轻代空间的最大值
+-   `Xmn&lt;n&gt;[g|m|k]`：将年轻代的初始值、最小值、最大值设为同一值
+</code></pre>
+<ul>
+<li><p>GC模式选择</p>
+<ul>
+<li>增长或收缩年轻代或老年代的空间时需要Full GC</li>
+<li>Full GC可能会降低吞吐量并导致超出期望的延迟</li>
+<li>串行收集器（-XX:+UseSerialGC）：使用单个线程执行所有垃圾收集工作</li>
+<li>并行收集器（-XX:+UseParallelGC）：并行执行Minor GC，显著减少垃圾收集开销</li>
+<li>并发低暂停收集器（-XX:+UseConcMarkSweepGC）：收集持久代，与执行应用程序同时执行大部分收集，在收集期间会暂停一小段时间</li>
+<li>增量低暂停收集器（-XX:+UseTrainGC）：收集每个Minor的部分老年代，并尽量减少Major的大停顿</li>
+<li>-verbose:gc：打印GC信息</li>
+</ul>
+</li>
+<li><p>堆设置<br>-Xms：初始堆大小<br>-Xmx：最大堆大小<br>-XX:NewSize&#x3D;n：设置年轻代大小<br>-XX:NewRatio&#x3D;n：设置年轻代和年老代的比值。如：为3，表示年轻代与年老代比值为1：3，年轻代占整个年轻代年老代和的1&#x2F;4<br>-XX:SurvivorRatio&#x3D;n：年轻代中Eden区与两个Survivor区的比值。注意Survivor区有两个。如：3，表示Eden：Survivor&#x3D;3:2，一个Survivor区占整个年轻代的1&#x2F;5<br>-XX:MaxPermSize&#x3D;n：设置持久代大小</p>
+</li>
+<li><p>收集器设置<br>-XX:+UseSerialGC：设置串行收集器<br>-XX:+UseParallelGC：设置并行收集器<br>-XX:+UseParalledlOldGC：设置并行年老代收集器<br>-XX:+UseConcMarkSweepGC：设置并发收集器</p>
+</li>
+<li><p>垃圾回收统计信息<br>-XX：+PrintGC<br>-XX：+PrintGCDetails<br>-XX：+PrintGCTimeStamps<br>-Xloggc：filename</p>
+</li>
+<li><p>并行收集器设置<br>-XX:ParallelGCThreads&#x3D;n：设置并行收集器收集时使用的CPU数。并行收集线程数。<br>-XX:MaxGCPauseMillis&#x3D;n：设置并行收集最大暂停时间<br>-XX:GCTimeRatio&#x3D;n：设置垃圾回收时间占程序运行时间的百分比。公式为$\frac{1}{1+n}$</p>
+</li>
+<li><p>并发收集器设置<br>-XX:+CMSIncrementalMode：设置为增量模式。适用于单CPU情况。<br>-XX:ParallelGCThreads&#x3D;n：设置并发收集器年轻代收集方式为并行收集时，使用的CPU数。并行收集线程数。</p>
+</li>
+</ul>
+<h2 id="第二节-动态程序分析方法与工具"><a href="#第二节-动态程序分析方法与工具" class="headerlink" title="第二节 动态程序分析方法与工具"></a>第二节 动态程序分析方法与工具</h2><ul>
+<li>Jstat：获取JVM的Heap使用和GC的性能统计数据，命令如-gcutil</li>
+<li>Jmap：输出内存中的对象分布情况  如：jmap -clstats</li>
+<li>Jhat：导出heap dump，浏览&#x2F;查询其中的对象分布情况</li>
+<li>jstack：获取Java线程的stack trace 具体用途如下：<ul>
+<li>定位线程出现长时间停顿的原因，如多线程间死锁、死循环、请求外部资源 导致的长时间等待等。</li>
+<li>线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没 有响应的线程到底在后台做什么事情，或者等待什么资源。</li>
+</ul>
+</li>
+<li>Visual VM：提供了一个可视化界面，用于查看Java应用程序在JVM上运行时的详细信息，使用各种技术，包括jvmstat，JMX，Serviceability Agent（SA）和Attach API等</li>
+<li>MAT：内存堆导出文件的分析工具，生成饼状图等，能够对问题发生时刻的系统内存状态获取一个整体印象，找到最有可能导致内存泄露的对象，进一步查看其是否有异常行为。</li>
+</ul>
+<h3 id="Memory-Dump（堆转储文件）"><a href="#Memory-Dump（堆转储文件）" class="headerlink" title="Memory Dump（堆转储文件）"></a><em>Memory Dump（堆转储文件）</em></h3><p>正如Thread Dump文件记录了当时JVM中线程运行的情况一样，Heap Dump记录了JVM中堆内存运行的情况，可使用jmap或JConsole命令生成，jhat分析。</p>
+<p><strong>使用 jmap 命令生成</strong></p>
+<p><strong>使用JConsole生成</strong></p>
+<p><strong>使用jhat分析</strong> </p>
+<h3 id="Stack-Trace"><a href="#Stack-Trace" class="headerlink" title="Stack Trace"></a><em>Stack Trace</em></h3><p>　　可使用jstack查看，定位线程出现长时间停顿的原因。</p>
+<h2 id="第三节-代码调优的设计模式和I-O"><a href="#第三节-代码调优的设计模式和I-O" class="headerlink" title="第三节 代码调优的设计模式和I&#x2F;O"></a>第三节 代码调优的设计模式和I&#x2F;O</h2><h2 id="代码调优"><a href="#代码调优" class="headerlink" title="代码调优"></a>代码调优</h2><p><strong>代码调优的概念</strong></p>
+<ul>
+<li>代码调优：代码调优不是为了修复bug，而是对正确的代码进行修改以提高其性能，其常常是小规模的变化<ul>
+<li>调优不会减少代码行数</li>
+<li>不要猜原因，而应有明确的优化目标</li>
+<li>不要边写程序边调优</li>
+<li>不是性能优化的第一选择</li>
+<li>代码行数与性能之间无必然的联系</li>
+<li>代码调优建立在对程序性能的精确度量基础之上（profiling）</li>
+<li>当程序做过某些调整之后，要重新profiling并重新了解需要优化的性能瓶颈，微小的变化能导致优化方向大不相同</li>
+</ul>
+</li>
+<li>性能从不是追求的第一目标，正确性比性能更重要</li>
+</ul>
+<p><strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/1338.html">单例模式</a>（Singleton Pattern）</strong></p>
+<p><strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/1371.html">享元模式</a>（Flyweight Pattern）</strong></p>
+<p><strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/1343.html">原型模式</a>（Prototype Pattern）</strong></p>
+<p><strong>对象池模式（Object Pool Pattern）</strong></p>
+<h3 id="Java-I-O"><a href="#Java-I-O" class="headerlink" title="Java I&#x2F;O"></a><em>Java I&#x2F;O</em></h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/24/%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%E7%AC%AC%E5%9B%9B%E6%9C%9F/" rel="prev" title="">
+                  <i class="fa fa-angle-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/24/%E6%9C%AD%E8%AE%B0/" rel="next" title="">
+                   <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

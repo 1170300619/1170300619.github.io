@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="何为常量函数">
+<meta property="og:url" content="http://example.com/2022/03/09/%E4%BD%95%E4%B8%BA%E5%B8%B8%E9%87%8F%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="1.this指针当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为this指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用this来访问类内成员。那么由于this始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是this对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-09T12:54:45.000Z">
+<meta property="article:modified_time" content="2022-03-09T13:20:54.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="常量函数 隐式参数this">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/09/%E4%BD%95%E4%B8%BA%E5%B8%B8%E9%87%8F%E5%87%BD%E6%95%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/09/%E4%BD%95%E4%B8%BA%E5%B8%B8%E9%87%8F%E5%87%BD%E6%95%B0/","path":"2022/03/09/何为常量函数/","title":"何为常量函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>何为常量函数 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-this%E6%8C%87%E9%92%88"><span class="nav-number">1.</span> <span class="nav-text">1.this指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%A1%A5%E5%85%85"><span class="nav-number">2.</span> <span class="nav-text">2.补充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%B8%B8%E9%87%8F%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E7%9A%84%E9%87%8D%E8%BD%BD"><span class="nav-number">3.</span> <span class="nav-text">3.常量成员函数的重载</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E4%BD%95%E4%B8%BA%E5%B8%B8%E9%87%8F%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="何为常量函数 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          何为常量函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-03-09 20:54:45 / 修改时间：21:20:54" itemprop="dateCreated datePublished" datetime="2022-03-09T20:54:45+08:00">2022-03-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="1-this指针"><a href="#1-this指针" class="headerlink" title="1.this指针"></a>1.this指针</h1><p>当我们调用成员函数时，实际上是在替某个对象调用它。成员函数通过一个名为<strong>this</strong>指针的隐式参数来访问它调用的对象的地址，这样在成员函数内部，我们就可以使用<strong>this</strong>来访问类内成员。那么由于<strong>this</strong>始终指向这个地址，所以它是一个常量指针，不允许改变它所保存的对象地址。但是<strong>this</strong>对应的是指向类类型的非常量版本的常量指针，我们知道，这样的指针是不能绑定到一个常量对象上的。具体看下面的例子：</p>
+<pre><code>class people&#123;
+    public:
+        people()&#123;&#125;
+        people(int x):score(x)&#123;&#125;
+        ~people()&#123;&#125;
+        int getScore()&#123;return score;&#125;
+    private:
+        int score;
+&#125;;
+
+int main()&#123;
+    const people p1(22);//常量
+    cout &lt;&lt; p1.getScore() &lt;&lt; endl; //error，不能用常量绑定非常量指针
+    return 0;
+&#125;
+</code></pre>
+<p>这段代码在编译器中是无法编译通过的。我们知道用<strong>指向常量的指针</strong>来绑定<strong>常量和非常量</strong>都是可以的，那么为了提高成员函数的灵活性，我们就可以将这个<strong>this</strong>指针定义为指向常量的指针（同时其本身就是常量指针）。方法就是在成员函数的参数列表后面加入关键字const，则上述getScore函数修改为：</p>
+<pre><code>int getScore() const &#123;return score;&#125;
+</code></pre>
+<p>这样上述代码的main函数就可以正常运行了。</p>
+<h1 id="2-补充"><a href="#2-补充" class="headerlink" title="2.补充"></a>2.补充</h1><p>对于成员函数，其有一个隐式参数，来表示对象的地址，例如：</p>
+<pre><code>class Foo&#123;
+    public:
+        void hello(int a)&#123;
+            cout &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        &#125;
+        //等价于
+        //void hello(Foo* const this, int a)&#123;
+            //out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+        //&#125;
+&#125;;
+
+int main()&#123;
+    Foo foo;
+    int a = 2;
+    foo.hello(a);
+    //等价于
+    foo.hello(&amp;foo, a);
+&#125;
+</code></pre>
+<p>上面的代码展示了对象地址的隐式参数传递，当我们将hello设置为常量函数后，就可以理解为其等价版本变为：</p>
+<pre><code>void hello(const Foo* const this, int a)&#123;
+    out &lt;&lt; &quot;hello&quot; + a &lt;&lt; endl;
+&#125;
+</code></pre>
+<h1 id="3-常量成员函数的重载"><a href="#3-常量成员函数的重载" class="headerlink" title="3.常量成员函数的重载"></a>3.常量成员函数的重载</h1><p>两个成员函数，名字和参数列表都一样，但是一个是常量函数一个不是，则也算重载。</p>
+<pre><code>class people&#123;
+    public:
+        people()&#123;&#125;
+        people(int x):score(x)&#123;&#125;
+        ~people()&#123;&#125;
+        int getScore() &#123;return score;&#125;
+        int getScore() const &#123;return score&#125;;
+    private:
+        int score;
+&#125;;
+
+int main()&#123;
+    const people p1(22);//常量对象
+    people p2(23); //非常量对象
+    cout &lt;&lt; p1.getScore() &lt;&lt; p2.getScore() &lt;&lt; endl; //重载
+    return 0;
+&#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B8%B8%E9%87%8F%E5%87%BD%E6%95%B0-%E9%9A%90%E5%BC%8F%E5%8F%82%E6%95%B0this/" rel="tag"># 常量函数 隐式参数this</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/07/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E8%BF%AD%E4%BB%A3%E9%81%8D%E5%8E%86/" rel="prev" title="二叉树的迭代遍历">
+                  <i class="fa fa-angle-left"></i> 二叉树的迭代遍历
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/11/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86%E4%B8%AD%E6%9E%84%E9%80%A0%E5%89%8D%E5%90%8E%E6%8C%87%E9%92%88/" rel="next" title="二叉树遍历中构造前后指针">
+                  二叉树遍历中构造前后指针 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

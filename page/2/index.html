@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="热爱技术，笔耕不辍">
+<meta property="og:type" content="website">
+<meta property="og:title" content="漱石斋笔谈">
+<meta property="og:url" content="http://example.com/page/2/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="热爱技术，笔耕不辍">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/page/2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/2/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">漱石斋笔谈</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/" class="post-title-link" itemprop="url">Ceres Solvel库函数的解读</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-24 18:25:24" itemprop="dateModified" datetime="2020-12-24T18:25:24+08:00">2020-12-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="关于微分计算（On-Derivatives"><a href="#关于微分计算（On-Derivatives" class="headerlink" title="关于微分计算（On Derivatives)"></a>关于微分计算（On Derivatives)</h1><p>与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：</p>
+<blockquote>
+<ul>
+<li>解析微分算法（<font face="黑体">Analytic Derivatives</font>）：用户自己手动或者借助Maple或者Mathematica等工具求解导数，然后写到<font color=red font face="黑体">CostFunction</font>里面。</li>
+<li>数值微分算法（Numeric Derivatives）：Ceres用有限差分数值计算导数</li>
+<li>自动微分算法（Automatic Dericatives）：Ceres用C++模板和操作符重载自动分析计算微分。</li>
+</ul>
+</blockquote>
+<p>应该使用这三种方法中的哪一种（单独或组合）取决于用户愿意做出的情况和权衡。官方给出了一个简单粗暴的建议：<br>优先选用自动微分算法，某些情况可能需要用到解析微分算法，尽量避免数值微分算法。</p>
+<h2 id="Spivak标记"><a href="#Spivak标记" class="headerlink" title="Spivak标记"></a>Spivak标记</h2><p>为了简化阅读和推理，引入Spivak标记。</p>
+<p>对于单自变量函数$f$,$f(a)$表示它在$a$处的函数值。$Df$表示它的一阶导数，那么$Df(a)$就是函数在$a$处的一阶导数。即，</p>
+<p>$$Df(a) &#x3D; \frac{d}{dx}f(x)|_{x&#x3D;a}$$</p>
+<p>$D^kf$表示$f$的第$k$阶导数。</p>
+<p>对于双自变量函数$g(x,y)$，$D_1g$和$D_2g$分别表示关于$g$的两个偏微分。即，</p>
+<p>$$D_1g &#x3D; \frac{\partial}{\partial x}g(x,y)andD_2g &#x3D; \frac{\partial}{\partial y}g(x,y)$$</p>
+<p>$D_g$表示$g$的雅可比矩阵</p>
+<blockquote>
+<p>雅可比矩阵即</p>
+</blockquote>
+<p>$$<br>\begin{bmatrix}<br>  \frac{\partial y_1}{\partial x_1}&amp; \cdots &amp; \frac{\partial y_1}{\partial x_n}\<br> \vdots &amp; \ddots &amp; \vdots\<br>  \frac{\partial y_m}{\partial x_1}&amp; \cdots &amp; \frac{\partial y_m}{\partial x_n}<br>\end{bmatrix}<br>$$</p>
+<p>这里的$y_1$即$g$，其他的行不存在，因为只存在一个因变量$g$。即雅可比矩阵是一个一行两列的矩阵。即，</p>
+<p>$$Dg &#x3D; \begin{bmatrix}<br>  D_1g&amp; D_2g<br>\end{bmatrix}$$</p>
+<p>更一般的，如果$g:\mathbb{R}^{n} \longrightarrow \mathbb{R}^{m}$，那么$Dg$表示的就是一个$m \times n$的雅可比矩阵。</p>
+<h2 id="自动微分法（Automatic-Derivatices）"><a href="#自动微分法（Automatic-Derivatices）" class="headerlink" title="自动微分法（Automatic Derivatices）"></a>自动微分法（Automatic Derivatices）</h2><p>我们来思考一个相对复杂的曲线拟合问题。待确定参数方程如下：</p>
+<p>$$ y &#x3D; \frac{b_1}{(1+e^{b_2 - b_3x})^{1&#x2F;b_4}}$$</p>
+<p>现在给定一系列的对应数据点$\left{x_i,y_i\right },\forall i&#x3D;1,\cdots,n$。我们面临的问题就是求解$b_1,b_2,b_3,b_4$使下列表达式的取值最小：</p>
+<p>$$ \begin{aligned}<br>E\left(b_{1}, b_{2}, b_{3}, b_{4}\right) &amp;&#x3D;\sum_{i} f^{2}\left(b_{1}, b_{2}, b_{3}, b_{4} ; x_{i}, y_{i}\right) \<br>&amp;&#x3D;\sum_{i}\left(\frac{b_{1}}{\left(1+e^{b_{2}-b_3x_i}\right)^{1 &#x2F; b_{4}}}-y_{i}\right)^{2}<br>\end{aligned}$$</p>
+<p>下面我们使用自动微分算法，它是一种可以快速计算精确导数的算法。下面的代码片段实现了上述问题的<font color=red font face="黑体">CostFunction</font>。</p>
+<pre><code>struct Rat43CostFunctor &#123;
+    Rat43CostFunctor(const double x, const double y) : x_(x), y_(y) &#123;&#125;
+
+template &lt;typename T&gt;  
+bool operator()(const T* parameters, T* residuals) const &#123;
+    const T b1 = parameters[0];
+    const T b2 = parameters[1];
+    const T b3 = parameters[2];
+    const T b4 = parameters[3];
+    residuals[0] = b1 * pow(1.0 + exp(b2 -  b3 * x_), -1.0 / b4) - y_;
+    return true;
+&#125;
+
+private:
+    const double x_;
+    const double y_;
+&#125;;
+
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;Rat43CostFunctor, 1, 4&gt;(    
+        new Rat43CostFunctor(x, y));
+</code></pre>
+<p>接下来我们对自动微分算法的原理进行研究。为了研究其工作原理，必须要学习 <strong>二元数（Dual number)</strong> 和 **射流(Jet)**。</p>
+<h3 id="二元数和射流"><a href="#二元数和射流" class="headerlink" title="二元数和射流"></a>二元数和射流</h3><p><strong>二元数(Dual number)</strong> 是实数的一个延伸，类似于复数。复数则通过引入虚数来增加实数，比如$i$，二元数引入了一个极小二元数单位，比如$\epsilon$，且$\epsilon^2 &#x3D; 0$（平方后太小可以忽略）。一个二元数$a+\upsilon\epsilon$包含两个分量，实分量$a$和极小分量$\upsilon$。令人惊喜的是，这个简单的变化带来了一种方便的计算精确导数的方法，而不需要考虑复杂的符号表达式。</p>
+<p>例如，考虑函数</p>
+<p>$$ f(x) &#x3D; x^2$$</p>
+<p>然后<br>$$ \begin{aligned}<br>f(10+\epsilon) &amp;&#x3D;(10+\epsilon)^{2} \<br>&amp;&#x3D;100+20 \epsilon+\epsilon^{2} \<br>&amp;&#x3D;100+20 \epsilon<br>\end{aligned}$$</p>
+<p>观察$\epsilon$的系数，我们发现$Df(10) &#x3D; 20$。事实上，这个规律可以推广到不是多项式的函数。考虑一个任意可微函数$f(x)$，然后我们计算$f(x+ \epsilon)$，通过在$x$附近做泰勒展开，这就得到了无穷级数</p>
+<p>$$<br>\begin{array}{l}<br>f(x+\epsilon)&#x3D;f(x)+D f(x) \epsilon+D^{2} f(x) \frac{\epsilon^{2}}{2}+D^{3} f(x) \frac{\epsilon^{3}}{6}+\cdots \<br>f(x+\epsilon)&#x3D;f(x)+D f(x) \epsilon<br>\end{array}<br>$$</p>
+<p>记住，$\epsilon^2 &#x3D; 0$。</p>
+<p><strong>射流(Jet)</strong> 是一个$n$维二元数。我们定义$n$个极小单位$\epsilon_i,i&#x3D;1,\cdots,n$。并且存在性质$\forall i,j:\epsilon_i\epsilon_j&#x3D;0$。射流数由实数$a$和$n$维极小分量组成。</p>
+<p>$$x &#x3D; a + \sum_j \upsilon_j \epsilon_j$$</p>
+<p>为了简化我们改写为这种形式</p>
+<p>$$x &#x3D; a + \mathbf{v}$$</p>
+<p>然后使用泰勒级数展开，我们可以看到：</p>
+<p>$$f(a+\mathbf{v}) &#x3D; f(a) +Df(a)\mathbf{v} $$</p>
+<p>对多变量函数$f : \mathbb{R^n} \longrightarrow \mathbb{R^m} $相似。对于自变量$x_i &#x3D; a_i + \mathbf{v}_i, \forall i &#x3D; 1,\cdots,n :$</p>
+<p>$$f(x_1,\cdots,x_n) &#x3D; f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n)\mathbf{v}_i $$</p>
+<p>如果每个选取的极小量$\mathbf{v}_i &#x3D; e_i $是$i^{th}$标准基向量，那么上面的表达式就可以简化为</p>
+<p>$$<br>f(x_1,\cdots,x_n) &#x3D; f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n) \epsilon_i<br>$$</p>
+<p>我们可以查找$\epsilon_i$的系数来提取雅可比矩阵的坐标。</p>
+<h3 id="实现射流（Jet"><a href="#实现射流（Jet" class="headerlink" title="实现射流（Jet)"></a>实现射流（Jet)</h3><p>为了让上面学到的内容在实践中发挥作用，我们需要能够计算函数$f$的值，不仅在自变量是实数的时候，也需要在自变量是二元数的情况下适用。但是通常我们并非通过泰勒展开式来求函数值。这也就是为什么我们需要用到C++模板和操作符重载。下面的代码段实现了<font color = red font face = "黑体">Jet</font>类以及对该类的一些操作和函数。</p>
+<pre><code>template&lt;int N&gt; struct Jet &#123;
+    double a;
+    Eigen::Matrix&lt;double, 1, N&gt; v;
+&#125;;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator+(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a + g.a, f.v + g.v);
+&#125;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator-(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a - g.a, f.v - g.v);
+&#125;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator*(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a * g.a, f.a * g.v + f.v * g.a);
+&#125;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator/(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a / g.a, f.v / g.a - f.a * g.v / (g.a * g.a));
+&#125;
+
+template &lt;int N&gt; Jet&lt;N&gt; exp(const Jet&lt;N&gt;&amp; f) &#123;
+    return Jet&lt;T, N&gt;(exp(f.a), exp(f.a) * f.v);
+&#125;
+
+// This is a simple implementation for illustration purposes, the
+// actual implementation of pow requires careful handling of a number
+// of corner cases.
+template &lt;int N&gt;  Jet&lt;N&gt; pow(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(pow(f.a, g.a),
+            g.a * pow(f.a, g.a - 1.0) * f.v +
+            pow(f.a, g.a) * log(f.a); * g.v);
+&#125;
+</code></pre>
+<p>有了这些重载的函数，我们现在可以用一个<font color = red font face = "黑体">Jets</font>数组来调用<font color = red font face = "黑体">Rat43CostFunctor</font>，而不是<font color = red font face = "黑体">double</font>双精度类型。将其与初始化的<font color = red font face = "黑体">Jets</font>结合起来，我们就可以计算雅可比矩阵了：</p>
+<pre><code>class Rat43Automatic : public ceres::SizedCostFunction&lt;1,4&gt; &#123;
+    public:
+      Rat43Automatic(const Rat43CostFunctor* functor) : functor_(functor) &#123;&#125;
+      virtual ~Rat43Automatic() &#123;&#125;
+      virtual bool Evaluate(double const* const* parameters,
+                    double* residuals,
+                    double** jacobians) const &#123;
+    // Just evaluate the residuals if Jacobians are not required.
+    if (!jacobians) return (*functor_)(parameters[0], residuals);
+
+    // 初始化Jets，四个待求参数
+    ceres::Jet&lt;4&gt; jets[4];
+    for (int i = 0; i &lt; 4; ++i) &#123;
+        jets[i].a = parameters[0][i];
+        jets[i].v.setZero();
+        jets[i].v[i] = 1.0;
+    &#125;
+
+    ceres::Jet&lt;4&gt; result;
+    (*functor_)(jets, &amp;result);
+
+    // 把Jet的值（前面提到的，极小单位分量的系数）复制出啦.
+    residuals[0] = result.a;
+    for (int i = 0; i &lt; 4; ++i) &#123;
+        jacobians[0][i] = result.v[i];
+    &#125;
+    return true;
+&#125;
+
+private:
+    std::unique_ptr&lt;const Rat43CostFunctor&gt; functor_;
+&#125;;
+</code></pre>
+<p>这就是<font face = "黑体" font color = red>AutoDiffCostFunction</font>的核心工作原理。</p>
+<h3 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h3><p>自动微分使用户不必计算和推理Jacobians的符号表达式，但是这个捷径是有代价的。例如，考虑以下简单的函数：</p>
+<pre><code>struct Functor &#123;
+    template &lt;typename T&gt; bool operator()(const T* x, T* residual) const &#123;
+        residual[0] = 1.0 - sqrt(x[0] * x[0] + x[1] * x[1]);
+        return true;
+    &#125;
+&#125;;
+</code></pre>
+<p>查看计算残差的代码，没有人预见到任何问题。但是，如果我们看一下雅可比矩阵的解析表达式：</p>
+<p>$$<br>\begin{aligned}<br>y &amp;&#x3D;1-\sqrt{x_{0}^{2}+x_{1}^{2}} \<br>D_{1} y &amp;&#x3D;-\frac{x_{0}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}, D_{2} y&#x3D;-\frac{x_{1}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}<br>\end{aligned}<br>$$</p>
+<p>我们发现它在$x_0 &#x3D; 0,x_1 &#x3D; 0$处是不确定的。</p>
+<p>这个问题没有完美的解决方案。在某些情况下，我们需要明确地指出可能出现的不确定的点，并使用使用<font face = "黑体" font color = blue>L’Hopital rule</font>（这里要去Ceres Solvel官网的rotation.h文件中的转换例程），在其他情况下，可能需要对表达式进行正则化，以消除这些点。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/Ceres%20Solvel%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%AE%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/24/Ceres%20Solvel%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%AE%97/" class="post-title-link" itemprop="url">Ceres Solvel非线性最小二乘问题的解算</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-28 10:01:22" itemprop="dateModified" datetime="2020-12-28T10:01:22+08:00">2020-12-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>如果想要高效地使用Ceres Solver，需要掌握一定的非线性最小二乘解算基础知识。所以在这一部分将将要介绍Ceres中核心优化算法的工作原理。</p>
+<p>设$x \in \mathbb{R}^n$是一个$n$维向量，并且$F(x) &#x3D; [f_1(x),\cdots,f_m(x)] ^ T$是关于$x$的$n$维方程。那么我们关注下列优化问题</p>
+<p>$$<br>argmin_x \frac{1}{2} \left | F(x) \right | ^ 2 \<br>L \le x \le U<br>$$<br>其中$L$和$U$分别是参数向量$x$的下限和上限。</p>
+<p>因为对于一个一般的函数，求解全局最小值常常非常棘手，我们不得不关注局部最小值。$F(x)$的雅可比矩阵$J(x)$是一个$m \times n$的矩阵，其中$J_{ij}(x) &#x3D; \partial _j f_i(x)$，函数的梯度向量$g(x) &#x3D; \nabla \frac{1}{2} \left | F(x) \right | ^ 2 &#x3D; J(x)^T F(x)$。</p>
+<p>在计算非线性优化问题的一个通用的策略是，求解原问题的近似简化问题。在每一次循环中，根据近似问题的解可以确定向量$x$的修正值$\triangle x$。对于非线性最小二问题，我们可以通过线性化来建立近似问题，即$F(x + \triangle x) \approx F(x) + J(x) \triangle x$。那么上述问题就变成下列问题：</p>
+<p>$$<br>min_{\triangle x} \frac{1}{2} \left |F(x) + J(x) \triangle x \right |^2<br>$$</p>
+<blockquote>
+<p>这里官方教程跳了几步。要求全局最小值非常棘手，所以转而求局部最小值。而求局部最小值就是，从一个任意的起始点，观测四周的“更小值”。如果观测四周都比当前点大，那么当前点就是局部最小值点，算法达到收敛。否则，设这个新找到的最小值点为“当前点”，重复这一步骤。这也就是下文中”<strong>用$x \longleftarrow x + \triangle x$来更新</strong>“的含义。所以现在问题变成了，如何求解四周的点的值。即，给$x$赋予一个步长$\triangle x$，观察周围的$F(x + \triangle x)$，并且寻找最小值。</p>
+</blockquote>
+<p>根据步长的控制方法，非线性优化可以分成两大类。</p>
+<blockquote>
+<ul>
+<li><strong>置信域法Trust Region</strong> （也有文献成为<strong>信任域法</strong>）置信域方法在搜索空间的子集内应用<strong>模型函数</strong>（通常是二次方程）来近似<strong>目标函数</strong>，这个空间被称为<strong>置信域</strong>。如果模型函数成功地使真正的目标函数最小化，则扩大置信域。否则收缩置信域并且再次尝试求解模型函数的优化问题。</li>
+<li><strong>线搜索法Line Search</strong> 线搜索方法首先找到一个下降的方向，目标函数将沿其下降。然后再确定步长，从而决定沿该方向到底移动多远。 下降方向可以通过各种方法计算，如梯度下降法、牛顿法和拟牛顿法。步长可以精确或不精确地确定。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>这里我们只对共轭梯度法进行介绍（因为我们用的库函数所采用的方法就是共轭梯度法）</strong></p>
+</blockquote>
+<p>对以下形式的线性最小二乘问题：</p>
+<p>$$<br>min_{\triangle x} \frac{1}{2} \left |F(x) + J(x) \triangle x \right |^2<br>$$<br>令$H(x) &#x3D; J(x) ^ TJ(x)$且$g(x) &#x3D; - J(x) ^ {T}f(x)$。为了标记方便，我们舍弃对$x$的依赖，那么很容易看出求解上式等价于求解<font face = "黑体" font color = "red">Normal Equation</font>方程</p>
+<p>$$<br>H\triangle x &#x3D; g<br>$$<br>我们在程序中使用的计算上式的线性解算器是<font face = "黑体"><strong>CGNR</strong></font>，该解算器在法向方程上使用共轭梯度求解器，但没有明确地构建<font face = "黑体">Normal Equation</font>方程。 它利用下列关系：</p>
+<p>$$<br>Hx &#x3D; J ^ TJx &#x3D; J^T(Jx)<br>$$<br>共轭梯度的收敛取决于调节器数量$\kappa(H)$，通常$H$的条件比较弱，并且必须使用预调节器才能获得合理的性能。 目前只有<font face = "黑体" font color = "red">JACOBI</font>预处理器可以用于<font face = "黑体" font color = "red">CGNR</font>。它使用$H$的块对角线来预处理<font face = "黑体">Normal Equation</font>方程。</p>
+<p>当用户选择<font face = "黑体">CGNR</font>作为线性求解器时，Ceres会自动从精确的步长算法切换到不精确的步长算法。</p>
+<h1 id="JACOBI预处理器"><a href="#JACOBI预处理器" class="headerlink" title="JACOBI预处理器"></a>JACOBI预处理器</h1><p>求解<font face = "黑体" font color = "red">Normal Equation</font>方程的收敛速度取决于$H$的特征值的分布。一个有用的上界是$\sqrt {\kappa H}$，$\sqrt {\kappa H}$是矩阵$H$的条件值。对于大多数$BA$问题来说，$\sqrt {\kappa H}$很大，直接应用共轭梯度法对该方程进行求解会导致糟糕的性能。</p>
+<p>这个问题的解决方法是用一个预条件系统来替换$H\triangle x &#x3D; g$方程。给定一个线性系统，$Ax &#x3D; b$，预条件器$M$，预条件系统$M^{-1} Ax &#x3D; M^{-1}b$。这个算法被称作预处理共轭梯度法（PCG），它最坏的情况现在取决于预条件矩阵$\sqrt{M^{-1}A}$的条件数。</p>
+<p>使用预条件器$M$的计算成本是计算$M$以及任意向量$y$的乘积$M^{-1}y$，因此，要考虑两个相互竞争的因素：$H$的结构中有多少是由$M$占据的，以至于条件值$\kappa(HM^{-1})$，以及构造和使用$M$的计算成本。理想的预调节器是条件值$\kappa(M^{-1}A) &#x3D; 1$。使用$M &#x3D; A$可以实现这一效果，但是不是一个实际的选择，因为应用这个预调函数需要一个线性方程组，等价于无预先条件的问题。通常情况下，$M$的信息越多，使用的成本就越高。例如，基于不完全$Cholesky$分解的预条件器比$Jacobi$预条件器具有更好的收敛性能，但代价也更高。</p>
+<p>所有的预调节器中最简单的是对角或雅可比的预调机。例如，$M &#x3D; diag(A)$。对于像$H$这样的块状结构矩阵，可以将其推广到$Jacobi$的预调节器。Ceres实现的块$Jacobi$预调节器叫做<font face = "黑体" font color = "red">JACOBI</font>，当使用<font face = "黑体" font color = "red">CGNR</font>时，它指的是$H$的块对角线，即</p>
+<p>$$<br>C_{i j}&#x3D;\left{\begin{array}{cc}<br>A_{i i} &amp; \text { if } i&#x3D;j \<br>0 &amp; \text { 其他 }<br>\end{array}\right.<br>$$</p>
+<p><font face = "黑体" >PCG</font>算法的过程如下：假设$x_0 \in \mathbb{R}^n$是初始向量，</p>
+<p>$$<br>\begin{aligned}<br>&amp;r_{0}&#x3D;b-A x_{0}\<br>&amp;z_{0}&#x3D;C^{-1} r_{0}\<br>&amp;d_{0}&#x3D;z_{0}\<br>&amp;\text { For } k&#x3D;0,1,2, \ldots\<br>&amp;\alpha_{k}&#x3D;\frac{z_{k}^{\top} r_{k}}{d_{k}^{\top} A d_{k}}\<br>&amp;x_{k+1}&#x3D;x_{k}+\alpha_{k} d_{k}\<br>&amp;r_{k+1}&#x3D;r_{k}-\alpha_{k} A d_{k}\<br>&amp;z_{k+1}&#x3D;C^{-1} r_{k+1}\<br>&amp;\beta_{k+1}&#x3D;\frac{z_{k+1}^{\top} r_{k+1}}{z_{k}^{\top} r_{k}}\<br>&amp;d_{k+1}&#x3D;x_{k+1}+\beta_{k+1} d_{k}<br>\end{aligned}<br>$$</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/Ceres%20Solvel%E7%BF%BB%E8%AF%91%E7%AC%AC%E4%B8%80%E6%9C%9F-%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/24/Ceres%20Solvel%E7%BF%BB%E8%AF%91%E7%AC%AC%E4%B8%80%E6%9C%9F-%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">Ceres Solvel翻译第一期-说明文档</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-23 09:16:06" itemprop="dateModified" datetime="2020-12-23T09:16:06+08:00">2020-12-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="非线性最小二乘法"><a href="#非线性最小二乘法" class="headerlink" title="非线性最小二乘法"></a>非线性最小二乘法</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Ceres可以解决有界约束形式的鲁棒非线性最小二乘问题，形式如下：</p>
+<p>$$min_x\frac{1}{2}\sum_i\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$$</p>
+<p>$$s.t. l_i\le x_j\le u_j$$<br>这一表达式在工程和科学领域有非常广泛的应用，比如统计学中的曲线拟合，或者在计算机视觉中依据图像进行三维模型的构建等等。</p>
+<p>$\rho_i(\left |f_i(x_{i_1},\cdots,x_{i_k})  \right |^2)$这一部分被称为残差块（<font color=red font face="黑体">ResidualBlock</font>)，其中的$f_i(\cdot )$叫做代价函数（<font color=red font face="黑体">CostFuction</font>)。代价函数依赖于一系列参数$[x_{i_1},\cdots,x_{i_k}]$,这一系列参数（均为标量）称为参数块（<font color=red font face="黑体">ParameterBlock</font>)。当然参数块中也可以只含有一个变量。$l_j$和$u_j$分别是变量块$x_j$的上下边界。  </p>
+<p>$\rho_i$是损失函数（<font color=red font face="黑体">LossFuction</font>)。损失函数是一个标量函数，其作用是减少异常值（<font color=red font face="黑体">Outliers</font>)对优化结果的影响。其效果类似于对函数的过滤。</p>
+<p>一个特殊情况是，$\rho_i(f<br>(x)) &#x3D; f(x)$,也就是没有对函数进行任何过滤，损失函数的输出等于输入。若同时令$l_j &#x3D; -\infty$并且$u_j &#x3D; \infty$，即参数块的取值没有限制，那么此时问题变成了非线性最小二乘问题。表达式如下：  </p>
+<p>$$\frac{1}{2}\sum_i\left | f_i(x_{i_1},\cdots,x_{i_k}) \right |^2$$</p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>每个程序最简单的示例被称为Hello World。本节将简单描述Ceres的Hello World示例，以便让读者对库的使用步骤快速建立认识。<br>在Hello World这个例子中，待优化的函数是$f(x) &#x3D; 10 - x$，重载操作符如下：</p>
+<pre><code>struct CostFunctor &#123;
+    template &lt;typename T&gt;
+    bool operator()(const T* const x, T* residual) const &#123;
+        residual[0] = T(10.0) - x[0];
+        return true;
+    &#125;
+&#125;;
+</code></pre>
+<p>重点要注意这里的<font face ="黑体" font color = red>operator()</font>是一个模板方法，这里假设所有的输入和输出都是同一类型<font face ="黑体" font color = red>T</font>。在后面的代码中，Ceres通过调用<font face ="黑体" font color = red>CostFunctor::operator&#60;T&#62;()</font>来使用这一重载操作符。在这个例子中可以令<font face ="黑体" font color = red>T &#x3D; double</font>，然后仅仅以double类型输出残差值。也可以令<font face ="黑体" font color = red>T &#x3D; Jet</font>然后输出雅可比矩阵。这一部分在后面会有更详细的介绍。</p>
+<blockquote>
+<p>雅可比矩阵实际上就是对一个含有多个参数的函数$f(x)$求一系列一阶偏微分</p>
+</blockquote>
+<p>一旦残差方程建立，我们就可以用Ceres来实现非线性最小二乘法的优化算法。代码如下：  </p>
+<pre><code>int main(int argc, char** argv) &#123;
+google::InitGoogleLogging(argv[0]);
+
+// The variable to solve for with its initial value.
+double initial_x = 5.0;
+double x = initial_x;
+
+// Build the problem.
+Problem problem;
+
+// Set up the only cost function (also known as residual). This uses
+// auto-differentiation to obtain the derivative (jacobian).
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;CostFunctor, 1, 1&gt;(new CostFunctor);
+problem.AddResidualBlock(cost_function, nullptr, &amp;x);
+
+// Run the solver!
+Solver::Options options;
+options.linear_solver_type = ceres::DENSE_QR;
+options.minimizer_progress_to_stdout = true;
+Solver::Summary summary;
+Solve(options, &amp;problem, &amp;summary);
+
+std::cout &lt;&lt; summary.BriefReport() &lt;&lt; &quot;\n&quot;;
+std::cout &lt;&lt; &quot;x : &quot; &lt;&lt; initial_x
+            &lt;&lt; &quot; -&gt; &quot; &lt;&lt; x &lt;&lt; &quot;\n&quot;;
+return 0;
+&#125;
+</code></pre>
+<p><font face ="黑体" font color = red>AutoDiffCostFuction</font>将刚刚建立的<font face ="黑体" font color = red>CostFuctor</font>结构的一个实例作为输入，自动生成其微分并且赋予其一个<font face ="黑体" font color = red>CostFuction</font>类型的接口。<br>编译完成，运行结果如下：（原文中$x$初始值输出错误，修正为上面代码中的$5$）</p>
+<pre><code>iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
+0     4.512500e+01    0.00e+00    9.50e+00   0.00e+00   0.00e+00  1.00e+04       0     5.33e-04   3.46e-03
+1     4.511598e-07    4.51e+01    9.50e-04   9.50e+00   1.00e+00  3.00e+04       1     5.00e-04   4.05e-03
+2     5.012552e-16    4.51e-07    3.17e-08   9.50e-04   1.00e+00  9.00e+04       1     1.60e-05   4.09e-03
+Ceres Solver Report: Iterations: 2, Initial cost: 4.512500e+01, Final cost: 5.012552e-16, Termination: CONVERGENCE
+x : 5 -&gt; 10
+</code></pre>
+<p>初始值为$5$，最终通过两次循环之后到达最优解$10$。其实本例是一个线性问题，因为$f(x) &#x3D; 10 - x$是一个线性函数，但是Ceres仍然可以应用。</p>
+<h2 id="导数"><a href="#导数" class="headerlink" title="导数"></a>导数</h2><p>像大多数优化软件包一样，Ceres求解器的求解基于其能够在任意参数值下评估目标函数中每个项的值和导数。 正确而高效地做到这一点对于取得优秀的运算结果至关重要。Ceres提供了一系列解决方案，其中一个就是在Hello World中用到的Automatic Differentiation (自动微分算法)。这一部分我们将探讨另外两种可能性，即解析法（Analytic）和数值法（Numeric ）求导。</p>
+<h3 id="数值法求导（Numeric-Derivatives"><a href="#数值法求导（Numeric-Derivatives" class="headerlink" title="数值法求导（Numeric Derivatives)"></a>数值法求导（Numeric Derivatives)</h3><p>在某些情况下，像在Hello World中一样定义一个代价函数是不可能的。比如在求解残差值（residual）的时候调用了一个库函数，而这个库函数的内部算法你根本无法干预。在这种情况下数值微分算法就派上用场了。用户定义一个CostFunctor来计算残差值，并且构建一个<font face ="黑体" font color = red>NumericDiffCostFunction</font>数值微分代价函数。比如对于$f(x) &#x3D; 10 - x$对应函数体如下：</p>
+<pre><code>struct NumericDiffCostFunctor &#123;
+    bool operator()(const double* const x, double* residual) const &#123;
+        residual[0] = 10.0 - x[0];
+        return true;
+    &#125;
+&#125;;
+</code></pre>
+<p>然后继续添加<font face ="黑体" font color = red>Problem</font></p>
+<pre><code>CostFunction* cost_function =
+    new NumericDiffCostFunction&lt;NumericDiffCostFunctor, ceres::CENTRAL, 1, 1&gt;(
+        new NumericDiffCostFunctor);
+problem.AddResidualBlock(cost_function, NULL, &amp;x);
+</code></pre>
+<p>这里我们引用一下Hello World中模板类函数以及自动微分算法（automatic)的代码进行比对：  </p>
+<pre><code>//模板类函数
+struct CostFunctor &#123;
+    template &lt;typename T&gt;
+    bool operator()(const T* const x, T* residual) const &#123;
+        residual[0] = T(10.0) - x[0];
+        return true;
+    &#125;
+&#125;;
+//自动微分算法（automatic）
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;CostFunctor, 1, 1&gt;(new CostFunctor);
+problem.AddResidualBlock(cost_function, NULL, &amp;x);
+</code></pre>
+<p>可以发现两种算法在构建Problem时候基本差不多。但是在用Nummeric算法时需要额外给定一个参数<font face ="黑体" font color = red>ceres::CENTRAL</font>。这个参数告诉计算机如何计算导数。更多具体介绍可以参看NumericDiffCostFunction的Doc文档。</p>
+<p>Ceres官方更加推荐自动微分算法，因为C++模板类使自动算法有更高的效率。数值微分算法通常来说计算更复杂，收敛更缓慢。</p>
+<h3 id="解析法求导（Analytic-Derivatives）"><a href="#解析法求导（Analytic-Derivatives）" class="headerlink" title="解析法求导（Analytic Derivatives）"></a>解析法求导（Analytic Derivatives）</h3><p>有些时候，应用自动求解算法时不可能的。比如在某些情况下，计算导数的时候，使用闭合解（closed form，也被称为解析解）会比使用自动微分算法中的链式法则（chain rule）更有效率。这里辨析一下解析解和数值解：</p>
+<blockquote>
+<p>在解组件特性相关的方程式时，大多数的时候都要去解偏微分或积分式，才能求得其正确的解。依照求解方法的不同，可以分成以下两类：解析解和数值解。  </p>
+</blockquote>
+<blockquote>
+<ul>
+<li><strong>解析解(analytical solution)：</strong><br>就是一些严格的公式,给出任意的自变量就可以求出其因变量,也就是问题的解。他人可以利用这些公式计算各自的问题。所谓的解析解是一种包含：分式、三角函数、指数、对数甚至无限级数等基本函数的解的形式。用来求得解析解的方法称为解析法〈analytic techniques、analytic methods〉，解析法即是常见的微积分技巧，例如分离变量法等。解析解为一封闭形式〈closed-form〉的函数，因此对任一独立变量，我们皆可将其带入解析函数求得正确的相依变量。因此，解析解也被称为闭式解（closed-form solution）。</li>
+<li><strong>数值解(numerical solution)：</strong><br>是采用某种计算方法,如有限元的方法, 数值逼近,插值的方法, 得到的解。别人只能利用数值计算的结果, 而不能随意给出自变量并求出计算值。当无法藉由微积分技巧求得解析解时，这时便只能利用数值分析的方式来求得其数值解了。数值方法变成了求解过程重要的媒介。在数值分析的过程中，首先会将原方程式加以简化，以利后来的数值分析。例如，会先将微分符号（连续）改为差分符号（离散）等。然后再用传统的代数方法将原方程式改写成另一方便求解的形式。这时的求解步骤就是将一独立变量带入，求得相依变量的近似解。因此利用此方法所求得的相依变量为一个个分离的数值〈discrete values〉，不似解析解为一连续的分布，而且因为经过上述简化的动作，所以可以想见正确性将不如解析法来的好。</li>
+</ul>
+</blockquote>
+<p>在这种情况下，你就可以自己编写残差计算代码和雅可比行列式的计算代码了。还是用Hello world中的$f(x) &#x3D; 10 - x$为例：  </p>
+<pre><code>class QuadraticCostFunction : public ceres::SizedCostFunction&lt;1, 1&gt; &#123;
+ public:
+  virtual ~QuadraticCostFunction() &#123;&#125;
+  virtual bool Evaluate(double const* const* parameters,
+                        double* residuals,
+                        double** jacobians) const &#123;
+    const double x = parameters[0][0];
+    residuals[0] = 10 - x;
+
+    // Compute the Jacobian if asked for.
+    if (jacobians != nullptr &amp;&amp; jacobians[0] != nullptr) &#123;
+    jacobians[0][0] = -1;
+    &#125;
+    return true;
+  &#125;
+&#125;;
+</code></pre>
+<p><font face ="黑体" font color = red>Evaluate</font>函数的参数包括：参数的输入数组、残差的输出数组以及雅可比矩阵的输出数组。其中雅可比矩阵是可选的，<font face ="黑体" font color = red>Evaluate</font>会在它非空时进行检查，并且如果是非空则用残差的导数值进行填充。这种情况下残差函数是线性的，雅可比行列式是常数。</p>
+<p>从上述代码片段可以看出，实现“CostFunction““其实有点乏味。所以除非有什么特殊原因需要自行构建雅可比的计算，否则最好还是直接使用自动微分法或者数值微分法来创建残差块。</p>
+<h3 id="其他导数计算方法"><a href="#其他导数计算方法" class="headerlink" title="其他导数计算方法"></a>其他导数计算方法</h3><p>到目前为止，计算导数其实是Ceres最复杂的部分了。根据需要，用户有时候还需要更复杂的导数计算算法。这一节仅仅是大体介绍了如何使用Ceres进行导数计算最浅显的部分。对Numeric和Auto方法都很熟悉之后，还可以深入研究一下<font face ="黑体" font color = red>DynamicAutoDiffCostFunction</font> , <font face ="黑体" font color = red>CostFunctionToFunctor</font>, <font face ="黑体" font color = red>NumericDiffFunctor</font> 和<font face ="黑体" font color = red>ConditionedCostFunction</font>，从而实现更高级的代价函数的计算方法。</p>
+<h2 id="鲍威尔方程"><a href="#鲍威尔方程" class="headerlink" title="鲍威尔方程"></a>鲍威尔方程</h2><p>在这一节我们使用一个复杂一些的例子——求解鲍威尔方程的最小值。我们定义参数块$x &#x3D; [x_1,x_2,x_3,x_4]$，以及代价函数如下：<br>$$<br>\begin{aligned}<br>&amp;f_1(x) &#x3D; x_1 + 10x_2  \<br>&amp;f_2(x) &#x3D; \sqrt{5}(x_3 - x_4) \<br>&amp;f_3(x) &#x3D; (x_2 - 2x_3)^2 \<br>&amp;f_4(x) &#x3D; \sqrt{10}(x_1 - x_4)^2 \<br>&amp;F(x) &#x3D; [f_1(x),f_2(x),f_3(x),f_4(x)]<br>\end{aligned}<br>$$</p>
+<p>$F(x)$是关于上面四个残差值得方程。我们希望找到一组$x$，使得$\frac{1}{2}\left |F(x)  \right |^2$取得最小值。</p>
+<p>同样的，第一步仍然是定义残差方程。对于每一行方程都可以定义一个对应的结构体，如对于$f_4(x_1,x_4)$：</p>
+<pre><code>struct F4 &#123;
+    template &lt;typename T&gt;
+    bool operator()(const T* const x1, const T* const x4, T* residual) const &#123;
+        residual[0] = T(sqrt(10.0)) * (x1[0] - x4[0]) * (x1[0] - x4[0]);
+        return true;
+    &#125;
+&#125;;
+</code></pre>
+<p>类似的我们也可以实现$f_1$,$f_2$和$f_3$得代码。之后就可以通过下列代码，把各个残差块加入到<font face ="黑体" font color = red>Problem</font>中。</p>
+<pre><code>double x1 =  3.0; double x2 = -1.0; double x3 =  0.0; double x4 = 1.0;
+
+Problem problem;
+
+// Add residual terms to the problem using the using the autodiff
+// wrapper to get the derivatives automatically.
+problem.AddResidualBlock(
+    new AutoDiffCostFunction&lt;F1, 1, 1, 1&gt;(new F1), nullptr, &amp;x1, &amp;x2);
+problem.AddResidualBlock(
+    new AutoDiffCostFunction&lt;F2, 1, 1, 1&gt;(new F2), nullptr, &amp;x3, &amp;x4);
+problem.AddResidualBlock(
+    new AutoDiffCostFunction&lt;F3, 1, 1, 1&gt;(new F3), nullptr, &amp;x2, &amp;x3)
+problem.AddResidualBlock(
+    new AutoDiffCostFunction&lt;F4, 1, 1, 1&gt;(new F4), nullptr, &amp;x1, &amp;x4);
+</code></pre>
+<p>注意每个残差块只依赖与两个参数，而不是全部四个参数。运行结果如下：</p>
+<pre><code>Initial x1 = 3, x2 = -1, x3 = 0, x4 = 1
+iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
+  0  1.075000e+02    0.00e+00    1.55e+02   0.00e+00   0.00e+00  1.00e+04       0    4.95e-04    2.30e-03
+  1  5.036190e+00    1.02e+02    2.00e+01   2.16e+00   9.53e-01  3.00e+04       1    4.39e-05    2.40e-03
+  2  3.148168e-01    4.72e+00    2.50e+00   6.23e-01   9.37e-01  9.00e+04       1    9.06e-06    2.43e-03
+  3  1.967760e-02    2.95e-01    3.13e-01   3.08e-01   9.37e-01  2.70e+05       1    8.11e-06    2.45e-03
+  4  1.229900e-03    1.84e-02    3.91e-02   1.54e-01   9.37e-01  8.10e+05       1    6.91e-06    2.48e-03
+  5  7.687123e-05    1.15e-03    4.89e-03   7.69e-02   9.37e-01  2.43e+06       1    7.87e-06    2.50e-03
+  6  4.804625e-06    7.21e-05    6.11e-04   3.85e-02   9.37e-01  7.29e+06       1    5.96e-06    2.52e-03
+  7  3.003028e-07    4.50e-06    7.64e-05   1.92e-02   9.37e-01  2.19e+07       1    5.96e-06    2.55e-03
+  8  1.877006e-08    2.82e-07    9.54e-06   9.62e-03   9.37e-01  6.56e+07       1    5.96e-06    2.57e-03
+  9  1.173223e-09    1.76e-08    1.19e-06   4.81e-03   9.37e-01  1.97e+08       1    7.87e-06    2.60e-03
+ 10  7.333425e-11    1.10e-09    1.49e-07   2.40e-03   9.37e-01  5.90e+08       1    6.20e-06    2.63e-03
+ 11  4.584044e-12    6.88e-11    1.86e-08   1.20e-03   9.37e-01  1.77e+09       1    6.91e-06    2.65e-03
+ 12  2.865573e-13    4.30e-12    2.33e-09   6.02e-04   9.37e-01  5.31e+09       1    5.96e-06    2.67e-03
+ 13  1.791438e-14    2.69e-13    2.91e-10   3.01e-04   9.37e-01  1.59e+10       1    7.15e-06    2.69e-03
+
+Ceres Solver v1.12.0 Solve Report
+----------------------------------
+                                        Original                  Reduced
+Parameter blocks                            4                        4
+Parameters                                  4                        4
+Residual blocks                             4                        4
+Residual                                    4                        4
+
+Minimizer                        TRUST_REGION
+
+Dense linear algebra library            EIGEN
+Trust region strategy     LEVENBERG_MARQUARDT
+
+                                        Given                     Used
+Linear solver                        DENSE_QR                 DENSE_QR
+Threads                                     1                        1
+Linear solver threads                       1                        1
+
+Cost:
+Initial                          1.075000e+02
+Final                            1.791438e-14
+Change                           1.075000e+02
+
+Minimizer iterations                       14
+Successful steps                           14
+Unsuccessful steps                          0
+
+Time (in seconds):
+Preprocessor                            0.002
+
+Residual evaluation                     0.000
+Jacobian evaluation                     0.000
+Linear solver                           0.000
+Minimizer                               0.001
+
+Postprocessor                           0.000
+Total                                   0.005
+
+Termination:                      CONVERGENCE (Gradient tolerance reached. Gradient max norm: 3.642190e-11 &lt;= 1.000000e-10)
+
+Final x1 = 0.000292189, x2 = -2.92189e-05, x3 = 4.79511e-05, x4 = 4.79511e-05
+</code></pre>
+<h2 id="曲线拟合（Curve-Fitting"><a href="#曲线拟合（Curve-Fitting" class="headerlink" title="曲线拟合（Curve Fitting)"></a>曲线拟合（Curve Fitting)</h2><p>最小二乘法和非线性最小二乘分析得本来目的就是对一组数据进行曲线拟合。本节将介绍曲线拟合得问题。本节所用的采样点根据$y &#x3D; e^{0.3x + 0.1}$生成，并且加入标准差为$\sigma &#x3D; 0.2$高斯噪声。这$2n$个数据，存入<font face ="黑体" font color = red>data[]</font>中。下面我们用下列带未知参数的方程来拟合这些采样点：<br>$$y &#x3D; e^{mx+c}$$<br>同样的，我们定义一个用来计算残差的结构体。注意，对应每个采样点（观测点）都要计算一个残差。</p>
+<pre><code>struct ExponentialResidual &#123;
+    ExponentialResidual(double x, double y)
+        : x_(x), y_(y) &#123;&#125;
+
+template &lt;typename T&gt;
+bool operator()(const T* const m, const T* const c, T* residual) const &#123;
+    residual[0] = y_ - exp(m[0] * x_ + c[0]);
+    return true;
+&#125;
+
+private:
+// Observations for a sample.
+const double x_;
+const double y_;
+&#125;;
+</code></pre>
+<p>下面构造<font face ="黑体" font color = red>Problem</font></p>
+<pre><code>double m = 0.0;
+double c = 0.0;
+
+Problem problem;
+for (int i = 0; i &lt; kNumObservations; ++i) &#123;
+    CostFunction* cost_function =
+        new AutoDiffCostFunction&lt;ExponentialResidual, 1, 1, 1&gt;(
+            new ExponentialResidual(data[2 * i], data[2 * i + 1]));
+    problem.AddResidualBlock(cost_function, nullptr, &amp;m, &amp;c);
+&#125;
+</code></pre>
+<p>这里我们再次和Hello World进行对比：</p>
+<pre><code>struct CostFunctor &#123;
+    template &lt;typename T&gt;
+    bool operator()(const T* const x, T* residual) const &#123;
+        residual[0] = T(10.0) - x[0];
+        return true;
+    &#125;
+&#125;;
+
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;CostFunctor, 1, 1&gt;(new CostFunctor);
+problem.AddResidualBlock(cost_function, NULL, &amp;x);
+</code></pre>
+<p>通过对比，可以发现。在Hello World中，CostFunctor中是没有（显式）构造函数的，也就同样没有了初始值。所以在构造对象时，可以直接<font face = "黑体" font color = red>New CostFuntor</font>。而在本节的曲线拟合例子中，构造对象时还要加上初始值<font face = "黑体" font color = red>new ExponentialResidual(data[2 * i], data[2 * i + 1]))</font>。在方括号中的参数分别对应残差函数名<font face = "黑体" font color = red>&#60;ExponentialResidual&#62;</font>，以及输出值（residual）的维度<font face = "黑体" font color = red>1</font>，还有残差函数各个输入值（m,c）维度<font face = "黑体" font color = red>&#60;1，1&#62;</font>。所以在本例中一共有三个1，而在Hello World中，只有两个1，即residual和x的维度。注意先是残差，后是输入参数，而且一一对应。</p>
+<p>最后一点就是在把残差块加入problem的过程中，要把输入变量一一带入。比如&amp;m，&amp;c，&amp;x等。以上就是在构建Problem的时候需要顾及到的三个方面。再就是在使用Numeric算法时，还要在方括号中指定计算机如何计算导数，如<font face = "黑体" font color = red>ceres::CENTRAL</font>。</p>
+<p>运行程序，得到下列结果：  </p>
+<pre><code>iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
+ 0  1.211734e+02    0.00e+00    3.61e+02   0.00e+00   0.00e+00    1.00e+04       0    5.34e-04    2.56e-03
+ 1  1.211734e+02   -2.21e+03    0.00e+00   7.52e-01  -1.87e+01    5.00e+03       1    4.29e-05    3.25e-03
+ 2  1.211734e+02   -2.21e+03    0.00e+00   7.51e-01  -1.86e+01    1.25e+03       1    1.10e-05    3.28e-03
+ 3  1.211734e+02   -2.19e+03    0.00e+00   7.48e-01  -1.85e+01    1.56e+02       1    1.41e-05    3.31e-03
+ 4  1.211734e+02   -2.02e+03    0.00e+00   7.22e-01  -1.70e+01    9.77e+00       1    1.00e-05    3.34e-03
+ 5  1.211734e+02   -7.34e+02    0.00e+00   5.78e-01  -6.32e+00    3.05e-01       1    1.00e-05    3.36e-03
+ 6  3.306595e+01    8.81e+01    4.10e+02   3.18e-01   1.37e+00    9.16e-01       1    2.79e-05    3.41e-03
+ 7  6.426770e+00    2.66e+01    1.81e+02   1.29e-01   1.10e+00    2.75e+00       1    2.10e-05    3.45e-03
+ 8  3.344546e+00    3.08e+00    5.51e+01   3.05e-02   1.03e+00    8.24e+00       1    2.10e-05    3.48e-03
+ 9  1.987485e+00    1.36e+00    2.33e+01   8.87e-02   9.94e-01    2.47e+01       1    2.10e-05    3.52e-03
+10  1.211585e+00    7.76e-01    8.22e+00   1.05e-01   9.89e-01    7.42e+01       1    2.10e-05    3.56e-03
+11  1.063265e+00    1.48e-01    1.44e+00   6.06e-02   9.97e-01    2.22e+02       1    2.60e-05    3.61e-03
+12  1.056795e+00    6.47e-03    1.18e-01   1.47e-02   1.00e+00    6.67e+02       1    2.10e-05    3.64e-03
+13  1.056751e+00    4.39e-05    3.79e-03   1.28e-03   1.00e+00    2.00e+03       1    2.10e-05    3.68e-03
+Ceres Solver Report: Iterations: 13, Initial cost: 1.211734e+02, Final cost: 1.056751e+00, Termination: CONVERGENCE
+Initial m: 0 c: 0
+Final   m: 0.291861 c: 0.131439
+</code></pre>
+<p>最终经过计算，结果是m&#x3D;0.291861,c&#x3D;0.131439。这个值和一开始的设定值（m&#x3D;0.3,c&#x3D;0.1）略有偏差。因为额外加入了高斯噪声，所以这个偏差的存在是合理的。拟合结果如下图所示，红圈即为拟合出的曲线。</p>
+<p><img src="/pic/1.png" alt="曲线拟合效果"></p>
+<h2 id="鲁棒的曲线拟合（Robust-Curve-Fitting）"><a href="#鲁棒的曲线拟合（Robust-Curve-Fitting）" class="headerlink" title="鲁棒的曲线拟合（Robust Curve Fitting）"></a>鲁棒的曲线拟合（Robust Curve Fitting）</h2><p>如果我们在数据集合中加入几个非常夸张的外围点Outliers，那么拟合结果会受到这几个点的明显影响。在这个时候需要应用损失函数（Loss function）来对异常数据进行过滤。比如在上文的例子中，我们对代码进行以下修改：</p>
+<pre><code>problem.AddResidualBlock(cost_function, NULL , &amp;m, &amp;c);
+</code></pre>
+<p>改为：  </p>
+<pre><code>problem.AddResidualBlock(cost_function, new CauchyLoss(0.5) , &amp;m, &amp;c);
+</code></pre>
+<p>CauchyLoss是Ceres Solver附带的损失函数之一。 参数0.5指定了损失函数的规模。通过对下面两个图的对比，我们可以明显的发现损失函数的作用。</p>
+<p><img src="/pic/non_robust_least_squares_fit.png" alt="非鲁棒性的拟合效果"></p>
+<p><img src="/pic/robust_least_squares_fit.png" alt="鲁棒性的拟合效果"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/Ceres%20Solvel%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%E5%BB%BA%E6%A8%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/24/Ceres%20Solvel%20%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%E5%BB%BA%E6%A8%A1/" class="post-title-link" itemprop="url">Ceres Solvel非线性最小二乘法建模</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-25 15:08:50" itemprop="dateModified" datetime="2020-12-25T15:08:50+08:00">2020-12-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Ceres由两个部分组成，一个是建模API，它提供了非常丰富的工具，可以迅速构建一个优化问题模型。另一个是解算器API，用于管控最小化算法。这一章将围绕如何用Ceres进行优化问题建模展开。</p>
+<h1 id="自动微分AutoDiffCostFunction"><a href="#自动微分AutoDiffCostFunction" class="headerlink" title="自动微分AutoDiffCostFunction"></a>自动微分AutoDiffCostFunction</h1><p>定义一个<font face = "黑体" font color = "red">CostFunction</font>（例如使用数值微分法或者解析微分法）可能是一个繁琐且容易出错的过程，尤其是在计算导数的时候。为此，Ceres提供了<font face = "黑体" font color = "red">AutoDiffCostFunction</font>。</p>
+<pre><code>template &lt;typename CostFunctor,
+        int kNumResiduals,  // Number of residuals, or ceres::DYNAMIC.
+        int N0,       // Number of parameters in block 0.
+        int N1 = 0,   // Number of parameters in block 1.
+        int N2 = 0,   // Number of parameters in block 2.
+        int N3 = 0,   // Number of parameters in block 3.
+        int N4 = 0,   // Number of parameters in block 4.
+        int N5 = 0,   // Number of parameters in block 5.
+        int N6 = 0,   // Number of parameters in block 6.
+        int N7 = 0,   // Number of parameters in block 7.
+        int N8 = 0,   // Number of parameters in block 8.
+        int N9 = 0&gt;   // Number of parameters in block 9.
+class AutoDiffCostFunction : public
+SizedCostFunction&lt;kNumResiduals, N0, N1, N2, N3, N4, N5, N6, N7, N8, N9&gt; &#123;
+    public:
+        explicit AutoDiffCostFunction(CostFunctor* functor);
+        // Ignore the template parameter kNumResiduals and use
+        // num_residuals instead.
+        AutoDiffCostFunction(CostFunctor* functor, int num_residuals);
+&#125;;
+</code></pre>
+<p>为了获得一个可以自动微分的代价函数，必须定义一个类。这个类中带有模板函数：<font face = "黑体" font color = "red">operator()</font>，它使用模板T类型进行代价函数运算。自动微分将根据需要用<font face = "黑体" font color = "red">Jet</font>类型替代替代模板T。但这个是隐藏的，编程的时候要把这个T看作一个双精度浮点数。这个函数必须把计算结果以最后一个参数（唯一一个非常量参数）传递出来，并且返回<font face = "黑体" font color = "red">True</font>，告诉计算机运算成功完成。例如，现在有一个标量的偏差函数$e &#x3D; k - x^Ty$。这里$x$和$y$都是二维向量参数，$k$是个常量 。这种类型的偏差，即一个常量和一个表达式的差值，在最小二乘法问题中很常见。例如，$x ^ T y$可能是一系列测量结果的期望值，那么每一次测量$K$都对应了一个代价函数类的实例。被加到<font face = "黑体" font color = "red">Problem</font>中的是$e ^ 2$或者$(k - x^Ty) ^ 2$。平方处理由Ceres优化框架完成。这个例子的具体代码如下：</p>
+<blockquote>
+<p>这里有个疑问，之前自动微分算法的代码中没有使用类，而是使用的struct，不知道为什么这里是class，个人认为应该都可以，因为我们的代码中都使用的struct。</p>
+</blockquote>
+<pre><code>class MyScalarCostFunctor &#123;
+    MyScalarCostFunctor(double k): k_(k) &#123;&#125;
+
+template &lt;typename T&gt;
+bool operator()(const T* const x , const T* const y, T* e) const &#123;
+    e[0] = k_ - x[0] * y[0] - x[1] * y[1];
+    return true;
+&#125;
+
+private:
+    double k_;
+&#125;;
+</code></pre>
+<p>注意，在<font face = "黑体" font color = "red">operator()</font>的声明中，首先是输入参数，他们都是指向T类型数组的常指针。如果由更多的输入参数就跟在<font face = "黑体" font color = "red">y</font>后面。而输出值永远是最后一个参数，并且也是一个指向数组的指针。在上述例子中，<font face = "黑体" font color = "red">e</font>是标量，所以只赋值<font face = "黑体" font color = "red">e[0]</font>。</p>
+<p>然后给出这个类的定义，它的自动微分代价函数可以如下构造：</p>
+<pre><code>CostFunction* cost_function
+    = new AutoDiffCostFunction&lt;MyScalarCostFunctor, 1, 2, 2&gt;(
+        new MyScalarCostFunctor(1.0));              ^  ^  ^
+                                                    |  |  |
+                        Dimension of residual ------+  |  |
+                        Dimension of x ----------------+  |
+                        Dimension of y -------------------+
+</code></pre>
+<p>在这个例子中，对每次测量<font face = "黑体" font color = "red">k</font>都有一个实例。模板参数1,2,2将<font face = "黑体" font color = "red">Functor</font>描述为一个一维输出参数和两个二维输入参数。<font face = "黑体" font color = "red">AutoDiffCostFunction</font>也支持在运行时动态确定参数个数。例如下面的代码：</p>
+<pre><code>CostFunction* cost_function
+    = new AutoDiffCostFunction&lt;MyScalarCostFunctor, DYNAMIC,  2,  2&gt;(
+        new CostFunctorWithDynamicNumResiduals(1.0),    ^     ^  ^
+        runtime_number_of_residuals);  &lt;----+           |     |  |
+                                            |           |     |  |
+                                            |           |     |  |
+           Actual number of residuals ------+           |     |  |
+           Indicate dynamic number of residuals --------+     |  |
+           Dimension of x ------------------------------------+  |
+           Dimension of y ---------------------------------------+
+</code></pre>
+<p>Ceres目前支持代价函数最多有10个相互独立的变量，但是对每个变量有多少维度没有限制。</p>
+<p>注意，新用户常常犯的一个错误就是把模板参数中的数字理解成参数的个数。但事实上，模板参数中数字的含义是每个参数的维度。这两个概念不能混淆。比如在这个例子中<font face = "黑体" font color = "red">x,y</font>都是二维变量，所以模板参数中有两个2。</p>
+<h1 id="Problem的构建"><a href="#Problem的构建" class="headerlink" title="Problem的构建"></a>Problem的构建</h1><p><font face = "黑体" font color = "red">Problem</font>保持了非线性最小二乘问题的强化的边界。要创建最小二乘问题，可以使用<font face = "黑体" font color = "red">Problem::AddResidualBlock()</font>和<font face = "黑体" font color = "red">Problem::AddParameterBlock()</font>。例如，下面这个Problem包含了三个参数块，维度分别为3，4，5。同时有两个残差块，维度分别是2和6。</p>
+<pre><code>double x1[] = &#123; 1.0, 2.0, 3.0 &#125;;
+double x2[] = &#123; 1.0, 2.0, 3.0, 5.0 &#125;;
+double x3[] = &#123; 1.0, 2.0, 3.0, 6.0, 7.0 &#125;;
+
+Problem problem;
+problem.AddResidualBlock(new MyUnaryCostFunction(...), x1);
+problem.AddResidualBlock(new MyBinaryCostFunction(...), x2, x3);
+</code></pre>
+<p><font face = "黑体" font color = "red">Problem::AddResidualBlock()</font>，顾名思义，就是把残差块加入到Problem中。它添加了一个<font face = "黑体" font color = "red">CostFunction</font>，一个<font face = "黑体" font color = "red">LossFunction</font>（非必要）并且把<font face = "黑体" font color = "red">CostFunction</font>链接到一系列的参数块上。代价函数包含了关于期望的参数块大小的信息。该函数检查他们是否与<font face = "黑体" font color = "red">parameter_blocks</font>一致。如果不匹配，程序将终止。<font face = "黑体" font color = "red">LossFunction</font>可以是<font face = "黑体" font color = "red">Null</font>，这种情况下这一项的代价就是残差的平方。</p>
+<blockquote>
+<p>另外官网中给出了很多Problem的方法，可以查看一下。这里只对添加残差块的方法给出了实例。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/19/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/19/hello-world/" class="post-title-link" itemprop="url">使用pthread构建固定死锁场景</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-04-19 00:00:00 / 修改时间：16:39:37" itemprop="dateCreated datePublished" datetime="2024-04-19T00:00:00+08:00">2024-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/PostgresSQL/" itemprop="url" rel="index"><span itemprop="name">PostgresSQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>使用pthread中的条件变量和锁，构建了一个可以模拟死锁的脚本，能实现每个线程按顺序执行，从而形成固定死锁场景，方便测试死锁算法性能，代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;pthread.h&gt;</span><br><span class="line">#include &lt;time.h&gt;</span><br><span class="line">#include &lt;stdbool.h&gt;</span><br><span class="line">#include &quot;libpq-fe.h&quot;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">#define RING_TRANS_NUM 5</span><br><span class="line">#define OTHER_TRANS_NUM 10</span><br><span class="line"></span><br><span class="line">pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;</span><br><span class="line">pthread_cond_t conds[RING_TRANS_NUM + OTHER_TRANS_NUM];</span><br><span class="line">static int turn = 0;  // 当前执行的线程编号</span><br><span class="line"></span><br><span class="line">typedef struct Tag</span><br><span class="line">&#123;</span><br><span class="line">    int row_id;</span><br><span class="line">    int thread_id;</span><br><span class="line">&#125;Tag;</span><br><span class="line"></span><br><span class="line">enum cn_port &#123;</span><br><span class="line">    cn01 = 1,</span><br><span class="line">    cn02 = 2,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void free_and_end_trans(PGconn *conn, PGresult *res)</span><br><span class="line">&#123;</span><br><span class="line">    if(res != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        PQclear(res);</span><br><span class="line">    &#125;</span><br><span class="line">    PQfinish(conn);</span><br><span class="line">    pthread_exit(NULL);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void *other_thread_function(void *arg)</span><br><span class="line">&#123;</span><br><span class="line">    PGconn *conn = NULL;</span><br><span class="line">    PGresult *res = NULL;</span><br><span class="line">    char conn_info[100];</span><br><span class="line">    int cur_port = rand() % 2 + cn01;</span><br><span class="line"></span><br><span class="line">    snprintf(conn_info, sizeof(conn_info),</span><br><span class="line">             &quot;dbname = postgres user = gaotianfu password = 129212351GTFgtf_ host = 127.0.0.1 port = %d&quot;, cur_port);</span><br><span class="line"></span><br><span class="line">    conn = PQconnectdb(conn_info);</span><br><span class="line">    if (PQstatus(conn) != CONNECTION_OK) &#123;</span><br><span class="line">        free_and_end_trans(conn, res);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* 开启事务 */</span><br><span class="line">    res = PQexec(conn, &quot;BEGIN&quot;);</span><br><span class="line">    if (PQresultStatus(res) != PGRES_COMMAND_OK) &#123;</span><br><span class="line">        free_and_end_trans(conn, res);</span><br><span class="line">    &#125;</span><br><span class="line">    PQclear(res);</span><br><span class="line"></span><br><span class="line">    Tag *tag = (Tag *)arg;</span><br><span class="line"></span><br><span class="line">    pthread_mutex_lock(&amp;mutex);</span><br><span class="line">    while (turn != tag-&gt;thread_id) &#123;</span><br><span class="line">        pthread_cond_wait(&amp;conds[tag-&gt;thread_id], &amp;mutex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    turn = turn == (RING_TRANS_NUM + OTHER_TRANS_NUM - 1) ? (RING_TRANS_NUM - 1) : turn + 1;</span><br><span class="line">    pthread_cond_signal(&amp;conds[turn]); // 通知下一个线程</span><br><span class="line">    pthread_mutex_unlock(&amp;mutex);</span><br><span class="line"></span><br><span class="line">    char update_query[100];</span><br><span class="line">    snprintf(update_query, sizeof(update_query), &quot;UPDATE a SET str = &#x27;11&#x27; WHERE id = %d&quot;,  tag-&gt;row_id);</span><br><span class="line">    free(tag);</span><br><span class="line">    res = PQexec(conn, update_query);</span><br><span class="line">    if (PQresultStatus(res) == PGRES_COMMAND_OK)</span><br><span class="line">    &#123;</span><br><span class="line">        PQclear(res);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res = PQexec(conn, &quot;END&quot;);</span><br><span class="line">    free_and_end_trans(conn, res);</span><br><span class="line">    return NULL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void *ring_thread_function(void *arg) &#123;</span><br><span class="line">    PGconn *conn = NULL;</span><br><span class="line">    PGresult *res = NULL;</span><br><span class="line">    char conn_info[100];</span><br><span class="line">    int cur_port = rand() % 2 + cn01;</span><br><span class="line"></span><br><span class="line">    snprintf(conn_info, sizeof(conn_info),</span><br><span class="line">             &quot;dbname = xxx user = xxx password = xxx host = xxx port = %d&quot;, cur_port);</span><br><span class="line"></span><br><span class="line">    conn = PQconnectdb(conn_info);</span><br><span class="line">    if (PQstatus(conn) != CONNECTION_OK) &#123;</span><br><span class="line">        free_and_end_trans(conn, res);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* 开启事务 */</span><br><span class="line">    res = PQexec(conn, &quot;BEGIN&quot;);</span><br><span class="line">    if (PQresultStatus(res) != PGRES_COMMAND_OK) &#123;</span><br><span class="line">        free_and_end_trans(conn, res);</span><br><span class="line">    &#125;</span><br><span class="line">    PQclear(res);</span><br><span class="line"></span><br><span class="line">    Tag *tag = (Tag *)arg;</span><br><span class="line"></span><br><span class="line">    for(int i = 0; i &lt; 2; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        while (turn != tag-&gt;thread_id) &#123;</span><br><span class="line">            pthread_cond_wait(&amp;conds[tag-&gt;thread_id], &amp;mutex);</span><br><span class="line">        &#125;</span><br><span class="line">//        printf(&quot;%lu  my_thread_id is %d, ture is %d &quot;,pthread_self(), tag-&gt;thread_id, turn);</span><br><span class="line"></span><br><span class="line">        char update_query[100];</span><br><span class="line">        snprintf(update_query, sizeof(update_query), &quot;UPDATE a SET str = &#x27;11&#x27; WHERE id = %d&quot;,  tag-&gt;row_id);</span><br><span class="line"></span><br><span class="line">        if(i == 1)</span><br><span class="line">        &#123;</span><br><span class="line">            turn = turn == (RING_TRANS_NUM - 2) ?  RING_TRANS_NUM: turn + 1; // 倒数第二个 ring_thread 通知 other_thread</span><br><span class="line">            pthread_cond_signal(&amp;conds[turn]);</span><br><span class="line">            pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">            printf(&quot;the %d time, %lu  update %d, signal  %d\n&quot;, i, pthread_self(), tag-&gt;row_id, turn);</span><br><span class="line">        &#125;</span><br><span class="line">        res = PQexec(conn, update_query);</span><br><span class="line">        if (PQresultStatus(res) == PGRES_COMMAND_OK)</span><br><span class="line">        &#123;</span><br><span class="line">            if((tag-&gt;row_id == RING_TRANS_NUM + 1) &amp;&amp; (i == 1))</span><br><span class="line">            &#123;</span><br><span class="line">                printf(&quot; make deadlock\n&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                printf(&quot; %lu update %d\n&quot;, pthread_self(), tag-&gt;row_id);</span><br><span class="line">            &#125;</span><br><span class="line">            PQclear(res);</span><br><span class="line">        &#125;</span><br><span class="line">        if(i == 1)</span><br><span class="line">        &#123;</span><br><span class="line">            free(tag);</span><br><span class="line">        &#125;</span><br><span class="line">        if(i == 0)</span><br><span class="line">        &#123;</span><br><span class="line">            tag-&gt;row_id = (tag-&gt;row_id == RING_TRANS_NUM) ? 1 : tag-&gt;row_id + 1;</span><br><span class="line">            turn = turn == (RING_TRANS_NUM - 1) ? 0 : (turn % RING_TRANS_NUM) + 1;</span><br><span class="line">            pthread_cond_signal(&amp;conds[turn]); // 通知下一个线程</span><br><span class="line">            pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">            printf(&quot;the %d time, %lu , signal  %d\n&quot;, i, pthread_self(), turn);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res = PQexec(conn, &quot;END&quot;);</span><br><span class="line">    free_and_end_trans(conn, res);</span><br><span class="line">    return NULL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[]) &#123;</span><br><span class="line">    for (int i = 0; i &lt; RING_TRANS_NUM + OTHER_TRANS_NUM; ++i) &#123;</span><br><span class="line">        pthread_cond_init(&amp;conds[i], NULL); // 初始化条件变量</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pthread_t *ring_thread;</span><br><span class="line">    ring_thread = (pthread_t *) malloc(sizeof(pthread_t) * RING_TRANS_NUM);</span><br><span class="line"></span><br><span class="line">    pthread_t *other_thread;</span><br><span class="line">    other_thread = (pthread_t *) malloc(sizeof(pthread_t) * OTHER_TRANS_NUM);</span><br><span class="line"></span><br><span class="line">    /* 形成依赖 */</span><br><span class="line">    for(int i = 0; i &lt; RING_TRANS_NUM; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        Tag *cur_tag = (Tag *) malloc(sizeof(Tag));</span><br><span class="line">        cur_tag-&gt;row_id = i + 1;</span><br><span class="line">        cur_tag-&gt;thread_id = i;</span><br><span class="line">        pthread_create(&amp;ring_thread[i], NULL, ring_thread_function, (void *) cur_tag);</span><br><span class="line">        pthread_detach(ring_thread[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* 其他依赖 */</span><br><span class="line">    for(int i = 0; i &lt; OTHER_TRANS_NUM; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        Tag *cur_tag = (Tag *) malloc(sizeof(Tag));</span><br><span class="line">        cur_tag-&gt;row_id = 2;  /* 只更新第 2 行 */</span><br><span class="line">        cur_tag-&gt;thread_id = i + RING_TRANS_NUM;</span><br><span class="line">        pthread_create(&amp;other_thread[i], NULL, other_thread_function, (void *) cur_tag);</span><br><span class="line">        pthread_detach(other_thread[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    while (1) &#123;</span><br><span class="line">        sleep(10);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上面的代码实现的效果为，首先形成一个长依赖路径，路径上的每个事务都更新自己的数据行，例如第一个事务更新第一行数据，第二个事务更新第二行数据，第<code>RING_TRANS_NUM</code>个事务更新第<code>RING_TRANS_NUM</code>行数据，此时通知第一个事务所在的线程去更新第二行数据，第二个事务去更新第三行数据，直到第<code>RING_TRANS_NUM - 1</code>个事务更新第<code>RING_TRANS_NUM</code>行数据。这样就形成了长依赖路径。</p>
+<p>然后添加其他依赖，这些依赖依附于上述长依赖路径，本程序中设置其他依赖都更新第二行数据。当这些其他依赖都执行完事务语句时，通知第<code>RING_TRANS_NUM</code>个事务所在的线程去更新第一行数据，最终形成了死锁环。</p>
+<script src="https://utteranc.es/client.js"
+        repo="1170300619/170300619.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/26/git%E5%B8%B8%E7%94%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%8F%8A%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/07/26/git%E5%B8%B8%E7%94%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%8F%8A%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">git常用工作流及命令</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-26 20:41:21" itemprop="dateCreated datePublished" datetime="2023-07-26T20:41:21+08:00">2023-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-05 23:48:17" itemprop="dateModified" datetime="2023-08-05T23:48:17+08:00">2023-08-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-git仓库的结构"><a href="#1-git仓库的结构" class="headerlink" title="1. git仓库的结构"></a>1. git仓库的结构</h1><p>首先介绍以下几个术语：</p>
+<ul>
+<li>remote：表示远程仓库</li>
+<li>repository：表示本地仓库</li>
+<li>workspace：表示自己项目的工作区间</li>
+<li>index：暂存区，接下来可以commit</li>
+</ul>
+
+
+<h1 id="2-工作流"><a href="#2-工作流" class="headerlink" title="2. 工作流"></a>2. 工作流</h1><p>推荐使用 <strong>github flow</strong> 的工作模式，即不在主仓库的分支上开发，而是首先 <strong>fork</strong> 到自己的 <strong>workspace</strong> 下。每次开发，首先 <strong>checkout</strong> 一个分支，开发后 <strong>commit</strong>，并 <strong>push</strong> 到自己的仓库内，再向主仓库提 <strong>MR</strong>。</p>
+<h2 id="2-1-fork"><a href="#2-1-fork" class="headerlink" title="2.1 fork"></a>2.1 fork</h2><p>一般主仓库是组长建立的，保存着所有人开发的代码，为了防止污染导致数据丢失问题，剩下的小组成员需要对主仓库进行 <strong>fork</strong>，即将其拷贝一份到自己账户下，这样之后的开发工作就可以从自己的仓库开始。</p>
+<h2 id="2-2-clone"><a href="#2-2-clone" class="headerlink" title="2.2 clone"></a>2.2 clone</h2><p>接下来从自己的仓库进行clone。需要注意的是，一般一个仓库都有多个分支，比如有 <strong>master</strong> 主分支和 <strong>develop</strong> 分支，所以 <strong>clone</strong> 时要找到对应的分支，例如要克隆 <strong>develop</strong> 分支，使用的命令如下：</p>
+<pre><code>git clone -b develop ssh链接
+</code></pre>
+<p>命令中 <strong>ssh</strong> 链接需要填写自己仓库下的 <strong>ssh</strong> 链接。</p>
+<h2 id="2-3-添加远程仓库"><a href="#2-3-添加远程仓库" class="headerlink" title="2.3 添加远程仓库"></a>2.3 添加远程仓库</h2><p>在项目的根目录重新打开 <strong>git bash</strong>，首先输入 <strong>git remote -v</strong> 来查看现有的仓库</p>
+
+
+<p>其中的 <strong>origin</strong> 表示是自己的远程仓库名称，一个用来 <strong>fetch</strong>，一个用来 <strong>push</strong>。接下来需要将组长的主仓库添加进来，使用的命令为：</p>
+<pre><code>git remote add upstream 主仓库ssh链接
+</code></pre>
+<p>其中upstream是给主仓库起的名字，这个名字可以是任意的。再次查看当前的远程仓库：</p>
+
+
+<h2 id="2-4-拉取最新代码"><a href="#2-4-拉取最新代码" class="headerlink" title="2.4 拉取最新代码"></a>2.4 拉取最新代码</h2><p>由于主仓库是合并开发，因此其代码进度是最快的，在每次开发前，都需要从主仓库拉取最新的代码，例如要从主仓库拉取 <strong>develop</strong> 分支的最新代码。这里有两种方式，第一种是使用 <strong>git fetch + git merge</strong> 的组合方式，好处是可以在 <strong>fetch</strong> 后查看更新，从而在 <strong>merge</strong> 的时候更方便的解决潜在的代码冲突；第二种方式是使用 <strong>git pull</strong>，它会立即拉取远程仓库的更新，并且直接合并到你的本地分支，这种情况下会导致合并后的代码产生大量冲突，解决起来很麻烦。因此推荐使用第一种组合方式。使用的命令为：</p>
+<pre><code>git fetch upstream develop
+</code></pre>
+<p>由于我们之前已经在本地拉取了 <strong>develop</strong> 分支，因此上面的 <strong>git fetch</strong> 命令是不创建本地新分支的方式，然后使用如下代码查看版本的差异</p>
+<pre><code>git log -p develop..upstream/develop
+</code></pre>
+<p>或者</p>
+<pre><code>git diff develop
+</code></pre>
+<p>然后使用如下代码进行合并</p>
+<pre><code>git merge upstream/develop
+</code></pre>
+<p>需要注意的是，合并过程中可能出现冲突的情况，我们可以对冲突的文件进行编辑。冲突的产生是多个用户同时修改了同一个文件的相同区域的内容。具体会发生冲突的情况和解决方法可以查看<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27905183/article/details/78575247">git中发生冲突的原因和解决方案</a>。</p>
+<h2 id="2-5-开发"><a href="#2-5-开发" class="headerlink" title="2.5 开发"></a>2.5 开发</h2><p>通过输入 <strong>git branch</strong> 可以查看当前处于哪个分支；输入 <strong>git branch -a</strong> 可以查看所有的本地分支和远程分支；以及可以输入 <strong>git status</strong> 来查看当前分支和分支的状态。</p>
+<h2 id="2-6-新建分支"><a href="#2-6-新建分支" class="headerlink" title="2.6 新建分支"></a>2.6 新建分支</h2><p>有了最新的代码，就可以开始着手写代码了。但是需要注意，不要直接在本地的develop分支上直接写，而是要新建一个分支，使用如下命令：</p>
+<pre><code>git checkout -b check # (分支名称，随意)
+</code></pre>
+<p>这样我们就新建了一个check分支，且直接切换到其上，上面的代码其实做了两件事：</p>
+<pre><code>git branch check # 新建 check 分支
+git checkout check # 切换到 check 分支上
+</code></pre>
+<h2 id="2-7-贮藏代码"><a href="#2-7-贮藏代码" class="headerlink" title="2.7 贮藏代码"></a>2.7 贮藏代码</h2><p>当你想提交代码时，始终要记得，主仓库内的代码可能还是比你的进展要更快，因此你还需要到主仓库中拉取最新的代码，这里需要你先把当前的进度 commit 到本地暂存区，或者使用 git stash，将代码贮藏来保管当前的进度。使用的命令为：</p>
+<pre><code>git stash save &quot;save message&quot;
+</code></pre>
+<p>然后切换到 develop 分支上，还是使用 git fetch 和 git merge 去拉取合并最新的代码。贮藏的代码实际上被储存在一个栈上，越晚贮藏的越接近栈顶，可以使用如下代码查看栈中贮藏的信息：</p>
+<pre><code>git stash list
+</code></pre>
+
+
+<p>可以看到有三个贮藏，使用如下命令可以将栈顶的贮藏重新应用</p>
+<pre><code>git stash apply
+</code></pre>
+<p>如果想应用其中一个更早的贮藏，可以通过名字来指定</p>
+<pre><code>git stash apply stash@&#123;2&#125;
+</code></pre>
+<p>如上的命令只会尝试应用贮藏的工作，意味着堆栈上还有它，可以使用如下命令将贮藏从堆栈上移除：</p>
+<pre><code>git stash drop stash@&#123;2&#125;
+</code></pre>
+<p>或者可以使用如下代码来应用栈顶的贮藏，并且将其从栈顶弹出</p>
+<pre><code>git stash pop
+</code></pre>
+<p>最后记得要将 check 分支合并到本地的 develop 分支上，之后的操作都要在 develop 上进行。使用的命令如下：</p>
+<pre><code>git checkout develop
+git merge check
+</code></pre>
+<h2 id="2-8-提交和推送"><a href="#2-8-提交和推送" class="headerlink" title="2.8 提交和推送"></a>2.8 提交和推送</h2><p>接下来要将代码提交到本地仓库，首先查看代码的状态</p>
+<pre><code>git diff # 可以查看到这次的改动内容，按 q 退出
+</code></pre>
+<p>然后使用跟踪所有的文件</p>
+<pre><code>git add .
+</code></pre>
+<p>随后提交到暂存区</p>
+<pre><code>git commit -m &quot;add a new txt file&quot;
+</code></pre>
+<p>随后就可以推送到自己的远程仓库</p>
+<pre><code>git push origin HEAD:分支名称
+</code></pre>
+<p>这里的 HEAD 指的是当前分支，冒号后面指的是要 push 的分支，如果远程仓库没有，则会自动创建该分支</p>
+<h2 id="2-9-提MR"><a href="#2-9-提MR" class="headerlink" title="2.9 提MR"></a>2.9 提MR</h2><p>在自己的远程仓库内，可以向主仓库提交分支合并请求，一般是自己的 develop 分支合并到主仓库的 develop 分支，如下时 gitlab 的示例：<br>、</p>
+
+
+<p>接下来可以增加这次合并请求的描述，加 title 和 description等，之后就可以 submit 提交。<br>分支合并请求通过后，可以选择将本地的 check 分支删除</p>
+<pre><code>git branch -d check
+</code></pre>
+<h2 id="2-10-注意点"><a href="#2-10-注意点" class="headerlink" title="2.10 注意点"></a>2.10 注意点</h2><p>如果有项目伙伴因需求更改了项目文件名称或是一些文件夹的名称，需要告知所有在工作中的伙伴停下手中的工作，等待文件名称修改后，push到仓库后，其他伙伴再拉新的代码，再进行工作。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">数据库笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 14:24:51" itemprop="dateCreated datePublished" datetime="2022-09-25T14:24:51+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-12 12:09:21" itemprop="dateModified" datetime="2022-10-12T12:09:21+08:00">2022-10-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="关系型数据库和非关系型数据库的区别"><a href="#关系型数据库和非关系型数据库的区别" class="headerlink" title="关系型数据库和非关系型数据库的区别"></a>关系型数据库和非关系型数据库的区别</h1><p>1.关系型数据库：指用关系模型来组织数据信息的数据库<br>关系模型指的是二维表格模型，而一个关系型数据库便是由二维表以及表之间的关系所构成的一个数据集合。<br>2.关系型数据库的优势：</p>
+<ul>
+<li>便于理解：二维表构造非常贴近逻辑；</li>
+<li>应用方便：支持通用的SQL（结构化查询语言）语句；</li>
+<li>易于维护：全部由表结构组成，文件格式一致；</li>
+<li>复杂操作：可以用SQL句子多个表之间做非常繁杂的查询；</li>
+<li>事务管理：促使针对安全性性能很高的数据信息浏览规定得到完成。<br>3.关系型数据库存在的不足</li>
+<li>读写性能差，尤其是海量信息的效率高读写能力；</li>
+<li>固定不动的表构造，灵便度稍欠；</li>
+<li>高并发读写时，硬盘I&#x2F;O存在瓶颈；</li>
+<li>可扩展性不足，不像web server和app server那样简单的添- 加硬件和服务节点来拓展性能和负荷工作能力。</li>
+</ul>
+<p>4.非关系型数据库概念介绍<br>非关系型数据库：指非关系型的，分布式系统的，且一般不确保遵照ACID标准的数据储存系统。<br>非关系型数据库算是一种数据结构化储存的集合，可以是文档或键值对等。<br>5.非关系型数据库的类型：</p>
+<ul>
+<li>键值储存数据库</li>
+<li>列储存数据库</li>
+<li>文档型数据库</li>
+<li>图数据库<br>6.非关系型数据库的优点</li>
+<li>格式灵活：数据存储格式非常多样，应用领域广泛，而关系型数据库则只适用基础的关系模型。</li>
+<li>性能优越：NOSQL是根据键值对的，不用历经SQL层的分析，因此 性能非常高。</li>
+<li>可扩展性：基于键值对，数据之间耦合度极低，因此容易水平扩展。</li>
+<li>低成本：非关系型数据库部署简易，且大部分可以开源使用。<br>6.非关系型数据库的不足：</li>
+<li>不支持sql，学习和运用成本比较高；</li>
+<li>无事务处理机制；</li>
+<li>数据结构导致复杂查询不容易实现。</li>
+</ul>
+<h1 id="为什么使用索引"><a href="#为什么使用索引" class="headerlink" title="为什么使用索引"></a>为什么使用索引</h1><ul>
+<li>通过创建唯一性索引，可以保证数据库表中每一行数据的唯一性。</li>
+<li>可以大大加快数据的检索速度，这也是创建索引的最主要的原因。</li>
+<li>帮助服务器避免排序和临时表</li>
+<li>将随机IO变为顺序IO。</li>
+</ul>
+<h1 id="执行一条SQL查询语句期间发生了什么"><a href="#执行一条SQL查询语句期间发生了什么" class="headerlink" title="执行一条SQL查询语句期间发生了什么"></a>执行一条SQL查询语句期间发生了什么</h1><p>1.连接器：建立连接，管理连接、校验用户身份；<br>2.查询缓存：查询语句如果命中查询缓存则直接返回，否则继续往下执行。MySQL 8.0 已删除该模块；<br>3.解析 SQL，通过解析器对 SQL 查询语句进行词法分析、语法分析，然后构建语法树，方便后续模块读取表名、字段、语句类型；<br>4.执行 SQL：执行 SQL 共有三个阶段：</p>
+<ul>
+<li>预处理阶段：检查表或字段是否存在；将 select * 中的 * 符号扩展为表上的所有列。</li>
+<li>优化阶段：基于查询成本的考虑， 选择查询成本最小的执行计划；</li>
+<li>执行阶段：根据执行计划执行 SQL 查询语句，从存储引擎读取记录，返回给客户端；</li>
+</ul>
+<h1 id="MyISAM和InnoDB实现B树索引方式的区别是什么？"><a href="#MyISAM和InnoDB实现B树索引方式的区别是什么？" class="headerlink" title="MyISAM和InnoDB实现B树索引方式的区别是什么？"></a>MyISAM和InnoDB实现B树索引方式的区别是什么？</h1><p>1.MyISAM，B+Tree叶节点的data域存放的是数据记录的地址，在索引检索的时候，首先按照B+Tree搜索算法搜索索引，如果指定的key存在，则取出其data域的值，然后以data域的值为地址读取相应的数据记录，这被称为“非聚簇索引”<br>2.InnoDB，其数据文件本身就是索引文件，相比MyISAM，索引文件和数据文件是分离的，其表数据文件本身就是按B+Tree组织的一个索引结构，树的节点data域保存了完整的数据记录，这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引，这被称为“聚簇索引”或者聚集索引，而其余的索引都作为辅助索引，辅助索引的data域存储相应记录主键的值而不是地址，这也是和MyISAM不同的地方。<br>在根据主索引搜索时，直接找到key所在的节点即可取出数据；在根据辅助索引查找时，则需要先取出主键的值，再走一遍主索引。因此，在设计表的时候，不建议使用过长的字段为主键，也不建议使用非单调的字段作为主键，这样会造成主索引频繁分裂。</p>
+<h1 id="Innodb为什么要用自增id作为主键？"><a href="#Innodb为什么要用自增id作为主键？" class="headerlink" title="Innodb为什么要用自增id作为主键？"></a>Innodb为什么要用自增id作为主键？</h1><p>如果表使用自增主键，那么每次插入新的记录，记录就会顺序添加到当前索引节点的后续位置，当一页写满，就会自动开辟一个新的页。 如果使用非自增主键（如果身份证号或学号等），由于每次插入主键的值近似于随机，因此每次新纪录都要被插到现有索引页得中间某个位置， 频繁的移动、分页操作造成了大量的碎片，得到了不够紧凑的索引结构，后续不得不通过OPTIMIZE TABLE（optimize table）来重建表并优化填充页面。</p>
+<h1 id="你了解MySQL的内部构造吗？一般可以分为哪两个部分？"><a href="#你了解MySQL的内部构造吗？一般可以分为哪两个部分？" class="headerlink" title="你了解MySQL的内部构造吗？一般可以分为哪两个部分？"></a>你了解MySQL的内部构造吗？一般可以分为哪两个部分？</h1><p>1.服务层包括连接器、查询缓存、分析器、优化器、执行器等<br>2.存储引擎层负责数据的存储和提取</p>
+<h1 id="说一说Drop、Delete与Truncate的共同点和区别"><a href="#说一说Drop、Delete与Truncate的共同点和区别" class="headerlink" title="说一说Drop、Delete与Truncate的共同点和区别"></a>说一说Drop、Delete与Truncate的共同点和区别</h1><p>Drop、Delete、Truncate都表示删除，但是三者有一些差别： Delete用来删除表的全部或者一部分数据行，执行delete之后，用户需要提交(commmit)或者回滚(rollback)来执行删除或者撤销删除，会触发这个表上所有的delete触发器。 Truncate删除表中的所有数据，这个操作不能回滚，也不会触发这个表上的触发器，TRUNCATE比delete更快，占用的空间更小。 Drop命令从数据库中删除表，所有的数据行，索引和权限也会被删除，所有的DML触发器也不会被触发，这个命令也不能回滚。<br>因此，在不再需要一张表的时候，用Drop；在想删除部分数据行时候，用Delete；在保留表而删除所有数据的时候用Truncate。</p>
+<h1 id="文件索引和数据库索引为什么使用B-树"><a href="#文件索引和数据库索引为什么使用B-树" class="headerlink" title="文件索引和数据库索引为什么使用B+树?"></a>文件索引和数据库索引为什么使用B+树?</h1><p>1.文件与数据库都是需要较大的存储，也就是说，它们都不可能全部存储在内存中，故需要存储到磁盘上。而所谓索引，则为了数据的快速定位与查找，那么索引的结构组织要尽量减少查找过程中磁盘I&#x2F;O的存取次数，因此B+树相比B树更为合适。数据库系统巧妙利用了局部性原理与磁盘预读原理，将一个节点的大小设为等于一个页，这样每个节点只需要一次I&#x2F;O就可以完全载入<br>2.最重要的是，B+树还有一个最大的好处：方便扫库。B树必须用中序遍历的方法按序扫库，而B+树直接从叶子结点挨个扫一遍就完了，B+树支持range-query非常方便，而B树不支持，这是数据库选用B+树的最主要原因。<br>3.B+tree的磁盘读写代价更低：B+tree的内部结点并没有指向关键字具体信息的指针(红色部分)，因此其内部结点相对B树更小。如果把所有同一内部结点的关键字存放在同一块盘中，那么盘块所能容纳的关键字数量也越多。一次性读入内存中的需要查找的关键字也就越多，相对来说IO读写次数也就降低了</p>
+<h1 id="数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗"><a href="#数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗" class="headerlink" title="数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗"></a>数据库为什么要进行分库和分表呢？都放在一个库或者一张表中不可以吗</h1><p>通过分表，可以减少数据库的单表负担，将压力分散到不同的表上，同时因为不同的表上的数据量少了，起到提高查询性能，缩短查询时间的作用</p>
+<ul>
+<li>水平分表：取模分表就属于随机分表，而时间维度分表则属于连续分表。 如何设计好垂直拆分，我的建议：将不常用的字段单独拆分到另外一张扩展表. 将大文本的字段单独拆分到另外一张扩展表, 将不经常修改的字段放在同一张表中，将经常改变的字段放在另一张表中。 对于海量用户场景，可以考虑取模分表，数据相对比较均匀，不容易出现热点和并发访问的瓶颈。</li>
+<li>库内分表，仅仅是解决了单表数据过大的问题，但并没有把单表的数据分散到不同的物理机上，因此并不能减轻 MySQL 服务器的压力，仍然存在同一个物理机上的资源竞争和瓶颈，包括 CPU、内存、磁盘 IO、网络带宽等。</li>
+</ul>
+<h1 id="索引失效的情况"><a href="#索引失效的情况" class="headerlink" title="索引失效的情况"></a>索引失效的情况</h1><p>1.对索引使用左或者左右模糊匹配：因为B+树是按照索引值有序排列的，只能根据前缀进行比较<br>2.对索引使用函数：不过可以针对函数计算后的值建立一个索引，从而使得该索引的值是函数计算后的值，就可以通过扫描索引来查询数据<br>3.对索引使用表达式计算<br>4.对索引隐式类型转换<br>5.联合索引非最左匹配<br>6.WHEREA子句中的OR</p>
+<h1 id="数据库事务是什么，都有哪些操作？"><a href="#数据库事务是什么，都有哪些操作？" class="headerlink" title="数据库事务是什么，都有哪些操作？"></a>数据库事务是什么，都有哪些操作？</h1><p>事务即为数据库的操作序列，要么完全执行，要么完全不执行。满足ACID属性。<br>A:原子性：要么全做，要么全不做<br>C：一致性：即事务操作前后满足完整性约束，比如A给B转账，完成后，A的少了200元，B的多了200元<br>I：隔离性：事务可以是并发的，隔离性可以保证多个事务并发执行由于使用相同的数据而互不干扰。每个事务都有自己的数据空间。<br>D：持久性：事务完成后，对数据的修改是永久的，即使系统故障也不会丢失。<br>事务的操作：开启事务，回滚，提交。其中回滚在数据没有提交之前可以回滚到之前的版本。</p>
+<h1 id="脏读，幻读，不可重复读的概念"><a href="#脏读，幻读，不可重复读的概念" class="headerlink" title="脏读，幻读，不可重复读的概念"></a>脏读，幻读，不可重复读的概念</h1><p>1.脏读：一个事务读到了另一个未提交事务修改过的数据（因为此时第二个事务有可能发生回滚操作）<br>2.不可重复读：在一个事务内多次读取同一个数据，出现了两次读到的数据不一样的情况（比如A在读一个数据时，B修改了这个数据，当A再次读这个数据时，读到的数据和上一次不一样）<br>3.幻读：在一个事务内多次查询某个符合查询条件的记录数量，前后两次记录数量不一样（比如数据增加或者被删除）</p>
+<p>三者的严重程度：脏读 &gt; 不可重复读 &gt; 幻读</p>
+<h1 id="数据库隔离级别"><a href="#数据库隔离级别" class="headerlink" title="数据库隔离级别"></a>数据库隔离级别</h1><p>1.读未提交：一个事务还没提交时，其所做的变更就可以被其它事务看到（会发生脏读，不可重复读和幻读）<br>2.读提交：一个事务提交后，它所做的变更才能被其它事务看到（会发生不可重复读和幻读）<br>3.可重复读：一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据一样（InnoDB默认的隔离级别）（会发生幻读）<br>4.串行化：会对记录加上读写锁，后访问的事务必须等前面的事务处理完才能继续执行。</p>
+<h1 id="MYSQL有哪些锁"><a href="#MYSQL有哪些锁" class="headerlink" title="MYSQL有哪些锁"></a>MYSQL有哪些锁</h1><p>1.全局锁：使得整个数据库处于只读状态<br>2.表级锁：</p>
+<ul>
+<li>表锁：分为读锁（共享锁）和写锁（独占锁）</li>
+<li>元数据锁（MDL)：对数据库表进行操作时，会自动的给这个表加上MDL，在事务提交后释放。</li>
+<li>意向锁：</li>
+</ul>
+<h1 id="MySQL如何实现事务提交和回滚"><a href="#MySQL如何实现事务提交和回滚" class="headerlink" title="MySQL如何实现事务提交和回滚"></a>MySQL如何实现事务提交和回滚</h1><p>1.实现数据恢复：redo log<br>redo log分为两部分：</p>
+<ul>
+<li>内存中的redo log Buffer是日志缓冲区，这部分数据是容易丢失的</li>
+<li>磁盘上的redo log file是日志文件，这部分数据已经持久化到磁盘，不容易丢失<br>在MySQL中可以自已控制log buffer刷新到log file中的频率，通过innodb_flush_log_at_trx_commit参数可以设置事务提交时log buffer如何保存到log file中，innodb_flush_log_at_trx_commit参数有3个值(0、1、2)，表示三种不同的方式</li>
+<li>为1表示事务每次提交都会将log buffer写入到os buffer，并调用操作系统的fsync()方法将日志写入log file，这种方式的好处是就算MySQL崩溃也不会丢数据，redo log file保存了所有已提交事务的日志，MySQL重新启动后会通过redo log file进行恢复。但这种方式每次提交事务都会写入磁盘，IO性能较差</li>
+<li>为0表示事务提交时不会将log buffer写入到os buffer中，而是每秒写入os buffer然后调用fsync()方法将日志写入log file，这种方式在MySQL系统崩溃时会丢失大约1秒钟的数据</li>
+<li>为2表示事务每次提交仅将log buffer写入到os buffer中，然后每秒调用fsync()方法将日志写入log file，这种方式在MySQL崩溃时也会丢失大约1秒钟的数据</li>
+</ul>
+<p>2.undo log<br>和redo log类似，也分为内存缓冲区和磁盘的日志文件，但是undo log记录的是相反的语句，当事务需要回滚的时候，可以从undo log中找到相应的内容进行回滚操作。</p>
+<p>3.二者的区别<br>为了保证数据的持久性，数据库在执行SQL操作数据之前会先记录redo log和undo log<br>redo log是重做日志，通常是物理日志，记录的是物理数据页的修改，它用来恢复提交后的物理数据页<br>undo log是回滚日志，用来回滚行记录到某个版本，undo log一般是逻辑日志，根据行的数据变化进行记录<br>redo&#x2F;undo log都是写先写到日志缓冲区，再通过缓冲区写到磁盘日志文件中进行持久化保存<br>undo日志还有一个用途就是用来控制数据的多版本（MVCC）</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/20/http%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/20/http%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">http详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-20 20:10:51" itemprop="dateCreated datePublished" datetime="2022-08-20T20:10:51+08:00">2022-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-12 17:00:40" itemprop="dateModified" datetime="2022-10-12T17:00:40+08:00">2022-10-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="http请求报文"><a href="#http请求报文" class="headerlink" title="http请求报文"></a>http请求报文</h1><p>http请求报文由请求行、请求头部、空行 和 请求包体 4 个部分组成，如下图所示：</p>
+
+
+<ol>
+<li>请求行：请求行由方法字段、URL字段和HTTP协议版本3个部分组成，下面主要介绍一下GET和POST方法：</li>
+</ol>
+<ul>
+<li><p>GET：当客户端要从服务器中读取某个资源时，使用GET方法。</p>
+</li>
+<li><p>POST：当客户端给服务器提供信息较多时可以使用POST 方法，POST 方法向服务器提交数据，比如完成表单数据的提交，将数据提交给服务器处理。GET 一般用于获取&#x2F;查询资源信息，POST 会附带用户数据，一般用于更新资源信息。</p>
+</li>
+<li><p>如果带参数时，在约定中，GET方法的参数应该放在URL中，POST方法参数应该放在请求体中。例如，如果参数是 <code>name=Java, age = 25</code>，那么GET方法的报文是这样的:</p>
+<p>  GET &#x2F;updateInfo?name&#x3D;JavA&amp;age&#x3D;25 HTTP&#x2F;1.1<br>  Host: localhost</p>
+</li>
+</ul>
+<p>POST方法的报文为：</p>
+<pre><code>POST /updateInfo HTTP/1.1
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+
+name=Javanx&amp;age=25
+</code></pre>
+<p>如果不带参数，最大的区别就是二者请求行的方法名称不同而已。实际上两种方法都是基于TCP连接的，GET也可以有请求包体，POST也不一定要使用请求包体，只要客户端和服务端约定好规范即可。</p>
+<ol>
+<li>请求头部：请求头部由关键字&#x2F;值对组成，每行一对，关键字和值用英文冒号“:”分隔。常见的头部信息有：</li>
+</ol>
+<ul>
+<li>User-Agent：产生请求的浏览器类型;</li>
+<li>Accept：客户端可识别的响应内容类型列表;星号 “ * ” 用于按范围将类型分组，用 “ <em>&#x2F;</em> ” 指示可接受全部类型，用“ type&#x2F;* ”指示可接受 type 类型的所有子类型;</li>
+<li>Accept-Language：客户端可接受的自然语言</li>
+<li>Accept-Encoding：客户端可接受的编码压缩格式;</li>
+<li>Host：请求的主机名，允许多个域名同处一个IP 地址，即虚拟主机;</li>
+<li>connection：连接方式(close 或 keep-alive);</li>
+<li>Cookie：存储于客户端扩展字段，向同一域名的服务端发送属于该域的cookie;</li>
+<li>content-length:表示包体数据长度，用来POST方法区分下一条请求的界限</li>
+</ul>
+<ol start="3">
+<li>空行：最后一个请求头部之后是一个空行，发送回车符和和换行符，通知服务端以下不再有请求头。</li>
+<li>请求包体：请求包体不在GET方法中使用，而是在POST方法中使用。适用于需要客户填写表单的场合。</li>
+</ol>
+
+
+<h1 id="http响应报文"><a href="#http响应报文" class="headerlink" title="http响应报文"></a>http响应报文</h1><p>HTTP响应报文由状态行、响应头部、空行和响应包体4个部分组成，如下图所示：</p>
+
+
+
+<p>下面对响应报文格式进行简单的分析：</p>
+<ul>
+<li>状态行：由HTTP协议版本，状态码和状态码的描述文本3个部分组成</li>
+<li>状态码由三位数字组成， 常用的有以下：<br>1xx：表示服务器已接收了客户端请求，客户端可继续发送请求;<br>2xx：表示服务器已成功接收到请求并进行处理;<br>3xx：表示服务器要求客户端重定向;<br>4xx：表示客户端的请求有非法内容;<br>5xx：表示服务器未能正常处理客户端的请求而出现意外错误;</li>
+<li>响应头部：</li>
+</ul>
+<ol>
+<li>Location：Location响应报头域用于重定向接受者到一个新的位置。例如：客户端所请求的页面已不存在原先的位置，为了让客户端重定向到这个页面新的位置，服务器端可以发回Location响应报头后使用重定向语句，让客户端去访问新的域名所对应的服务器上的资源;</li>
+<li>Connection：连接方式<br>对于请求来说：close(告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，断开连接，不等待本次连接的后续请求了)。keepalive(告诉WEB服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待本次连接的后续请求);<br>对于响应来说：close(连接已经关闭); keepalive(连接保持着，在等待本次连接的后续请求); Keep-Alive：如果浏览器请求保持连接，则该头部表明希望WEB 服务器保持连接多长时间(秒);例如：Keep-Alive：300;</li>
+</ol>
+<ul>
+<li>空行：最后一个响应头部之后是一个空行，发送回车符和换行符，通知服务器以下不再有响应头部。</li>
+<li>响应包体：服务器返回给客户端的文本信息</li>
+</ul>
+<h1 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h1><ol>
+<li>GET方法的长度限制：首先说明一点，HTTP 协议没有 Body 和 URL 的长度限制，对 URL 限制的大多是浏览器和服务器的原因。原因是指：解析URL的时候要分配内存，即分配一个buffer来保存所有要储存的数据，处理长 URL 要消耗比较多的资源，为了性能和安全（防止恶意构造长 URL 来攻击）考虑，会给 URL 长度加限制。</li>
+<li>POST 方法会产生两个 TCP 数据包？<br>有些文章中提到，post 会将 header 和 body 分开发送，先发送 header，服务端返回 100 状态码再发送 body。HTTP 协议中没有明确说明 POST 会产生两个 TCP 数据包，而且实际测试(Chrome)发现，header 和 body 不会分开发送。所以，header 和 body 分开发送是部分浏览器或框架的请求方法，不属于 post 必然行为。</li>
+<li>HTTP请求和响应的步骤，例如在浏览器地址栏键入URL,按下回车以后会经历以下流程：</li>
+</ol>
+<ul>
+<li>浏览器向DNS服务器请求解析该URL中的域名对应的IP地址</li>
+<li>解析出IP地址后，根据该IP地址和默认端口80，和服务器建立TCP连接</li>
+<li>浏览器发出读取文件（URL中域名后面部分对应的文件）的HTTP请求，该请求报文作为TCP第三次握手的报文数据发送给服务器</li>
+<li>服务器对浏览器请求做出响应，并把对应的html文本发送给浏览器</li>
+<li>释放TCP连接：若connection 模式为close，则服务器主动关闭TCP 连接，客户端被动关闭连接，释放TCP 连接;若connection 模式为keepalive，则该连接会保持一段时间，在该时间内可以继续接收请求</li>
+<li>浏览器将html文本显示内容</li>
+</ul>
+<ol start="4">
+<li>服务器如何解析POST包体数据，即如何辨别包体结束？<br>一般有两种方式：第一种方式就是在包头中有个content-Length字段，这个字段的值的大小标识了POST数据的长度，服务器收到一个数据包后，先从包头解析出这个字段的值，再根据这个值去读取相应长度的作为http协议的包体数据。还有一个格式叫做http chunked技术（分块），大致意思是将大包分成小包</li>
+<li>如果某个客户端通过程序模拟了一个连接请求，但是迟迟不发含有\r\n\r\n的数据，这路连接将一直占用，这里我们可以设置一个最大URL长度，如果超过这个长度还不包含\r\n\r\n的话我们认为连接非法，将连接断开。并且如果一个客户端连接后不发送任何数据，这样会浪费大量的连接资源，所以还需要一个定时器去定时检测哪些http连接超过这个最大时间没发送数据，找到后将连接断开。</li>
+</ol>
+<h1 id="DNS解析流程"><a href="#DNS解析流程" class="headerlink" title="DNS解析流程"></a>DNS解析流程</h1><p>1.首先看浏览器缓存，若没有则看操作系统缓存，如果没有则去看host文件，如果没有则开始进行对服务器的询问<br>2.首先客户端询问本地DNS服务器，自己要查找的url的IP地址，如果本地服务器能找到缓存则返回，否则本地服务器会去询问根服务器，根服务器返回给它一个顶级域名服务器的地址；本地服务器会再去询问顶级域名服务器，后者会给它一个权威域名服务器地址，本地服务器再去询问，直到查询到自己要找的url的IP地址，并将其返回给客户端，客户端和目标建立连接</p>
+<h1 id="路由表转发规则"><a href="#路由表转发规则" class="headerlink" title="路由表转发规则"></a>路由表转发规则</h1><p>如果有多个网卡，即有多个源IP地址，我们需要判断使用哪个来发送IP数据报<br>1.根据目的IP地址，和本地路由表中的多个条目的子网掩码进行与运算，得到的结果和路由表中的目的IP地址进行比对，正确的就是我们要选择的网卡，<br>2。如果没有匹配的网卡，那么选择默认网关，其目标IP地址和子网掩码都是0.0.0.0<br>3.后续将数据包发送给路由器，路由表中的Gateway就表示路由器的IP地址，即源IP地址</p>
+<h1 id="如何优化HTTP-1-1"><a href="#如何优化HTTP-1-1" class="headerlink" title="如何优化HTTP&#x2F;1.1"></a>如何优化HTTP&#x2F;1.1</h1><ol>
+<li>避免发送HTTP请求：缓存技术（强制缓存和协商缓存）</li>
+<li>在需要发送 HTTP 请求时，考虑如何减少请求次数</li>
+</ol>
+<ul>
+<li>减少重定向请求次数：如果有代理服务器，那么重定向的过程可以由它来进行，减少HTTP请求次数（301和308表示客户端可以将重定向响应缓存到本地磁盘，之后自动用新的url来替换之前的url来访问服务器）</li>
+<li>合并请求（对于多个小的资源的请求，合并成一个总的资源请求）</li>
+<li>延迟发送请求：请求网页的时候，没必要把全部资源都获取到，而是只获取当前用户所看到的页面资源，当用户向下滑动页面的时候，再向服务器获取接下来的资源，这样就达到了延迟发送请求的效果。</li>
+</ul>
+<ol start="3">
+<li>减少 HTTP 响应的数据大小</li>
+</ol>
+<ul>
+<li>无损压缩：br，gzip算法：将常出现的数据用较短的二进制比特序列表示，将不常出现的数据用较长的二进制比特序列表示</li>
+<li>有损压缩：比如对图</li>
+<li></li>
+</ul>
+<h1 id="TCP为什么是三次握手"><a href="#TCP为什么是三次握手" class="headerlink" title="TCP为什么是三次握手"></a>TCP为什么是三次握手</h1><p>1.阻止重复历史连接的初始化（主要原因）<br>如果是两步，那么服务端接收到之后就会建立连接，并向客户端发送数据，如果当前建立的连接并不是客户端需要的，那么就白白浪费了这次历史连接的建立，增加了开销。<br>2.同步双方的初始序列号：如果只有两次，那么服务端的序列号无法被确认，四次的话又可以压缩，所以是三次。<br>3.避免资源浪费：如果初始SYN发生了网络阻塞，客户端进行了超时重传，那么服务端由于不知道自己发送的SYN+ACK是否被接收到，只能再次建立连接。</p>
+<h1 id="为什么每次建立-TCP-连接时，初始化的序列号都要求不一样"><a href="#为什么每次建立-TCP-连接时，初始化的序列号都要求不一样" class="headerlink" title="为什么每次建立 TCP 连接时，初始化的序列号都要求不一样"></a>为什么每次建立 TCP 连接时，初始化的序列号都要求不一样</h1><ul>
+<li>为了防止历史报文被下一个相同四元组的连接接收（主要方面）<br>客户端和服务端建立一个 TCP 连接，在客户端发送数据包被网络阻塞了，然后超时重传了这个数据包，而此时服务端设备断电重启了，之前与客户端建立的连接就消失了，于是在收到客户端的数据包的时候就会发送 RST 报文。紧接着，客户端又与服务端建立了与上一个连接相同四元组的连接；在新连接建立完成后，上一个连接中被网络阻塞的数据包正好抵达了服务端，刚好该数据包的序列号正好是在服务端的接收窗口内，所以该数据包会被服务端正常接收，就会造成数据错乱。</li>
+<li>为了安全性，防止黑客伪造的相同序列号的 TCP 报文被对方接收</li>
+</ul>
+<p>初始序列号的产生：M + F<br>M是一个计时器，每隔4微秒 + 1，F是根据源 IP、目的 IP、源端口、目的端口生成一个随机数值。</p>
+<h1 id="既然-IP-层会分片，为什么-TCP-层还需要-MSS"><a href="#既然-IP-层会分片，为什么-TCP-层还需要-MSS" class="headerlink" title="既然 IP 层会分片，为什么 TCP 层还需要 MSS"></a>既然 IP 层会分片，为什么 TCP 层还需要 MSS</h1><p>如果一个 IP 分片丢失，整个 IP 报文的所有分片都得重传。<br>因为 IP 层本身没有超时重传机制，它由传输层的 TCP 来负责超时和重传。<br>经过 TCP 层分片后，如果一个 TCP 分片丢失后，进行重发时也是以 MSS 为单位，而不用重传所有的分片，大大增加了重传的效率</p>
+<h1 id="为什么需要-TIME-WAIT状态"><a href="#为什么需要-TIME-WAIT状态" class="headerlink" title="为什么需要 TIME_WAIT状态"></a>为什么需要 TIME_WAIT状态</h1><ul>
+<li>防止历史连接中的数据，被后面相同四元组的连接错误的接收；<br>如果某一个网络包被延迟，并且在延迟过程中客户端和服务端连接断开，然后如果TIME_WAIT状态没有或者过短，那么如果客户端和服务端以相同的四元组重新建立连接，那么该被延迟的数据是有可能被窗口接受的，而TIME_WAIT持续2MSL时间，就是为了让两个方向上的数据包都被丢弃，使得原来连接的数据包在网络中都自然消失，再出现的数据包一定都是新建立连接所产生的。</li>
+<li>保证「被动关闭连接」的一方，能被正确的关闭；</li>
+<li>如果客户端（主动关闭方）最后一次 ACK 报文（第四次挥手）在网络中丢失了，那么按照 TCP 可靠性原则，服务端（被动关闭方）会重发 FIN 报文。</li>
+</ul>
+<p>假设客户端没有 TIME_WAIT 状态，而是在发完最后一次回 ACK 报文就直接进入 CLOSE 状态，如果该 ACK 报文丢失了，服务端则重传的 FIN 报文，而这时客户端已经进入到关闭状态了，在收到服务端重传的 FIN 报文后，就会回 RST 报文。<br>服务端收到这个 RST 并将其解释为一个错误（Connection reset by peer），这对于一个可靠的协议来说不是一个优雅的终止方式。</p>
+<p>为了防止这种情况出现，客户端必须等待足够长的时间，确保服务端能够收到 ACK，如果服务端没有收到 ACK，那么就会触发 TCP 重传机制，服务端会重新发送一个 FIN，这样一去一来刚好两个 MSL 的时间。<br>客户端在收到服务端重传的 FIN 报文时，TIME_WAIT 状态的等待时间，会重置回 2MSL。</p>
+<h1 id="为什么需要CLOSE-WAIT状态"><a href="#为什么需要CLOSE-WAIT状态" class="headerlink" title="为什么需要CLOSE_WAIT状态"></a>为什么需要CLOSE_WAIT状态</h1><p>因为虽然此时服务端收到了客户端断开连接的请求，此时需要通知进程调用close和shutdown函数来断开连接，而此时可能应用层还有别的任务需要处理，所以需要一个中间状态，然后等调用close或者shutdown函数后，服务端才会变为last_ack状态</p>
+<h1 id="重传机制"><a href="#重传机制" class="headerlink" title="重传机制"></a>重传机制</h1><p>1.超时重传：数据包丢失和确认应答丢失<br>其机制是每一次重传时间增加一倍<br>2.快速重传：数据驱动，三次同样的ACK就会触发，但是并不知道所需要的ACK后面的需不需要重传<br>3.SACK：选择性确认，三次同样的ACK触发，TCP头部保存已经收到的数据段信息，只选择没有接收到的数据段重新发送。<br>4.D-SACK：告知发送方有哪些数据被重复接收了（例如ACK丢失和网络延时），会同时包括ACK和SACK两种，其中ACK表示需要的下一个包序列，SACK表示重复接收到的包，不需要再进行发送</p>
+<h1 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h1><p>1.概念：无需等待确认应答，而可以继续发送数据的最大值。窗口大小一般由接收方告诉发送方<br>2.发送窗口中分为两部分，一部分是已经发送但是还没有收到ACK的窗口大小，一部分是还没有发送的可用的发送部分，每当接收到一些ACK之后，窗口就可以向右滑动来增加可用部分<br>3.接收窗口表示未接收到但可以接收的数据，每次接收到数据后，窗口就可以向右滑动<br>涉及到的部分是流量控制：发送窗口和接收窗口所存放的数据都是放在系统内存缓冲区的，会在数据传输的过程中不断被系统调整</p>
+<h1 id="全连接队列满了之后只能丢弃连接吗"><a href="#全连接队列满了之后只能丢弃连接吗" class="headerlink" title="全连接队列满了之后只能丢弃连接吗"></a>全连接队列满了之后只能丢弃连接吗</h1><p>丢弃连接是Linux内核的默认行为，我们可以通过设置参数tcp_abort_on_overflow的值来修改他的行为</p>
+<ul>
+<li>值为0，则表示如果队列满了，则丢弃客户端发送的最后一次ack</li>
+<li>值为1，则服务端会发送一个RST给客户端，表示废弃掉这个握手过程和这个连接</li>
+</ul>
+<p>通常情况下，应该将该值设置为0，来应对突发的流量，因为可能过一段时间后，全连接队列就能空出位置来接收客户端重新发送的ack，二者还能够成功建立连接</p>
+<h1 id="为什么需要四次挥手"><a href="#为什么需要四次挥手" class="headerlink" title="为什么需要四次挥手"></a>为什么需要四次挥手</h1><p>因为服务端收到客户端的FIN报文时，马上会回复一个ACK报文，但是服务端应用程序可能还有数据要发送，所以并不能马上发送FIN报文，而是将该权限交给应用程序</p>
+<ul>
+<li>如果应用程序还要发送数据，那么发送完数据后才调用关闭连接的函数</li>
+<li>如果应用程序不再发送数据，那么直接就可以调用关闭连接的函数</li>
+</ul>
+<h1 id="三次挥手"><a href="#三次挥手" class="headerlink" title="三次挥手"></a>三次挥手</h1><p>如果服务端没有数据要发送而且开启了TCP延迟确认的情况，那么第二次挥手和第三次挥手就会合并成一次。<br>TCP延迟确认的规则：</p>
+<ul>
+<li>如果有响应数据要发送，那么响应数据和ACK会一起发送</li>
+<li>如果没有响应数据要发送，那么会等待一段时间看是否有响应数据需要发送</li>
+<li>如果在等待期间又接收到了数据，那么会立即发送ACK</li>
+</ul>
+<h1 id="没有accept也可以建立连接"><a href="#没有accept也可以建立连接" class="headerlink" title="没有accept也可以建立连接"></a>没有accept也可以建立连接</h1><p>accept最终返回是从全连接队列中取出一个元素，在前面的过程中实际上已经构建了连接<br>全连接队列和半连接队列是在服务点listen阶段内核创建的，其中全连接队列是链表，半连接队列是哈希表<br>没有listen的情况下也可以建立连接，比如两个客户端产生连接或者客户端和自己建立连接，这是因为内核有一个全局的hash表，可以用来存放客户端的连接信息，当消息发出后，经过回环地址重新回来以后，从hash表中取出连接信息，建立连接。</p>
+<h1 id="TCP的异常断开连接情况"><a href="#TCP的异常断开连接情况" class="headerlink" title="TCP的异常断开连接情况"></a>TCP的异常断开连接情况</h1><p>1.如果进程崩溃，那么内核会发送FIN，和另一端进行四次挥手断开连接<br>2.如果客户端宕机且没有重启，不会发生四次挥手：</p>
+<ul>
+<li>如果服务端发送数据，那么会超时重传，直到达到最大重传次数断开连接</li>
+<li>如果服务端不发送数据，如果服务端开启了keepalive，那么会去探测对方是否还在，如果探测不到，就会断开连接，如果没有开启保活机制，那么会一直保持在连接状态<br>3.如果客户端宕机且迅速重启：此时如果服务端向客户端发送数据，都会收到它发送的RST断开连接的报文</li>
+</ul>
+<h1 id="拔掉网线的问题"><a href="#拔掉网线的问题" class="headerlink" title="拔掉网线的问题"></a>拔掉网线的问题</h1><p>实际上拔掉网线不会影响TCP四元组的信息，其连接状态还是存在<br>1.如果有数据传输</p>
+<ul>
+<li>在数据传输的重传次数到达最大之前插入网线，还是能保持连接</li>
+<li>达到最大重传次数前没有插入网线，则断开连接<br>2.如果没有数据传输</li>
+<li>如果二者都没有keepalive，那么二者都默认是连接状态</li>
+<li>如果开启了保活机制，那么在探测期间内插入了网线，还是保持连接，如果探测失败，则断开连接</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/19/WebServer%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/19/WebServer%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">WebServer面试问题总结</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-08-19 20:55:44 / 修改时间：21:02:10" itemprop="dateCreated datePublished" datetime="2022-08-19T20:55:44+08:00">2022-08-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="大概流程"><a href="#大概流程" class="headerlink" title="大概流程"></a>大概流程</h1><p>主线程监听连接，让epoll监听活跃的文件描述符，处理完之后开工作线程，工作线程任务（读写是分开的，不一定是同一个线程搞操作），读写缓冲区是数据httpconn的，httpconn是一个类，一个用户一个实例，所以直接独立了。读取客户端数据（用非阻塞IO),有个读缓冲，每个连接独享一个读和写缓冲，有个65K缓冲区，保证能一次读完，读不完就扩容。先去看读缓冲有没有数据，解析HTTP，生成响应数据，封装响应传回去。Reactor没有读和业务逻辑，Proactor才可以实现疯转业务逻辑。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/14/%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0c%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/14/%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0c%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">手动实现c字符串的基本函数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-14 14:47:31" itemprop="dateCreated datePublished" datetime="2022-08-14T14:47:31+08:00">2022-08-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-15 10:21:38" itemprop="dateModified" datetime="2022-09-15T10:21:38+08:00">2022-09-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1-strlen函数"><a href="#1-strlen函数" class="headerlink" title="1.strlen函数"></a>1.strlen函数</h2><p>原型：size_t strlen(const char *str)，计算字符串的长度</p>
+<pre><code>int my_strlen(const char *str)&#123;
+    int count = 0;
+    assert(str != nullptr);
+    while(*str != &#39;\0&#39;)&#123;
+        count++;
+        str++;
+    &#125;
+    return count;
+&#125;
+</code></pre>
+<h2 id="2-strcpy函数"><a href="#2-strcpy函数" class="headerlink" title="2.strcpy函数"></a>2.strcpy函数</h2><p>原型：char *strcpy(char *dest, const char *src)，将src指向的字符串复制到dest中</p>
+<pre><code>char *my_strcpy(char *str_des, const char *str_source)&#123;
+    assert(str_des != nullptr);
+    assert(str_source != nullptr);
+    char *ret = str_des;
+    while((*str_des++ = *str_source++) != &#39;\0&#39;)&#123;
+        ;
+    &#125;
+    return ret;
+&#125;
+</code></pre>
+<h2 id="3-strcat函数"><a href="#3-strcat函数" class="headerlink" title="3.strcat函数"></a>3.strcat函数</h2><p>原型：char *strcat(char *dest, const char *src)，将src指向的字符串追加到dest指向的字符串结尾。</p>
+<pre><code>char *my_strcat(char *str_des, const char *str_source)&#123;
+    assert(str_des != nullptr);
+    assert(str_source != nullptr);
+    char *ret = str_des;
+    while(*str_des)&#123;
+        str_des++;
+    &#125;
+    while((*str_des++ = *str_source++) != &#39;\0&#39;)&#123;
+        ;
+    &#125; 
+    
+    return ret;
+    
+&#125;
+</code></pre>
+<h2 id="4-strcmp函数"><a href="#4-strcmp函数" class="headerlink" title="4.strcmp函数"></a>4.strcmp函数</h2><p>原型：int strcmp(const char *str1, const char *str2)，把str1指向的字符串和str2指向的字符串进行比较，小于返回一个小于零的值，大于返回一个大于零的值，相等返回0</p>
+<pre><code>int my_strcmp(const char *str1, const char *str2)&#123;
+    while(*str1 &amp;&amp; *str2)&#123;
+        if(*str1 == *str2)&#123;
+            str1++;
+            str2++;
+        &#125;
+        else if(*str1 &gt; *str2)return -1;
+        else return 1;
+    &#125;
+    if(*str1)return 1;
+    if(*str2)return -1;
+    return 0;
+&#125;
+</code></pre>
+<h2 id="5-strchr函数"><a href="#5-strchr函数" class="headerlink" title="5.strchr函数"></a>5.strchr函数</h2><p>原型：char *strchr(const char *str, int c)，在参数str所指向的字符串中搜索第一次出现字符c的位置，如果未找到返回NULL</p>
+<pre><code>char *my_strchr(const char *str, char c)&#123;
+    while(*str++ != &#39;\0&#39;)&#123;
+        if(*str == c)return str;
+    &#125;
+    return NULL;
+&#125;
+</code></pre>
+<h2 id="6-strstr函数"><a href="#6-strstr函数" class="headerlink" title="6.strstr函数"></a>6.strstr函数</h2><p>原型：char *strstr(const char *haystack, const char *needle)，在字符串haystack中查找第一次出现字符串needle的位置，不包括终止符’\0’</p>
+<pre><code>char *my_strstr(char *str1, char *str2)&#123;
+    const char *index1;
+    const char *index2;
+    if(!str1 || !str2)return str1;
+    
+    //遍历str1字符串
+    while(*str1)&#123;
+        index1 = str1;
+        index2 = str2;
+        do&#123;
+            if(!*index2)return str1;
+        &#125;while(*index1++ == *index2++);
+        str1++;
+    &#125;
+    return NULL;
+    
+&#125;
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

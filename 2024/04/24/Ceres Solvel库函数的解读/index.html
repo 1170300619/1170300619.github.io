@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关于微分计算（On Derivatives)与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：   解析微分算法（Analytic Derivatives）：用户自己手动或者借助Maple或者Math">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceres Solvel库函数的解读">
+<meta property="og:url" content="http://example.com/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="关于微分计算（On Derivatives)与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：   解析微分算法（Analytic Derivatives）：用户自己手动或者借助Maple或者Math">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-24T15:10:35.462Z">
+<meta property="article:modified_time" content="2020-12-24T10:25:24.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/","path":"2024/04/24/Ceres Solvel库函数的解读/","title":"Ceres Solvel库函数的解读"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ceres Solvel库函数的解读 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BE%AE%E5%88%86%E8%AE%A1%E7%AE%97%EF%BC%88On-Derivatives"><span class="nav-number">1.</span> <span class="nav-text">关于微分计算（On Derivatives)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spivak%E6%A0%87%E8%AE%B0"><span class="nav-number">1.1.</span> <span class="nav-text">Spivak标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%BE%AE%E5%88%86%E6%B3%95%EF%BC%88Automatic-Derivatices%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">自动微分法（Automatic Derivatices）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%85%83%E6%95%B0%E5%92%8C%E5%B0%84%E6%B5%81"><span class="nav-number">1.2.1.</span> <span class="nav-text">二元数和射流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%B0%84%E6%B5%81%EF%BC%88Jet"><span class="nav-number">1.2.2.</span> <span class="nav-text">实现射流（Jet)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%B7%E9%98%B1"><span class="nav-number">1.2.3.</span> <span class="nav-text">陷阱</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Ceres Solvel库函数的解读 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ceres Solvel库函数的解读
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-24 18:25:24" itemprop="dateModified" datetime="2020-12-24T18:25:24+08:00">2020-12-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="关于微分计算（On-Derivatives"><a href="#关于微分计算（On-Derivatives" class="headerlink" title="关于微分计算（On Derivatives)"></a>关于微分计算（On Derivatives)</h1><p>与所有基于梯度的优化算法一样，Ceres Solver也是基于评估域中任意点的目标函数及其导数。事实上，Ceres的核心就是确定目标函数机器雅可比行列式。雅可比行列式求解的正确性和效率是评判算法优劣的关键指标。用户可以灵活的从一下三种微分算法中选择：</p>
+<blockquote>
+<ul>
+<li>解析微分算法（<font face="黑体">Analytic Derivatives</font>）：用户自己手动或者借助Maple或者Mathematica等工具求解导数，然后写到<font color=red font face="黑体">CostFunction</font>里面。</li>
+<li>数值微分算法（Numeric Derivatives）：Ceres用有限差分数值计算导数</li>
+<li>自动微分算法（Automatic Dericatives）：Ceres用C++模板和操作符重载自动分析计算微分。</li>
+</ul>
+</blockquote>
+<p>应该使用这三种方法中的哪一种（单独或组合）取决于用户愿意做出的情况和权衡。官方给出了一个简单粗暴的建议：<br>优先选用自动微分算法，某些情况可能需要用到解析微分算法，尽量避免数值微分算法。</p>
+<h2 id="Spivak标记"><a href="#Spivak标记" class="headerlink" title="Spivak标记"></a>Spivak标记</h2><p>为了简化阅读和推理，引入Spivak标记。</p>
+<p>对于单自变量函数$f$,$f(a)$表示它在$a$处的函数值。$Df$表示它的一阶导数，那么$Df(a)$就是函数在$a$处的一阶导数。即，</p>
+<p>$$Df(a) &#x3D; \frac{d}{dx}f(x)|_{x&#x3D;a}$$</p>
+<p>$D^kf$表示$f$的第$k$阶导数。</p>
+<p>对于双自变量函数$g(x,y)$，$D_1g$和$D_2g$分别表示关于$g$的两个偏微分。即，</p>
+<p>$$D_1g &#x3D; \frac{\partial}{\partial x}g(x,y)andD_2g &#x3D; \frac{\partial}{\partial y}g(x,y)$$</p>
+<p>$D_g$表示$g$的雅可比矩阵</p>
+<blockquote>
+<p>雅可比矩阵即</p>
+</blockquote>
+<p>$$<br>\begin{bmatrix}<br>  \frac{\partial y_1}{\partial x_1}&amp; \cdots &amp; \frac{\partial y_1}{\partial x_n}\<br> \vdots &amp; \ddots &amp; \vdots\<br>  \frac{\partial y_m}{\partial x_1}&amp; \cdots &amp; \frac{\partial y_m}{\partial x_n}<br>\end{bmatrix}<br>$$</p>
+<p>这里的$y_1$即$g$，其他的行不存在，因为只存在一个因变量$g$。即雅可比矩阵是一个一行两列的矩阵。即，</p>
+<p>$$Dg &#x3D; \begin{bmatrix}<br>  D_1g&amp; D_2g<br>\end{bmatrix}$$</p>
+<p>更一般的，如果$g:\mathbb{R}^{n} \longrightarrow \mathbb{R}^{m}$，那么$Dg$表示的就是一个$m \times n$的雅可比矩阵。</p>
+<h2 id="自动微分法（Automatic-Derivatices）"><a href="#自动微分法（Automatic-Derivatices）" class="headerlink" title="自动微分法（Automatic Derivatices）"></a>自动微分法（Automatic Derivatices）</h2><p>我们来思考一个相对复杂的曲线拟合问题。待确定参数方程如下：</p>
+<p>$$ y &#x3D; \frac{b_1}{(1+e^{b_2 - b_3x})^{1&#x2F;b_4}}$$</p>
+<p>现在给定一系列的对应数据点$\left{x_i,y_i\right },\forall i&#x3D;1,\cdots,n$。我们面临的问题就是求解$b_1,b_2,b_3,b_4$使下列表达式的取值最小：</p>
+<p>$$ \begin{aligned}<br>E\left(b_{1}, b_{2}, b_{3}, b_{4}\right) &amp;&#x3D;\sum_{i} f^{2}\left(b_{1}, b_{2}, b_{3}, b_{4} ; x_{i}, y_{i}\right) \<br>&amp;&#x3D;\sum_{i}\left(\frac{b_{1}}{\left(1+e^{b_{2}-b_3x_i}\right)^{1 &#x2F; b_{4}}}-y_{i}\right)^{2}<br>\end{aligned}$$</p>
+<p>下面我们使用自动微分算法，它是一种可以快速计算精确导数的算法。下面的代码片段实现了上述问题的<font color=red font face="黑体">CostFunction</font>。</p>
+<pre><code>struct Rat43CostFunctor &#123;
+    Rat43CostFunctor(const double x, const double y) : x_(x), y_(y) &#123;&#125;
+
+template &lt;typename T&gt;  
+bool operator()(const T* parameters, T* residuals) const &#123;
+    const T b1 = parameters[0];
+    const T b2 = parameters[1];
+    const T b3 = parameters[2];
+    const T b4 = parameters[3];
+    residuals[0] = b1 * pow(1.0 + exp(b2 -  b3 * x_), -1.0 / b4) - y_;
+    return true;
+&#125;
+
+private:
+    const double x_;
+    const double y_;
+&#125;;
+
+CostFunction* cost_function =
+    new AutoDiffCostFunction&lt;Rat43CostFunctor, 1, 4&gt;(    
+        new Rat43CostFunctor(x, y));
+</code></pre>
+<p>接下来我们对自动微分算法的原理进行研究。为了研究其工作原理，必须要学习 <strong>二元数（Dual number)</strong> 和 **射流(Jet)**。</p>
+<h3 id="二元数和射流"><a href="#二元数和射流" class="headerlink" title="二元数和射流"></a>二元数和射流</h3><p><strong>二元数(Dual number)</strong> 是实数的一个延伸，类似于复数。复数则通过引入虚数来增加实数，比如$i$，二元数引入了一个极小二元数单位，比如$\epsilon$，且$\epsilon^2 &#x3D; 0$（平方后太小可以忽略）。一个二元数$a+\upsilon\epsilon$包含两个分量，实分量$a$和极小分量$\upsilon$。令人惊喜的是，这个简单的变化带来了一种方便的计算精确导数的方法，而不需要考虑复杂的符号表达式。</p>
+<p>例如，考虑函数</p>
+<p>$$ f(x) &#x3D; x^2$$</p>
+<p>然后<br>$$ \begin{aligned}<br>f(10+\epsilon) &amp;&#x3D;(10+\epsilon)^{2} \<br>&amp;&#x3D;100+20 \epsilon+\epsilon^{2} \<br>&amp;&#x3D;100+20 \epsilon<br>\end{aligned}$$</p>
+<p>观察$\epsilon$的系数，我们发现$Df(10) &#x3D; 20$。事实上，这个规律可以推广到不是多项式的函数。考虑一个任意可微函数$f(x)$，然后我们计算$f(x+ \epsilon)$，通过在$x$附近做泰勒展开，这就得到了无穷级数</p>
+<p>$$<br>\begin{array}{l}<br>f(x+\epsilon)&#x3D;f(x)+D f(x) \epsilon+D^{2} f(x) \frac{\epsilon^{2}}{2}+D^{3} f(x) \frac{\epsilon^{3}}{6}+\cdots \<br>f(x+\epsilon)&#x3D;f(x)+D f(x) \epsilon<br>\end{array}<br>$$</p>
+<p>记住，$\epsilon^2 &#x3D; 0$。</p>
+<p><strong>射流(Jet)</strong> 是一个$n$维二元数。我们定义$n$个极小单位$\epsilon_i,i&#x3D;1,\cdots,n$。并且存在性质$\forall i,j:\epsilon_i\epsilon_j&#x3D;0$。射流数由实数$a$和$n$维极小分量组成。</p>
+<p>$$x &#x3D; a + \sum_j \upsilon_j \epsilon_j$$</p>
+<p>为了简化我们改写为这种形式</p>
+<p>$$x &#x3D; a + \mathbf{v}$$</p>
+<p>然后使用泰勒级数展开，我们可以看到：</p>
+<p>$$f(a+\mathbf{v}) &#x3D; f(a) +Df(a)\mathbf{v} $$</p>
+<p>对多变量函数$f : \mathbb{R^n} \longrightarrow \mathbb{R^m} $相似。对于自变量$x_i &#x3D; a_i + \mathbf{v}_i, \forall i &#x3D; 1,\cdots,n :$</p>
+<p>$$f(x_1,\cdots,x_n) &#x3D; f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n)\mathbf{v}_i $$</p>
+<p>如果每个选取的极小量$\mathbf{v}_i &#x3D; e_i $是$i^{th}$标准基向量，那么上面的表达式就可以简化为</p>
+<p>$$<br>f(x_1,\cdots,x_n) &#x3D; f(a_1,\cdots,a_n) + \sum_i D_if(a_1,\cdots,a_n) \epsilon_i<br>$$</p>
+<p>我们可以查找$\epsilon_i$的系数来提取雅可比矩阵的坐标。</p>
+<h3 id="实现射流（Jet"><a href="#实现射流（Jet" class="headerlink" title="实现射流（Jet)"></a>实现射流（Jet)</h3><p>为了让上面学到的内容在实践中发挥作用，我们需要能够计算函数$f$的值，不仅在自变量是实数的时候，也需要在自变量是二元数的情况下适用。但是通常我们并非通过泰勒展开式来求函数值。这也就是为什么我们需要用到C++模板和操作符重载。下面的代码段实现了<font color = red font face = "黑体">Jet</font>类以及对该类的一些操作和函数。</p>
+<pre><code>template&lt;int N&gt; struct Jet &#123;
+    double a;
+    Eigen::Matrix&lt;double, 1, N&gt; v;
+&#125;;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator+(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a + g.a, f.v + g.v);
+&#125;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator-(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a - g.a, f.v - g.v);
+&#125;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator*(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a * g.a, f.a * g.v + f.v * g.a);
+&#125;
+
+template&lt;int N&gt; Jet&lt;N&gt; operator/(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(f.a / g.a, f.v / g.a - f.a * g.v / (g.a * g.a));
+&#125;
+
+template &lt;int N&gt; Jet&lt;N&gt; exp(const Jet&lt;N&gt;&amp; f) &#123;
+    return Jet&lt;T, N&gt;(exp(f.a), exp(f.a) * f.v);
+&#125;
+
+// This is a simple implementation for illustration purposes, the
+// actual implementation of pow requires careful handling of a number
+// of corner cases.
+template &lt;int N&gt;  Jet&lt;N&gt; pow(const Jet&lt;N&gt;&amp; f, const Jet&lt;N&gt;&amp; g) &#123;
+    return Jet&lt;N&gt;(pow(f.a, g.a),
+            g.a * pow(f.a, g.a - 1.0) * f.v +
+            pow(f.a, g.a) * log(f.a); * g.v);
+&#125;
+</code></pre>
+<p>有了这些重载的函数，我们现在可以用一个<font color = red font face = "黑体">Jets</font>数组来调用<font color = red font face = "黑体">Rat43CostFunctor</font>，而不是<font color = red font face = "黑体">double</font>双精度类型。将其与初始化的<font color = red font face = "黑体">Jets</font>结合起来，我们就可以计算雅可比矩阵了：</p>
+<pre><code>class Rat43Automatic : public ceres::SizedCostFunction&lt;1,4&gt; &#123;
+    public:
+      Rat43Automatic(const Rat43CostFunctor* functor) : functor_(functor) &#123;&#125;
+      virtual ~Rat43Automatic() &#123;&#125;
+      virtual bool Evaluate(double const* const* parameters,
+                    double* residuals,
+                    double** jacobians) const &#123;
+    // Just evaluate the residuals if Jacobians are not required.
+    if (!jacobians) return (*functor_)(parameters[0], residuals);
+
+    // 初始化Jets，四个待求参数
+    ceres::Jet&lt;4&gt; jets[4];
+    for (int i = 0; i &lt; 4; ++i) &#123;
+        jets[i].a = parameters[0][i];
+        jets[i].v.setZero();
+        jets[i].v[i] = 1.0;
+    &#125;
+
+    ceres::Jet&lt;4&gt; result;
+    (*functor_)(jets, &amp;result);
+
+    // 把Jet的值（前面提到的，极小单位分量的系数）复制出啦.
+    residuals[0] = result.a;
+    for (int i = 0; i &lt; 4; ++i) &#123;
+        jacobians[0][i] = result.v[i];
+    &#125;
+    return true;
+&#125;
+
+private:
+    std::unique_ptr&lt;const Rat43CostFunctor&gt; functor_;
+&#125;;
+</code></pre>
+<p>这就是<font face = "黑体" font color = red>AutoDiffCostFunction</font>的核心工作原理。</p>
+<h3 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h3><p>自动微分使用户不必计算和推理Jacobians的符号表达式，但是这个捷径是有代价的。例如，考虑以下简单的函数：</p>
+<pre><code>struct Functor &#123;
+    template &lt;typename T&gt; bool operator()(const T* x, T* residual) const &#123;
+        residual[0] = 1.0 - sqrt(x[0] * x[0] + x[1] * x[1]);
+        return true;
+    &#125;
+&#125;;
+</code></pre>
+<p>查看计算残差的代码，没有人预见到任何问题。但是，如果我们看一下雅可比矩阵的解析表达式：</p>
+<p>$$<br>\begin{aligned}<br>y &amp;&#x3D;1-\sqrt{x_{0}^{2}+x_{1}^{2}} \<br>D_{1} y &amp;&#x3D;-\frac{x_{0}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}, D_{2} y&#x3D;-\frac{x_{1}}{\sqrt{x_{0}^{2}+x_{1}^{2}}}<br>\end{aligned}<br>$$</p>
+<p>我们发现它在$x_0 &#x3D; 0,x_1 &#x3D; 0$处是不确定的。</p>
+<p>这个问题没有完美的解决方案。在某些情况下，我们需要明确地指出可能出现的不确定的点，并使用使用<font face = "黑体" font color = blue>L’Hopital rule</font>（这里要去Ceres Solvel官网的rotation.h文件中的转换例程），在其他情况下，可能需要对表达式进行正则化，以消除这些点。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/24/Ceres%20Solvel%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%AE%97/" rel="prev" title="Ceres Solvel非线性最小二乘问题的解算">
+                  <i class="fa fa-angle-left"></i> Ceres Solvel非线性最小二乘问题的解算
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/24/experience/" rel="next" title="">
+                   <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

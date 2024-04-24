@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1. 回溯问题在leetcode中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回溯问题的去重技巧">
+<meta property="og:url" content="http://example.com/2022/04/05/%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%BB%E9%87%8D%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="1. 回溯问题在leetcode中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-05T15:04:56.000Z">
+<meta property="article:modified_time" content="2022-04-06T06:47:28.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/04/05/%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%BB%E9%87%8D%E6%8A%80%E5%B7%A7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/05/%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%BB%E9%87%8D%E6%8A%80%E5%B7%A7/","path":"2022/04/05/回溯问题的去重技巧/","title":"回溯问题的去重技巧"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>回溯问题的去重技巧 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">1. 回溯问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E4%B8%AD%E7%9A%84%E5%8E%BB%E9%87%8D%E6%8A%80%E5%B7%A7"><span class="nav-number">2.</span> <span class="nav-text">2. 回溯问题中的去重技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%8E%BB%E9%87%8D%E9%97%AE%E9%A2%98%E7%9A%84%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5"><span class="nav-number">3.</span> <span class="nav-text">3. 去重问题的特殊情况</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/05/%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%BB%E9%87%8D%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="回溯问题的去重技巧 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          回溯问题的去重技巧
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-05 23:04:56" itemprop="dateCreated datePublished" datetime="2022-04-05T23:04:56+08:00">2022-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-06 14:47:28" itemprop="dateModified" datetime="2022-04-06T14:47:28+08:00">2022-04-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="1-回溯问题"><a href="#1-回溯问题" class="headerlink" title="1. 回溯问题"></a>1. 回溯问题</h1><p>在<code>leetcode</code>中我们经常会遇到很多需要求解一组集合或者所有排列的问题，这类问题的难点在于，通常情况下我们只有暴力求解这一种方式，通过遍历所有可能的解，从中找到符合我们要求的题解。常见的回溯问题包括以下类别：组合（不要求顺序，元素相同顺序不同的视为同样的答案），排列（要求顺序，相同元素不同顺序视为不同答案），切割，子集，棋盘（N皇后，数独）等。这类问题有一个共同特点就是可以抽象为树性结构，其中，所遍历的集合的大小构成了树的宽度，递归的深度构成了树的深度。下面我们给出回溯函数的模板，包括返回值、参数以及写法：</p>
+<ul>
+<li><p><strong>回溯方法的函数伪代码</strong></p>
+<pre><code>  void backtarcking(参数)
+</code></pre>
+</li>
+</ul>
+<p>这里我们使用<code>void</code>作为回溯函数的返回值，因为我们需要做的是在集合中寻找符合题意的解，那么就可以设置一个<code>result</code>数组来保存符合题意的解，在递归调用的过程中，不断将解加入<code>result</code>即可，函数遇到终止条件就可以<code>return</code>。</p>
+<ul>
+<li><p><strong>回溯函数的终止条件</strong></p>
+<p>  终止条件视情况而定，有可能是遍历到叶子节点，有可能是需要满足一些条件，在<code>backtracking</code>函数中，首先要做的就是判断是否触发了终止条件，如果触发了，那么就处理当前的结果，需要的话还要<code>return</code>，这里的关键是，如果需要遍历所有情况，则不需要<code>return</code>，因为其会导致后面的通往叶子节点的路径不会被遍历到。如果需要剪枝的话，则需要<code>return</code>。终止条件的伪代码为：</p>
+<pre><code>  if(终止条件)&#123;
+      处理结果；
+      (return, 视情况而定)
+  &#125;
+</code></pre>
+<p>  还需要注意的是，有些寻找子集的问题或者排列组合的问题中，并不需要终止条件，此时只需要处理结果就可以。</p>
+</li>
+<li><p><strong>回溯函数的递归部分</strong></p>
+<p>  递归部分是回溯函数的核心，只有把递归部分写的明白，才算真正懂得了何为“回溯”，所谓回溯就是指在遍历过程中保存的中间结果，在之后的遍历时仍然需要，那么就需要保存起来，常用的方法是使用<code>path</code>数组保存起来，遍历到当前节点时，将节点信息保存至<code>path</code>中，遍历后，在将最后一个保存的信息弹出，这样<code>path</code>中最后保存的就是前一个节点的信息。递归部分的伪代码：</p>
+<pre><code>  for(int i = startIndex; i &lt; size; i++)&#123;
+      处理节点
+      path.push_back(当前节点)
+      backtracking(i + 1, 其他参数)；
+      path.pop_back(); // 回溯
+  &#125;
+</code></pre>
+</li>
+</ul>
+<h1 id="2-回溯问题中的去重技巧"><a href="#2-回溯问题中的去重技巧" class="headerlink" title="2. 回溯问题中的去重技巧"></a>2. 回溯问题中的去重技巧</h1><p>在回溯问题中有这样几道题，比如<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-ii/">leetcode-&gt;40</a>。这里的要求是解中不能包含重复的组合。我们一下就能想到，把符合题意的解放入<code>unordered_map</code>或者<code>unordered_set</code>中，每次有新的解，就去容器中<code>find</code>一下，如果<code>find</code>的结果等于容器的<code>end()</code>，那么就说明没有重复解，再次加入容器即可。然后理想很丰满，现实很骨感，这样的判断很容易导致超时。那么有什么更好的方法呢？既然在遍历过程中已经对所有情况进行了搜索，何不在搜索过程中就进行重复判断，比如这道题的示例<code>1</code>中，<code>[1,7]</code>和<code>[7,1]</code>都是会被搜索到的，那么怎么判断这两者重复了呢？答案就是排序，排完序后都是<code>[1,7]</code>。排序也分为两种情况，第一种是找到答案后再排序，这样无疑复杂度会很高，并且还是需要对结果进行判重，需要用到<code>unordered_map</code>或者<code>unordered_set</code>。第二种则是对初始数组进行排序，这样原数组就变成了<code>[1,1,2,5,6,7,10]</code>，在搜索过程中会遇到两次<code>[1,7]</code>,那么只需要判断：如果当前节点是否和前一个节点相同，并且在前一个节点使用过，那么当前节点就不能使用。此时可以利用一个<code>vector&lt;bool&gt; used</code>来保存每个节点的使用状态，要注意的是，判重是在同一层进行的，不同层之间<code>used</code>是不影响的。我们用一个例子来画一下树状图，比如<code>nums = [1,1,2]，target = 3</code></p>
+
+
+<p>总体代码如下：</p>
+<pre><code>class Solution &#123;
+private:
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+
+    void backtracking(int target, const vector&lt;int&gt;&amp; candidates, int startIndex, vector&lt;bool&gt; used)&#123;
+        int sum = 0;
+        for(int j = 0; j &lt; path.size(); j++)&#123;
+            sum += path[j];
+        &#125;   
+        if(sum == target)&#123;
+            result.push_back(path);
+            return;
+        &#125;else if(sum &gt; target)return ; // 剪枝
+
+        for(int i = startIndex; i &lt; candidates.size(); i++)&#123;
+            if(i &gt; 0 &amp;&amp; candidates[i] == candidates[i - 1] &amp;&amp; used[i - 1] == false)&#123; // 判重
+                continue;
+            &#125;
+            path.push_back(candidates[i]);
+            used[i] = true;
+            backtracking(target, candidates, i + 1, used);
+            used[i] = false; // 回溯
+            path.pop_back(); // 回溯
+        &#125;
+    &#125;
+public:
+    vector&lt;vector&lt;int&gt;&gt; combinationSum2(vector&lt;int&gt;&amp; candidates, int target) &#123;
+        result.clear();
+        path.clear();
+        vector&lt;bool&gt; used(candidates.size(), false);
+        sort(candidates.begin(), candidates.end()); // 记住要排序
+        backtracking(target, candidates, 0, used);
+        return result;
+    &#125;
+&#125;;
+</code></pre>
+<p>当然，这里还有优化的空间，比如在递归调用中，每次进入下一层之后才会计算<code>path</code>的和，我们可以将<code>sum</code>放入<code>backtracking</code>的参数中，在进入下一层之前计算当前<code>sum + candidates[i]</code>的和是否大于<code>target</code>，如果大于的话就<code>break</code>，可以减少递归调用。</p>
+<h1 id="3-去重问题的特殊情况"><a href="#3-去重问题的特殊情况" class="headerlink" title="3. 去重问题的特殊情况"></a>3. 去重问题的特殊情况</h1><p>下面我们来看一下<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/increasing-subsequences/">leetcode-&gt;491</a>，这道题需要找到数组中不同的递增子序列。这就说明我们不能对原数组进行排序。那么就会给判重增加一定的难度，但是想到使用<code>map</code>和<code>set</code>增加的复杂度，我们依然使用在搜索过程中进行判重的方法。在示例1的搜索过程中，会依次遍历到<code>[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[4,7]</code>，这里就产生了重复，我们画一下抽象树性图：</p>
+
+
+<p>此时可以看到，导致重复的原因是同一层内出现了重复的元素，那么判重方法就是在同一层内判断当前节点的值是否和之前的<strong>所有值</strong>有相同情况出现。简单的增加一个判重函数即可。</p>
+<pre><code>//判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end)&#123;
+        for(int i = start;i &lt; end; i++)&#123;
+            if(nums[i] == nums[end])return false;
+        &#125;
+        return true;
+    &#125;
+</code></pre>
+<p>其中start是递归for循环中startIndex的位置，end为递归for循环中i的位置。这样判重就可以方便的降低复杂度，避免了map和set的使用。</p>
+<p>总体代码如下：</p>
+<pre><code>class Solution &#123;
+    vector&lt;vector&lt;int&gt;&gt; result;
+    vector&lt;int&gt; path;
+    void backtracking(const vector&lt;int&gt;&amp; nums, int startIndex)&#123;
+        if(path.size() &gt;= 2)&#123; // path中至少存了2两个数就可以放入result中了
+            result.push_back(path); // 并且由于需要遍历所以不需要return
+        &#125;
+        for(int i = startIndex; i &lt; nums.size(); i++)&#123;
+            //如果 i 不等于 startIndex 并且重复，那么就跳过当前值
+            if(i != startIndex &amp;&amp; !isRepeat(nums, startIndex, i))continue;
+            if(startIndex == 0 || nums[i] &gt;= path.back())&#123; // 第一个数和满足条件的数要放入
+                path.push_back(nums[i]);
+                backtracking(nums, i + 1);
+                path.pop_back();
+        &#125;
+        &#125;   
+    &#125;
+    //判断从[startIndex, i)内有没有和nums[i]相等的元素，有就判定为重复
+    bool isRepeat(const vector&lt;int&gt;&amp; nums, int start, int end)&#123;
+        for(int i = start;i &lt; end; i++)&#123;
+            if(nums[i] == nums[end])return false;
+        &#125;
+        return true;
+    &#125;
+public:
+    vector&lt;vector&lt;int&gt;&gt; findSubsequences(vector&lt;int&gt;&amp; nums) &#123;
+        result.clear();
+        path.clear();
+        backtracking(nums, 0);
+        return result;
+    &#125;
+&#125;;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/17/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC/" rel="prev" title="拷贝构造和拷贝赋值">
+                  <i class="fa fa-angle-left"></i> 拷贝构造和拷贝赋值
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/27/%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95/" rel="next" title="字节面试">
+                  字节面试 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

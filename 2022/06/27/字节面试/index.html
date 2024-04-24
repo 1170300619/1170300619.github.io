@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="#1.面试的问题 1.1 linux常用吗，知道哪些命令ls 就是 list 的缩写，通过 ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限、查看目录信息等等。比如ls -acd 切换当前目录到指定目录，比如cd ~ 进入home目录，cd &#x2F;xx 进入该目录mkdir 命令用于创建文件夹。rm 删除一个目录中的一个或多个文件或目录，如果没有使用 -r 选项，则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字节面试">
+<meta property="og:url" content="http://example.com/2022/06/27/%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="#1.面试的问题 1.1 linux常用吗，知道哪些命令ls 就是 list 的缩写，通过 ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限、查看目录信息等等。比如ls -acd 切换当前目录到指定目录，比如cd ~ 进入home目录，cd &#x2F;xx 进入该目录mkdir 命令用于创建文件夹。rm 删除一个目录中的一个或多个文件或目录，如果没有使用 -r 选项，则">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-27T13:45:55.000Z">
+<meta property="article:modified_time" content="2022-11-16T15:34:28.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/06/27/%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/06/27/%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95/","path":"2022/06/27/字节面试/","title":"字节面试"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>字节面试 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="字节面试 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字节面试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-27 21:45:55" itemprop="dateCreated datePublished" datetime="2022-06-27T21:45:55+08:00">2022-06-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-16 23:34:28" itemprop="dateModified" datetime="2022-11-16T23:34:28+08:00">2022-11-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>#1.面试的问题</p>
+<p>1.1 <code>linux</code>常用吗，知道哪些命令<br><code>ls</code> 就是 list 的缩写，通过 ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限、查看目录信息等等。比如ls -a<br><code>cd</code> 切换当前目录到指定目录，比如cd ~ 进入<code>home</code>目录，cd &#x2F;xx 进入该目录<br><code>mkdir</code> 命令用于创建文件夹。<br><code>rm</code> 删除一个目录中的一个或多个文件或目录，如果没有使用 -r 选项，则 rm 不会删除目录。如果使用 rm 来删除文件，通常仍可以将该文件恢复原状。<br><code>cp</code> 命令 将源文件复制至目标文件，或将多个源文件复制至目标目录。</p>
+<p>1.2 进程和线程的区别<br>（1）同一个进程的线程是共享该进程的地址空间和资源，但是不同的进程之间是独立的地址空间和资源<br>（2）一个进程崩溃后，在保护模式下不会对其他的进程产生影响，当时一个线程崩溃了那么该进程就崩溃了，所以说多进程比多线程要健壮<br>（3）进程的切换消耗的资源比较大，所以涉及到频繁的切换，使用线程更好<br>（4）二者均可以并发执行<br>1.3 进程通信方式<br>（1）管道（无名的）<br>（2）FiFO（有名的）<br>（3）消息队列，可以实现消息的随机查询<br>（4）信号量：是一个计数器，用于进程间的互斥和同步，一般结合共享内存使用<br>（5）共享内存：给多个进程共享一个指定的存储区，通过信号量实现互斥和同步，来达到进程间的通信<br>1.4 线程的通信<br>（1）全局变量：最好声明为volatile，在多线程过程中保证原子性<br>（2）消息：线程可以拥有消息队列和消息循环，在不同线程间通信<br>（3）事件：线程可以监视处于有信号状态的事件，适当的时候就可以对事件进行操作<br>1.5 TCP&#x2F;IP分为几层？tcp属于哪一层？http属于哪一层？http基于tcp还是udp？<br>分为五层，分别是应用层，传输层，网络层，数据链路层，物理层<br>TCP处于传输层，UDP也在这一层，<br>HTTP处于应用层，HTTP&#x2F;1.1 和 HTTP&#x2F;2 都是基于 TCP 传输协议的，而 HTTP&#x2F;3 是基于 UDP 传输协议的。（可以引申出各个版本的区别）<br>1.6 tcp和udp 区别<br>（1）tcp是面向连接的，可靠的传输，以字节流进行传输，传输效率慢，需要的资源多，应用场景为文件传输，邮件传输等，有确认，窗口，重传，拥塞控制等机制，每一条tcp连接只能是一对一的，全双工的，首部20字节开销<br>（2）udp是无连接的不可靠传输，不能保证数据发送顺序，以数据报文段的形式进行传输，没有拥塞控制，支持一对一，一对多，多对一和多对多，首部8个字节<br>1.7 三次握手、四次挥手？</p>
+<p>1.9 Mysql的索引<br>索引就类似于目录，方便我们快速获取数据的一种数据结构。Mysql5.5之后的版本默认存储引擎是InnoDB，其支持B+树索引。这里就可以聊聊B+树和B树的区别，说明为什么Mysql使用B+树来作为索引。（二级索引去查主键索引：回表，以及覆盖索引。）（B+树和B树和二叉树和哈希的比较）</p>
+<p>各种索引：<br>（1）主键索引：建立在主键上的索引，唯一而且不能为空值<br>（2）唯一索引：使用UNIQUE值创建的索引可以有多个，索引列的值必须为1，但是允许有空值<br>（3）普通索引：建立在普通字段上的索引，不要求字段为主键，也不需要字段为UNIQUE<br>（4）联合索引：将多个字段组合成一个索引，使用最左匹配原则进行查找和匹配。但是特殊情况是，如果最左匹配到的某个索引列的值是范围值的话，那么之后的索引列就不能再最左匹配。Mysql5.6以后有了索引下推优化，可以在联合索引遍历的过程重， 对联合索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。</p>
+<p>1.20 抢30数学题：分为说出30赢和输，不同的策略</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/05/%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%BB%E9%87%8D%E6%8A%80%E5%B7%A7/" rel="prev" title="回溯问题的去重技巧">
+                  <i class="fa fa-angle-left"></i> 回溯问题的去重技巧
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/04/%E4%B8%AD%E6%9C%9B%E9%9D%A2%E7%BB%8F/" rel="next" title="中望面经">
+                  中望面经 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

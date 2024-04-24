@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a)&#123;       cout &lt;&lt; a &lt;&lt; endl;   &#125;   &#x2F;&#x2F;下面的代码会报重定义错误   void test(const int a)&#123;       cout &lt;&lt; a &amp;lt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="漱石斋笔谈">
+<meta property="og:url" content="http://example.com/2024/04/24/experience/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="1. 函数中几种const构不构成重载的分析 函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误   void test(int a)&#123;       cout &lt;&lt; a &lt;&lt; endl;   &#125;   &#x2F;&#x2F;下面的代码会报重定义错误   void test(const int a)&#123;       cout &lt;&lt; a &amp;lt">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-24T15:10:35.463Z">
+<meta property="article:modified_time" content="2022-10-12T09:00:26.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/04/24/experience/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/04/24/experience/","path":"2024/04/24/experience/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%87%BD%E6%95%B0%E4%B8%AD%E5%87%A0%E7%A7%8Dconst%E6%9E%84%E4%B8%8D%E6%9E%84%E6%88%90%E9%87%8D%E8%BD%BD%E7%9A%84%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">1. 函数中几种const构不构成重载的分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%9C%A8const%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E5%86%85%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">2.如何做到在const成员函数内修改成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E5%92%8C%E5%AE%8F%E5%AE%9A%E4%B9%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.</span> <span class="nav-text">3.内联函数和宏定义的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-c-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">4.c++编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">5.</span> <span class="nav-text">5.程序的内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%86%85%E5%AD%98%E4%B8%AD%E5%A0%86%E5%92%8C%E6%A0%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">6.</span> <span class="nav-text">6.内存中堆和栈的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E5%9C%A8main%E5%87%BD%E6%95%B0%E8%BF%90%E8%A1%8C%E4%B9%8B%E5%89%8D%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">7.</span> <span class="nav-text">7.实现一个在main函数运行之前运行的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-c-%E5%B8%B8%E9%87%8F%E5%82%A8%E5%AD%98%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">8.</span> <span class="nav-text">8.c++常量储存的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-C-%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2"><span class="nav-number">9.</span> <span class="nav-text">9.C++隐式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-extern-%E2%80%9CC%E2%80%9D%E4%BD%9C%E7%94%A8"><span class="nav-number">10.</span> <span class="nav-text">10. extern “C”作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-%E8%AF%B4%E8%AF%B4RTTI"><span class="nav-number">11.</span> <span class="nav-text">11.说说RTTI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new%E5%92%8Cmalloc%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">12.</span> <span class="nav-text">new和malloc的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sizeof%E7%9A%84%E4%B8%80%E4%BA%9B%E7%89%B9%E6%80%A7"><span class="nav-number">13.</span> <span class="nav-text">sizeof的一些特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90"><span class="nav-number">14.</span> <span class="nav-text">内存对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%8E%8B%E6%A0%88%E8%BF%87%E7%A8%8B"><span class="nav-number">15.</span> <span class="nav-text">函数调用压栈过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%97%AE%E9%A2%98"><span class="nav-number"></span> <span class="nav-text">多线程问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84IO%E5%88%86%E7%B1%BB"><span class="nav-number"></span> <span class="nav-text">操作系统的IO分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%BC%93%E5%AD%98%E5%91%BD%E4%B8%AD"><span class="nav-number"></span> <span class="nav-text">关于缓存命中</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%AA%E5%85%B1%E4%BA%AB%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number"></span> <span class="nav-text">伪共享的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU%E5%AF%B9%E4%BA%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number"></span> <span class="nav-text">CPU对于线程的选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96"><span class="nav-number"></span> <span class="nav-text">C++内存优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E4%B8%AD%E6%9C%89%E5%87%A0%E7%A7%8D%E7%B1%BB%E5%9E%8B%E7%9A%84new"><span class="nav-number"></span> <span class="nav-text">C++中有几种类型的new</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#static%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number"></span> <span class="nav-text">static的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E6%88%90%E5%91%98%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E5%BC%8F%EF%BC%9F%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8%E4%BC%9A%E5%BF%AB%E4%B8%80%E4%BA%9B"><span class="nav-number"></span> <span class="nav-text">类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%85%E9%A1%BB%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number"></span> <span class="nav-text">必须使用成员列表初始化的情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E8%B5%8B%E5%80%BC%EF%BC%8C%E6%B5%85%E6%8B%B7%E8%B4%9D%EF%BC%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D%EF%BC%8C%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="nav-number"></span> <span class="nav-text">C++ 赋值，浅拷贝，深拷贝，零拷贝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#coredump%E9%94%99%E8%AF%AF"><span class="nav-number"></span> <span class="nav-text">coredump错误</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B%EF%BC%8C%E9%9D%99%E6%80%81%E7%BB%91%E5%AE%9A%E5%92%8C%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A"><span class="nav-number"></span> <span class="nav-text">静态类型和动态类型，静态绑定和动态绑定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%8E%E6%A0%B7%E5%88%A4%E6%96%AD%E4%B8%A4%E4%B8%AA%E6%B5%AE%E7%82%B9%E6%95%B0%E6%98%AF%E5%90%A6%E7%9B%B8%E5%90%8C"><span class="nav-number"></span> <span class="nav-text">怎样判断两个浮点数是否相同</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#100%E5%B1%82%EF%BC%8C%E4%B8%A4%E4%B8%AA%E5%B0%8F%E7%90%83"><span class="nav-number"></span> <span class="nav-text">100层，两个小球</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0strcpy%EF%BC%88%E6%B3%A8%E6%84%8F%E5%BC%82%E5%B8%B8%E6%83%85%E5%86%B5%EF%BC%89"><span class="nav-number"></span> <span class="nav-text">手动实现strcpy（注意异常情况）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E4%B8%80%E8%88%AC%E5%86%99%E6%88%90%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">为什么析构函数一般写成虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%B1%BB%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E5%AD%98%E6%94%BE%E5%9C%A8%E5%86%85%E5%AD%98%E7%9A%84%E4%BB%80%E4%B9%88%E5%8C%BA%EF%BC%8C%E8%99%9A%E8%A1%A8%E6%8C%87%E9%92%88vptr%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E6%97%B6%E9%97%B4"><span class="nav-number"></span> <span class="nav-text">基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E3%80%81%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E5%8F%AF%E5%90%A6%E5%A3%B0%E6%98%8E%E4%B8%BA%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">构造函数、析构函数、虚函数可否声明为内联函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E6%A8%A1%E6%9D%BF%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E4%BD%A0%E7%9F%A5%E9%81%93%E5%BA%95%E5%B1%82%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="nav-number"></span> <span class="nav-text">C++模板是什么，你知道底层怎么实现的？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E3%80%81%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%9F%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E7%9A%84%E5%86%85%E9%83%A8%E9%83%BD%E5%B9%B2%E4%BA%86%E5%95%A5%EF%BC%9F"><span class="nav-number"></span> <span class="nav-text">构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0"><span class="nav-number"></span> <span class="nav-text">单例模式的两种实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shared-ptr%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number"></span> <span class="nav-text">shared_ptr的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shared-ptr%E6%8C%87%E9%92%88%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-number"></span> <span class="nav-text">shared_ptr指针的大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vector%E6%89%A9%E5%AE%B9%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0"><span class="nav-number"></span> <span class="nav-text">vector扩容什么时候使用移动构造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%B3%E5%AE%9A%E6%8E%92%E5%BA%8F%E5%92%8C%E4%B8%8D%E7%A8%B3%E5%AE%9A%E6%8E%92%E5%BA%8F"><span class="nav-number"></span> <span class="nav-text">稳定排序和不稳定排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%BE%88%E5%A4%A7%E7%9A%84%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%EF%BC%8C%E9%87%8C%E9%9D%A2%E5%A4%A7%E9%83%A8%E5%88%86%E6%95%B0%E6%8D%AE%E9%83%BD%E6%98%AF0%EF%BC%8C%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98"><span class="nav-number"></span> <span class="nav-text">一个很大的二维数组，里面大部分数据都是0，怎么保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E5%86%99String%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%EF%BC%8C%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%92%8C%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">编写String类的构造函数，析构函数和赋值函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAunique-ptr"><span class="nav-number"></span> <span class="nav-text">实现一个unique_ptr</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E5%BA%8F%E5%92%8C%E5%90%8E%E5%BA%8F%E4%B8%8D%E8%83%BD%E7%A1%AE%E5%AE%9A%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number"></span> <span class="nav-text">前序和后序不能确定二叉树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0LRU"><span class="nav-number"></span> <span class="nav-text">实现LRU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="nav-number"></span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stl%E5%B8%B8%E7%94%A8%E5%AE%B9%E5%99%A8%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number"></span> <span class="nav-text">stl常用容器在内存中的位置</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/experience/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-12 17:00:26" itemprop="dateModified" datetime="2022-10-12T17:00:26+08:00">2022-10-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="1-函数中几种const构不构成重载的分析"><a href="#1-函数中几种const构不构成重载的分析" class="headerlink" title="1. 函数中几种const构不构成重载的分析"></a>1. 函数中几种const构不构成重载的分析</h2><ul>
+<li><p>函数中值传递不构成重载，因为传入的只是一个值，而且会报重定义错误</p>
+<pre><code>  void test(int a)&#123;
+      cout &lt;&lt; a &lt;&lt; endl;
+  &#125;
+  //下面的代码会报重定义错误
+  void test(const int a)&#123;
+      cout &lt;&lt; a &lt;&lt; 2endl; 
+  &#125;
+</code></pre>
+</li>
+<li><p>函数中引用传递和指针传递增加const构成重载，因为传入的是确切的对象，<code>const</code>可以区分传入的这些对象能否被修改的性质</p>
+<pre><code>  int test(int *a)&#123;
+      return *a;
+  &#125;
+  int test(const int *a)&#123;
+      return *a;
+  &#125;
+</code></pre>
+</li>
+<li><p>成员函数中函数后面加<code>const</code>构成重载，和上面的情况同理，是能决定成员变量能否被修改的</p>
+<pre><code>  class test&#123;
+  public:
+      test()&#123;&#125;
+      ~test()&#123;&#125;
+      int display()&#123;
+          return this.a;
+      &#125;
+      int display const()&#123;
+          return this.a;
+      &#125;
+  private:
+      int a;
+  &#125;
+</code></pre>
+</li>
+</ul>
+<h2 id="2-如何做到在const成员函数内修改成员变量"><a href="#2-如何做到在const成员函数内修改成员变量" class="headerlink" title="2.如何做到在const成员函数内修改成员变量"></a>2.如何做到在const成员函数内修改成员变量</h2><ul>
+<li><p>使用mutable关键字去修饰成员变量，这样成员变量始终是可以变化的</p>
+</li>
+<li><p>定义一个常量指针指向this所指的对象，然后用这个指针去修改成员变量</p>
+<pre><code>  class test&#123;
+  public:
+      test()&#123;&#125;
+      ~test()&#123;&#125;
+
+      void display(int a) const&#123;
+          test *const te = const_cast&lt;test *const&gt;(this);
+          te-&gt;value = 2;
+          cout &lt;&lt; te-value &lt;&lt; endl;
+      &#125;
+  private:
+      int value;
+  &#125;
+</code></pre>
+</li>
+</ul>
+<h2 id="3-内联函数和宏定义的区别"><a href="#3-内联函数和宏定义的区别" class="headerlink" title="3.内联函数和宏定义的区别"></a>3.内联函数和宏定义的区别</h2><p>1.内联函数是函数，有参数类型检查，更为安全<br>2.内联函数由编译器进行处理，而宏定义由预处理器进行处理<br>3.内联函数处理时被插入到对应代码区域，而宏定义只是简单的文本替换</p>
+<h2 id="4-c-编译过程"><a href="#4-c-编译过程" class="headerlink" title="4.c++编译过程"></a>4.c++编译过程</h2><p>分为预处理+编译+汇编+链接</p>
+<ul>
+<li>预处理：主要处理那些源代码中以#开始的预编译指令，主要处理规则如下：<ul>
+<li>将宏定义进行文本替换</li>
+<li>将<code>#include</code>的文件插入到对应位置（递归进行，因为可能循环包含）</li>
+<li>删除注释</li>
+</ul>
+</li>
+<li>编译：进行一系列词法分析，语法分析，语义分析及优化后生成相应的汇编代码文件（内联函数就在这一阶段）</li>
+<li>汇编：将汇编代码转变成机器语言</li>
+<li>链接：将各个目标文件组装在一起，并生成可执行文件。</li>
+</ul>
+<h2 id="5-程序的内存分配"><a href="#5-程序的内存分配" class="headerlink" title="5.程序的内存分配"></a>5.程序的内存分配</h2><p>1.栈区：由编译器自动分配释放，存放函数的参数值，局部变量等。<br>2.堆区：由程序员自己分配释放，分配方式类似于链表<br>3.全局静态区：全局变量和静态变量的位置，初始化的在一起，未初始化的在一起<br>4.常量区：常量存放地址，程序接受系统释放<br>5.程序代码区：存放函数的二进制代码</p>
+<h2 id="6-内存中堆和栈的区别"><a href="#6-内存中堆和栈的区别" class="headerlink" title="6.内存中堆和栈的区别"></a>6.内存中堆和栈的区别</h2><p>1.栈由系统统一分配，例如局部变量声明后就自动放在栈中（先进后出）<br>2.堆需要自己申请，比如malloc函数和new</p>
+<h2 id="7-实现一个在main函数运行之前运行的函数"><a href="#7-实现一个在main函数运行之前运行的函数" class="headerlink" title="7.实现一个在main函数运行之前运行的函数"></a>7.实现一个在main函数运行之前运行的函数</h2><p>1.使用attribute关键字</p>
+<pre><code>__attribute((constructor))void before()&#123;
+    cout &lt;&lt; &quot;before main&quot; &lt;&lt; endl;
+&#125;
+</code></pre>
+<p>2.使用全局对象的构造函数，其会在main函数执行之前运行</p>
+<pre><code>class my_test&#123;
+public:
+    my_test()&#123;
+        cout &lt;&lt; &quot;test&quot; &lt;&lt; endl;
+    &#125;
+    ~my_test()&#123;&#125;
+&#125;
+
+my_test test;
+
+void main()&#123;
+    cout &lt;&lt; &quot;this is main func&quot; &lt;&lt; endl;
+&#125;
+</code></pre>
+<h2 id="8-c-常量储存的位置"><a href="#8-c-常量储存的位置" class="headerlink" title="8.c++常量储存的位置"></a>8.c++常量储存的位置</h2><p>1.局部常量（和局部变量位置一样）：栈区<br>2.全局常量（和全局变量位置一样）：全局静态区<br>3.字面值常量：存放在常量区</p>
+<h2 id="9-C-隐式转换"><a href="#9-C-隐式转换" class="headerlink" title="9.C++隐式转换"></a>9.C++隐式转换</h2><p>1.算数类型</p>
+<ul>
+<li>整型提升：将小整数转换成较大的整数类型</li>
+<li>有符号类型转换为无符号类型，其值可能回发生变化</li>
+<li>在条件判断中，非布尔类型自动转换为布尔类型（0为false，其余为true)</li>
+</ul>
+<p>2.类类型<br>《C++ Primer》中提到：可以用单个形参来调用的构造函数定义了从形参类型到该类类型的一个隐式转换。</p>
+<pre><code>class Test&#123;
+public:
+    Test(int i);
+&#125;;
+
+Test t1 = 1;
+</code></pre>
+<p>这里由于隐式转换，1先被Test构造函数构造成Test对象，然后才被赋值为1，其操作等同于</p>
+<pre><code>Test tmp(1);
+Test t1 = tmp;
+</code></pre>
+<p>为了防止这种看起来很模棱两可的写法，可以使用关键字 explicit来防止隐式转换。其只对有一个参数的类构造函数有效，如果类构造函数的参数大于等于2是不会产生隐式转换的（有一种特殊情况，就是多个参数，但是除了其中某一个之外，其他参数都有默认值）。</p>
+<h2 id="10-extern-“C”作用"><a href="#10-extern-“C”作用" class="headerlink" title="10. extern “C”作用"></a>10. extern “C”作用</h2><p>被该语句修饰的变量和函数是按照C语言方式编译和链接的。一般在C++代码调用C语言代码，在C++的头文件中使用。实现C++和C的混合编程。</p>
+<p>作为一种面向对象的语言， C++ 支持函数重载，而过程式语言 C 则不支持。所以，函数被 C++ 编译后在符号库中的名字与 C 语言的有所不同。例如，假设某个函数的原型为：</p>
+<pre><code>void foo( int x, int y );
+</code></pre>
+<p>该函数被 C 编译器编译后在符号库中的名字为 _foo ，而 C++ 编译器则会产生像 _foo_int_int 之类的名字（不同的编译器可能生成的名字不同，但是都采用了相同的机制，生成的新名字称为 mangled name ）。 _foo_int_int 这样的名字包含了函数名、函数参数数量及类型信息， C++ 就是靠这种机制来实现函数重载的。例如，在 C++ 中，函数 void foo( int x, int y ) 与 void foo( int x, float y ) 编译生成的符号是不相同的，后者为 _foo_int_float 。</p>
+<p>假设在C++中，模块A的头文件如下：</p>
+<pre><code>//模块A头文件　moduleA.h
+#ifndef MODULE_A_H
+#define MODULE_A_H
+int foo( int x, int y );
+#endif
+</code></pre>
+<p>在模块 B 中引用该函数：</p>
+<pre><code>// 模块B实现文件　moduleB.cpp
+#include &quot;moduleA.h&quot;
+foo(2,3);
+</code></pre>
+<p>实际上，在连接阶段，连接器会从模块 A 生成的目标文件 moduleA.obj 中寻找 _foo_int_int 这样的符号！</p>
+<p>对于上面例子，如果 B 模块是 C 程序，而A模块是 C++ 库头文件的话，会导致链接错误；同理，如果B模块是 C++ 程序，而A模块是C库的头文件也会导致错误。而加了extern “C”后，链接的时候寻找的就是未经修改的符号名_foo，不会产生错误。</p>
+<h2 id="11-说说RTTI"><a href="#11-说说RTTI" class="headerlink" title="11.说说RTTI"></a>11.说说RTTI</h2><p>1.RTTI是运行阶段类型识别的简称，其用途为：假设有一个基类和多个派生类，则可以让基类指针指向其中任何一个类的对象，但是我们想要知道指针具体指向的是哪个类的对象，因为：</p>
+<ul>
+<li>有可能想要调用类方法的正确版本，因为派生类对象可能包含不是继承来的方法，即只有派生类对象可以调用该方法。</li>
+<li>也有可能是出于调试的目的，想跟踪生成对象的类型。<br>2.有3个支持RTTI的元素：</li>
+<li>dynamic_cast运算符使用一个指向基类的指针来生成一个指向派生类的指针，其主要用于“安全的向下转型”，即基类对象的指针或者引用来转换为同一继承层次的其他指针和引用。向下转型有两种情况，一种是基类指针指向派生类对象，这种转换是安全的；另一种是基类指针所指对象为基类对象，这种情况会失败并返回空指针（即0）。对于引用类型，失败的时候抛出一个bad_cast异常。</li>
+<li>typeid运算符和type_info类：用于判断具体的类型</li>
+<li>二者之间的区别：前者用于判断是否能够进行转换，并进行类型检查，而后者直接判断具体的类型。</li>
+</ul>
+<h2 id="new和malloc的区别"><a href="#new和malloc的区别" class="headerlink" title="new和malloc的区别"></a>new和malloc的区别</h2><p>1.new分配在自由储存区（C++中一个抽象概念，凡是通过new进行内存申请的，该内存就是自由储存区）；malloc从堆上动态分配内存。那么自由存储区是否能够是堆（问题等价于new是否能在堆上动态分配内存），这取决于operator new 的实现细节。自由存储区不仅可以是堆，还可以是静态存储区，这都看operator new在哪里为对象分配内存。<br>2.new操作符内存分配成功时，返回的是对象类型的指针，类型严格与对象匹配，无须进行类型转换，故new是符合类型安全性的操作符。而malloc内存分配成功则是返回void * ，需要通过强制类型转换将void*指针转换成我们需要的类型。<br>3.new内存分配失败时，会抛出bac_alloc异常，它不会返回NULL；malloc分配内存失败时返回NULL。<br>4.使用new操作符申请内存分配时无须指定内存块的大小，编译器会根据类型信息自行计算，而malloc则需要显式地指出所需内存的尺寸。<br>5.使用new操作符来分配对象内存时会经历三个步骤：</p>
+<ul>
+<li><p>第一步：调用operator new 函数分配一块足够大的，原始的，未命名的内存空间以便存储特定类型的对象。</p>
+</li>
+<li><p>第二步：调用相应的构造函数以初始化对象，并为其传入初值。</p>
+</li>
+<li><p>第三部：对象构造完成后，返回一个指向该对象的指针。<br>使用delete操作符来释放对象内存时会经历两个步骤：</p>
+</li>
+<li><p>第一步：调用对象的析构函数。</p>
+</li>
+<li><p>第二步：编译器调用operator delete(或operator delete[])函数释放内存空间。<br>而malloc&#x2F;free是库函数，只能动态的申请和释放内存，无法强制要求其做自定义类型对象构造和析构函数<br>6.对数组的处理：new对数组的支持体现在它会分别调用构造函数函数初始化每一个数组元素，释放对象时为每个对象调用析构函数。注意delete[] 要与new []配套使用，不然会找出数组对象部分释放的现象，造成内存泄漏。而malloc不会进行这些操作。<br>7.operator new的实现可以基于malloc，而malloc的实现不可以去调用new，示例代码如下：</p>
+<p>  void * operator new (sieze_t size)<br>  {<br>  if(void * mem &#x3D; malloc(size)<br>      return mem;<br>  else<br>      throw bad_alloc();<br>  }</p>
+</li>
+</ul>
+<p>8.重新分配内存<br>使用malloc分配的内存后，如果在使用过程中发现内存不足，可以使用realloc函数进行内存重新分配实现内存的扩充。realloc先判断当前的指针所指内存是否有足够的连续空间，如果有，原地扩大可分配的内存地址，并且返回原来的地址指针；如果空间不够，先按照新指定的大小分配空间，将原有数据从头到尾拷贝到新分配的内存区域，而后释放原来的内存区域。<br>new没有这样直观的配套设施来扩充内存。</p>
+<h2 id="sizeof的一些特性"><a href="#sizeof的一些特性" class="headerlink" title="sizeof的一些特性"></a>sizeof的一些特性</h2><ul>
+<li>sizeof是运算符，不是函数</li>
+<li>sizeof不能求得void类型的长度</li>
+<li>sizeof<strong>可以</strong>求得void指针的长度，在32位的机器上为4byte字节（因为是指针变量）</li>
+<li>sizeof可以求得静态分配内存的数组的长度，需要注意的是，如果在一个函数内部使用sizeof对数组求长度，而且这个数组是通过函数参数的形式传递进来，则长度还是4字节，因为这里参数被自动转换为了指针（即数组第一个元素的地址），这样可以减少拷贝导致的效率低下。另外，当字符数组表示字符串时，sizeof值将会把’\0’包含进去。</li>
+<li>sizeof不能求得动态分配的内存的大小，比如使用new分配的数组，还是会被当做指针求长度</li>
+<li>当表达式作为sizeof的操作数时，它返回表达式的计算结果的类型大小，但是不会对表达式求值。</li>
+<li>sizeof可以对函数调用求大小，并且求得的大小等于返回类型的大小，但是不执行函数体</li>
+<li>sizeof求得的结构体（及其对象）的大小并不等于各个数据成员对象的大小之和。这里涉及到内存对齐的规则，具体如下：<br>结构体的大小等于结构体内最大成员大小的整数倍；结构体内的成员的首地址相对于结构体首地址的偏移量是其类型大小的整数倍。</li>
+</ul>
+<h2 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h2><p>尽管内存是以字节为单位，但是大部分处理器并不是按字节块来存取内存的.它一般会以双字节,四字节,8字节,16字节甚至32字节为单位来存取内存，我们将上述这些存取单位称为内存存取粒度。提高存取数据的速度。比如有的平台每次都是从偶地址处读取数据，对于一个int型的变量，若从偶地址单元处存放，则只需一个读取周期即可读取该变量；但是若从奇地址单元处存放，则需要2个读取周期读取该变量。某些平台只能在特定的地址处访问特定类型的数据，否则抛出硬件异常给操作系统。32位机器和64位的机器内存对齐中，内置类型只有指针不一样：32为4字节，64位为8字节。</p>
+<h2 id="函数调用压栈过程"><a href="#函数调用压栈过程" class="headerlink" title="函数调用压栈过程"></a>函数调用压栈过程</h2><p>1.首先main函数中参数从右到左进行压栈，然后压入main函数的返回地址，如果发生函数调用，同样会压入该函数的地址，然后跳转到该函数内进行参数压栈等操作，函数返回时，参数出栈，最后会通过栈中保存的函数返回地址返回到main函数内，实现回溯过程。</p>
+<h1 id="多线程问题"><a href="#多线程问题" class="headerlink" title="多线程问题"></a>多线程问题</h1><p>1.join函数：让一个线程阻塞在当前位置，如下：</p>
+<pre><code>void fun()&#123;
+    cout &lt;&lt; &quot;fun() &lt;&lt; endl;
+&#125;
+
+int main()&#123;
+    thread t1(fun);
+    t1.join();
+    cout &lt;&lt; &quot;main() &lt;&lt; endl;
+&#125;
+</code></pre>
+<p>此程序的打印顺序为：fun() -&gt; main()，因为t1.join()函数会自动的将主线程阻塞，直到t1线程完成，才会继续执行主线程。同时join函数还有另外一个作用，就是回收该线程的资源，如果删除掉t1.join()，最后程序会报错。</p>
+<p>2.detach()函数<br>detach()函数的作用是将子线程和主线程分离，让子线程在后台独立运行，如果主线程运行的很快，子线程还未执行完的话，那么子线程会在后台继续执行，执行完毕时由线程库回收其资源。</p>
+<p>3.mutex：互斥锁<br>想实现让多个线程互斥的访问某段代码，可以使用互斥锁，如下：</p>
+<pre><code>mutex m;
+
+void fun()&#123;
+    m.lock();
+    fun_other_thing();
+    m.unlock();
+&#125;
+</code></pre>
+<p>线程申请该互斥锁，如果成功获取，则一直拥有直到该线程调用unlock()解锁。如果无法申请到，则线程阻塞在该过程中。</p>
+<p>4.lock_guard<br>在前面的代码中，如果fun_other_thing()函数的代码有问题，把么unlock()函数无法正常解锁，为了避免这种异常情况导致的无法解锁，可以使用lock_guard()自动加锁解锁，其原理和智能指针类似，会在构造函数里自动加锁，当lock_guard()出了局部作用域，会自动调用析构函数解锁。</p>
+<pre><code>mutex m;
+
+void fun()&#123;
+    lock_guard&lt;mutex&gt; loc(m); //构造函数里自动加锁
+    fun_other_thing();
+    //出了这个局部作用域，自动解锁
+&#125;
+</code></pre>
+<p>5.unique_lock<br>lock_guard只能保证在析构时执行解锁操作，其本身并没有提供加锁和解锁的接口，为了提高并发度，需要尽可能减少锁定的区域，也就是减少锁的粒度。unique_lock弥补了这一缺点，提供了lock()和unlock()的接口，如下例子：</p>
+<pre><code>mutex m;
+
+void fun()&#123;
+    unique_lock&lt;mutex&gt; loc(m);
+    fun_other_thing1();
+    loc.unlock();
+
+    fun_other_thing2();
+
+    loc.lock();
+    fun_other_thing3();
+    loc.unlock();
+&#125;
+</code></pre>
+<p>这个例子中，只锁住了fun_other_thing1()和fun_other_thing3()两个函数，减小了锁的粒度。</p>
+<p>6.条件变量condition_variable<br>一般情况下，unique_lock和condition_variable配合使用，当条件变量的wait()函数被调用前，它使用unique_lock来锁住当前线程，进入wait函数后，首先会检查条件是否为真，如果不为真，则wait会阻塞并释放锁，允许其他线程继续执行，直到另外一个线程在相同的条件变量上调用了notification()来唤醒当前线程，此时返回while循环判断里。下面通过一个例子来实现三个线程的顺序执行：</p>
+<pre><code>class Foo &#123;
+private:
+    mutex m;                      // 互斥锁
+    condition_variable cd_v;      // 条件变量
+    bool flag1;                   // 两个标志位
+    bool flag2;
+public:
+    Foo() : flag1(false), flag2(false) &#123;&#125;   // 初始化两个标志位为false，表示second和third还不能打印
+
+    void first() &#123;
+        for (int i = 0; i &lt; 10; ++i) &#123;
+            cout &lt;&lt; &quot;first&quot; &lt;&lt; endl;
+        &#125;
+        flag1 = true;        // first执行后，将flag1置为true，表示second可以打印了
+        cd_v.notify_all();   // 唤醒等待队列里的所有线程
+    &#125;
+
+    void second() &#123;
+        unique_lock&lt;mutex&gt; loc(m);	// 加锁
+        // （1）先判断flag1是否为true，true则不会进入while循环，顺利向下执行；
+        // （2）flag1为false则执行wait函数，释放锁，并进入对象cd_v的等待队列；
+        // （3）当别的线程调用对象cd_v的notify_all()函数，会唤醒在等待队列中的这个线程，然后重新获得锁，继续步骤（1）
+        while (flag1==false) &#123;
+            cd_v.wait(loc);
+        &#125;        
+        for (int i = 0; i &lt; 10; ++i) &#123;
+            cout &lt;&lt; &quot;second&quot; &lt;&lt; endl;
+        &#125;
+        flag2 = true;      // 修改flag2表示third已经可以打印了
+        cd_v.notify_all(); // 唤醒等待队列里的所有线程
+        // 当离开这个局部作用域时，unique_lock会调用析构函数，自动解锁
+    &#125;    
+
+    void third() &#123;
+        unique_lock&lt;mutex&gt; loc(m);
+        while (flag2==false) &#123;
+            cd_v.wait(loc);
+        &#125;
+        for (int i = 0; i &lt; 10; ++i) &#123;
+            cout &lt;&lt; &quot;third&quot; &lt;&lt; endl;
+        &#125;
+    &#125;
+&#125;;
+
+
+int main() &#123;
+    Foo F;  
+    thread(&amp;Foo::third, &amp;F).detach();
+    thread(&amp;Foo::first, &amp;F).detach();
+    thread(&amp;Foo::second, &amp;F).detach();               
+    system(&quot;pause&quot;);   
+&#125;
+</code></pre>
+<p>我们设置两个标志位，flag1为true表示允许second打印、flag2为true表示允许third打印，先初始化flag1、flag2为false。线程创建后，可能出现以下的执行顺序：</p>
+<ul>
+<li>如果在first()还未打印完时（或者压根还没开始执行时），执行second()，由于此时flag1被初始化为false，进入while循环，调用条件变量的wait函数，会将当前线程阻塞起来，并释放锁。此时需要等另一个子线程执行first()打印完毕后，将flag1设为true，然后调用notify_all()将阻塞的线程唤醒，second()才能接着执行，完成打印。</li>
+<li>如果first()已经执行完毕，然后执行second()，那么flag1为true，执行second()的那个线程不会进入while循环，也不会被阻塞起来，能顺利执行。</li>
+<li>third()的执行先后也可参考以上两种情况。</li>
+</ul>
+<p>7.wait函数<br>wait()会去检查这些条件(通过调用所提供的lambda函数)，当条件满足(lambda函数返回true)时返回。如果条件不满足(lambda函数返回false)，wait()函数将解锁互斥量，并且将这个线程(上段提到的处理数据的线程)置于阻塞或等待状态。当准备数据的线程调用notify_one()通知条件变量时，处理数据的线程从睡眠状态中苏醒，重新获取互斥锁，并且对条件再次检查，在条件满足的情况下，从wait()返回并继续持有锁。当条件不满足时，线程将对互斥量解锁，并且重新开始等待。</p>
+<p>8.生产者和消费者模型<br>生产者向队列中插入数据，消费者则在生产者发出队列准备好了后接收消息，然后取出数据进行处理：</p>
+<pre><code>#include &lt;pthread.h&gt;
+struct msg &#123;
+struct msg *m_next;
+/* ... more stuff here ... */
+&#125;;
+struct msg *workq;
+pthread_cond_t qready = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t qlock = PTHREAD_MUTEX_INITIALIZER;
+
+void process_msg(void)
+&#123;
+    struct msg *mp;
+    for (;;) &#123;
+        pthread_mutex_lock(&amp;qlock);
+        while (workq == NULL)
+            pthread_cond_wait(&amp;qready, &amp;qlock);
+        mp = workq;
+        workq = mp-&gt;m_next;
+        pthread_mutex_unlock(&amp;qlock);
+        /* now process the message mp */
+    &#125;
+&#125;
+
+void enqueue_msg(struct msg *mp)
+&#123;
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_mutex_unlock(&amp;qlock);
+    pthread_cond_signal(&amp;qready);
+&#125;
+</code></pre>
+<ul>
+<li><p>为什么在wait函数前需要加锁<br>在wait函数前加锁是为了保护条件变量，调用wait函数进行等待条件的发生时，mutex会被自动释放，以供其他线程改变条件，其中两个步骤必须是原子性的：把调用线程放到条件等待队列上，以及释放锁。<br>如果不是原子性的，比如先释放锁，这时候生产者向队列中添加数据，然后signal，之后消费者线程才去把调用线程放到等待队列上，signal信号就会丢失；如果先把调用线程放到条件等待队列上，这时候另外一个线程发送了signal，然后调用线程立即获取到锁，两次获取mutex会产生deadlock。</p>
+</li>
+<li><p>生产者线程中修改条件为什么要加mutex<br>如果不这么做信号可能会丢失，如下：</p>
+<p>  Thead A                             Thread B</p>
+<p>  pthread_mutex_lock(&amp;qlock);<br>  while (workq &#x3D;&#x3D; NULL)<br>                                  mp-&gt;m_next &#x3D; workq;<br>                                  workq &#x3D; mp;<br>                                  pthread_cond_signal(&amp;cond);<br>  pthread_cond_wait(&amp;qready, &amp;qlock);</p>
+</li>
+</ul>
+<p>在while判断之后向队列中插入数据，虽然已经有了数据，但是线程A还是调用了wait函数去等待下一个信号到来，究其原因是B线程没有获取到锁就进行了操作，应该等到wait函数释放锁之后再进行插入数据的操作。</p>
+<ul>
+<li><p>消费者线程中判断条件为什么要放在while中<br>一个生产者可能对应多个消费者，生产者向队列中插入一条数据之后发出signal，然后各个消费者线程的wait函数获取mutex后返回，这里只有一个线程可以成功，如果这里使用了if，那么就会在当前队列为空的状态下继续执行，显然是不合理的。</p>
+</li>
+<li><p>signal是放在unlock之前还是之后</p>
+</li>
+</ul>
+<p>（1）：先unlock再signal</p>
+<pre><code>void enqueue_msg(struct msg *mp)
+&#123;
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_mutex_unlock(&amp;qlock);
+    pthread_cond_signal(&amp;qready);
+&#125;
+</code></pre>
+<p>如果unlock后恰好有一个消费者获取mutex，然后进入条件判断，发现队列不为空，就会跳过wait函数，那么下面的signal就会不起作用；另外一种情况，一个优先级更低的不需要条件判断的线程也正好获取到了锁，那么就会去执行这个优先级低的线程，违背了设计的初衷</p>
+<p>（2）：先signal再unlock</p>
+<pre><code>void enqueue_msg(struct msg *mp)
+&#123;
+    pthread_mutex_lock(&amp;qlock);
+    mp-&gt;m_next = workq;
+    workq = mp;
+    pthread_cond_signal(&amp;qready);
+    pthread_mutex_unlock(&amp;qlock);
+&#125;
+</code></pre>
+<p> 如果把signal放在unlock之前，消费者线程会被唤醒，发现mutex获取不到，则又去sleep了，浪费了资源，但是在Linux下，就不会有这个问题。因为在Linux 线程中，有两个队列，分别是cond_wait队列和mutex_lock队列，cond_signal只是让线程从cond_wait队列移到mutex_lock队列，而不用返回到用户空间，不会有性能的损耗。所以在Linux中推荐使用这种模式。</p>
+<h1 id="操作系统的IO分类"><a href="#操作系统的IO分类" class="headerlink" title="操作系统的IO分类"></a>操作系统的IO分类</h1><p> 1.缓冲与非缓冲IO（减少系统调用次数）</p>
+<ul>
+<li><p>缓冲 I&#x2F;O，利用的是标准库的缓存实现文件的加速访问，而标准库再通过系统调用访问文件。</p>
+</li>
+<li><p>非缓冲 I&#x2F;O，直接通过系统调用访问文件，不经过标准库缓存。<br>2.直接与非直接IO</p>
+</li>
+<li><p>直接 I&#x2F;O，不会发生内核缓存和用户程序之间数据复制，而是直接经过文件系统访问磁盘。</p>
+</li>
+<li><p>非直接 I&#x2F;O，读操作时，数据从内核缓存中拷贝给用户程序，写操作时，数据从用户程序拷贝给内核缓存，再由内核决定什么时候写入数据到磁盘。<br>3.阻塞与非阻塞IO</p>
+  <div align = "center">
+      <img src = E:/Hexo/source/_posts/pic/阻塞与非阻塞IO.png> 
+  </div></li>
+</ul>
+<h1 id="关于缓存命中"><a href="#关于缓存命中" class="headerlink" title="关于缓存命中"></a>关于缓存命中</h1><p>1.CPU cache每次加载的数据长度是固定的，比如64字节，那么即是我们只请求了4字节的数据，它也会读取64字节的内容到L1 缓存中，方便之后再请求数据的时候先从L1 缓存中查找。其中L1缓存分为数据缓存和指令缓存。</p>
+<ul>
+<li>提升数据缓存命中率：按照内存布局的顺序访问，比如访问二维数组，则按照行排列的方式去访问数据。</li>
+<li>提升指令缓存命中率：按照有规律的分支语句可以提升CPU的分支预测器的执行效率，如果分支预测可以预测到接下来要执行 if 里的指令，还是 else 指令的话，就可以「提前」把这些指令放在指令缓存中，这样 CPU 可以直接从 Cache 读取到指令，于是执行速度就会很快。</li>
+</ul>
+<h1 id="伪共享的问题"><a href="#伪共享的问题" class="headerlink" title="伪共享的问题"></a>伪共享的问题</h1><p>多个线程同时读写同一个Cache Line的不同变量，而导致Cache Line失效的问题，称为伪共享。避免方法为将两个有可能地址连续的变量，使用对齐地址的方法使得二者不在一个Cache Line中，例如：</p>
+<pre><code>struct test&#123;
+    int a;
+    int b __cacheline_aligned_in_smp;
+&#125;;
+</code></pre>
+<h1 id="CPU对于线程的选择"><a href="#CPU对于线程的选择" class="headerlink" title="CPU对于线程的选择"></a>CPU对于线程的选择</h1><p>1.完全公平调度：CFS方法，对于普通任务，为其安排一个虚拟运行时间，如果一个任务在运行，那么运行时间越长，其虚拟运行时间就越大，如果一个任务没有被运行，其虚拟运行时间就不变。CPU优先会选择虚拟运行时间较短的任务来运行。<br>2.CPU运行队列：实际上任务数要远大于CPU核心数，这时候就需要队列来排队。每个CPU都有自己的运行队列，其中分为三个队列：Deadline运行队列，Realtime运行队列和CFS运行队列，其中CFS就是用红黑树来进行描述的，其最左侧的叶子节点就是下一次最先被调度的任务。当然这三个队列的优先级是不一样的，Deadline &gt; Realtime &gt; CFS</p>
+<h1 id="C-内存优化"><a href="#C-内存优化" class="headerlink" title="C++内存优化"></a>C++内存优化</h1><p>1.编译器优化：开启O2优化选项<br>2.算法和数据结构的优化</p>
+<ul>
+<li>如果是确定的数据长度，主要做查询工作，建议使用数组来完成</li>
+<li>如果时插入删除为主，需要使用链表的操作</li>
+<li>结构体里面按照CPU位长对齐<br>3.函数优化：使用内联函数，使用引用传递或者移动语义<br>4.类：定义移动构造和移动赋值运算符，避免不必要的复制操作</li>
+</ul>
+<h1 id="C-中有几种类型的new"><a href="#C-中有几种类型的new" class="headerlink" title="C++中有几种类型的new"></a>C++中有几种类型的new</h1><p>1.plain new：也就是我们常用的new，其在空间分配失败的情况下返回bad_alloc而不是NULL<br>2.nothrow new：空间分配失败的情况下，不抛出异常，而是返回NULL<br>3.palcement new：主要用途就是反复使用一块较大的动态分配的内存，来构造不同类型的对象或者他们的数组，需要显式的调用析构函数来销毁，不能使用delete，因为其构造的对象或者数组的大小并不一定等于原来分配的内存大小，使用delete会造成内存泄漏，或者释放内存出现运行时错误。</p>
+<h1 id="static的作用"><a href="#static的作用" class="headerlink" title="static的作用"></a>static的作用</h1><p>1.隐藏：编译多个文件时，没有static的全局变量和函数都具有全局可见性，而加了的只有在本文件中才可见<br>2.全局变量和static变量都在静态变量区，热着都会在程序刚开始运行就完成初始化，也是唯一一次初始化，值为0（没有给定值的情况下）<br>3.类中的static成员变量属于整个类所有，类的所有对象只有一份拷贝；类的static成员函数属于整个类所有，函数没有this指针，因而只能访问类的static成员变量<br>4.类的static成员变量必须先初始化再使用，只能在类体外进行初始化。<br>5.static成员函数不能被virtual修饰，因为static不属于任何对象或者实例，所以加virtual没有意义。况且static函数没有this指针，而虚函数的指向函数表的指针是通过this指针指向的，所以无法实现。</p>
+<h1 id="类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些"><a href="#类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些" class="headerlink" title="类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些"></a>类成员初始化方式？构造函数的执行顺序？为什么使用成员初始化列表会快一些</h1><p>1.初始化方式</p>
+<ul>
+<li>赋值初始化：通过函数体内进行赋值初始化</li>
+<li>列表初始化：在冒号后使用初始化列表进行初始化<br>二者的区别：在函数体中初始化，是在所有的数据成员被分配内存空间后进行的；而列表初始化是给数据成员分配内存空间时就进行初始化，此时函数体还未执行。<br>2.一个派生类构造函数的执行顺序：</li>
+<li>虚拟基类的构造函数，如果有多个，就按照继承的顺序执行构造函数</li>
+<li>基类的构造函数（多个普通基类也按照继承的顺序执行构造函数）</li>
+<li>类类型的成员对象的构造函数（按照初始化顺序）</li>
+<li>派生类自己的构造函数<br>3.因为方法一是在构造函数中进行赋值操作，会产生临时对象，降低程序的效率。而成员初始化列表对于类类型，实际上是少了一次调用构造函数的过程，对于内置数据类型二者没有区别。</li>
+</ul>
+<h1 id="必须使用成员列表初始化的情况"><a href="#必须使用成员列表初始化的情况" class="headerlink" title="必须使用成员列表初始化的情况"></a>必须使用成员列表初始化的情况</h1><p>1.初始化一个引用成员<br>2.初始化一个常量成员<br>3.该类是继承一个基类，并且基类中有构造函数，构造函数有一组参数时<br>4.该类的成员变量类型是类类型，而该类类型的构造函数带参数时</p>
+<h1 id="C-赋值，浅拷贝，深拷贝，零拷贝"><a href="#C-赋值，浅拷贝，深拷贝，零拷贝" class="headerlink" title="C++ 赋值，浅拷贝，深拷贝，零拷贝"></a>C++ 赋值，浅拷贝，深拷贝，零拷贝</h1><p>1.浅拷贝：只复制指向某个对象的指针，而不是复制对象本身，新旧对象还是共享同一块内存<br>2.深拷贝：会另外创造一个一样的对象，和原本的对象不共享内存，修改新对象不会修改旧对象<br>3.零拷贝：操作系统中的mmap操作</p>
+<h1 id="coredump错误"><a href="#coredump错误" class="headerlink" title="coredump错误"></a>coredump错误</h1><p>程序由于异常或者bug在运行时异常退出或终止，在一定条件下生成一个叫core的文件，该文件会记录程序在运行时的内存，寄存器状态，内存指针和函数堆栈信息等。</p>
+<h1 id="静态类型和动态类型，静态绑定和动态绑定"><a href="#静态类型和动态类型，静态绑定和动态绑定" class="headerlink" title="静态类型和动态类型，静态绑定和动态绑定"></a>静态类型和动态类型，静态绑定和动态绑定</h1><ul>
+<li>静态类型：对象在声明时采用的类型，在编译期已经确定</li>
+<li>动态类型：通常是<strong>指针或者引用…</strong>目前所指向的对象类型，在运行期决定</li>
+<li>静态绑定：发生在编译期，绑定的是静态类型</li>
+<li>动态绑定：绑定的是动态类型，发生在运行期</li>
+<li>非虚函数一般都是静态绑定，虚函数都是动态绑定</li>
+</ul>
+<h1 id="怎样判断两个浮点数是否相同"><a href="#怎样判断两个浮点数是否相同" class="headerlink" title="怎样判断两个浮点数是否相同"></a>怎样判断两个浮点数是否相同</h1><p>通过相减来和预先设定的精度比较</p>
+<h1 id="100层，两个小球"><a href="#100层，两个小球" class="headerlink" title="100层，两个小球"></a>100层，两个小球</h1><p>每次从第k层开始，那么如果碎了，就可以从1到(k - 1)逐次扫描，<br>下一次从k + (k - 1)开始，如果碎了，那么就可以从k + 1到2k - 2，加上之前第一次也总共是K次<br>所以k + k - 1 + k - 2 … &lt;&#x3D; 100，那么k最大可以取14</p>
+<h1 id="手动实现strcpy（注意异常情况）"><a href="#手动实现strcpy（注意异常情况）" class="headerlink" title="手动实现strcpy（注意异常情况）"></a>手动实现strcpy（注意异常情况）</h1><pre><code>void mystrcpy(char *dst, const char *src)&#123;
+    assert(src != NULL);
+    assert(dst != NULL);
+    while(*dst++ = *src)&#123;
+        ;
+    &#125;
+&#125;
+</code></pre>
+<p>或者 </p>
+<pre><code>char* mystrcpy(char *dst, const char *src)&#123;
+    assert(src != NULL);
+    assert(dst != NULL);
+    char* start = dst;
+    while(*dst++ = *src)&#123;
+        ;
+    &#125;
+    return start;
+&#125;
+</code></pre>
+<h1 id="为什么析构函数一般写成虚函数"><a href="#为什么析构函数一般写成虚函数" class="headerlink" title="为什么析构函数一般写成虚函数"></a>为什么析构函数一般写成虚函数</h1><p>由于类的多态性，基类指针可以指向派生类的对象，如果删除该基类的指针，就会调用该指针指向的派生类析构函数，而派生类的析构函数又自动调用基类的析构函数，这样整个派生类的对象完全被释放。<br>如果析构函数不被声明成虚函数，则编译器实施静态绑定，在删除基类指针时，只会调用基类的析构函数而不调用派生类析构函数，这样就会造成派生类对象析构不完全，造成内存泄漏。</p>
+<h1 id="基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间"><a href="#基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间" class="headerlink" title="基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间"></a>基类的虚函数表存放在内存的什么区，虚表指针vptr的初始化时间</h1><p>1.虚函数表是全局共享的元素，即全局仅有一个，在编译时就构造完成<br>2.C++中虚函数表位于常量区；而虚函数则位于代码段（.text），也就是C++内存模型中的代码区。</p>
+<h1 id="构造函数、析构函数、虚函数可否声明为内联函数"><a href="#构造函数、析构函数、虚函数可否声明为内联函数" class="headerlink" title="构造函数、析构函数、虚函数可否声明为内联函数"></a>构造函数、析构函数、虚函数可否声明为内联函数</h1><p>1.将构造函数和析构函数声明为inline是没有什么意义的，即编译器并不真正对声明为inline的构造和析构函数进行内联操作，因为编译器会在构造和析构函数中添加额外的操作（申请&#x2F;释放内存，构造&#x2F;析构对象等），致使构造函数&#x2F;析构函数并不像看上去的那么精简。其次，class中的函数默认是inline型的，编译器也只是有选择性的inline，将构造函数和析构函数声明为内联函数是没有什么意义的。<br>2.当是指向派生类的指针（多态性）调用声明为inline的虚函数时，不会内联展开；当是对象本身调用虚函数时，会内联展开，当然前提依然是函数并不复杂的情况下。</p>
+<h1 id="C-模板是什么，你知道底层怎么实现的？"><a href="#C-模板是什么，你知道底层怎么实现的？" class="headerlink" title="C++模板是什么，你知道底层怎么实现的？"></a>C++模板是什么，你知道底层怎么实现的？</h1><p>编译器并不是把函数模板处理成能够处理任意类的函数；编译器从函数模板通过具体类型产生不同的函数；编译器会对函数模板进行两次编译：在声明的地方对模板代码本身进行编译，在调用的地方对参数替换后的代码进行编译。</p>
+<h1 id="构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？"><a href="#构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？" class="headerlink" title="构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？"></a>构造函数、析构函数的执行顺序？构造函数和拷贝构造的内部都干了啥？</h1><p>1.构造函数顺序</p>
+<ul>
+<li>基类构造函数。如果有多个基类，则构造函数的调用顺序是某类在类派生表中出现的顺序，而不是它们在成员初始化表中的顺序。</li>
+<li>成员类对象构造函数。如果有多个成员类对象则构造函数的调用顺序是对象在类中被声明的顺序，而不是它们出现在成员初始化表中的顺序。</li>
+<li>派生类构造函数。<br>2.析构函数顺序</li>
+<li>调用派生类的析构函数；</li>
+<li>调用成员类对象的析构函数；</li>
+<li>调用基类的析构函数。</li>
+</ul>
+<h1 id="单例模式的两种实现"><a href="#单例模式的两种实现" class="headerlink" title="单例模式的两种实现"></a>单例模式的两种实现</h1><p>1.懒汉方式：单例实例在第一次被使用的时候才进行初始化，称为延迟初始化</p>
+<pre><code>class Singleton&#123;
+private:
+    Singleton()&#123;&#125;;
+    ~Singleton()&#123;&#125;;
+    Singleton(const Singleton&amp;);
+    Singleton&amp; operator=(const Singleton&amp;);
+
+public:
+    static Singleton&amp; getInstance()&#123;
+        static Singleton instance;
+        return instance;
+    &#125;
+&#125;
+</code></pre>
+<p>使用了局部静态变量的方式来保证线程安全</p>
+<p>2.饿汉模式：单例模式在程序运行时立即被初始化</p>
+<pre><code>class Singleton&#123;
+private:
+    Singleton()&#123;&#125;;
+    ~Singleton()&#123;&#125;;
+    Singleton(const Singleton&amp;);
+    Singleton&amp; operator=(const Singleton&amp;);
+private:
+    static Singleton instance;
+public:
+    static Singleton&amp; getInstance()&#123;
+        return instance;
+    &#125;
+&#125;
+
+//初始化
+Singleton Singleton::instance;
+</code></pre>
+<p>问题：没有线程安全问题，但是static Singleton instance 和 static Singleton&amp; getInstance()二者的初始化顺序不确定，如果在初始化完成之前调用 getInstance() 方法会返回一个未定义的实例。</p>
+<h1 id="shared-ptr的实现"><a href="#shared-ptr的实现" class="headerlink" title="shared_ptr的实现"></a>shared_ptr的实现</h1><pre><code>template&lt;typename T&gt;
+class SharedPtr&#123;
+public:
+    SharedPtr(T* ptr = NULL):_ptr(ptr), _pCount(new int(1))&#123;&#125;
+    SharedPtr(const SharedPtr&amp; s):_ptr(s._ptr), _pCount(s._pCount)&#123;
+        (*_pCount)++;
+    &#125;
+
+    SharedPtr&lt;T&gt;&amp; operator=(const SharedPtr&amp; s)&#123;
+        if(_ptr_ != s._ptr)&#123;
+            if(--(*_pCount) == 0)&#123;
+                delete _ptr;
+                delete _pCount;
+            &#125;
+            _ptr = s._ptr;
+            _pCount = s._pCount;
+            (*_pcount)++;
+        &#125;
+        return *this;
+    &#125;
+
+    T&amp; operator*()&#123;
+        return *ptr;
+    &#125;
+
+    T* operator&amp;()&#123;
+        return ptr;
+    &#125;
+
+    ~Shared()&#123;
+        --(*_pCount);
+        if(*_pCount == 0)&#123;
+            delete _ptr;
+            delete _pCount;
+            _ptr = nullptr;
+            _pcount = nullptr;
+        &#125;
+    &#125;
+
+private:
+    T* _ptr;
+    unsigned_int* _pCount;
+&#125;
+</code></pre>
+<h1 id="shared-ptr指针的大小"><a href="#shared-ptr指针的大小" class="headerlink" title="shared_ptr指针的大小"></a>shared_ptr指针的大小</h1><p>8字节：一个指针，指向被保护的对象，还有一个计数类，其实现是一个指针，指向两个int类型的变量，分别是shared_ptr的引用计数和weak_ptr的数量</p>
+<h1 id="vector扩容什么时候使用移动构造"><a href="#vector扩容什么时候使用移动构造" class="headerlink" title="vector扩容什么时候使用移动构造"></a>vector扩容什么时候使用移动构造</h1><p>如果vector内保存的是一个类类型，并且该类类型的移动构造函数声明为 noexcept，则会调用移动构造（浅拷贝），否则调用深拷贝，即拷贝构造，这样会大大浪费资源</p>
+<h1 id="稳定排序和不稳定排序"><a href="#稳定排序和不稳定排序" class="headerlink" title="稳定排序和不稳定排序"></a>稳定排序和不稳定排序</h1><p>1.稳定排序：能保证两个相等的元素在排序之后前后顺序不变</p>
+<ul>
+<li>冒泡排序：因为每次遇到相等判断，是不会发生交换的</li>
+<li>插入排序：如果比当前的最大者还大，就插在后面，遇到相等的情况，则插入到相等元素的后面，能保证顺序不变</li>
+<li>归并排序：在合并的过程中，遇到两个相等的元素，会把处在前面的元素先保存，最终保证了稳定性</li>
+</ul>
+<p>2.不稳定排序：</p>
+<ul>
+<li>快速排序：在中枢元素和交界元素交换的时候会破坏稳定性</li>
+<li>堆排序</li>
+</ul>
+<h1 id="一个很大的二维数组，里面大部分数据都是0，怎么保存"><a href="#一个很大的二维数组，里面大部分数据都是0，怎么保存" class="headerlink" title="一个很大的二维数组，里面大部分数据都是0，怎么保存"></a>一个很大的二维数组，里面大部分数据都是0，怎么保存</h1><p>可以使用数组压缩的方式来解决，压缩后的格式为：第一行保存的是原始数组的行列数，和有效数据数，接下来的每一行保存的是原始数据中某个有效数据的行列以及数值。这样使用 n * 3的数组就可以保存原来的数据</p>
+<h1 id="编写String类的构造函数，析构函数和赋值函数"><a href="#编写String类的构造函数，析构函数和赋值函数" class="headerlink" title="编写String类的构造函数，析构函数和赋值函数"></a>编写String类的构造函数，析构函数和赋值函数</h1><pre><code>class String&#123;
+private：
+    char* m_data;
+public:
+    String(const char* str = nullptr)&#123;&#125;;
+    String(const String&amp; str);
+    ~String()&#123;&#125;;
+    String&amp; operator=(const String&amp; str);
+&#125;
+
+String::String(const char* str)&#123;
+    if(NULL == str)&#123;
+        m_data = new char[1];
+        *m_data = &#39;\0&#39;;
+    &#125;else&#123;
+        int len = strlen(str);
+        m_data = new char[len + 1];
+        strcpy_s(m_data, len + 1, str.m_data);
+    &#125;
+&#125;
+
+String::String(const String&amp; str)&#123;
+    int len = strlen(str.m_data);
+    m_data = new char[len + 1];
+    strcpy_s(m_data, len + 1, str);
+&#125;
+
+String::~String&#123;
+    if(m_data != nullptr)&#123;
+        delete[] m_data;
+        m_data = nullptr;
+    &#125;
+&#125;
+
+String&amp; String::String(const String&amp; str)&#123;
+    //如果与str对象时一样的，即自赋值
+    if(this == &amp;str)&#123;
+        return *this;
+    &#125;
+    delete[] m_data;
+    int len = strlen(str.m_data);
+    m_data = new char[len + 1];
+    strcpy_s(m_data, len + 1, str.m_data);
+    return *this;
+&#125;
+</code></pre>
+<h1 id="实现一个unique-ptr"><a href="#实现一个unique-ptr" class="headerlink" title="实现一个unique_ptr"></a>实现一个unique_ptr</h1><pre><code>template&lt;typename T&gt;
+class MyUniquePtr
+&#123;
+public:
+    MyUniquePtr(T* ptr = nullptr):mPtr(ptr)&#123;&#125;;
+    ~MyUniquePtr()&#123;
+        if(mPtr)&#123;
+            delete mPtr;
+            mPtr = nullptr;
+        &#125;
+    &#125;
+    MyUniquePtr(MyUniquePtr &amp;&amp;P) noexcept;
+    MyUniquePtr&amp; operator=(MyUniquePtr &amp;&amp;p) noexcept;
+
+    MyUniquePtr(const MyUniquePt &amp;p) = delete;
+    MyUniquePtr&amp; operator=(const MyUniquePtr &amp;p) = delete;
+
+    void reset(T *q = nullptr) noexcept&#123;
+        if(q != mPtr)&#123;
+            if(mPtr)&#123;
+                delete mPtr;
+            &#125;
+            mPtr = q;
+        &#125;
+    &#125;
+
+    T* release() noexcept&#123;
+        T* res = mPtr;
+        mPtr = nullptr;
+        return res;
+    &#125;
+
+    void swap(MyUniquePtr &amp;p) noexcept&#123;
+        using std::swap;
+        swap(mPtr, p.mPtr);
+    &#125;
+
+private:
+    T* mPtr;
+&#125;;
+
+template &lt;typename T&gt;
+MyUniquePtr&lt;T&gt;&amp; MyUniquePtr&lt;T&gt;::operator=(MyUniquePtr &amp;&amp;p) noexcept&#123;
+    swap(*this, p);
+    return *this;
+&#125;
+
+template &lt;typename T&gt;
+MyUniquePtr&lt;T&gt;::MyUniquePtr(MyUniquePtr &amp;&amp;p) noexcept: mPtr(p.mPtr)&#123;
+    p.mPtr = nullptr;
+&#125;
+</code></pre>
+<h1 id="前序和后序不能确定二叉树"><a href="#前序和后序不能确定二叉树" class="headerlink" title="前序和后序不能确定二叉树"></a>前序和后序不能确定二叉树</h1><p>前序和后序在本质上都是将父节点与子结点进行分离,但并没有指明左子树和右子树的能力,因此得到这两个序列只能明确父子关系,而不能确定一个二叉树。</p>
+<h1 id="实现LRU"><a href="#实现LRU" class="headerlink" title="实现LRU"></a>实现LRU</h1><p>struct DLinkedNode {<br>    int key, value;<br>    DLinkedNode* prev;<br>    DLinkedNode* next;<br>    &#x2F;* 构造函数便于新定义节点时初始化对象 *&#x2F;<br>    DLinkedNode(): key(0), value(0), prev(nullptr), next(nullptr) {}<br>    DLinkedNode(int _key, int _value): key(_key), value(_value), prev(nullptr), next(nullptr) {}<br>};</p>
+<p>class LRUCache {<br>private:<br>    unordered_map&lt;int, DLinkedNode*&gt; map;<br>    DLinkedNode* head;<br>    DLinkedNode* tail;<br>    int size;       &#x2F;&#x2F; 缓冲区使用的大小<br>    int capacity;   &#x2F;&#x2F; 缓冲区的容量</p>
+<p>public:<br>    LRUCache(int _capacity): capacity(_capacity), size(0) {<br>        &#x2F;* 使用伪头部和伪尾部节点 <em>&#x2F;<br>        head &#x3D; new DLinkedNode();<br>        tail &#x3D; new DLinkedNode();<br>        head-&gt;next &#x3D; tail;<br>        tail-&gt;prev &#x3D; head;<br>    }<br>    &#x2F;</em> 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 <em>&#x2F;<br>    int get(int key) {<br>        if (!map.count(key)) return -1;<br>        &#x2F;</em> 如果 key 存在，先通过哈希表定位，再移到头部 <em>&#x2F;<br>        DLinkedNode</em> node &#x3D; map[key];<br>        moveToHead(node);<br>        return node-&gt;value;<br>    }</p>
+<pre><code>void put(int key, int value) &#123;
+    if (!map.count(key)) &#123;
+        /* 如果 key 不存在，创建一个新的节点 */
+        DLinkedNode* node = new DLinkedNode(key, value);
+        /* 添加进哈希表 */
+        map[key] = node;
+        /* 添加至双向链表的头部 */
+        addToHead(node);
+        /* 缓存大小+1 */
+        size++;
+        if (size &gt; capacity) &#123;
+            DLinkedNode* removed = removeTail();// 如果超出容量，删除双向链表的尾部节点
+            map.erase(removed-&gt;key);// 删除哈希表中对应的项
+            delete removed;// 防止内存泄漏
+            size--;// 缓存大小-1
+        &#125;
+    &#125;
+    else &#123;
+        /* 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部 */
+        DLinkedNode* node = map[key];
+        node-&gt;value = value;
+        moveToHead(node);
+    &#125;
+&#125;
+</code></pre>
+<p>&#x2F;<strong><strong><strong><strong><strong><strong><strong><strong>定义双向链表需要用的API函数</strong></strong></strong></strong></strong></strong></strong></strong>&#x2F;<br>public:<br>    &#x2F;* 在虚拟头节点后添加新的节点 node <em>&#x2F;<br>    void addToHead(DLinkedNode</em> node) {<br>        node-&gt;prev &#x3D; head;<br>        node-&gt;next &#x3D; head-&gt;next;<br>        head-&gt;next-&gt;prev &#x3D; node;<br>        head-&gt;next &#x3D; node;<br>    }<br>    &#x2F;* 删除当前节点 node 这里也是为什么使用双向链表的原因方便删除节点 <em>&#x2F;<br>    void removeNode(DLinkedNode</em> node) {<br>        node-&gt;prev-&gt;next &#x3D; node-&gt;next;<br>        node-&gt;next-&gt;prev &#x3D; node-&gt;prev;<br>    }<br>    &#x2F;* 把出现频率比较高的节点放入 头部 <em>&#x2F;<br>    void moveToHead(DLinkedNode</em> node) {<br>        removeNode(node);<br>        addToHead(node);<br>    }<br>    &#x2F;* 移除尾部节点 并返回尾部最后一个节点 <em>&#x2F;<br>    DLinkedNode</em> removeTail() {<br>        DLinkedNode* node &#x3D; tail-&gt;prev;<br>        removeNode(node);<br>        return node;<br>    }<br>};</p>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p>void Quick_Sort(int *arr, int begin, int end){<br>    if(begin &gt; end)<br>        return;<br>    int tmp &#x3D; arr[begin];<br>    int i &#x3D; begin;<br>    int j &#x3D; end;<br>    while(i !&#x3D; j){<br>        while(arr[j] &gt;&#x3D; tmp &amp;&amp; j &gt; i)<br>            j–;<br>        while(arr[i] &lt;&#x3D; tmp &amp;&amp; j &gt; i)<br>            i++;<br>        if(j &gt; i){<br>            int t &#x3D; arr[i];<br>            arr[i] &#x3D; arr[j];<br>            arr[j] &#x3D; t;<br>        }<br>    }<br>    arr[begin] &#x3D; arr[i];<br>    arr[i] &#x3D; tmp;<br>    Quick_Sort(arr, begin, i-1);<br>    Quick_Sort(arr, i+1, end);<br>}</p>
+<h1 id="stl常用容器在内存中的位置"><a href="#stl常用容器在内存中的位置" class="headerlink" title="stl常用容器在内存中的位置"></a>stl常用容器在内存中的位置</h1><ul>
+<li>在栈区定义容器变量，变量本身存储在栈区，但是变量存储的数据在堆区；</li>
+<li>在堆空间定义的容器变量，变量本身存储在堆区，存储的数据也在堆区；</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/" rel="prev" title="Ceres Solvel库函数的解读">
+                  <i class="fa fa-angle-left"></i> Ceres Solvel库函数的解读
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/24/Windows-10-%E5%AE%89%E8%A3%85PyTorch/" rel="next" title="">
+                   <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

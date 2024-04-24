@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1.Linux 中一个进程的虚拟内存分布长什么样？内核空间+用户空间（6 种不同的内存段）代码段：存放程序代码，运行前就已经确定（编译时确定）常量区：存放const定义的全局变量，define定义的常量和字符串常量等数据段：存放已经初始化的全局变量bss段：存放没有初始化的全局变量或默认为0的全局变量，执行期间会将这一段的内容全部设为0栈：存放函数参数和局部变量，由系统进行申请和释放，空间较小，先">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统知识笔记">
+<meta property="og:url" content="http://example.com/2022/07/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="1.Linux 中一个进程的虚拟内存分布长什么样？内核空间+用户空间（6 种不同的内存段）代码段：存放程序代码，运行前就已经确定（编译时确定）常量区：存放const定义的全局变量，define定义的常量和字符串常量等数据段：存放已经初始化的全局变量bss段：存放没有初始化的全局变量或默认为0的全局变量，执行期间会将这一段的内容全部设为0栈：存放函数参数和局部变量，由系统进行申请和释放，空间较小，先">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-27T15:15:17.000Z">
+<meta property="article:modified_time" content="2022-11-16T15:34:28.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/07/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/07/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/","path":"2022/07/27/操作系统知识笔记/","title":"操作系统知识笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>操作系统知识笔记 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">中断问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cpu%E5%86%99%E5%85%A5%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">cpu写入问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">缓存一致性问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#malloc%E7%94%B3%E8%AF%B7%E5%86%85%E5%AD%98%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">malloc申请内存的方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#free%E9%87%8A%E6%94%BE%E5%86%85%E5%AD%98%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">free释放内存的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">内存分配的过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">进程调度算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-number">8.</span> <span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%BB%E9%94%81"><span class="nav-number">9.</span> <span class="nav-text">死锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%81%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">10.</span> <span class="nav-text">锁的类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">11.</span> <span class="nav-text">页面置换算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E5%85%B7%E6%9C%89%E5%BF%AB%E8%A1%A8%E5%90%8E%EF%BC%8C%E9%82%A3%E4%B9%88%E5%9C%B0%E5%9D%80%E7%9A%84%E8%BD%AC%E6%8D%A2%E8%BF%87%E7%A8%8B%E5%8F%98%E6%88%90%E4%BB%80%E4%B9%88%E6%A0%B7%E4%BA%86%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">如果系统中具有快表后，那么地址的转换过程变成什么样了？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="nav-number">13.</span> <span class="nav-text">动态分区分配算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="nav-number">14.</span> <span class="nav-text">静态链接和动态链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98"><span class="nav-number">15.</span> <span class="nav-text">读者-写者问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%92%8C%E5%BC%82%E5%B8%B8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">16.</span> <span class="nav-text">中断和异常的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81"><span class="nav-number">17.</span> <span class="nav-text">用户态和内核态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E5%88%87%E6%8D%A2"><span class="nav-number">18.</span> <span class="nav-text">用户态和内核态的切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E7%9A%84%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F%E8%B6%85%E8%BF%87%E4%BA%86%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">19.</span> <span class="nav-text">申请的虚拟内存大小超过了物理内存的大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Swap%E6%9C%BA%E5%88%B6%E8%A7%A6%E5%8F%91%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-number">20.</span> <span class="nav-text">Swap机制触发的条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">21.</span> <span class="nav-text">协程是什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E9%9C%80%E8%A6%81%E5%87%A0%E7%BA%A7%E9%A1%B5%E8%A1%A8"><span class="nav-number">22.</span> <span class="nav-text">一般需要几级页表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">23.</span> <span class="nav-text">中断的作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU-Cache%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E8%AF%BB%E5%8F%96%E8%BF%87%E7%A8%8B"><span class="nav-number">24.</span> <span class="nav-text">CPU Cache的数据结构和读取过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E4%BC%AA%E5%85%B1%E4%BA%AB%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">25.</span> <span class="nav-text">关于伪共享的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU%E9%80%89%E6%8B%A9%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">26.</span> <span class="nav-text">CPU选择线程的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A1%AC%E4%B8%AD%E6%96%AD%E5%92%8C%E8%BD%AF%E4%B8%AD%E6%96%AD"><span class="nav-number">27.</span> <span class="nav-text">硬中断和软中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="nav-number">28.</span> <span class="nav-text">进程的上下文切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81%E5%92%8C%E8%87%AA%E6%97%8B%E9%94%81"><span class="nav-number">29.</span> <span class="nav-text">互斥锁和自旋锁</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="操作系统知识笔记 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统知识笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-27 23:15:17" itemprop="dateCreated datePublished" datetime="2022-07-27T23:15:17+08:00">2022-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-16 23:34:28" itemprop="dateModified" datetime="2022-11-16T23:34:28+08:00">2022-11-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>1.Linux 中一个进程的虚拟内存分布长什么样？内核空间+用户空间（6 种不同的内存段）<br>代码段：存放程序代码，运行前就已经确定（编译时确定）<br>常量区：存放const定义的全局变量，define定义的常量和字符串常量等<br>数据段：存放已经初始化的全局变量<br>bss段：存放没有初始化的全局变量或默认为0的全局变量，执行期间会将这一段的内容全部设为0<br>栈：存放函数参数和局部变量，由系统进行申请和释放，空间较小，先进先出<br>堆：存放动态分配的内存，由用户自己申请和释放（比如malloc和free）</p>
+<p>2.为什么要使用虚拟内存<br>如果没有虚拟地址，cpu访问的都是真实的物理地址，那么会产生：程序直接访问真实内存，没有顺序没有规则，很容易导致错误的产生，并且无法同时运行多个程序。<br>有了虚拟地址以后：</p>
+<ul>
+<li>程序可以用一系列相邻的虚拟地址访问实际物理内存中不相邻的大内存缓冲区</li>
+<li>程序可以使用虚拟地址访问大于可用物理地址的内存缓冲区</li>
+<li>不同进程之间的虚拟地址分隔开，不同进程不会操作同一个物理地址，防止程序崩溃</li>
+</ul>
+<h1 id="中断问题"><a href="#中断问题" class="headerlink" title="中断问题"></a>中断问题</h1><p>Linux将中断问题分为上下两部分</p>
+<ul>
+<li>上半部分对应硬件，硬中断，用来快速处理中断，把网卡的数据读到内存中，更新一下硬件寄存器的状态</li>
+<li>下半部分对应内核，软中断，通常耗时比较长，例如从内存中读取数据，根据协议栈对网络数据进行逐层解析和处理，最终交给应用程序</li>
+</ul>
+<h1 id="cpu写入问题"><a href="#cpu写入问题" class="headerlink" title="cpu写入问题"></a>cpu写入问题</h1><ol>
+<li>写直达：同时把数据写入Cache和内存</li>
+</ol>
+<ul>
+<li>如果Cache中有该数据，先将数据更新，再写入到内存中</li>
+<li>如果Cache中没有该数据，则直接写入到内存中</li>
+</ul>
+<ol start="2">
+<li>写回：当写数据时，新的数据被写入到Cache中，只有当修改过的Cache Block被替换时才写入到内存中<br>这种情况下，只有当缓存不命中，且对应的Cache Block是脏的情况下，才会将该脏的数据写入内存中，然后将要写入的数据，先从内存读入到Cache Block中，然后再把当前要写入的数据写入到Cache Block中，并标记为脏的</li>
+</ol>
+<h1 id="缓存一致性问题"><a href="#缓存一致性问题" class="headerlink" title="缓存一致性问题"></a>缓存一致性问题</h1><p>如果有多个CPU核心操作缓存数据，按照写回原则，则会出错，因为当没有发生缓存不命中且对应数据为脏时，缓存中的数据不会写回到内存中，此时其他核心从内存中读取的数据就是错的。为了解决，需要写传播和事务的串行化</p>
+<ul>
+<li>写传播：当某个CPU核心更新了Cache中的数据，需要广播到其他核心中，使用总线嗅探技术</li>
+<li>事务的串行化：基于总线嗅探技术实现的MESI方法，解决了上述两个问题</li>
+</ul>
+<h1 id="malloc申请内存的方式"><a href="#malloc申请内存的方式" class="headerlink" title="malloc申请内存的方式"></a>malloc申请内存的方式</h1><p>1.brk()函数从堆申请内存，具体为将指针从堆的低地址向高地址移动，小于128KB<br>2.mmap()函数从文件映射区分配内存，大于128KB<br>malloc分配的是虚拟地址，如果该虚拟地址没有被访问，则不会映射到真实物理地址，如果操作系统访问虚拟地址，通过页表查询发现虚拟地址对应的页没有在物理内存中，就会发生缺页中断，然后才会建立虚拟地址和物理内存之间的映射<br>不能都使用mmap函数，因为其会发生运行态的切换，而且mmap申请的内存总是会被释放掉，从而每次访问都会缺页中断，导致CPU消耗过大<br>也不能都使用brk函数，因为其堆指针连续向上增长，会产生内存碎片问题，导致内存泄露</p>
+<h1 id="free释放内存的问题"><a href="#free释放内存的问题" class="headerlink" title="free释放内存的问题"></a>free释放内存的问题</h1><p>1.如果是malloc使用brk()函数申请的内存，则不会释放掉<br>2.如果是mmap()函数申请的内存，则会释放掉<br>其中malloc返回给用户的数据会有一个16字节的信息头，其中保存了该内存块的大小，这样free释放的时候就知道要释放多大的内存块了</p>
+<h1 id="内存分配的过程"><a href="#内存分配的过程" class="headerlink" title="内存分配的过程"></a>内存分配的过程</h1><p>应用程序通过 malloc 函数申请内存的时候，实际上申请的是虚拟内存，此时并不会分配物理内存。当应用程序读写了这块虚拟内存，CPU 就会去访问这个虚拟内存， 这时会发现这个虚拟内存没有映射到物理内存，CPU 就会产生缺页中断，进程会从用户态切换到内核态，并将缺页中断交给内核的缺页中断函数处理。缺页中断处理函数会看是否有空闲的物理内存，如果有，就直接分配物理内存，并建立虚拟内存与物理内存之间的映射关系。<br>如果没有空闲的物理内存，那么内核就会开始进行回收内存的工作，回收的方式主要是两种：直接内存回收和后台内存回收。</p>
+<ul>
+<li>后台内存回收（kswapd）：在物理内存紧张的时候，会唤醒 kswapd 内核线程来回收内存，这个回收内存的过程异步的，不会阻塞进程的执行。</li>
+<li>直接内存回收（direct reclaim）：如果后台异步回收跟不上进程内存申请的速度，就会开始直接回收，这个回收内存的过程是同步的，会阻塞进程的执行。</li>
+<li>如果直接内存回收后，空闲的物理内存仍然无法满足此次物理内存的申请，那么内核就会放最后的大招了 ——触发 OOM （Out of Memory）机制。OOM Killer 机制会根据算法选择一个占用物理内存较高的进程，然后将其杀死，以便释放内存资源，如果物理内存依然不足，OOM Killer 会继续杀死占用物理内存较高的进程，直到释放足够的内存位置。</li>
+</ul>
+<h1 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h1><p>1.先来先服务<br>2.最短作业：优先选择运行时间最短的<br>3.高响应比优先调度算法：等待时间 + 要求服务时间&#x2F; 要求服务时间（无法实现）<br>4.时间片轮转算法：每个进程被分配一个时间片<br>5.最高优先级调度算法：静态和动态优先级<br>6.多级反馈队列：多个队列，每个队列优先级从高到低，新来的任务先加入第一级的队尾，按照先来先服务运行，如果没有运行完则加入第二级的队尾，如果来了一个优先级高的，则先去运行优先级高的任务队列，此时将原任务加入当前队列的队尾</p>
+<h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><p>1.匿名管道：通过fork父进程的文件描述符来建立连接，先进先出<br>2.命名管道：在不相关的进程间也能进行通信，其创建了一个类型为管道的设备文件<br>3.消息队列：在内核中，不适合比较大的文件传输，同时会带来用户态与内核态之间的数据拷贝开销<br>4.共享内存：一个虚拟内存，映射到同一块真实物理内存<br>5.信号量：P操作-1，如果小于0，则阻塞 V操作：如果小于等于0则有进程阻塞，唤醒它，如果大于0，则没有进程阻塞</p>
+<ul>
+<li>1：互斥信号量</li>
+<li>0：同步信号量：需要先执行的只需要V操作，需要后执行的只需要P操作<br>6.信号：异常状态下的通信<br>7.Socket：跨网络和不同的主机间进程通信</li>
+</ul>
+<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p>1.死锁的四个条件</p>
+<ul>
+<li>互斥</li>
+<li>忙等待</li>
+<li>不可剥夺</li>
+<li>环路等待</li>
+</ul>
+<p>2.如何避免</p>
+<ul>
+<li>资源有序分配法来打破环路等待：如果两个进程需要的资源相同，那么就按照同样的顺序去获取资源</li>
+</ul>
+<h1 id="锁的类型"><a href="#锁的类型" class="headerlink" title="锁的类型"></a>锁的类型</h1><p>1.互斥锁：获取不到资源时，将CPU释放，去执行其他进程<br>2.自旋锁：获取不到资源时，线程会忙等待，直到拿到锁<br>3.读写锁：当写锁没有被线程持有，那么多个线程可以持有读锁，如果线程持有了读锁，那么其他线程的读锁和写锁都会被阻塞</p>
+<ul>
+<li>读优先锁：写锁被阻塞，且后来的读锁也会先与写锁被执行</li>
+<li>写优先锁：读锁会阻塞写锁，但是后面的线程无法再持有读锁，那么写线程就会接着被执行</li>
+<li>比较公平的方法：把所有锁加入一个队列，先来先执行<br>4.以上都是悲观锁，还有乐观锁：先修改完共享资源，再验证这段时间内有没有发生冲突，如果没有其他线程在修改资源，那么操作完成，如果发现有其他线程已经修改过这个资源，就放弃本次操作。</li>
+</ul>
+<h1 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h1><p>1.先进先出：选择在内存中保留时间最长的页面<br>2.最近最久未使用：LRU<br>3.最不常用：选择访问次数最少的<br>4.时钟页面：所有页面保存在环形列表中，表针指向最老的页面，如果发生缺页就检查访问位置：如果是0则淘汰，并插入当前页面，如果是1，则置为0，表针向前一个走</p>
+<h1 id="如果系统中具有快表后，那么地址的转换过程变成什么样了？"><a href="#如果系统中具有快表后，那么地址的转换过程变成什么样了？" class="headerlink" title="如果系统中具有快表后，那么地址的转换过程变成什么样了？"></a>如果系统中具有快表后，那么地址的转换过程变成什么样了？</h1><ul>
+<li>CPU给出逻辑地址，由某个硬件算得页号、页内偏移量，将页号与快表中的所有页号进行比较。</li>
+<li>如果找到匹配的页号，说明要访问的页表项在快表中有副本，则直接从中取出该页对应的内存块号，再将内存块号与页内偏移量拼接形成物理地址，最后，访问该物理地址对应的内存单元。因此，若快表命中，则访问某个逻辑地址仅需一次访存即可。</li>
+<li>如果没有找到匹配的页号，则需要访问内存中的页表，找到对应页表项，得到页面存放的内存块号，再将内存块号与页内偏移量拼接形成物理地址，最后，访问该物理地址对应的内存单元。因此,若快表未命中，则访问某个逻辑地址需要两次访存(注意:在找到页表项后，应同时将其存入快表,以便后面可能的再次访问。但若快表已满，则必须按照-定的算法对旧的页表项进行替换)</li>
+</ul>
+<h1 id="动态分区分配算法"><a href="#动态分区分配算法" class="headerlink" title="动态分区分配算法"></a>动态分区分配算法</h1><p>1.首次适应算法：空闲分区以地址递增的次序排列，每次都从低地址开始查找空闲分区链或者空闲分区表，找到第一个能满足大小的空闲分区。<br>2.最佳适应算法：空闲分区按容量递增次序链接，每次分配内存时按顺序查找空闲分区表，找到大小能满足要求的第一个空闲分区。<br>3.最坏适应算法：空闲分区按容量递减次序链接，每次分配内存时按顺序查找空闲分区表，找到大小能满足要求的第一个空闲分区。<br>4.邻近适应算法：空闲分区以地址递增的顺序排列（可排成一个循环链表），每次分配内存时从上次查找结束的位置开始查找空闲分区链，找到大小能满足要求的第一个空闲分区。</p>
+<h1 id="静态链接和动态链接"><a href="#静态链接和动态链接" class="headerlink" title="静态链接和动态链接"></a>静态链接和动态链接</h1><p>1.静态链接：函数和数据被编译进一个二进制文件，链接时，链接器从库中复制这些函数和数据，并把他们和应用程序的其他模块组合起来创建最终的可执行文件。</p>
+<ul>
+<li>空间浪费：每个可执行文件中对所有需要的目标文件都要有一个副本</li>
+<li>更新困难：每当库函数代码发生变化，就需要重新编译链接形成可执行程序</li>
+<li>优点：运行速度快<br>2.动态链接：把程序按照模块拆分成各个相对独立的部分，在程序运行时才将他们链接到一起形成一个完整的程序，而不是像静态链接一样把所有程序模块都链接成一个单独的可执行文件。</li>
+<li>共享库：即使每个程序都依赖一个库，但是该库不会像静态链接那样在内存中存在多个副本，而是多个程序在执行时共享同一个副本。</li>
+<li>更新方便：更新时只需要替换原来的目标文件，而无需将所有的程序再链接一遍。</li>
+<li>性能损耗：每次程序运行都需要进行链接，性能会有一定损失。</li>
+</ul>
+<h1 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h1><p>问题描述：允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。</p>
+<p>一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。</p>
+<pre><code>typedef int semaphore;
+semaphore count_mutex = 1;
+semaphore data_mutex = 1;
+int count = 0;
+
+void reader() &#123;
+    while(TRUE) &#123;
+        down(&amp;count_mutex);
+        count++;
+        if(count == 1) down(&amp;data_mutex); // 第一个读者需要对数据进行加锁，防止写进程访问
+        up(&amp;count_mutex);
+
+        read();  
+
+        down(&amp;count_mutex);
+        count--;
+        if(count == 0) up(&amp;data_mutex);//最后一个读者要对数据进行解锁，防止写进程无法访问
+        up(&amp;count_mutex);
+    &#125;
+&#125;
+
+void writer() &#123;
+    while(TRUE) &#123;
+        down(&amp;data_mutex);
+
+        write();
+
+        up(&amp;data_mutex);
+    &#125;
+&#125;
+</code></pre>
+<h1 id="中断和异常的区别"><a href="#中断和异常的区别" class="headerlink" title="中断和异常的区别"></a>中断和异常的区别</h1><p>1.中断是硬件产生的，通过中断控制器发给CPU，CPU判断其来自哪个硬件设备，最后发送给内核，由内核进行处理<br>2.异常由CPU产生，例如缺页异常；当运行除法程序时，当除数为0时，又会产生除0异常等。其会发送给内核，由内核来进行异常处理。</p>
+<h1 id="用户态和内核态"><a href="#用户态和内核态" class="headerlink" title="用户态和内核态"></a>用户态和内核态</h1><p>1.用户态：用户可以操作和访问的空间，这个空间通常存放我们用户自己的数据等<br>2.内核态：是系统内核来操作的一块空间，用来存放系统内核的函数，接口等<br>3.二者之间的最大区别就是特权级不同：用户态拥有最低的特权级，内核态拥有较高的特权级<br>4.为什么要分为内核态和用户态：为了安全性。在CPU的一些指令中，有些指令如果用错，将导致整个系统崩溃。分开之后，如果用户需要某些操作，内核为其提供了API，可以通过系统调用陷入内核，让内核去执行操作。<br>5.什么样的功能应该在内核态下实现：</p>
+<ul>
+<li>CPU的管理和内存管理：更为安全</li>
+<li>诊断和测试程序：因为需要访问计算机的所有资源</li>
+<li>文件系统：用户数据的管理可以放在用户态下，而对于文件系统本身的管理，需要放在内核态中。</li>
+<li>IO管理：因为要访问各种设备和底层数据结构，所以也要放在内核态实现。<br>6.如何辨别当前处于哪个态：CPU中有一个状态字，标识了当前的状态，用户态为3，内核态为0</li>
+</ul>
+<h1 id="用户态和内核态的切换"><a href="#用户态和内核态的切换" class="headerlink" title="用户态和内核态的切换"></a>用户态和内核态的切换</h1><p>1.系统调用：其机制核心还是通过操作系统为用户特别开放的一个中断来实现，表现为一个正常的异常（软中断）。</p>
+<ul>
+<li>进程调用：exit和fork</li>
+<li>文件系统访问：chmod和chown</li>
+<li>设备调用：read和write</li>
+<li>信息读取：读取设备信息</li>
+<li>通信：pipe和mmap<br>2.中断：当外围设备完成用户请求的操作之后，会向CPU发出相应的中断信号，这时CPU会暂停执行下一条将要执行的指令，转而去执行中断信号的处理程序，如果先执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了有<br>用户态到内核态的切换。<br>3.异常：当CPU在执行用户态的程序时，发现某些异常情况，就会触发由当前进程切换到异常的内核相关程序中，比如缺页异常。</li>
+</ul>
+<h1 id="申请的虚拟内存大小超过了物理内存的大小"><a href="#申请的虚拟内存大小超过了物理内存的大小" class="headerlink" title="申请的虚拟内存大小超过了物理内存的大小"></a>申请的虚拟内存大小超过了物理内存的大小</h1><p>1.应用程序使用malloc申请的内存实际上是虚拟内存，此时并不会分配物理内存，只有当应用程序读取了虚拟内存，CPU会去访问这块虚拟内存，发现并没有映射到物理内存上，CPU就会产生缺页中断，用户态切换到内核态，由缺页中断处理函数去处理</p>
+<ul>
+<li>如果有空闲物理内存，就会直接分配，并且建立虚拟内存和物理内存的映射</li>
+<li>如果没有，内核就会开始内存回收的任务，如果空闲的物理内存大小不够，就会触发OOM<br>2.在32位机器上，最大可申请的虚拟内存大小是3G<br>3.在64位机器上，最大可申请的虚拟内存大小是128T，即使物理内存只有2G，我们也可以申请4G或者8G的虚拟内存，此时分为两种情况：</li>
+<li>没有开启Swap分区：此时由于物理内存不够，最终会触发OOM（内存溢出）</li>
+<li>开启了Swap分区，此时进程可以正常运行（Swap机制会将不常用的内存先写到磁盘中，然后释放这些内存，再次访问这些内存时，从磁盘读入即可）</li>
+</ul>
+<h1 id="Swap机制触发的条件"><a href="#Swap机制触发的条件" class="headerlink" title="Swap机制触发的条件"></a>Swap机制触发的条件</h1><p>1.内存不足：当系统需要的内存超过了可用的物理内存时，内核会将内存中不常使用的内存页交换到磁盘上为当前进程让出内存，保证正在执行的进程的可用性，这个内存回收的过程是强制的直接内存回收（Direct Page Reclaim）。直接内存回收是同步的过程，会阻塞当前申请内存的进程。<br>2.内存闲置：应用程序在启动阶段使用的大量内存在启动后往往都不会使用，通过后台运行的守护进程（kSwapd），我们可以将这部分只使用一次的内存交换到磁盘上为其他内存的申请预留空间。kSwapd 是后台进程，所以回收内存的过程是异步的，不会阻塞当前申请内存的进程。</p>
+<h1 id="协程是什么"><a href="#协程是什么" class="headerlink" title="协程是什么"></a>协程是什么</h1><p>1.用户态的轻量级线程，是线程内部调度的基本单位，只在用户态内进行切换<br>2.先将寄存器上下文和栈保存，等切换回来的时候再进行恢复<br>3.同一时间只能执行一个协程，而其他协程处于休眠状态，适合对任务进行分时处理<br>4.基本没有到内核态切换的开销，可以不加锁的访问全局变量，所以上下文切换的非常快<br>5.其通信方式是共享队列和消息队列</p>
+<h1 id="一般需要几级页表"><a href="#一般需要几级页表" class="headerlink" title="一般需要几级页表"></a>一般需要几级页表</h1><p>32位系统下，一个页大小是4KB，虚拟地址4GB，那么可以分为100万个页，一个页表项4B，那么4B * 2 * 2^20 &#x3D; 4MB，这对应的是一个进程，而多个进程就会有多个页表，导致页表会及其庞大<br>32位系统两级分页就足够了，64位的系统是4级分页</p>
+<h1 id="中断的作用"><a href="#中断的作用" class="headerlink" title="中断的作用"></a>中断的作用</h1><p>一方面，有了中断功能，PC系统就可以使CPU和外设同时工作，使系统可以及时地响应外部事件。而且有了中断功能，CPU可允许多个外设同时工作。这样就大大提高了CPU的利用率，也提高了数据输入、输出的速度。 另一方面，有了中断功能，就可以使CPU及时处理各种软硬件故障。计算机在运行过程中，往往会出现事先预料不到的情况或出现一些故障，如电源掉电、存储出错，运算溢出等等。计算机可以利用中断系统自行处理，而不必停机或报告工作人员。</p>
+<h1 id="CPU-Cache的数据结构和读取过程"><a href="#CPU-Cache的数据结构和读取过程" class="headerlink" title="CPU Cache的数据结构和读取过程"></a>CPU Cache的数据结构和读取过程</h1><p>1.存储结构：Cache Line组成，包括头标记和数据块，每次载入数据都是按照Cache Line整个读取<br>2.访问和存储：索引 + 有效位 + 组标记 + 偏移量，访问步骤如下：</p>
+<ul>
+<li>根据内存地址中索引信息，计算在 CPU Cahe 中的索引，也就是找出对应的 CPU Cache Line 的地址；</li>
+<li>找到对应 CPU Cache Line 后，判断 CPU Cache Line 中的有效位，确认 CPU Cache Line 中数据是否是有效的，如果是无效的，CPU 就会直接访问内存，并重新加载数据，如果数据有效，则往下执行；</li>
+<li>对比内存地址中组标记和 CPU Cache Line 中的组标记，确认 CPU Cache Line 中的数据是我们要访问的内存数据，如果不是的话，CPU 就会直接访问内存，并重新加载数据，如果是的话，则往下执行；</li>
+<li>根据内存地址中偏移量信息，从 CPU Cache Line 的数据块中，读取对应的字。</li>
+</ul>
+<h1 id="关于伪共享的问题"><a href="#关于伪共享的问题" class="headerlink" title="关于伪共享的问题"></a>关于伪共享的问题</h1><p>1.如果两个变量属于同一个Cache Line块，而恰好两个CPU核心需要分别修改这两个变量，则会发生Cache Line没有起到缓存的作用，降低了代码执行的速度<br>2.避免伪共享的方法<br>将变量设置为内存对齐，用空间换取时间</p>
+<h1 id="CPU选择线程的问题"><a href="#CPU选择线程的问题" class="headerlink" title="CPU选择线程的问题"></a>CPU选择线程的问题</h1><p>1.三个运行队列：</p>
+<ul>
+<li>Deadline运行队列</li>
+<li>实时任务运行队列</li>
+<li>CFS运行队列：完全公平调度，优先选择虚拟运行时间少的任务，虚拟运行时间 +&#x3D; 实际运行时间 &#x2F; 权重</li>
+</ul>
+<h1 id="硬中断和软中断"><a href="#硬中断和软中断" class="headerlink" title="硬中断和软中断"></a>硬中断和软中断</h1><p>Linux 将中断处理程序分为上半部和下半部：<br>上半部，对应硬中断，由硬件触发中断，用来快速处理中断；<br>下半部，对应软中断，由内核触发中断，用来异步处理上半部未完成的工作，Linux 中的软中断包括网络收发、定时、调度、RCU 锁等各种类型</p>
+<h1 id="进程的上下文切换"><a href="#进程的上下文切换" class="headerlink" title="进程的上下文切换"></a>进程的上下文切换</h1><p>1.切换内容：用户空间的虚拟内存，栈，全局变量等；内核空间的堆栈、寄存器等<br>2.何时发生切换：CPU时间片用完；内存不足，则进程也会被挂起，当有优先级更高的进程运行，当前进程也会被挂起；发生硬件中断的时候也会发生进程的切换</p>
+<h1 id="互斥锁和自旋锁"><a href="#互斥锁和自旋锁" class="headerlink" title="互斥锁和自旋锁"></a>互斥锁和自旋锁</h1><p>互斥锁加锁失败会发生线程的上下文切换，需要消耗一定的时间，自旋锁是用户态完成加锁和解锁操作，不会主动产生线程上下文切换，运行时间更快，自旋锁通过 CPU 提供的 CAS 函数实现，包含两个步骤：</p>
+<ul>
+<li>第一步，查看锁的状态，如果锁是空闲的，则执行第二步；</li>
+<li>第二步，将锁设置为当前线程持有；<br>CAS 函数就把这两个步骤合并成一条硬件级指令，形成原子指令，这样就保证了这两个步骤是不可分割的，要么一次性执行完两个步骤，要么两个步骤都不执行。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E7%BB%8F/" rel="prev" title="计算机网络面经">
+                  <i class="fa fa-angle-left"></i> 计算机网络面经
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/13/%E4%BB%8E%E9%9B%B6%E5%AE%9E%E7%8E%B0shared-ptr/" rel="next" title="从零实现shared_ptr">
+                  从零实现shared_ptr <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

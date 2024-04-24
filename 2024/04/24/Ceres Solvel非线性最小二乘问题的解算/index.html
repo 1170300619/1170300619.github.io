@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简介如果想要高效地使用Ceres Solver，需要掌握一定的非线性最小二乘解算基础知识。所以在这一部分将将要介绍Ceres中核心优化算法的工作原理。 设$x \in \mathbb{R}^n$是一个$n$维向量，并且$F(x) &#x3D; [f_1(x),\cdots,f_m(x)] ^ T$是关于$x$的$n$维方程。那么我们关注下列优化问题 $$argmin_x \frac{1}{2} \">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceres Solvel非线性最小二乘问题的解算">
+<meta property="og:url" content="http://example.com/2024/04/24/Ceres%20Solvel%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%AE%97/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="简介如果想要高效地使用Ceres Solver，需要掌握一定的非线性最小二乘解算基础知识。所以在这一部分将将要介绍Ceres中核心优化算法的工作原理。 设$x \in \mathbb{R}^n$是一个$n$维向量，并且$F(x) &#x3D; [f_1(x),\cdots,f_m(x)] ^ T$是关于$x$的$n$维方程。那么我们关注下列优化问题 $$argmin_x \frac{1}{2} \">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-24T15:10:35.461Z">
+<meta property="article:modified_time" content="2020-12-28T02:01:22.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/04/24/Ceres%20Solvel%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%AE%97/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/04/24/Ceres%20Solvel%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%AE%97/","path":"2024/04/24/Ceres Solvel非线性最小二乘问题的解算/","title":"Ceres Solvel非线性最小二乘问题的解算"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ceres Solvel非线性最小二乘问题的解算 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JACOBI%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">JACOBI预处理器</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/24/Ceres%20Solvel%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%AE%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Ceres Solvel非线性最小二乘问题的解算 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ceres Solvel非线性最小二乘问题的解算
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 23:10:35" itemprop="dateCreated datePublished" datetime="2024-04-24T23:10:35+08:00">2024-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-28 10:01:22" itemprop="dateModified" datetime="2020-12-28T10:01:22+08:00">2020-12-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>如果想要高效地使用Ceres Solver，需要掌握一定的非线性最小二乘解算基础知识。所以在这一部分将将要介绍Ceres中核心优化算法的工作原理。</p>
+<p>设$x \in \mathbb{R}^n$是一个$n$维向量，并且$F(x) &#x3D; [f_1(x),\cdots,f_m(x)] ^ T$是关于$x$的$n$维方程。那么我们关注下列优化问题</p>
+<p>$$<br>argmin_x \frac{1}{2} \left | F(x) \right | ^ 2 \<br>L \le x \le U<br>$$<br>其中$L$和$U$分别是参数向量$x$的下限和上限。</p>
+<p>因为对于一个一般的函数，求解全局最小值常常非常棘手，我们不得不关注局部最小值。$F(x)$的雅可比矩阵$J(x)$是一个$m \times n$的矩阵，其中$J_{ij}(x) &#x3D; \partial _j f_i(x)$，函数的梯度向量$g(x) &#x3D; \nabla \frac{1}{2} \left | F(x) \right | ^ 2 &#x3D; J(x)^T F(x)$。</p>
+<p>在计算非线性优化问题的一个通用的策略是，求解原问题的近似简化问题。在每一次循环中，根据近似问题的解可以确定向量$x$的修正值$\triangle x$。对于非线性最小二问题，我们可以通过线性化来建立近似问题，即$F(x + \triangle x) \approx F(x) + J(x) \triangle x$。那么上述问题就变成下列问题：</p>
+<p>$$<br>min_{\triangle x} \frac{1}{2} \left |F(x) + J(x) \triangle x \right |^2<br>$$</p>
+<blockquote>
+<p>这里官方教程跳了几步。要求全局最小值非常棘手，所以转而求局部最小值。而求局部最小值就是，从一个任意的起始点，观测四周的“更小值”。如果观测四周都比当前点大，那么当前点就是局部最小值点，算法达到收敛。否则，设这个新找到的最小值点为“当前点”，重复这一步骤。这也就是下文中”<strong>用$x \longleftarrow x + \triangle x$来更新</strong>“的含义。所以现在问题变成了，如何求解四周的点的值。即，给$x$赋予一个步长$\triangle x$，观察周围的$F(x + \triangle x)$，并且寻找最小值。</p>
+</blockquote>
+<p>根据步长的控制方法，非线性优化可以分成两大类。</p>
+<blockquote>
+<ul>
+<li><strong>置信域法Trust Region</strong> （也有文献成为<strong>信任域法</strong>）置信域方法在搜索空间的子集内应用<strong>模型函数</strong>（通常是二次方程）来近似<strong>目标函数</strong>，这个空间被称为<strong>置信域</strong>。如果模型函数成功地使真正的目标函数最小化，则扩大置信域。否则收缩置信域并且再次尝试求解模型函数的优化问题。</li>
+<li><strong>线搜索法Line Search</strong> 线搜索方法首先找到一个下降的方向，目标函数将沿其下降。然后再确定步长，从而决定沿该方向到底移动多远。 下降方向可以通过各种方法计算，如梯度下降法、牛顿法和拟牛顿法。步长可以精确或不精确地确定。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>这里我们只对共轭梯度法进行介绍（因为我们用的库函数所采用的方法就是共轭梯度法）</strong></p>
+</blockquote>
+<p>对以下形式的线性最小二乘问题：</p>
+<p>$$<br>min_{\triangle x} \frac{1}{2} \left |F(x) + J(x) \triangle x \right |^2<br>$$<br>令$H(x) &#x3D; J(x) ^ TJ(x)$且$g(x) &#x3D; - J(x) ^ {T}f(x)$。为了标记方便，我们舍弃对$x$的依赖，那么很容易看出求解上式等价于求解<font face = "黑体" font color = "red">Normal Equation</font>方程</p>
+<p>$$<br>H\triangle x &#x3D; g<br>$$<br>我们在程序中使用的计算上式的线性解算器是<font face = "黑体"><strong>CGNR</strong></font>，该解算器在法向方程上使用共轭梯度求解器，但没有明确地构建<font face = "黑体">Normal Equation</font>方程。 它利用下列关系：</p>
+<p>$$<br>Hx &#x3D; J ^ TJx &#x3D; J^T(Jx)<br>$$<br>共轭梯度的收敛取决于调节器数量$\kappa(H)$，通常$H$的条件比较弱，并且必须使用预调节器才能获得合理的性能。 目前只有<font face = "黑体" font color = "red">JACOBI</font>预处理器可以用于<font face = "黑体" font color = "red">CGNR</font>。它使用$H$的块对角线来预处理<font face = "黑体">Normal Equation</font>方程。</p>
+<p>当用户选择<font face = "黑体">CGNR</font>作为线性求解器时，Ceres会自动从精确的步长算法切换到不精确的步长算法。</p>
+<h1 id="JACOBI预处理器"><a href="#JACOBI预处理器" class="headerlink" title="JACOBI预处理器"></a>JACOBI预处理器</h1><p>求解<font face = "黑体" font color = "red">Normal Equation</font>方程的收敛速度取决于$H$的特征值的分布。一个有用的上界是$\sqrt {\kappa H}$，$\sqrt {\kappa H}$是矩阵$H$的条件值。对于大多数$BA$问题来说，$\sqrt {\kappa H}$很大，直接应用共轭梯度法对该方程进行求解会导致糟糕的性能。</p>
+<p>这个问题的解决方法是用一个预条件系统来替换$H\triangle x &#x3D; g$方程。给定一个线性系统，$Ax &#x3D; b$，预条件器$M$，预条件系统$M^{-1} Ax &#x3D; M^{-1}b$。这个算法被称作预处理共轭梯度法（PCG），它最坏的情况现在取决于预条件矩阵$\sqrt{M^{-1}A}$的条件数。</p>
+<p>使用预条件器$M$的计算成本是计算$M$以及任意向量$y$的乘积$M^{-1}y$，因此，要考虑两个相互竞争的因素：$H$的结构中有多少是由$M$占据的，以至于条件值$\kappa(HM^{-1})$，以及构造和使用$M$的计算成本。理想的预调节器是条件值$\kappa(M^{-1}A) &#x3D; 1$。使用$M &#x3D; A$可以实现这一效果，但是不是一个实际的选择，因为应用这个预调函数需要一个线性方程组，等价于无预先条件的问题。通常情况下，$M$的信息越多，使用的成本就越高。例如，基于不完全$Cholesky$分解的预条件器比$Jacobi$预条件器具有更好的收敛性能，但代价也更高。</p>
+<p>所有的预调节器中最简单的是对角或雅可比的预调机。例如，$M &#x3D; diag(A)$。对于像$H$这样的块状结构矩阵，可以将其推广到$Jacobi$的预调节器。Ceres实现的块$Jacobi$预调节器叫做<font face = "黑体" font color = "red">JACOBI</font>，当使用<font face = "黑体" font color = "red">CGNR</font>时，它指的是$H$的块对角线，即</p>
+<p>$$<br>C_{i j}&#x3D;\left{\begin{array}{cc}<br>A_{i i} &amp; \text { if } i&#x3D;j \<br>0 &amp; \text { 其他 }<br>\end{array}\right.<br>$$</p>
+<p><font face = "黑体" >PCG</font>算法的过程如下：假设$x_0 \in \mathbb{R}^n$是初始向量，</p>
+<p>$$<br>\begin{aligned}<br>&amp;r_{0}&#x3D;b-A x_{0}\<br>&amp;z_{0}&#x3D;C^{-1} r_{0}\<br>&amp;d_{0}&#x3D;z_{0}\<br>&amp;\text { For } k&#x3D;0,1,2, \ldots\<br>&amp;\alpha_{k}&#x3D;\frac{z_{k}^{\top} r_{k}}{d_{k}^{\top} A d_{k}}\<br>&amp;x_{k+1}&#x3D;x_{k}+\alpha_{k} d_{k}\<br>&amp;r_{k+1}&#x3D;r_{k}-\alpha_{k} A d_{k}\<br>&amp;z_{k+1}&#x3D;C^{-1} r_{k+1}\<br>&amp;\beta_{k+1}&#x3D;\frac{z_{k+1}^{\top} r_{k+1}}{z_{k}^{\top} r_{k}}\<br>&amp;d_{k+1}&#x3D;x_{k+1}+\beta_{k+1} d_{k}<br>\end{aligned}<br>$$</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/24/Ceres%20Solvel%E7%BF%BB%E8%AF%91%E7%AC%AC%E4%B8%80%E6%9C%9F-%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3/" rel="prev" title="Ceres Solvel翻译第一期-说明文档">
+                  <i class="fa fa-angle-left"></i> Ceres Solvel翻译第一期-说明文档
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/24/Ceres%20Solvel%E5%BA%93%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E8%AF%BB/" rel="next" title="Ceres Solvel库函数的解读">
+                  Ceres Solvel库函数的解读 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

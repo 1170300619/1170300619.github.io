@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1. 拷贝构造函数如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。例如我们有如下类框架： class HasPtr&#123; public:     HasPtr(const std::string &amp;s &#x3D; std::string()):         ps(new std::string(s)), i(0) &#123; &amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拷贝构造和拷贝赋值">
+<meta property="og:url" content="http://example.com/2022/03/17/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="1. 拷贝构造函数如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。例如我们有如下类框架： class HasPtr&#123; public:     HasPtr(const std::string &amp;s &#x3D; std::string()):         ps(new std::string(s)), i(0) &#123; &amp;#1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-17T08:08:26.000Z">
+<meta property="article:modified_time" content="2022-03-17T10:19:19.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/17/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/17/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC/","path":"2022/03/17/拷贝构造和拷贝赋值/","title":"拷贝构造和拷贝赋值"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>拷贝构造和拷贝赋值 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">1. 拷贝构造函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text">2. 拷贝赋值运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%90%88%E6%88%90%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">3. 合成拷贝构造函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%90%88%E6%88%90%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.</span> <span class="nav-text">4. 合成拷贝赋值运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.</span> <span class="nav-text">5. 注意事项</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/17/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%92%8C%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="拷贝构造和拷贝赋值 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          拷贝构造和拷贝赋值
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-03-17 16:08:26 / 修改时间：18:19:19" itemprop="dateCreated datePublished" datetime="2022-03-17T16:08:26+08:00">2022-03-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="1-拷贝构造函数"><a href="#1-拷贝构造函数" class="headerlink" title="1. 拷贝构造函数"></a>1. 拷贝构造函数</h1><p>如果一个构造函数的第一个参数是自身类类型的引用，且任何额外参数都有默认值，则此构造函数是拷贝构造函数。例如我们有如下类框架：</p>
+<pre><code>class HasPtr&#123;
+public:
+    HasPtr(const std::string &amp;s = std::string()):
+        ps(new std::string(s)), i(0) &#123; &#125;
+    
+    //拷贝构造函数，其中动态分配了一个新的string，并将对象拷贝到ps指向的位置
+    //这里涉及到string的new构造方法，即动态创建一个堆内存，该内存保存hp.ps保存的值，并将ps设置为指向当前新开辟内存，这样就不会出现当前对象的ps和传入的参数同时指向一个内存地址的情况
+    HasPtr(const HasPtr&amp; hp):
+        ps(new std::string(*hp.ps)), i(hp.i) &#123;&#125;
+private:
+    std::string *ps;
+    int i;
+&#125;
+</code></pre>
+<p>拷贝构造函数在很多情况下都会被隐式使用，所以其不应该是<code>explicit</code>的。同时，其第一个参数必须是引用类型，否则其调用永远不会成功。假设该参数不是引用，而是传值参数，</p>
+<pre><code>HasPtr(const HasPtr hp):   
+</code></pre>
+<p>那么拷贝构造时</p>
+<pre><code>HasPtr hp1;
+HasPtr hp2(hp1); //拷贝构造
+</code></pre>
+<p>此时<code>hp1</code>是实参，将会传值给形参<code>hp</code>，而此时相当于调用<code>HasPtr hp(hp1)</code>，此时编译器又会调用类的拷贝构造函数，导致这一过程无限继续下去，使得调用无法成功。</p>
+<p>拷贝构造会在以下情况发生：</p>
+<ul>
+<li>拷贝初始化（用<code>=</code>初始化变量）</li>
+<li>将一个对象作为实参传递给一个非引用类型的形参</li>
+<li>从一个返回类型为非引用类型的函数返回一个对象</li>
+<li>用花括号列表初始化一个数组中的元素或一个聚合类中的成员</li>
+<li>某些类类型还会对它们所分配的对象使用拷贝初始化，例如初始化标准库容器或者调用其<code>insert</code>和<code>push</code>成员时。（与之相对的是，用<code>emplace</code>创建的元素都进行直接初始化）。</li>
+</ul>
+<h1 id="2-拷贝赋值运算符"><a href="#2-拷贝赋值运算符" class="headerlink" title="2. 拷贝赋值运算符"></a>2. 拷贝赋值运算符</h1><p>与类控制其对象如何初始化一样，类也可以控制其对象如何赋值。</p>
+<pre><code>HasPtr hp1, hp2;
+hp1 = hp2; //使用拷贝赋值运算符
+</code></pre>
+<p>为了实现自定义的拷贝赋值运算符，我们需要重载赋值运算符，其本质上就是一个函数，接受一个与其所在类相同类型的参数，如下形式：</p>
+<pre><code>class HasPtr &#123;
+public:
+    HasPtr(const std::string &amp;s = std::string()) : ps(new std::string(s)), i(0) &#123; &#125;
+    HasPtr(const HasPtr &amp;hp) : ps(new std::string(*hp.ps)), i(hp.i) &#123; &#125;
+
+    //重载赋值运算符实现拷贝赋值运算符，返回引用
+    HasPtr&amp; operator=(const HasPtr &amp;rhs_hp) &#123;
+        if(this != &amp;rhs_hp)&#123;
+            //在堆上新开辟内存，保存hp.ps的内容，并返回一个指向当前位置的指针
+            std::string *temp_ps = new std::string(*rhs_hp.ps);
+            delete ps; //这里销毁了ps指向的内存，而ps指针还存在
+            ps = temp_ps; //将当前对象的ps设置为temp_ps
+            i = rhs_hp.i;
+        &#125;
+        return *this; //返回自身类类型的引用
+    &#125;
+private:
+    std::string *ps;
+    int i;
+&#125;;
+</code></pre>
+<p><strong>为了与内置类型的赋值保持一致，赋值运算符通常返回一个指向其左侧运算对象的引用。</strong></p>
+<h1 id="3-合成拷贝构造函数"><a href="#3-合成拷贝构造函数" class="headerlink" title="3. 合成拷贝构造函数"></a>3. 合成拷贝构造函数</h1><p>如果我们没有为一个类定义拷贝构造函数，编译器就会为我们定义一个，称为合成拷贝构造函数。一般情况下，它的作用是将其参数给定的对象中每个非<code>static</code>成员逐个拷贝到正在创建的对象中。那么我们就可以理解直接初始化和拷贝初始化的差异了。（拷贝初始化是指使用<code>=</code>进行的初始化）。</p>
+<pre><code>string dots(10, &#39;.&#39;);  //直接初始化
+string s(dots);        //直接初始化
+string s2 = dots;      //拷贝初始化
+string null_book = &quot;9-99-999-99&quot;; //拷贝初始化
+string nines = string(100, &#39;9&#39;);  //拷贝初始化
+</code></pre>
+<p>使用直接初始化时，实际上是要求编译器使用普通的函数匹配来选择与我们提供的参数最匹配的构造函数。当使用拷贝初始化时，要求编译器将右侧运算对象拷贝到正在创建的对象中，必要的化还要进行类型转换。拷贝初始化一般情况下使用拷贝构造函数来完成，在之后的章节会介绍移动构造函数，会更方便的进行拷贝构造。</p>
+<h1 id="4-合成拷贝赋值运算符"><a href="#4-合成拷贝赋值运算符" class="headerlink" title="4. 合成拷贝赋值运算符"></a>4. 合成拷贝赋值运算符</h1><p>如果我们没有为一个类定义拷贝赋值运算符，编译器就会为我们定义一个，称为合成拷贝赋值运算符。它会将右侧对象的每个非static成员赋予左侧运算对象的对应成员，对于数组成员，逐个赋值数组元素。最终返回一个指向左侧运算对象的引用。</p>
+<h1 id="5-注意事项"><a href="#5-注意事项" class="headerlink" title="5. 注意事项"></a>5. 注意事项</h1><ul>
+<li>某些情况下，合成拷贝构造函数和合成拷贝赋值运算符的作用是禁止该类型对象的构造和赋值。这时候是因为我们定义的类并不需要拷贝、赋值或者销毁其成员。这里参考<code>13.1.6</code>章节的阻止拷贝章节。</li>
+<li>对于使用<code>shared_ptr</code>控制的对象类型，拷贝构造和拷贝赋值会增加<code>count</code>次数，而<code>weak_ptr</code>则不会。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/15/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E5%85%A5%E9%97%A8/" rel="prev" title="背包问题入门">
+                  <i class="fa fa-angle-left"></i> 背包问题入门
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/05/%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%BB%E9%87%8D%E6%8A%80%E5%B7%A7/" rel="next" title="回溯问题的去重技巧">
+                  回溯问题的去重技巧 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CLato:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"show_result":true},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="ping命令的工作原理1.ping发送一个ICMP（Internet Control Messages Protocol），即因特网信报控制协议；接收端回声消息给目的地并报告是否收到所希望的应答。它的原理是：利用网络上机器IP地址的唯一性，给目标IP地址发送一个数据包，通过对方回复的数据包来确定两台网络机器是否连接相通，时延是多少。2.ping是应用层直接使用网络层ICMP的一个例子，它没有通过运">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络面经">
+<meta property="og:url" content="http://example.com/2022/07/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E7%BB%8F/index.html">
+<meta property="og:site_name" content="漱石斋笔谈">
+<meta property="og:description" content="ping命令的工作原理1.ping发送一个ICMP（Internet Control Messages Protocol），即因特网信报控制协议；接收端回声消息给目的地并报告是否收到所希望的应答。它的原理是：利用网络上机器IP地址的唯一性，给目标IP地址发送一个数据包，通过对方回复的数据包来确定两台网络机器是否连接相通，时延是多少。2.ping是应用层直接使用网络层ICMP的一个例子，它没有通过运">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-09T04:38:22.000Z">
+<meta property="article:modified_time" content="2022-10-20T13:18:06.000Z">
+<meta property="article:author" content="gaotf">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/07/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E7%BB%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/07/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E7%BB%8F/","path":"2022/07/09/计算机网络面经/","title":"计算机网络面经"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机网络面经 | 漱石斋笔谈</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">漱石斋笔谈</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">gaotf 的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ping%E5%91%BD%E4%BB%A4%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">ping命令的工作原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPV4%E6%AF%8F%E4%B8%AA%E9%83%A8%E5%88%86%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">IPV4每个部分的含义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E6%95%B0%E6%8D%AE%E5%B7%B2%E7%BB%8F%E8%A2%AB%E5%AE%8C%E6%95%B4%E8%AF%BB%E5%8F%96"><span class="nav-number">3.</span> <span class="nav-text">epoll如何知道数据已经被完整读取</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll%E7%9A%84ET%E6%A8%A1%E5%BC%8F%E6%97%B6-%E5%A6%82%E6%9E%9C%E6%95%B0%E6%8D%AE%E5%8F%AA%E8%AF%BB%E4%BA%86%E4%B8%80%E5%8D%8A-%E4%B9%9F%E5%B0%B1%E6%98%AF%E7%BC%93%E5%86%B2%E5%8C%BA%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8F%AA%E8%AF%BB%E4%BA%86%E4%B8%80%E7%82%B9-%E7%84%B6%E5%90%8E%E5%8F%88%E6%9D%A5%E6%96%B0%E4%BA%8B%E4%BB%B6%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">epoll的ET模式时,如果数据只读了一半,也就是缓冲区的数据只读了一点,然后又来新事件了怎么办？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#http%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0"><span class="nav-number">5.</span> <span class="nav-text">http断点续传</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaotf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">gaotf</p>
+  <div class="site-description" itemprop="description">热爱技术，笔耕不辍</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/1170300619" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;1170300619" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/3469205806@qq.com" title="E-Mail → 3469205806@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E7%BB%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="gaotf">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="漱石斋笔谈">
+      <meta itemprop="description" content="热爱技术，笔耕不辍">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机网络面经 | 漱石斋笔谈">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络面经
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-09 12:38:22" itemprop="dateCreated datePublished" datetime="2022-07-09T12:38:22+08:00">2022-07-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-20 21:18:06" itemprop="dateModified" datetime="2022-10-20T21:18:06+08:00">2022-10-20</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="ping命令的工作原理"><a href="#ping命令的工作原理" class="headerlink" title="ping命令的工作原理"></a>ping命令的工作原理</h1><p>1.ping发送一个ICMP（Internet Control Messages Protocol），即因特网信报控制协议；接收端回声消息给目的地并报告是否收到所希望的应答。它的原理是：利用网络上机器IP地址的唯一性，给目标IP地址发送一个数据包，通过对方回复的数据包来确定两台网络机器是否连接相通，时延是多少。<br>2.ping是应用层直接使用网络层ICMP的一个例子，它没有通过运输层的TCP或UDP。所以ICMP属于网络层协议。<br>3.对于ping命令，我们需要的到达的效果是检查是否联通。那么只需要我们的请求方带上数字标识8（回送请求），如果对方回送的数值是0，那么证明两者是联通的。<br>4.一个例子：</p>
+<ul>
+<li>执行 ping 192.168.0.5：此时ping命令会构建一个固定格式的ICMP请求数据包</li>
+<li>IP层协议将以地址“192.168.0.5”作为目的地址，本机IP地址作为源地址，加上一些其他的控制信息，构建一个IP数据包发往192.168.0.5。 </li>
+<li>目的主机相关操作：接收后检查该数据帧，将IP数据包从帧中提取出来，交给本机的IP层协议。IP层检查后，将有用的信息提取后交给ICMP协议。ICMP协议后者处理后，马上构建一个ICMP应答包，发送给主机A。</li>
+</ul>
+<h1 id="IPV4每个部分的含义"><a href="#IPV4每个部分的含义" class="headerlink" title="IPV4每个部分的含义"></a>IPV4每个部分的含义</h1><p>1.版本：4位，表示是IPV4还是IPV6<br>2.首部长度：默认20B<br>3.总长度：首部+数据和的长度，最大65535B，而MTU为1500B<br>4.标识：用于分片后进行重装<br>5.标志：MF &#x3D; 1表示后面还有分片，MF &#x3D; 0表示是最后一个分片，DF &#x3D; 0表示允许分片<br>6.TTL：生存时间，报文经过每个路由器都将减一，当为0时，丢弃该报文<br>7.协议：6表示TCP，17表示UDP<br>8.首部校验和：只检验数据报首部<br>9.源地址和目的地址</p>
+<h1 id="epoll如何知道数据已经被完整读取"><a href="#epoll如何知道数据已经被完整读取" class="headerlink" title="epoll如何知道数据已经被完整读取"></a>epoll如何知道数据已经被完整读取</h1><p>用epoll + ET模式读取数据，当检查到监听的socket可以读取数据时，使用recv函数读取上面的数据，当该函数返回-1且errno是EAGAIN或EWOULDBLOCK的时候，表示数据已经全部读取完毕。</p>
+<h1 id="epoll的ET模式时-如果数据只读了一半-也就是缓冲区的数据只读了一点-然后又来新事件了怎么办？"><a href="#epoll的ET模式时-如果数据只读了一半-也就是缓冲区的数据只读了一点-然后又来新事件了怎么办？" class="headerlink" title="epoll的ET模式时,如果数据只读了一半,也就是缓冲区的数据只读了一点,然后又来新事件了怎么办？"></a>epoll的ET模式时,如果数据只读了一半,也就是缓冲区的数据只读了一点,然后又来新事件了怎么办？</h1><p>这里我使用通过epoll_ctl对该文件描述符注册epolloneshot事件，一个线程处理socket时，其他线程将无法处理，当该线程处理完后，需要通过epoll_ctl重置epolloneshot事件</p>
+<h1 id="http断点续传"><a href="#http断点续传" class="headerlink" title="http断点续传"></a>http断点续传</h1><p>1.http 1.1中定义了断点续传的相关Range和Content-Range字段。</p>
+<ul>
+<li>客户端：Range字段，指定第一个字节的位置和最后一个字节的位置，有多种格式，可以具体的指示需要哪些字节，甚至可以指定多个范围值</li>
+<li>服务端：Content-Range字段，返回当前接受的范围和文件总大小，响应完成后，返回的响应头内容也不一样，例如200 OK表示不使用断点续传的方式，206则表示使用断点续传的方式</li>
+<li>增强校验：在实际场景中，会出现一种情况，即在终端发起续传请求时，URL 对应的文件内容在服务器端已经发生变化，此时续传的数据肯定是错误的。如何解决这个问题了？显然此时需要有一个标识文件唯一性的方法。在 RFC2616 中也有相应的定义，比如实现Last-Modified 来标识文件的最后修改时间，这样即可判断出续传文件时是否已经发生过改动。同时 FC2616 中还定义有一个 ETag 的头，可以使用 ETag 头来放置文件的唯一标识。<br>2.工作原理</li>
+<li>第一次请求：客户端发起GET请求一个文件，服务器处理请求，返回文件内容以及相应的 Header，其中包括 Etag（例如：627-4d648041f6b80）（假设服务器支持 Etag 生成并已开启了 Etag）状态码为 200。</li>
+<li>第二次请求（断点续传）：客户端发起 HTTP GET 请求一个文件，同时发送 If-Range（该头的内容就是第一次请求时服务器返回的 Etag：627-4d648041f6b80）。<br>服务器判断接收到的 Etag 和计算出来的 Etag 是否匹配，如果匹配，那么响应的状态码为 206；否则，状态码为 200。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/05/%E7%89%9B%E5%AE%A2c-%E9%9D%A2%E7%BB%8F/" rel="prev" title="牛客c++面经">
+                  <i class="fa fa-angle-left"></i> 牛客c++面经
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/" rel="next" title="操作系统知识笔记">
+                  操作系统知识笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaotf</span>
+  </div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
