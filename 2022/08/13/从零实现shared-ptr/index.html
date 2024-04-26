@@ -27,9 +27,9 @@
 <meta property="og:description" content="本文结构 基础构造函数 复制语义 移动语义 一些工具函数 析构函数  1.基础构造函数面试中如果要求实现一个shared_ptr，我们可以从最简单的结构写起： template&lt;class T&gt; class my_shared_ptr&#123; private:     T* m_ptr &#x3D; nullptr;     unsigned int * m_ref_count &#x3D; null">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-13T07:38:42.000Z">
-<meta property="article:modified_time" content="2022-10-20T09:08:28.000Z">
+<meta property="article:modified_time" content="2024-04-26T02:45:39.127Z">
 <meta property="article:author" content="gaotf">
-<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="面试笔记">
 <meta name="twitter:card" content="summary">
 
 
@@ -113,7 +113,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">本文结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">1.基础构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E9%83%A8%E5%88%86"><span class="nav-number">1.2.</span> <span class="nav-text">2.拷贝构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E9%83%A8%E5%88%86"><span class="nav-number">1.3.</span> <span class="nav-text">3.移动构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">4.一些工具函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">5.析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-make-shared%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">6.make_shared函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%B3%E5%AE%9A%E6%8E%92%E5%BA%8F%E5%92%8C%E4%B8%8D%E7%A8%B3%E5%AE%9A%E6%8E%92%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">稳定排序和不稳定排序</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">本文结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">1.基础构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E9%83%A8%E5%88%86"><span class="nav-number">1.2.</span> <span class="nav-text">2.拷贝构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E9%83%A8%E5%88%86"><span class="nav-number">1.3.</span> <span class="nav-text">3.移动构造部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">4.一些工具函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">5.析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-make-shared%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">6.make_shared函数</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -128,18 +128,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -210,7 +210,24 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-10-20 17:08:28" itemprop="dateModified" datetime="2022-10-20T17:08:28+08:00">2022-10-20</time>
+      <time title="修改时间：2024-04-26 10:45:39" itemprop="dateModified" datetime="2024-04-26T10:45:39+08:00">2024-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">总结笔记</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/shared-ptr/" itemprop="url" rel="index"><span itemprop="name">shared_ptr</span></a>
+        </span>
     </span>
 
   
@@ -383,7 +400,7 @@ unsigned int use_count() const&#123;
 <ul>
 <li>还有一种情况，make_shared 只分配一次内存, 这看起来很好. 减少了内存分配的开销. 问题来了, weak_ptr 会保持控制块(强引用, 以及弱引用的信息)的生命周期, 而因此连带着保持了对象分配的内存, 只有最后一个 weak_ptr 离开作用域时, 内存才会被释放. 原本强引用减为 0 时就可以释放的内存, 现在变为了强引用, 弱引用都减为 0 时才能释放, 意外的延迟了内存释放的时间. 这对于内存要求高的场景来说, 是一个需要注意的问题。</li>
 </ul>
-<h1 id="稳定排序和不稳定排序"><a href="#稳定排序和不稳定排序" class="headerlink" title="稳定排序和不稳定排序"></a>稳定排序和不稳定排序</h1>
+
     </div>
 
     
@@ -391,6 +408,9 @@ unsigned int use_count() const&#123;
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95%E7%AC%94%E8%AE%B0/" rel="tag"># 面试笔记</a>
+          </div>
 
         
 
